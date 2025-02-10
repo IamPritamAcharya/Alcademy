@@ -1,0 +1,50 @@
+{
+  "Computer Science": {
+    "First Year": "https://igitsarang.ac.in/assets/documents/sylabus/2019_detailed_first_year_b_tech_syllabus_1571208806.pdf",
+    "Second Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_cse_2nd_year_1624712860.pdf",
+    "Third Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_cse_3rd_year_1624712911.pdf",
+    "Fourth Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_cse_4th_year_1624712959.pdf"
+  },
+  "Electronics & TC Eng": {
+    "First Year": "https://igitsarang.ac.in/assets/documents/sylabus/2019_detailed_first_year_b_tech_syllabus_1571208898.pdf",
+    "Second Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_etc_2nd_year_1624713133.pdf",
+    "Third Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_etc_3rd_year_1624713170.pdf",
+    "Fourth Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_etc_4th_year_1624713215.pdf"
+  },
+  "Electrical Eng": {
+    "First Year": "https://igitsarang.ac.in/assets/documents/sylabus/2019_detailed_first_year_b_tech_syllabus_1571208898.pdf",
+    "Second Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_electrical_2nd_year_1624713007.pdf",
+    "Third Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_electrical_3rd_year_1624713048.pdf",
+    "Fourth Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_electrical_4th_year_1624713084.pdf"
+  },
+  "Mechanical Eng": {
+    "First Year": "https://igitsarang.ac.in/assets/documents/sylabus/2019_detailed_first_year_b_tech_syllabus_1571208898.pdf",
+    "Second Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_mechanical_2nd_year_1624713317.pdf",
+    "Third Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_mechanical_3rd_year_1624713354.pdf",
+    "Fourth Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_mechanical_4th_year_1624713389.pdf"
+  },
+  "Civil Eng": {
+    "First Year": "https://igitsarang.ac.in/assets/documents/sylabus/2019_detailed_first_year_b_tech_syllabus_1571208898.pdf",
+    "Second Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_civil_2nd_year_1624712693.pdf",
+    "Third Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_civil_3rd_year_1624712737.pdf",
+    "Fourth Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_civil_4th_year_1624712782.pdf"
+  },
+  "Chemical Eng": {
+    "First Year": "https://igitsarang.ac.in/assets/documents/sylabus/2019_detailed_first_year_b_tech_syllabus_1571208898.pdf",
+    "Second Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_chemical_2nd_year_1624712517.pdf",
+    "Third Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_chemical_3rd_year_1624712601.pdf",
+    "Fourth Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_chemical_4th_year_1624712640.pdf"
+  },
+  "Metallurgical Eng": {
+    "First Year": "https://igitsarang.ac.in/assets/documents/sylabus/2019_detailed_first_year_b_tech_syllabus_1571208898.pdf",
+    "Second Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_mme_2nd_year_1624713452.pdf",
+    "Third Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_mme_3rd_year_1624713760.pdf",
+    "Fourth Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_mme_4th_year_1624713918.pdf"
+  },
+  "Production Eng": {
+    "First Year": "https://igitsarang.ac.in/assets/documents/sylabus/2019_detailed_first_year_b_tech_syllabus_1571208898.pdf",
+    "Second Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_production_2nd_year_1624714013.pdf",
+    "Third Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_production_3rd_year_1624714052.pdf",
+    "Fourth Year": "https://igitsarang.ac.in/assets/documents/sylabus/btech_production_4th_year_1624714106.pdf"
+  }
+}
