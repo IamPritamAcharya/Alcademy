@@ -1,6 +1,6 @@
 # Alcademy
 
-### 1500+ Active Users
+### 1000+ Active Users
 
 [![Alcademy Demo Video GIF](https://i.imgur.com/v5Jc9xJ.gif)](https://www.youtube.com/watch?v=0wLjJ-lTiVA)
 
