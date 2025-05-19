@@ -29,6 +29,49 @@
             {
               "client_id": "722495505334-ds3io1h6d0eusu87gc726dncjq1p1nqt.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "722495505334-4cn8tkhq0g4jvho0cv0clvnm1bpn9t7m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wind"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722495505334:android:df860bff6d4df8db56f717",
+        "android_client_info": {
+          "package_name": "com.example.wind"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722495505334-m9rbec4ncl2rb26skkp1cviq2d8duh4e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg9dXyBQ1m4DKzOOO7WLK8Kwu8vPzFxgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "722495505334-ds3io1h6d0eusu87gc726dncjq1p1nqt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "722495505334-4cn8tkhq0g4jvho0cv0clvnm1bpn9t7m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wind"
+              }
             }
           ]
         }

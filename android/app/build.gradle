@@ -32,8 +32,12 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+
+    }
+    kotlinOptions {
+        jvmTarget = '17'
     }
 
     defaultConfig {
@@ -41,7 +45,7 @@ android {
         applicationId = "com.example.port"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdk 35
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
@@ -59,6 +63,7 @@ android {
         }
     }
 }
+
 
 flutter {
     source = "../.."

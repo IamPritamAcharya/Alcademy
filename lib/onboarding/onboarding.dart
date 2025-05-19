@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:port/onboarding/loginpage.dart';
 import 'welcome_page.dart';
@@ -26,7 +27,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     await prefs.setBool('onboarding_complete', true);
 
     // Navigate to the home page
-    Navigator.pushReplacementNamed(context, '/home');
+    context.go('/home'); // Changed from pushReplacementNamed to go
   }
 
   @override

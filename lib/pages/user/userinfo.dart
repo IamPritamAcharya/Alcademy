@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:port/onboarding/user_data.dart';
 import 'package:port/pages/user/NavigationTile.dart';
+import 'package:port/pages/user/access.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'google_auth_widget.dart';
 import 'profile_card.dart';
 
@@ -21,10 +25,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
   String? branch;
   File? profileImage;
   late Future<void> _refreshFuture;
+  bool canUpload = false;
 
   @override
   void initState() {
     super.initState();
+    checkUserAccess();
     _refreshFuture = loadData();
   }
 
@@ -333,33 +339,34 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 child: ListView(
                   children: [
                     NavigationTile(
-                      icon: Icons.pin_end_outlined,
+                      icon: LineIcons.mapPin,
                       title: "Pin Page",
                       onTap: () {
-                        Navigator.pushNamed(context, '/pin');
+                        context.push('/pin');
                       },
                     ),
                     NavigationTile(
-                      icon: Icons.book,
-                      title: "Notes Selector",
-                      onTap: () {
-                        Navigator.pushNamed(context, '/year');
-                      },
-                    ),
-                    NavigationTile(
-                      icon: Icons.key,
+                      icon: LineIcons.key,
                       title: "API Key",
                       onTap: () {
-                        Navigator.pushNamed(context, '/api');
+                        context.push('/api');
                       },
                     ),
                     NavigationTile(
-                      icon: Icons.info_outline,
+                      icon: LineIcons.infoCircle,
                       title: "About",
                       onTap: () {
-                        Navigator.pushNamed(context, '/about');
+                        context.push('/about');
                       },
                     ),
+                    if (canUpload)
+                      NavigationTile(
+                        icon: LineIcons.upload,
+                        title: "Upload",
+                        onTap: () {
+                          context.push('/upload');
+                        },
+                      ),
                   ],
                 ),
               ),
@@ -368,5 +375,16 @@ class _UserProfilePageState extends State<UserProfilePage> {
         },
       ),
     );
+  }
+
+  Future<void> checkUserAccess() async {
+    final supabase = Supabase.instance.client;
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    List<UserAccess> allowedUsers = await fetchAllowedUsers();
+    setState(() {
+      canUpload = allowedUsers.any((u) => u.userId == user.id);
+    });
   }
 }

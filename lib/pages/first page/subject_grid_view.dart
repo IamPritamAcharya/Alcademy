@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'subject_model.dart';
 
 class SubjectGridView extends StatelessWidget {
@@ -31,13 +32,13 @@ class SubjectGridView extends StatelessWidget {
     }
 
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       sliver: SliverGrid(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 16,
-          mainAxisSpacing: 0,
-          childAspectRatio: 1.1,
+          mainAxisSpacing: 16,
+          childAspectRatio: 1,
         ),
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -64,11 +65,13 @@ class SubjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final initials = _getSubjectInitials(subject.name);
+
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      padding: const EdgeInsets.all(8),
+      width: 140,
+      height: 140,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(30),
         color: Colors.white.withOpacity(0.05),
         boxShadow: [
           BoxShadow(
@@ -81,31 +84,62 @@ class SubjectCard extends StatelessWidget {
           color: Colors.white.withOpacity(0.1),
         ),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.book_rounded, // Default subject icon
-              color: Colors.white,
-              size: 32,
+      child: Stack(
+        children: [
+          // 📖 Main Content (Initials & Subject Name)
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // 🔹 Glassy Initials Bubble
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white.withOpacity(0.1),
+                    border: Border.all(color: Colors.white.withOpacity(0.2)),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    initials,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // 📌 Subject Name (Modern Font)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: AutoSizeText(
+                    subject.name,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontFamily: 'ProductSans',
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              subject.name,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontFamily: 'ProductSans',
-                color: Colors.white,
-                fontSize: 16,
-                letterSpacing: 1.4,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+  }
+
+  String _getSubjectInitials(String name) {
+    final words = name.trim().split(' ');
+    if (words.length == 1) return words[0].substring(0, 1).toUpperCase();
+    return (words[0][0] + words[1][0]).toUpperCase();
   }
 }

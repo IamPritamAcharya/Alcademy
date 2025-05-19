@@ -41,7 +41,6 @@ class DefaultFirebaseOptions {
       appId: "1:722495505334:web:f4614b2d2c69c64356f717",
       measurementId: "G-XJ82NNLMLV");
 
-  // Firebase configuration for Android
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBg9dXyBQ1m4DKzOOO7WLK8Kwu8vPzFxgc',
     appId: '1:722495505334:android:070b8aff8a009b5756f717',
@@ -49,6 +48,8 @@ class DefaultFirebaseOptions {
     projectId: 'igit-aca-f8d86',
     storageBucket: 'igit-aca-f8d86.firebasestorage.app',
   );
+
+  // Firebase configuration for Android
 
   // Firebase configuration for Windows
   static const FirebaseOptions windows = FirebaseOptions(
