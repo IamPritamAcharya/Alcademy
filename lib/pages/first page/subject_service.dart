@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 import 'subject_model.dart';
 
 class SubjectService {
-  String _url; // Private mutable field for the URL
+  String _url; 
 
   SubjectService(String initialUrl) : _url = initialUrl;
 
-  // Setter to update the URL dynamically
+  
   set url(String newUrl) {
     _url = newUrl;
   }
@@ -23,7 +23,7 @@ class SubjectService {
     }
   }
 
-  // Method with cache busting
+
   Future<List<Subject>> fetchSubjectsWithCacheBust() async {
     final cacheBustedUrl = '$_url?timestamp=${DateTime.now().millisecondsSinceEpoch}';
     final response = await http.get(Uri.parse(cacheBustedUrl));

@@ -22,12 +22,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Future<void> _onNextPressed() async {
-    // Save the onboarding completion status
+
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_complete', true);
 
-    // Navigate to the home page
-    context.go('/home'); // Changed from pushReplacementNamed to go
+
+    context.go('/home'); 
   }
 
   @override
@@ -36,7 +36,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          // Background Animation
+  
           AnimatedContainer(
             duration: Duration(milliseconds: 600),
             decoration: BoxDecoration(
@@ -47,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
           ),
-          // Onboarding Pages
+         
           PageView(
             controller: _pageController,
             onPageChanged: _onPageChanged,
@@ -68,8 +68,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ],
           ),
 
-          // Dots Indicator
-          if (_currentPage < 3) // Hide dots on the login page
+      
+          if (_currentPage < 3) 
             Positioned(
               bottom: 50,
               left: 0,

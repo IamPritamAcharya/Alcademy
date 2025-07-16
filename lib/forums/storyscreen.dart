@@ -57,7 +57,7 @@ class _StoryScreenState extends State<StoryScreen> {
   void _initializeYouTubePlayer(String url) {
     final videoId = YoutubePlayer.convertUrlToId(url);
     if (videoId != null) {
-      // Dispose any previous controller safely before creating a new one
+
       _youtubeController?.dispose();
 
       _youtubeController = YoutubePlayerController(
@@ -72,7 +72,7 @@ class _StoryScreenState extends State<StoryScreen> {
         ),
       );
 
-      // Add listener to detect when video ends
+    
       _youtubeController!.addListener(_youtubePlayerListener);
       _startYouTubeProgress();
     }
@@ -163,7 +163,7 @@ class _StoryScreenState extends State<StoryScreen> {
       );
       _loadStory();
     } else {
-      Navigator.pop(context); // Exit story view when all stories are done.
+      Navigator.pop(context); 
     }
   }
 

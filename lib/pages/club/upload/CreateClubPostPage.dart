@@ -6,13 +6,11 @@ import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// Initialize Supabase
+
 final supabase = Supabase.instance.client;
 
-// Imgur Client ID (Replace if needed)
 const String imgurClientId = "bc914a8e52af6ef";
 
-// Constants for shared preferences keys
 const String PREFIX_BANNER_CHANGES = "banner_changes_";
 const String PREFIX_LOGO_CHANGES = "logo_changes_";
 const int MAX_CHANGES_PER_DAY = 3;
@@ -39,7 +37,6 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
     _loadUserClubData();
   }
 
-  // Load club data for the current user
   Future<void> _loadUserClubData() async {
     setState(() {
       isClubDataLoading = true;
@@ -57,7 +54,7 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
     String? allowedClubId = await fetchUserClubId(userId);
 
     if (allowedClubId != null) {
-      // Fetch club data from Supabase
+      
       final response = await supabase
           .from('clubs')
           .select('id, name, banner_url, logo_url')
@@ -84,13 +81,13 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
     }
   }
 
-  // Function to pick multiple images for posts
+  
   Future<void> pickImages() async {
     final pickedFiles = await ImagePicker().pickMultiImage();
 
     if (pickedFiles.isNotEmpty) {
       if (pickedFiles.length > 6) {
-        // Show alert if more than 6 images are selected
+        
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("You can only select up to 6 images!")),
         );
@@ -102,7 +99,6 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
     }
   }
 
-  // Function to pick a single image (for logo or banner)
   Future<File?> pickSingleImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -113,7 +109,7 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
     return null;
   }
 
-  // Function to check if user has reached rate limit for changing logo or banner
+
   Future<bool> canChangeImage(String type) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final user = supabase.auth.currentUser;
@@ -124,18 +120,17 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
         type == 'banner' ? PREFIX_BANNER_CHANGES : PREFIX_LOGO_CHANGES;
     String key = prefix + userId;
 
-    // Get today's date in yyyyMMdd format
     String today =
         DateTime.now().toString().substring(0, 10).replaceAll('-', '');
     String prefKey = key + "_" + today;
 
-    // Get the number of changes made today
+    
     int changes = prefs.getInt(prefKey) ?? 0;
 
     return changes < MAX_CHANGES_PER_DAY;
   }
 
-  // Function to increment the count of changes
+  
   Future<void> incrementChangeCount(String type) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final user = supabase.auth.currentUser;
@@ -146,17 +141,15 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
         type == 'banner' ? PREFIX_BANNER_CHANGES : PREFIX_LOGO_CHANGES;
     String key = prefix + userId;
 
-    // Get today's date in yyyyMMdd format
     String today =
         DateTime.now().toString().substring(0, 10).replaceAll('-', '');
     String prefKey = key + "_" + today;
 
-    // Get current count and increment it
+    
     int changes = prefs.getInt(prefKey) ?? 0;
     await prefs.setInt(prefKey, changes + 1);
   }
 
-  // Function to upload an image to Imgur and get URL
   Future<String?> uploadImageToImgur(File image) async {
     final uri = Uri.parse("https://api.imgur.com/3/upload");
     var request = http.MultipartRequest('POST', uri)
@@ -173,7 +166,6 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
     }
   }
 
-  // Function to upload multiple images to Imgur and get URLs (for posts)
   Future<List<String>> uploadImagesToImgur() async {
     List<String> imageUrls = [];
 
@@ -187,7 +179,6 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
     return imageUrls;
   }
 
-  // Function to change club banner
   Future<void> changeClubBanner() async {
     if (_clubId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -229,13 +220,11 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
       return;
     }
 
-    // Update the banner URL in the database - Fixed to properly handle response
     try {
       await supabase
           .from('clubs')
           .update({'banner_url': imageUrl}).eq('id', _clubId!);
 
-      // If no error is thrown, the update was successful
       await incrementChangeCount('banner');
       setState(() {
         _bannerUrl = imageUrl;
@@ -256,7 +245,6 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
     }
   }
 
-// Function to change club logo - Fixed version
   Future<void> changeClubLogo() async {
     if (_clubId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -298,13 +286,13 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
       return;
     }
 
-    // Update the logo URL in the database - Fixed to properly handle response
+   
     try {
       await supabase
           .from('clubs')
           .update({'logo_url': imageUrl}).eq('id', _clubId!);
 
-      // If no error is thrown, the update was successful
+    
       await incrementChangeCount('logo');
       setState(() {
         _logoUrl = imageUrl;
@@ -325,7 +313,7 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
     }
   }
 
-  // Fetch allowed club ID from GitHub API
+
   Future<String?> fetchUserClubId(String userId) async {
     final response = await http.get(Uri.parse(
         'https://raw.githubusercontent.com/Academia-IGIT/DATA_hub/main/allowed.json'));
@@ -335,14 +323,13 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
 
       for (var entry in jsonData) {
         if (entry['user_id'] == userId) {
-          return entry['club_id']; // Return the allowed club ID
+          return entry['club_id'];
         }
       }
     }
-    return null; // User not found or unauthorized
+    return null; 
   }
 
-  // Function to create a club post (existing functionality)
   Future<void> createPost() async {
     if (titleController.text.isEmpty || _images.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -355,7 +342,6 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
       isLoading = true;
     });
 
-    // Get logged-in user ID
     final user = supabase.auth.currentUser;
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -369,7 +355,6 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
 
     String userId = user.id;
 
-    // Fetch user's allowed club ID if not already loaded
     if (_clubId == null) {
       _clubId = await fetchUserClubId(userId);
       if (_clubId == null) {
@@ -383,7 +368,6 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
       }
     }
 
-    // Upload images to Imgur
     List<String> imageUrls = await uploadImagesToImgur();
     if (imageUrls.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -395,7 +379,6 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
       return;
     }
 
-    // Insert post into Supabase for the assigned club only
     final response = await supabase.from('club_posts').insert({
       'club_id': _clubId,
       'user_id': userId,
@@ -479,7 +462,7 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (_clubId != null)
-                          // Club Management Section
+                      
                           Card(
                             color: Colors.white.withOpacity(0.1),
                             shape: RoundedRectangleBorder(
@@ -504,7 +487,7 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
                                   SizedBox(height: 16),
                                   Row(
                                     children: [
-                                      // Club Logo
+                    
                                       Column(
                                         children: [
                                           Container(

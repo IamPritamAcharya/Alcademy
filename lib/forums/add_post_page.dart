@@ -6,15 +6,13 @@ import 'package:port/config.dart';
 import 'package:port/forums/post.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:port/forums/database_service.dart';
-import 'package:port/forums/post_detail_page.dart'; // Import PostDetailPage
+import 'package:port/forums/post_detail_page.dart'; 
 
 final supabase = Supabase.instance.client;
 
-// Configurable limits
 const int titleLimit = 30;
 const int descriptionLimit = 2500;
 
-// Default image URLs with names
 const Map<String, String> defaultImageUrls = {
   'Default Image 1':
       'https://scontent.fbbi1-2.fna.fbcdn.net/v/t39.30808-6/301840587_175347228358991_4015115807765160420_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=xoXWQjbwAN4Q7kNvgH4bHHq&_nc_zt=23&_nc_ht=scontent.fbbi1-2.fna&_nc_gid=AJWjPrh9DZFNgIo6sM4hM21&oh=00_AYBnWdhEkMN_8RVeHzTy-Rod4uh-4sC3AGAUJgE1NmK2QA&oe=6787FFB6',
@@ -36,7 +34,7 @@ class _AddPostPageState extends State<AddPostPage> {
   final _titleController = TextEditingController();
   final _imageUrlController = TextEditingController();
   final _descriptionController = TextEditingController();
-  bool _isViewing = false; // Tab state
+  bool _isViewing = false;
   String? _errorMessage;
 
   Future<bool> _isValidImageUrl(String url) async {
@@ -62,7 +60,6 @@ class _AddPostPageState extends State<AddPostPage> {
       final title = _titleController.text.trim();
       final imageUrl = _imageUrlController.text.trim();
 
-      // Validate image URL
       final isImageValid = await _isValidImageUrl(imageUrl);
       if (!isImageValid) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -73,7 +70,6 @@ class _AddPostPageState extends State<AddPostPage> {
         return;
       }
 
-      // Check if the user is banned
       final user = supabase.auth.currentUser;
       if (user != null && bannedEmails.contains(user.email)) {
         setState(() {
@@ -82,7 +78,6 @@ class _AddPostPageState extends State<AddPostPage> {
         return;
       }
 
-      // Check for banned words
       if (_containsBannedWords(title) || _containsBannedWords(description)) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -92,7 +87,6 @@ class _AddPostPageState extends State<AddPostPage> {
         return;
       }
 
-      // Check for description length
       if (description.length < 30) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -168,7 +162,7 @@ class _AddPostPageState extends State<AddPostPage> {
       ),
       body: Column(
         children: [
-          // Top Tabs
+        
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
             decoration: BoxDecoration(
@@ -320,7 +314,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         maxHeight: 200,
                         width: 150,
                         offset: const Offset(
-                            -90, -3), // Shift dropdown 50px to the left
+                            -90, -3),
                         decoration: BoxDecoration(
                           color: const Color(0xFF2A2E30).withOpacity(0.8),
                           borderRadius: BorderRadius.circular(15),

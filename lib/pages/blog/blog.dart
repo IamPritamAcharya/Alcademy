@@ -15,15 +15,15 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
       'https://api.github.com/repos/Academia-IGIT/DATA_hub/contents/Blog';
 
   static List<Map<String, String>>?
-      cachedFiles; // Static variable for caching files
+      cachedFiles;
   static Map<String, String> cachedContent =
-      {}; // Static map for caching file content
+      {}; 
   late Future<List<Map<String, String>>> markdownFilesFuture;
 
   @override
   void initState() {
     super.initState();
-    markdownFilesFuture = _fetchMarkdownFiles(); // Initialize the future
+    markdownFilesFuture = _fetchMarkdownFiles(); 
   }
 
   Future<List<Map<String, String>>> _fetchMarkdownFiles(
@@ -37,7 +37,7 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
     if (response.statusCode == 200) {
       List<dynamic> files = json.decode(response.body);
 
-      // Filter and map Markdown files
+   
       cachedFiles = files
           .where((file) => file['name'].toString().endsWith('.md'))
           .map((file) => {
@@ -46,10 +46,9 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
               })
           .toList();
 
-      // Preload content for all files
       for (var file in cachedFiles!) {
         await _fetchMarkdownContent(
-            file['download_url']!); // Cache the content for each file
+            file['download_url']!); 
       }
 
       return cachedFiles!;
@@ -75,24 +74,23 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
   Future<void> _handleRefresh() async {
     bool isRefreshAllowed = await RefreshTracker.incrementRefreshCount();
     if (!isRefreshAllowed) {
-      // Show cooldown snack bar
+ 
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar.build(
           isCooldown: true,
           context: context,
-        ) as SnackBar,
+        ),
       );
       return;
     }
 
-    // Force refresh the files and their content
     setState(() {
-      cachedFiles = null; // Clear cached files
-      cachedContent.clear(); // Clear cached content
+      cachedFiles = null; 
+      cachedContent.clear(); 
       markdownFilesFuture =
-          _fetchMarkdownFiles(forceRefresh: true); // Force refresh
+          _fetchMarkdownFiles(forceRefresh: true);
     });
-    await markdownFilesFuture; // Await completion
+    await markdownFilesFuture; 
   }
 
   @override
@@ -177,7 +175,7 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
                         size: 36,
                       ),
                       title: Text(
-                        file['name']!.replaceAll('.md', ''), // Remove .md
+                        file['name']!.replaceAll('.md', ''), 
                         style: const TextStyle(
                           fontFamily: 'ProductSans',
                           fontSize: 16,

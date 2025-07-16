@@ -20,7 +20,7 @@ class StoriesWidget extends StatelessWidget {
                 padding: EdgeInsets.only(
                   left: index == 0
                       ? 16.0
-                      : 8.0, // Extra padding for the first item
+                      : 8.0,
                   right: 8.0,
                 ),
                 child: GestureDetector(
@@ -73,22 +73,21 @@ class YouTubeThumbnail extends StatelessWidget {
 
   const YouTubeThumbnail({Key? key, required this.url}) : super(key: key);
 
-  /// Extracts the YouTube video ID from the given URL, including `shorts` URLs.
+ 
   String _extractYouTubeId(String url) {
     final Uri? uri = Uri.tryParse(url);
     if (uri == null) return '';
 
-    // Handle standard YouTube URLs
+   
     if (uri.host.contains('youtube.com')) {
       if (uri.path.startsWith('/shorts/')) {
-        // Extract video ID from shorts URL
+        
         return uri.pathSegments.length > 1 ? uri.pathSegments[1] : '';
       }
-      // Extract video ID from standard YouTube video URL
+      
       return uri.queryParameters['v'] ?? '';
     }
 
-    // Handle youtu.be URLs
     if (uri.host.contains('youtu.be')) {
       return uri.pathSegments.isNotEmpty ? uri.pathSegments.first : '';
     }
@@ -103,7 +102,7 @@ class YouTubeThumbnail extends StatelessWidget {
       return const Icon(Icons.error, color: Colors.red);
     }
     final thumbnailUrl =
-        'https://img.youtube.com/vi/$videoId/0.jpg'; // Fetch the thumbnail
+        'https://img.youtube.com/vi/$videoId/0.jpg';
 
     return Image.network(
       thumbnailUrl,

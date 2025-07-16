@@ -6,7 +6,7 @@ double calculateSGPA(Map<String, String> grades, List<Map<String, dynamic>> subj
   grades.forEach((subject, grade) {
     int gradePoint = gradePoints[grade] ?? 0;
 
-    // Find the corresponding subject credit
+    
     int credit = subjects.firstWhere((item) => item['subject'] == subject)['credit'];
     totalCredits += credit;
     totalCreditPoints += gradePoint * credit;

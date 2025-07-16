@@ -47,7 +47,7 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
   }
 
   final String _tutorialUrl =
-      "https://makersuite.google.com/app/apikey"; // Placeholder
+      "https://makersuite.google.com/app/apikey"; 
   final String _video = "https://youtube.com/shorts/lZSy6loxF0M";
 
   Future<void> _launchURL(String url) async {

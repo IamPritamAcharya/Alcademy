@@ -54,12 +54,12 @@ class _PieChartSectionState extends State<PieChartSection>
       child: Container(
         decoration: BoxDecoration(
           color: const Color.fromARGB(
-              255, 31, 34, 35), // Match BarChart's background
-          borderRadius: BorderRadius.circular(16), // Rounded corners
+              255, 31, 34, 35), 
+          borderRadius: BorderRadius.circular(16), 
         ),
         padding: const EdgeInsets.all(16.0),
         child: SizedBox(
-          height: 300, // Match the height with BarChart
+          height: 300, 
           child: AnimatedBuilder(
             animation: _animation,
             builder: (context, child) {

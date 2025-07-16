@@ -4,7 +4,7 @@ class Post {
   final String imageUrl;
   final String description;
   final String userId;
-  final String email; // Add this field
+  final String email; 
   final DateTime createdAt;
 
   Post({
@@ -13,7 +13,7 @@ class Post {
     required this.imageUrl,
     required this.description,
     required this.userId,
-    required this.email, // Initialize it
+    required this.email, 
     required this.createdAt,
   });
 
@@ -24,7 +24,7 @@ class Post {
       imageUrl: map['image_url'] as String,
       description: map['description'] as String,
       userId: map['user_id'] as String,
-      email: map['email'] as String, // Map it
+      email: map['email'] as String, 
       createdAt: DateTime.parse(map['created_at'] as String),
     );
   }
@@ -36,7 +36,7 @@ class Post {
       'image_url': imageUrl,
       'description': description,
       'user_id': userId,
-      'email': email, // Include it
+      'email': email, 
       'created_at': createdAt.toIso8601String(),
     };
   }

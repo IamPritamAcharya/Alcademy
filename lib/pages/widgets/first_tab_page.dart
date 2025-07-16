@@ -9,7 +9,7 @@ class FirstTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1D1E), // Dark background
+      backgroundColor: const Color(0xFF1A1D1E), 
       appBar: AppBar(
         title: Text(
           name_1st_tab,
@@ -39,101 +39,101 @@ class FirstTabPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16), // Top padding
+              const SizedBox(height: 16), 
               MarkdownBody(
                 data: markdownContent_1st_tab,
                 styleSheet: MarkdownStyleSheet(
-                  // General Paragraph Text
+                  
                   p: const TextStyle(
-                    color: Color(0xFFFAFAFA), // Soft white for readability
+                    color: Color(0xFFFAFAFA), 
                     fontSize: 16,
                     height: 1.5,
                   ),
-                  // Headings
+                  
                   h1: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFFE57373), // Light red
+                    color: Color(0xFFE57373), 
                   ),
                   h2: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF64B5F6), // Light blue
+                    color: Color(0xFF64B5F6), 
                   ),
                   h3: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF81C784), // Light green
+                    color: Color(0xFF81C784), 
                   ),
                   h4: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFFFFD54F), // Light yellow
+                    color: Color(0xFFFFD54F), 
                   ),
                   h5: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF4FC3F7), // Light cyan
+                    color: Color(0xFF4FC3F7), 
                   ),
                   h6: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF9575CD), // Light purple
+                    color: Color(0xFF9575CD), 
                   ),
-                  // Blockquote
+                  
                   blockquote: const TextStyle(
-                    color: Color(0xFFFFCC80), // Light orange for blockquotes
+                    color: Color(0xFFFFCC80), 
                     fontStyle: FontStyle.italic,
                     fontSize: 16,
                   ),
                   blockquotePadding: const EdgeInsets.all(16),
                   blockquoteDecoration: BoxDecoration(
                     color: const Color(
-                        0xFF2E2E2E), // Slightly lighter dark background
+                        0xFF2E2E2E), 
                     border: Border(
                       left: BorderSide(
-                        color: Color(0xFFFFCC80), // Matching blockquote border
+                        color: Color(0xFFFFCC80), 
                         width: 4,
                       ),
                     ),
                   ),
-                  // Links
+                  
                   a: const TextStyle(
-                    color: Color(0xFF64B5F6), // Light blue
+                    color: Color(0xFF64B5F6), 
                     decoration: TextDecoration.underline,
                   ),
-                  // Bullet Points
+                  
                   listBullet: const TextStyle(
-                    color: Color(0xFF4FC3F7), // Cyan bullets
+                    color: Color(0xFF4FC3F7), 
                     fontSize: 16,
                   ),
-                  // Code Block
+                  
                   codeblockPadding: const EdgeInsets.all(16),
                   codeblockDecoration: BoxDecoration(
-                    color: const Color(0xFF263238), // Dark gray for code blocks
+                    color: const Color(0xFF263238), 
                     borderRadius: BorderRadius.circular(4),
                   ),
                   code: const TextStyle(
-                    color: Color(0xFFFFF176), // Bright yellow for inline code
+                    color: Color(0xFFFFF176), 
                     fontFamily: 'Courier',
                     fontSize: 14,
                   ),
-                  // Table Header
+                  
                   tableHead: const TextStyle(
-                    color: Color(0xFF64B5F6), // Light blue headers
+                    color: Color(0xFF64B5F6), 
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
-                  // Table Body
+                  
                   tableBody: const TextStyle(
-                    color: Color(0xFFFAFAFA), // Light text for table body
+                    color: Color(0xFFFAFAFA), 
                     fontSize: 14,
                   ),
                   tableCellsDecoration: BoxDecoration(
-                    color: const Color(0xFF2C2F33), // Dark table cells
+                    color: const Color(0xFF2C2F33), 
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(
-                      color: const Color(0xFF757575), // Subtle border color
+                      color: const Color(0xFF757575), 
                     ),
                   ),
                 ),
@@ -143,7 +143,7 @@ class FirstTabPage extends StatelessWidget {
                   }
                 },
               ),
-              const SizedBox(height: 24), // Bottom padding
+              const SizedBox(height: 24), 
             ],
           ),
         ),

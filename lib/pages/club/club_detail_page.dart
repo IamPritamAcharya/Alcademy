@@ -89,7 +89,7 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
         slivers: [
           SliverAppBar(
             pinned: true,
-            expandedHeight: 260, // Increased height to fit content
+            expandedHeight: 260, 
             floating: false,
             backgroundColor: const Color(0xFF1A1D1E),
             bottom: const PreferredSize(

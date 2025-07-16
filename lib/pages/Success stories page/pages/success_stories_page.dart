@@ -11,13 +11,13 @@ class SuccessStoriesPage extends StatefulWidget {
 
 class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
   static List<Map<String, String>>?
-      cachedStories; // Static variable for caching
+      cachedStories; 
   late Future<List<Map<String, String>>> storiesFuture;
 
   @override
   void initState() {
     super.initState();
-    storiesFuture = _fetchStories(); // Initialize the future
+    storiesFuture = _fetchStories(); 
   }
 
   Future<List<Map<String, String>>> _fetchStories(
@@ -32,7 +32,7 @@ class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
   Future<void> _handleRefresh() async {
   bool isRefreshAllowed = await RefreshTracker.incrementRefreshCount();
   if (!isRefreshAllowed) {
-      // Show cooldown snack bar
+      
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar.build(
           isCooldown: true,
@@ -42,11 +42,11 @@ class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
       return;
     }
 
-    // Proceed with refreshing
+    
     setState(() {
-      storiesFuture = _fetchStories(forceRefresh: true); // Force refresh
+      storiesFuture = _fetchStories(forceRefresh: true); 
     });
-    await storiesFuture; // Await completion before further actions
+    await storiesFuture; 
   }
 
   @override
@@ -116,7 +116,7 @@ class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
                     final name = story['name'];
                     final body = story['body'];
 
-                    // Debugging
+                    
                     if (name == null || body == null) {
                       print(
                           'Error: Missing story details. Name: $name, Body: $body');
@@ -125,7 +125,7 @@ class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
                           content: Text('Failed to load story details.'),
                         ),
                       );
-                      return; // Stop navigation if data is incomplete
+                      return; 
                     }
 
                     Navigator.push(

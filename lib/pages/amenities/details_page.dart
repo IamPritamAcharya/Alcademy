@@ -180,7 +180,7 @@ class _DetailsPageState extends State<DetailsPage> {
               color: const Color(0xFF1A1D1E),
               child: Align(
                 alignment:
-                    Alignment.centerLeft, // Ensure text alignment to left
+                    Alignment.centerLeft, 
                 child: MarkdownBody(
                   data:
                       widget.item['description'] ?? 'No description available.',

@@ -7,7 +7,6 @@ class DataFetchService {
   static const String rawBaseUrl =
       'https://raw.githubusercontent.com/Academia-IGIT/DATA_hub/main/Success%20stories';
 
-  // Fetch list of .md files and their content
   static Future<List<Map<String, String>>> fetchStories() async {
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -48,7 +47,6 @@ class DataFetchService {
     }
   }
 
-  // Fetch individual file content
   static Future<Map<String, String>?> _fetchFileContent(String filename) async {
     try {
       final url = '$rawBaseUrl/$filename';
@@ -89,7 +87,6 @@ class DataFetchService {
     return null;
   }
 
-  // Parse YAML metadata into a map
   static Map<String, String> _parseYamlToMap(String yaml) {
     final Map<String, String> map = {};
     final lines = yaml.split('\n');

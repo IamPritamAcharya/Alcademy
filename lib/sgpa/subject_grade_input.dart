@@ -74,7 +74,7 @@ class _SubjectGradeInputState extends State<SubjectGradeInput> {
             Expanded(
               child: ListView(
                 children: [
-                  const SizedBox(height: 10), // Top spacer
+                  const SizedBox(height: 10), 
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Column(
@@ -121,21 +121,21 @@ class _SubjectGradeInputState extends State<SubjectGradeInput> {
                               const SizedBox(width: 16),
                               SizedBox(
                                 width:
-                                    100, // Reduce the width to make the dropdown smaller
+                                    100, 
                                 child: DropdownButtonFormField2<String>(
                                   value: selectedGrades[subject],
                                   isExpanded:
-                                      false, // Ensure dropdown doesn't stretch unnecessarily
+                                      false, 
                                   dropdownStyleData: DropdownStyleData(
                                     decoration: BoxDecoration(
                                       color: const Color(0xFF1A1D1E),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
-// Set a max height for dropdown
+
                                   ),
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.all(
-                                        0), // Remove padding for better alignment
+                                        0), 
                                     filled: true,
                                     fillColor: Colors.grey[850],
                                     enabledBorder: OutlineInputBorder(
@@ -150,7 +150,7 @@ class _SubjectGradeInputState extends State<SubjectGradeInput> {
                                     ),
                                   ),
                                   alignment: Alignment
-                                      .center, // Center-align text in the box
+                                      .center, 
                                   hint: const Align(
                                     alignment: Alignment.center,
                                     child: Text(
@@ -159,7 +159,7 @@ class _SubjectGradeInputState extends State<SubjectGradeInput> {
                                         color: Colors.white54,
                                         fontFamily: 'ProductSans',
                                         fontSize:
-                                            14, // Adjust font size to fit smaller width
+                                            14, 
                                       ),
                                     ),
                                   ),
@@ -167,14 +167,14 @@ class _SubjectGradeInputState extends State<SubjectGradeInput> {
                                     return DropdownMenuItem(
                                       value: grade,
                                       alignment: Alignment
-                                          .center, // Center-align dropdown items
+                                          .center, 
                                       child: Text(
                                         grade,
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'ProductSans',
                                           fontSize:
-                                              14, // Ensure consistent font size
+                                              14, 
                                         ),
                                       ),
                                     );
@@ -192,7 +192,7 @@ class _SubjectGradeInputState extends State<SubjectGradeInput> {
                       }).toList(),
                     ),
                   ),
-                  const SizedBox(height: 80), // Bottom spacer
+                  const SizedBox(height: 80), 
                 ],
               ),
             ),
@@ -215,7 +215,7 @@ class _SubjectGradeInputState extends State<SubjectGradeInput> {
                       return AlertDialog(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
-                              16), // Rounded corners for a modern look
+                              16), 
                         ),
                         backgroundColor: const Color(0xFF1A1D1E),
                         title: const Text(
@@ -224,20 +224,20 @@ class _SubjectGradeInputState extends State<SubjectGradeInput> {
                             color: Colors.white,
                             fontFamily: 'ProductSans',
                             fontSize:
-                                20, // Slightly larger font for a more modern title
+                                20, 
                             fontWeight:
-                                FontWeight.bold, // Bold title for emphasis
+                                FontWeight.bold, 
                           ),
                           textAlign: TextAlign
-                              .center, // Center the title for better alignment
+                              .center, 
                         ),
                         content: Column(
                           mainAxisSize: MainAxisSize
-                              .min, // Adjust content size to fit naturally
+                              .min, 
                           children: [
                             const SizedBox(
                                 height:
-                                    12), // Add spacing between title and content
+                                    12), 
                             Text(
                               'Your SGPA is:',
                               style: const TextStyle(
@@ -253,32 +253,32 @@ class _SubjectGradeInputState extends State<SubjectGradeInput> {
                                 color: Colors.greenAccent,
                                 fontFamily: 'ProductSans',
                                 fontSize:
-                                    24, // Highlight SGPA value with a larger font size
+                                    24, 
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
                         actionsAlignment: MainAxisAlignment
-                            .center, // Center-align actions for symmetry
+                            .center, 
                         actions: [
                           ElevatedButton(
                             onPressed: () => Navigator.pop(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  Colors.greenAccent, // Modern button color
+                                  Colors.greenAccent, 
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
-                                    12), // Rounded button corners
+                                    12), 
                               ),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
-                                  vertical: 12), // Button padding
+                                  vertical: 12), 
                             ),
                             child: const Text(
                               'OK',
                               style: TextStyle(
-                                color: Colors.black, // Contrast text color
+                                color: Colors.black, 
                                 fontFamily: 'ProductSans',
                                 fontWeight: FontWeight.bold,
                               ),

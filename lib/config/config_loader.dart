@@ -1,19 +1,18 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:port/config.dart'; // Import the global config variables
+import 'package:port/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigService {
   static const String settingsUrl =
       'https://raw.githubusercontent.com/IamPritamAcharya/DATA_hub/main/settings.json';
   static const String fetchTime =
-      '00:00'; // Time to fetch the configuration (24-hour format)
+      '00:00'; 
 
-  // Fetch and update the configuration data
+
   static Future<void> fetchAndUpdateConfig() async {
     final prefs = await SharedPreferences.getInstance();
 
-    // Get the last fetch date
     String? lastFetchDate = prefs.getString('lastFetchDate');
     DateTime now = DateTime.now();
     DateTime todayFetchTime = DateTime(
@@ -24,7 +23,6 @@ class ConfigService {
       int.parse(fetchTime.split(':')[1]),
     );
 
-    // Check if fetching is required
     if (lastFetchDate != null &&
         DateTime.parse(lastFetchDate).isAfter(todayFetchTime)) {
       print("Using cached configuration.");
@@ -32,10 +30,9 @@ class ConfigService {
       return;
     }
 
-    // Fetch from GitHub and update if needed
     try {
       final response = await http.get(Uri.parse(settingsUrl)).timeout(
-        Duration(seconds: 10), // Set a timeout for the HTTP request
+        Duration(seconds: 10), 
         onTimeout: () {
           print("Request to $settingsUrl timed out");
           throw Exception("Request timeout");
@@ -45,30 +42,25 @@ class ConfigService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> configData = jsonDecode(response.body);
 
-        // Debugging: Log the raw data to understand its structure
         print("Fetched Config Data: $configData");
 
-        // Update the global variables with the fetched config data
         _updateGlobalVariables(configData);
 
-        // Save the updated configuration locally
         _saveToSharedPreferences(prefs);
 
-        // Update the last fetch date
         await prefs.setString('lastFetchDate', now.toIso8601String());
 
         print("Configuration fetched, updated, and cached.");
       } else {
         print("Failed to fetch configuration: ${response.statusCode}");
-        _loadFromSharedPreferences(prefs); // Fallback to cache
+        _loadFromSharedPreferences(prefs); 
       }
     } catch (e) {
       print("Error fetching configuration: $e");
-      _loadFromSharedPreferences(prefs); // Fallback to cache
+      _loadFromSharedPreferences(prefs); 
     }
   }
 
-  // Load data from SharedPreferences
   static void _loadFromSharedPreferences(SharedPreferences prefs) {
     try {
       String? storyUrlsString = prefs.getString('storyUrls');
@@ -107,7 +99,6 @@ class ConfigService {
     }
   }
 
-  // Update global variables with the fetched config data
   static void _updateGlobalVariables(Map<String, dynamic> configData) {
     try {
       storyUrls = (configData['storyUrls'] as List)
@@ -128,7 +119,6 @@ class ConfigService {
     }
   }
 
-  // Save the updated configuration to SharedPreferences
   static Future<void> _saveToSharedPreferences(SharedPreferences prefs) async {
     try {
       await prefs.setString('storyUrls', jsonEncode(storyUrls));

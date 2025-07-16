@@ -111,7 +111,6 @@ class _ClubPostDetailPageState extends State<ClubPostDetailPage> {
     Share.share('Check out this post: $link');
   }
 
-  // Method to open the full-screen image viewer
   void _openImageViewer(List<String> images, int initialIndex) {
     Navigator.push(
       context,
@@ -156,7 +155,6 @@ class _ClubPostDetailPageState extends State<ClubPostDetailPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// Title
                 Text(
                   post.title,
                   style: const TextStyle(
@@ -166,18 +164,14 @@ class _ClubPostDetailPageState extends State<ClubPostDetailPage> {
                   ),
                 ),
                 const SizedBox(height: 8),
-
-                /// Body Text
                 Text(
                   post.body,
                   style: const TextStyle(fontSize: 16, color: Colors.white70),
                 ),
                 const SizedBox(height: 16),
-
-                /// Image Preview with increased width and tap to view
                 if (post.images.isNotEmpty)
                   SizedBox(
-                    height: 220, // Increased height for larger images
+                    height: 220,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: post.images.length,
@@ -202,8 +196,7 @@ class _ClubPostDetailPageState extends State<ClubPostDetailPage> {
                                 children: [
                                   Image.network(
                                     post.images[index],
-                                    width:
-                                        320, // Increased width for better viewing
+                                    width: 320,
                                     height: 220,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
@@ -231,7 +224,6 @@ class _ClubPostDetailPageState extends State<ClubPostDetailPage> {
                                       );
                                     },
                                   ),
-                                  // Overlay hint to indicate the image is tappable
                                   Positioned(
                                     right: 10,
                                     bottom: 10,
@@ -256,10 +248,7 @@ class _ClubPostDetailPageState extends State<ClubPostDetailPage> {
                       },
                     ),
                   ),
-
                 const SizedBox(height: 16),
-
-                /// Like & Share Row
                 Row(
                   children: [
                     IconButton(
@@ -281,8 +270,6 @@ class _ClubPostDetailPageState extends State<ClubPostDetailPage> {
                   ],
                 ),
                 const Divider(color: Colors.white24),
-
-                /// Add Comment Input
                 Row(
                   children: [
                     Expanded(
@@ -315,8 +302,6 @@ class _ClubPostDetailPageState extends State<ClubPostDetailPage> {
                   ],
                 ),
                 const SizedBox(height: 20),
-
-                /// Comments Section
                 const Text(
                   "Comments",
                   style: TextStyle(
@@ -325,7 +310,6 @@ class _ClubPostDetailPageState extends State<ClubPostDetailPage> {
                       color: Colors.white),
                 ),
                 const SizedBox(height: 10),
-
                 if (_comments.isEmpty)
                   const Text("No comments yet.",
                       style: TextStyle(color: Colors.white54)),

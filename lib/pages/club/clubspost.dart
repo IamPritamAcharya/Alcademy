@@ -26,7 +26,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
   final int _postsPerPage = 10;
   String? _errorMessage;
 
-  // Rate limiting counters
+  
   int _likesRemaining = 20;
   int _commentsRemaining = 10;
   String _currentDate = '';
@@ -46,16 +46,16 @@ class _ClubPostsListState extends State<ClubPostsList> {
     final today = _getTodayKey();
     final prefs = await SharedPreferences.getInstance();
 
-    // Check if we need to reset (new day)
+    
     final lastDate = prefs.getString('last_rate_limit_date') ?? '';
     if (lastDate != today) {
-      // New day - reset counters
+      
       await prefs.setString('last_rate_limit_date', today);
       await prefs.setInt('likes_used_$today', 0);
       await prefs.setInt('comments_used_$today', 0);
     }
 
-    // Load current limits
+    
     _currentDate = today;
     final likesUsed = prefs.getInt('likes_used_$today') ?? 0;
     final commentsUsed = prefs.getInt('comments_used_$today') ?? 0;
@@ -67,7 +67,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
   }
 
   String _getTodayKey() {
-    // Format: 'yyyy-MM-dd'
+    
     return DateFormat('yyyy-MM-dd').format(DateTime.now());
   }
 
@@ -94,7 +94,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
   }
 
   Future<bool> _canPerformAction(String actionType) async {
-    await _initRateLimits(); // Refresh the current limits
+    await _initRateLimits(); 
 
     if (actionType == 'like' && _likesRemaining <= 0) {
       _showRateLimitDialog('likes');
@@ -184,14 +184,14 @@ class _ClubPostsListState extends State<ClubPostsList> {
       _errorMessage = null;
     });
     await _loadMorePosts();
-    await _initRateLimits(); // Refresh rate limits on pull-to-refresh
+    await _initRateLimits(); 
   }
 
   Future<void> _toggleLike(String postId) async {
     final userId = supabase.auth.currentUser?.id;
     if (userId == null) return;
 
-    // Check rate limit
+    
     if (!await _canPerformAction('like')) {
       return;
     }
@@ -213,7 +213,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
         });
       }
 
-      // Increment like usage (for both like and unlike actions)
+      
       await _incrementLikeUsage();
 
       setState(() {});
@@ -230,7 +230,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
           await supabase.from('post_likes').select('*').eq('post_id', postId);
       return response.length;
     } catch (e) {
-      return 0; // Return 0 if there's an error
+      return 0; 
     }
   }
 
@@ -248,7 +248,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
 
       return data != null;
     } catch (e) {
-      return false; // Return false if there's an error
+      return false; 
     }
   }
 
@@ -262,7 +262,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
 
       return comments;
     } catch (e) {
-      return []; // Return empty list if there's an error
+      return []; 
     }
   }
 
@@ -300,7 +300,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
                   child: Column(
                     children: [
                       const SizedBox(height: 10),
-                      // Top handle bar
+                      
                       Container(
                         width: 40,
                         height: 5,
@@ -409,7 +409,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
                                   ? null
                                   : () async {
                                       try {
-                                        // Double-check rate limit
+                                        
                                         if (!await _canPerformAction(
                                             'comment')) {
                                           Navigator.pop(context);
@@ -434,7 +434,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
                                                 .userMetadata?['avatar_url'],
                                           });
 
-                                          // Increment comment usage
+                                          
                                           await _incrementCommentUsage();
 
                                           commentController.clear();
@@ -481,9 +481,9 @@ class _ClubPostsListState extends State<ClubPostsList> {
             children: [
               const SizedBox(height: 16),
 
-              // Representatives Button
+              
               SizedBox(
-                width: double.infinity, // Full width
+                width: double.infinity, 
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -491,17 +491,17 @@ class _ClubPostsListState extends State<ClubPostsList> {
                       MaterialPageRoute(
                         builder: (context) => ClubRepresentativesPage(
                           clubId:
-                              getClubId(), // Call the method to get the value
+                              getClubId(), 
                         ),
                       ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white, // White button
-                    foregroundColor: Colors.black, // Black text
+                    backgroundColor: Colors.white, 
+                    foregroundColor: Colors.black, 
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12), // Rounded edges
+                      borderRadius: BorderRadius.circular(12), 
                     ),
                   ),
                   child: const Text(
@@ -509,7 +509,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight:
-                          FontWeight.w600, // Semi-bold for better readability
+                          FontWeight.w600, 
                     ),
                   ),
                 ),
@@ -552,9 +552,9 @@ class _ClubPostsListState extends State<ClubPostsList> {
                   padding: EdgeInsets.only(top: 5),
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _posts.length + 1, // +1 for the loader
+                  itemCount: _posts.length + 1, 
                   itemBuilder: (context, index) {
-                    // Show loading indicator or "Load more" button at the end
+                    
                     if (index == _posts.length) {
                       if (_isLoading) {
                         return const Center(
@@ -590,7 +590,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
                       }
                     }
 
-                    // Display the post
+                    
                     final post = _posts[index];
 
                     return FutureBuilder(
@@ -632,7 +632,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Title
+                                
                                 Text(
                                   post.title,
                                   style: const TextStyle(
@@ -643,7 +643,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
                                 ),
                                 const SizedBox(height: 8),
 
-                                // Body
+                                
                                 Text(
                                   post.body,
                                   style: const TextStyle(
@@ -653,8 +653,8 @@ class _ClubPostsListState extends State<ClubPostsList> {
                                 ),
                                 const SizedBox(height: 12),
 
-                                // Image Carousel
-// Image Carousel
+                                
+
                                 if (post.images.isNotEmpty)
                                   SizedBox(
                                     height: 180,
@@ -663,7 +663,7 @@ class _ClubPostsListState extends State<ClubPostsList> {
                                       itemCount: post.images.length,
                                       padding: const EdgeInsets.symmetric(
                                           horizontal:
-                                              2), // Add padding to prevent edge cutoff
+                                              2), 
                                       separatorBuilder: (_, __) =>
                                           const SizedBox(width: 10),
                                       itemBuilder: (context, imgIndex) {
@@ -711,12 +711,12 @@ class _ClubPostsListState extends State<ClubPostsList> {
 
                                 const SizedBox(height: 12),
 
-                                // Footer Actions - Properly Positioned
+                                
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // Like & Comment Group
+                                    
                                     Row(
                                       children: [
                                         IconButton(
@@ -753,7 +753,6 @@ class _ClubPostsListState extends State<ClubPostsList> {
                                       ],
                                     ),
 
-                                    // Share Button (Right-Aligned)
                                     IconButton(
                                       icon: const Icon(LineIcons.share,
                                           color: Colors.white),

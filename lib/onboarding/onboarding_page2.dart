@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OnboardingPage2 extends StatelessWidget {
-  final Color accentGreen = const Color(0xFF4CAF50); // Main accent green
-  final Color mutedGreen = const Color(0xFF81C784); // Muted green
-  final Color textColor = const Color(0xFF2E7D32); // Darker green for text
+  final Color accentGreen = const Color(0xFF4CAF50); 
+  final Color mutedGreen = const Color(0xFF81C784); 
+  final Color textColor = const Color(0xFF2E7D32); 
 
   Future<void> _openUrl(String url) async {
     if (await canLaunch(url)) {
@@ -22,7 +22,7 @@ class OnboardingPage2 extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          // Decorative Triangles
+    
           Positioned(
             top: -30,
             left: -100,
@@ -59,21 +59,21 @@ class OnboardingPage2 extends StatelessWidget {
               angle: -40,
             ),
           ),
-          // Page Content
+    
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Center Icon
+             
                 Icon(
                   Icons.groups_rounded,
                   size: 80,
                   color: accentGreen,
                 ),
                 const SizedBox(height: 30),
-                // Title
+           
                 Text(
                   "Join Our Community",
                   style: TextStyle(
@@ -86,7 +86,7 @@ class OnboardingPage2 extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
-                // Subtitle
+         
                 Text(
                   "Stay connected to receive the latest updates, important announcements, and exclusive feature releases for the app.",
                   style: TextStyle(
@@ -97,7 +97,7 @@ class OnboardingPage2 extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 40),
-                // Decorative Divider
+       
                 Container(
                   height: 5,
                   width: 120,
@@ -114,7 +114,7 @@ class OnboardingPage2 extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 50),
-                // Join Button
+         
                 ElevatedButton.icon(
                   icon: const Icon(Icons.link, color: Colors.white),
                   label: const Text(
@@ -150,14 +150,13 @@ class OnboardingPage2 extends StatelessWidget {
     );
   }
 
-  // Helper for blurred triangles with rotation
   Widget _buildBlurredTriangle({
     required double size,
     required Color color,
     required double angle,
   }) {
     return Transform.rotate(
-      angle: angle * pi / 180, // Convert degrees to radians
+      angle: angle * pi / 180, 
       child: SizedBox(
         height: size,
         width: size,
@@ -181,9 +180,9 @@ class TrianglePainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final path = Path();
-    path.moveTo(size.width / 2, 0); // Top vertex
-    path.lineTo(0, size.height); // Bottom left vertex
-    path.lineTo(size.width, size.height); // Bottom right vertex
+    path.moveTo(size.width / 2, 0); 
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height); 
     path.close();
 
     canvas.drawPath(path, paint);

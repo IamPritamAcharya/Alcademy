@@ -42,7 +42,7 @@ class DropdownWidget extends StatelessWidget {
             ),
           ),
           buttonStyleData: ButtonStyleData(
-            height: 30, // Keep the reduced height you originally intended
+            height: 30,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
@@ -51,7 +51,7 @@ class DropdownWidget extends StatelessWidget {
           ),
           dropdownStyleData: DropdownStyleData(
             maxHeight:
-                MediaQuery.of(context).size.height * 0.3, // Scrolling enabled
+                MediaQuery.of(context).size.height * 0.3, 
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               color: Colors.white.withOpacity(0.8),
@@ -76,7 +76,7 @@ class DropdownWidget extends StatelessWidget {
                   ))
               .toList(),
           onChanged: onChanged,
-          isExpanded: true, // Ensure the dropdown expands to the full width.
+          isExpanded: true,
         ),
       ),
     );

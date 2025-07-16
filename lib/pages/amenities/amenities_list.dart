@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'details_page.dart'; // Import the details page
+import 'details_page.dart'; 
 
 class AmenitiesList extends StatelessWidget {
   final List<dynamic> items;
@@ -68,11 +68,11 @@ class AmenitiesList extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Image with rounded corners, overlay, and Hero animation
+                 
                   Stack(
                     children: [
                       Hero(
-                        tag: item['name'] ?? 'unknown', // Unique tag for Hero
+                        tag: item['name'] ?? 'unknown',
                         child: ClipRRect(
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
@@ -116,7 +116,7 @@ class AmenitiesList extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // Content section
+                  
                   Center(
                     child: Container(
                       padding: const EdgeInsets.all(16),

@@ -23,10 +23,10 @@ class FirstTabWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             color:
-                Colors.white.withOpacity(0.05), // Translucent white background
+                Colors.white.withOpacity(0.05), 
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.15), // Subtle shadow
+                color: Colors.black.withOpacity(0.15), 
                 blurRadius: 6,
                 offset: const Offset(0, 3),
               ),
@@ -39,14 +39,14 @@ class FirstTabWidget extends StatelessWidget {
             shaderCallback: (Rect bounds) {
               return LinearGradient(
                 colors: [
-                  Color(0xFF9C27B0), // Vibrant Amethyst Purple
-                  Color(0xFFFF5722), // Vibrant Tangerine
-                  Color(0xFFFFD700), // Vibrant Gold
-                  Color(0xFF4CAF50), // Vibrant Emerald Green
-                  Color(0xFF00BCD4), // Vibrant Cyan
-                  Color.fromRGBO(216, 72, 241, 1), // Vibrant Amethyst Purple
-                  Color(0xFFFF5722), // Vibrant Tangerine
-                  Color(0xFF607D8B), // Vibrant Slate Blue
+                  Color(0xFF9C27B0), 
+                  Color(0xFFFF5722), 
+                  Color(0xFFFFD700), 
+                  Color(0xFF4CAF50), 
+                  Color(0xFF00BCD4), 
+                  Color.fromRGBO(216, 72, 241, 1), 
+                  Color(0xFFFF5722), 
+                  Color(0xFF607D8B), 
                 ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
@@ -66,7 +66,7 @@ class FirstTabWidget extends StatelessWidget {
                   Icon(
                     icon,
                     color: Colors.white
-                        .withOpacity(0.8), // Icon matches glassmorphic design
+                        .withOpacity(0.8), 
                     size: 20,
                   ),
                   const SizedBox(width: 8),

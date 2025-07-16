@@ -67,7 +67,7 @@ class _ClubsPageState extends State<ClubsPage> {
           final clubs = snapshot.data ?? [];
 
           return SingleChildScrollView(
-            physics: const BouncingScrollPhysics(), // Enables body scrolling
+            physics: const BouncingScrollPhysics(), 
             child: Column(
               children: [
                 Align(
@@ -77,9 +77,9 @@ class _ClubsPageState extends State<ClubsPage> {
                 ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   shrinkWrap:
-                      true, // Important for scrolling inside SingleChildScrollView
+                      true, 
                   physics:
-                      const NeverScrollableScrollPhysics(), // Disables internal ListView scrolling
+                      const NeverScrollableScrollPhysics(), 
                   itemCount: clubs.length,
                   itemBuilder: (context, index) {
                     final club = clubs[index];
@@ -102,7 +102,7 @@ class _ClubsPageState extends State<ClubsPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            // Banner image at top
+                            
                             ClipRRect(
                               borderRadius: const BorderRadius.vertical(
                                 top: Radius.circular(16),
@@ -119,7 +119,7 @@ class _ClubsPageState extends State<ClubsPage> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Logo
+                                  
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: Image.network(
@@ -130,7 +130,7 @@ class _ClubsPageState extends State<ClubsPage> {
                                     ),
                                   ),
                                   const SizedBox(width: 14),
-                                  // Club Name and Group
+                                  
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
@@ -166,7 +166,7 @@ class _ClubsPageState extends State<ClubsPage> {
                                       ],
                                     ),
                                   ),
-                                  // Share Icon only
+                                  
                                   IconButton(
                                     icon: const Icon(LineIcons.share,
                                         color: Colors.white),

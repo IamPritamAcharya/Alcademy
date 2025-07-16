@@ -18,13 +18,13 @@ class ShimmerGrid extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             return Shimmer.fromColors(
-              baseColor: const Color(0xFF1F1F1F), // Dark base color
-              highlightColor: const Color(0xFF3A3A3A), // Lighter shimmer
+              baseColor: const Color(0xFF1F1F1F), 
+              highlightColor: const Color(0xFF3A3A3A), 
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2A2A2A), // Matches dark background
+                  color: const Color(0xFF2A2A2A), 
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
@@ -59,7 +59,7 @@ class ShimmerGrid extends StatelessWidget {
               ),
             );
           },
-          childCount: 4, // Show 4 shimmer placeholders
+          childCount: 4, 
         ),
       ),
     );

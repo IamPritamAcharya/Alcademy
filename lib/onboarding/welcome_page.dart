@@ -11,7 +11,7 @@ class WelcomePage extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          // Enhanced Decorative Blurred Shapes
+         
           Positioned(
             top: -100,
             left: -100,
@@ -27,32 +27,32 @@ class WelcomePage extends StatelessWidget {
             right: 50,
             child: _buildBlurredCircle(100, Colors.white.withOpacity(0.2)),
           ),
-          // Content
+         
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // App Logo or Icon (Optional)
+             
                 Icon(
                   Icons.school_rounded,
                   size: 80,
-                  color: Color(0xFF5D4037).withOpacity(0.8), // Coffee tone
+                  color: Color(0xFF5D4037).withOpacity(0.8), 
                 ),
                 SizedBox(height: 30),
-                // Title
+               
                 Text(
                   "Welcome to Alcademy!",
                   style: TextStyle(
                     fontSize: 42,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF5D4037), // Rich coffee brown
+                    color: Color(0xFF5D4037), 
                     letterSpacing: 1.3,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 20),
-                // Subtitle
+            
                 Text(
                   "Your academic journey starts here.\nSimplified. Organized. Accessible.",
                   style: TextStyle(
@@ -63,7 +63,7 @@ class WelcomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 40),
-                // Decorative Divider
+             
                 Container(
                   height: 5,
                   width: 120,
@@ -73,19 +73,19 @@ class WelcomePage extends StatelessWidget {
                       colors: [
                         Color(0xFF8D6E63),
                         Color(0xFF6D4C41)
-                      ], // Coffee tones
+                      ],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),
                   ),
                 ),
                 SizedBox(height: 50),
-                // Call-to-Action Button
+             
                 ElevatedButton(
                   onPressed: onNext,
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 48, vertical: 16),
-                    backgroundColor: Color(0xFF6D4C41), // Dark coffee
+                    backgroundColor: Color(0xFF6D4C41),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -109,7 +109,7 @@ class WelcomePage extends StatelessWidget {
     );
   }
 
-  // Creates a refined soft blurred shape
+
   Widget _buildBlurredCircle(double size, Color color) {
     return Container(
       height: size,
@@ -120,7 +120,7 @@ class WelcomePage extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: color,
-            blurRadius: 80, // Softer, more diffused blur
+            blurRadius: 80, 
             spreadRadius: 40,
           ),
         ],

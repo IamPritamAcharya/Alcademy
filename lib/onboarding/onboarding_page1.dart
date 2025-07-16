@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-// Define color variables
-const Color backgroundStart = Color(0xFFE8F5E9); // Mint Pastel Green
-const Color backgroundEnd = Color(0xFFFCE4EC); // Blush Pink
 
-const Color textPrimary = Color.fromARGB(255, 0, 100, 143); // Slate Black
-const Color textSecondary = Color.fromARGB(255, 0, 100, 143); // Charcoal Gray
-const Color buttonColor = Colors.cyan; // Lavender Accent
+const Color backgroundStart = Color(0xFFE8F5E9); 
+const Color backgroundEnd = Color(0xFFFCE4EC); 
+
+const Color textPrimary = Color.fromARGB(255, 0, 100, 143);
+const Color textSecondary = Color.fromARGB(255, 0, 100, 143); 
+const Color buttonColor = Colors.cyan; 
 const Color shapeColor =
-    Color.fromARGB(151, 75, 177, 221); // Soft Purple Pastel
+    Color.fromARGB(151, 75, 177, 221); 
 
 class OnboardingPage1 extends StatelessWidget {
   final VoidCallback onNext;
@@ -22,7 +22,7 @@ class OnboardingPage1 extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          // Decorative Shapes
+     
           Positioned(
             top: -80,
             left: -50,
@@ -50,45 +50,45 @@ class OnboardingPage1 extends StatelessWidget {
               sides: 6,
             ),
           ),
-          // Page Content
+         
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Center Icon with Neat Background
+               
                 Icon(
                   Icons.notifications_active_rounded,
                   size: 80,
-                  color: Colors.black87, // Placeholder text color
+                  color: Colors.black87, 
                 ),
                 SizedBox(height: 30),
-                // Title
+               
                 Text(
                   "Stay Informed, Always",
                   style: TextStyle(
                     fontSize: 42,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87, // Placeholder text color
+                    color: Colors.black87,
                     height: 1.3,
                     letterSpacing: 1.3,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 20),
-                // Subtitle
+              
                 Text(
                   "Get all your college updates, events, and notices in one place.",
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.black54, // Placeholder secondary text color
+                    color: Colors.black54, 
                     height: 1.6,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 40),
-                // Decorative Divider
+         
                 Container(
                   height: 5,
                   width: 120,
@@ -105,12 +105,12 @@ class OnboardingPage1 extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 50),
-                // Call-to-Action Button
+              
                 ElevatedButton(
                   onPressed: onNext,
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 48, vertical: 16),
-                    backgroundColor: Colors.blue, // Placeholder button color
+                    backgroundColor: Colors.blue, 
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -145,7 +145,7 @@ class OnboardingPage1 extends StatelessWidget {
     );
   }
 
-  // Decorative Polygon
+
   Widget _buildDecorativeShape({
     required double size,
     required Color color,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-// Time-based greetings in a JSON-like structure
+
 final Map<String, List<String>> timeBasedGreetings = {
   "earlyMorning": [
     "Rise and shine!",
@@ -76,7 +76,7 @@ final Map<String, List<String>> timeBasedGreetings = {
   ]
 };
 
-// Function to get a greeting based on the current time
+
 String getRandomSentence() {
   final hour = DateTime.now().hour;
 
@@ -99,7 +99,7 @@ String getRandomSentence() {
   }
 }
 
-// Helper function to get a random greeting from a specific category
+
 String _getRandomGreeting(String timeCategory) {
   final greetings = timeBasedGreetings[timeCategory];
   return greetings![Random().nextInt(greetings.length)];
@@ -109,20 +109,20 @@ IconData getIconForTimeOfDay() {
   final hour = DateTime.now().hour;
 
   if (hour >= 5 && hour < 8) {
-    return Icons.wb_sunny_outlined; // Early Morning sun
+    return Icons.wb_sunny_outlined; 
   } else if (hour >= 8 && hour < 12) {
-    return Icons.wb_sunny; // Morning bright sun
+    return Icons.wb_sunny; 
   } else if (hour >= 12 && hour < 15) {
-    return Icons.cloud_queue; // Midday with light clouds
+    return Icons.cloud_queue; 
   } else if (hour >= 15 && hour < 18) {
-    return Icons.cloud; // Late Afternoon cloudy
+    return Icons.cloud; 
   } else if (hour >= 18 && hour < 19) {
-    return Icons.wb_twilight; // Early Evening twilight
+    return Icons.wb_twilight; 
   } else if (hour >= 19 && hour < 21) {
-    return Icons.nights_stay_outlined; // Evening moon
+    return Icons.nights_stay_outlined; 
   } else if (hour >= 21 && hour < 23) {
-    return Icons.nights_stay; // Late Evening moon
+    return Icons.nights_stay; 
   } else {
-    return Icons.brightness_3; // Midnight deep night
+    return Icons.brightness_3; 
   }
 }

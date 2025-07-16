@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'widgets/refresh_tracker.dart';
 
-import 'widgets/custom_snackbar.dart'; // Import CustomSnackBar
+import 'widgets/custom_snackbar.dart';
 
 class YearPage extends StatefulWidget {
   @override
@@ -20,7 +20,7 @@ class _YearPageState extends State<YearPage> {
   List<Map<String, String>> yearLinks = [];
   String? selectedYearUrl;
   bool isLoading = true;
-  bool isDataFetched = false; // Flag to prevent unnecessary fetching
+  bool isDataFetched = false; 
 
   @override
   void initState() {
@@ -43,13 +43,13 @@ class _YearPageState extends State<YearPage> {
                   })
               .toList();
         });
-        isDataFetched = true; // Mark data as fetched from cache
-        isLoading = false; // Stop showing the loading indicator
+        isDataFetched = true; 
+        isLoading = false; 
       } catch (e) {
         print('Error parsing cached data: $e');
       }
     } else {
-      // If no cached data is found, fetch it from the API
+      
       _fetchYearLinks();
     }
   }
@@ -61,7 +61,7 @@ class _YearPageState extends State<YearPage> {
 
   Future<void> _fetchYearLinks() async {
     if (isDataFetched)
-      return; // Avoid fetching again if data is already fetched
+      return; 
 
     try {
       final response = await http.get(Uri.parse(githubApiUrl));
@@ -81,7 +81,7 @@ class _YearPageState extends State<YearPage> {
             yearLinks = fetchedLinks;
           });
         }
-        isDataFetched = true; // Mark data as fetched from API
+        isDataFetched = true; 
       } else {
         throw Exception('Failed to fetch year links.');
       }
@@ -110,7 +110,7 @@ class _YearPageState extends State<YearPage> {
       return;
     }
     try {
-      isDataFetched = false; // Allow fresh data fetch on refresh
+      isDataFetched = false; 
       await _fetchYearLinks();
     } catch (e) {
       print('Error during refresh: $e');

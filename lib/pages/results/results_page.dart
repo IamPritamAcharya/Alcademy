@@ -21,7 +21,7 @@ class _ResultWebViewState extends State<ResultWebView> {
   @override
   void initState() {
     super.initState();
-    // Delay initialization to ensure widget is mounted
+  
     Future.microtask(() {
       if (mounted) {
         _initializeWebView();
@@ -70,11 +70,11 @@ class _ResultWebViewState extends State<ResultWebView> {
             },
           ),
         )
-        // Set mobile user agent
+        
         ..setUserAgent(
             "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1");
 
-      // Clear cache and load page with sufficient delay
+      
       _controller?.clearCache().then((_) {
         if (mounted) {
           Future.delayed(const Duration(milliseconds: 1000), () {
@@ -119,7 +119,7 @@ class _ResultWebViewState extends State<ResultWebView> {
     if (_controller == null || !mounted) return;
 
     try {
-      // Break the script into smaller chunks to avoid execution issues
+  
       await _controller?.runJavaScript('''
         try {
           // Base styling
@@ -144,7 +144,7 @@ class _ResultWebViewState extends State<ResultWebView> {
         }
       ''');
 
-      // Add the main style sheet
+    
       await _controller?.runJavaScript('''
         try {
           let style = document.createElement('style');
@@ -262,7 +262,7 @@ class _ResultWebViewState extends State<ResultWebView> {
         }
       ''');
 
-      // Apply mobile table fixes
+     
       await _controller?.runJavaScript('''
         try {
           // Add mobile-specific styles
@@ -300,7 +300,6 @@ class _ResultWebViewState extends State<ResultWebView> {
         }
       ''');
 
-      // Final touches and make page visible
       await _controller?.runJavaScript('''
         try {
           // Ensure HTML and body take full viewport

@@ -140,7 +140,7 @@ class _BranchSelectorState extends State<BranchSelector> {
                   setState(() {
                     selectedBranch = value;
                     selectedSemester =
-                        null; // Reset semester when branch changes
+                        null; 
                   });
                 },
                 validator: (value) {

@@ -68,7 +68,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
           color: const Color(0xFF2C2F30),
           borderRadius: BorderRadius.circular(12),
         ),
-        maxHeight: 200, // Fixed height for the dropdown
+        maxHeight: 200, 
       ),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -104,7 +104,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
       buttonStyleData: ButtonStyleData(
         overlayColor: MaterialStateProperty.all(Colors.transparent),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12), // Rounded InkWell corners
+          borderRadius: BorderRadius.circular(12), 
         ),
       ),
     );

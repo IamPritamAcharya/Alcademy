@@ -53,13 +53,13 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
       isDesktopView = !isDesktopView;
     });
 
-    // Inject the viewport adjustment script dynamically
+    
     _injectViewportMetaTag();
   }
 
   Future<void> _injectViewportMetaTag() async {
     if (isDesktopView) {
-      // Set desktop width viewport
+      
       await _webViewController.runJavaScript("""
         (function() {
           let meta = document.querySelector('meta[name="viewport"]');
@@ -72,7 +72,7 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
         })();
       """);
     } else {
-      // Reset to default responsive viewport
+      
       await _webViewController.runJavaScript("""
         (function() {
           let meta = document.querySelector('meta[name="viewport"]');
@@ -97,7 +97,7 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.of(context).pop(); // Go back to the previous screen
+            Navigator.of(context).pop(); 
           },
         ),
         bottom: PreferredSize(
@@ -119,26 +119,26 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
           ),
           Padding(
             padding:
-                const EdgeInsets.only(right: 0.0), // Add spacing from the right
+                const EdgeInsets.only(right: 0.0), 
             child: ElevatedButton(
               onPressed: _relogin,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(
-                    0xFF2C2F30), // Slightly lighter than the app bar
+                    0xFF2C2F30), 
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 shape: RoundedRectangleBorder(
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20), // Rounded top-left corner
+                    topLeft: Radius.circular(20), 
                     bottomLeft:
-                        Radius.circular(20), // Rounded bottom-left corner
+                        Radius.circular(20), 
                   ),
                 ),
               ),
               child: const Text(
                 'Login',
                 style: TextStyle(
-                  fontFamily: 'ProductSans', // Use Product Sans font
+                  fontFamily: 'ProductSans', 
                   color: Colors.white,
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

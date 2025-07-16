@@ -24,7 +24,7 @@ class _AcademicCalendarPageState extends State<AcademicCalendarPage> {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final DateTime now = DateTime.now();
 
-      // Check if URL is already saved and not older than a month
+
       final String? cachedUrl = prefs.getString('academic_calendar_url');
       final String? lastUpdatedStr =
           prefs.getString('academic_calendar_last_updated');
@@ -34,7 +34,7 @@ class _AcademicCalendarPageState extends State<AcademicCalendarPage> {
       if (cachedUrl != null &&
           lastUpdated != null &&
           now.difference(lastUpdated).inDays < 30) {
-        // Use cached URL
+
         setState(() {
           pdfUrl = cachedUrl;
           isLoading = false;
@@ -42,7 +42,7 @@ class _AcademicCalendarPageState extends State<AcademicCalendarPage> {
         return;
       }
 
-      // Fetch new URL from GitHub
+
       final response = await http.get(Uri.parse(
           'https://raw.githubusercontent.com/Academia-IGIT/DATA_hub/main/academic_calender.txt'));
 
@@ -50,7 +50,7 @@ class _AcademicCalendarPageState extends State<AcademicCalendarPage> {
         final String fetchedUrl = response.body.trim();
 
         if (fetchedUrl.isNotEmpty) {
-          // Save URL and update time in SharedPreferences
+    
           await prefs.setString('academic_calendar_url', fetchedUrl);
           await prefs.setString(
               'academic_calendar_last_updated', now.toIso8601String());
@@ -69,7 +69,7 @@ class _AcademicCalendarPageState extends State<AcademicCalendarPage> {
       setState(() {
         isLoading = false;
       });
-      // Handle error, e.g., show a toast/snackbar
+     
     }
   }
 

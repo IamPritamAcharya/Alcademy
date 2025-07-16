@@ -41,16 +41,16 @@ class _EditItemDialogState extends State<EditItemDialog> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.dark(
-              primary: const Color.fromRGBO(0, 255, 127, 1), // Highlight color
-              onPrimary: Colors.black, // Text color for selected date
-              surface: const Color(0xFF1A1D1E), // Dialog background color
-              onSurface: Colors.white, // Text color for unselected dates
+              primary: const Color.fromRGBO(0, 255, 127, 1), 
+              onPrimary: Colors.black, 
+              surface: const Color(0xFF1A1D1E), 
+              onSurface: Colors.white, 
             ),
-            dialogBackgroundColor: const Color(0xFF1A1D1E), // Background color
+            dialogBackgroundColor: const Color(0xFF1A1D1E), 
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 foregroundColor:
-                    const Color.fromRGBO(0, 255, 127, 1), // Button text color
+                    const Color.fromRGBO(0, 255, 127, 1), 
               ),
             ),
           ),
@@ -69,11 +69,11 @@ class _EditItemDialogState extends State<EditItemDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent, // Glass effect
+      backgroundColor: Colors.transparent, 
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Stack(
         children: [
-          // Glass effect
+          
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: BackdropFilter(

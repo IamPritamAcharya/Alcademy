@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,8 +16,7 @@ import 'package:port/pages/club/club_detail_page.dart';
 import 'package:port/pages/club/club_post_detail.dart';
 import 'package:port/pages/club/clubspage.dart';
 import 'package:port/pages/club/upload/CreateClubPostPage.dart';
-
-import 'package:port/pages/college_res/academic_calender_page.dart';
+import 'package:port/pages/college_res/Academic_calender_page.dart';
 import 'package:port/pages/college_res/holiday_list_page.dart';
 import 'package:port/pages/expense/expense.dart';
 import 'package:port/pages/notice/notice_page.dart';
@@ -36,9 +36,13 @@ import 'config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.linux) {
+    // Skip Firebase initialization on Linux
+  } else {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
 
   await Supabase.initialize(
     url: 'https://uyrsftytepfamdrrjnst.supabase.co',
@@ -46,8 +50,8 @@ void main() async {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5cnNmdHl0ZXBmYW1kcnJqbnN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1NzgzNzgsImV4cCI6MjA1MDE1NDM3OH0.b-aorUVNH0bvRfn-h34Wa7YHUvRVJjofkAllQ7cYhp0',
   );
 
-  final notificationService = NotificationService();
-  await notificationService.initialize();
+  // final notificationService = NotificationService();
+  // await notificationService.initialize();
 
   final prefs = await SharedPreferences.getInstance();
   final bool isOnboardingComplete =

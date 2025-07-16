@@ -1,7 +1,7 @@
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:port/pages/club/clubspage.dart';
-import 'package:port/pages/first%20page/ExtendedAppBarWithSlidingEffect.dart';
+import 'package:port/pages/first%20page/drawer.dart';
 import 'package:port/pages/notice/notice_page.dart';
 import 'package:port/pages/first%20page/first_page.dart';
 import 'package:port/pages/widgets/refresh_tracker.dart';
@@ -14,18 +14,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
-  Color? receivedColor; // Store the color received from FirstPage
+  Color? receivedColor; 
 
   void updateColor(Color newColor) {
     setState(() {
-      receivedColor = newColor; // Update the color
+      receivedColor = newColor; 
     });
   }
 
   @override
   void initState() {
     super.initState();
-    RefreshTracker.init(); // Load the saved state from SharedPreferences
+    RefreshTracker.init(); 
   }
 
   @override
@@ -33,8 +33,8 @@ class _HomePageState extends State<HomePage> {
     final List<Widget> _pages = [
       FirstPage(
         scaffoldKey: _scaffoldKey,
-      ), // Pass the key to FirstPage
-      
+      ), 
+
       ClubsPage(),
       NoticePage(),
     ];
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       extendBody: true,
       key: _scaffoldKey,
-      drawer: UniqueDrawer(themeColor: const Color(0xFF1A1D1E)),
+      drawer: UniqueDrawer(themeColor: receivedColor ?? Colors.blue),
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,

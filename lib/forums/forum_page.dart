@@ -6,7 +6,7 @@ import 'package:port/forums/add_post_page.dart';
 import 'package:port/forums/post.dart';
 import 'package:port/forums/stories_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert'; // For JSON encoding/decoding
+import 'dart:convert'; 
 import 'database_service.dart';
 import 'post_detail_page.dart';
 
@@ -19,12 +19,11 @@ class ForumPage extends StatefulWidget {
 
 class _ForumPageState extends State<ForumPage> {
   List<Post> posts = [];
-  Map<String, String> userNames = {}; // Cache for usernames
+  Map<String, String> userNames = {}; 
   int refreshCount = 0;
   final int maxRefreshesPerHour = 6;
   late DateTime lastRefreshTime;
 
-  // Pagination variables
   int currentPage = 1;
   final int itemsPerPage = 10;
   int totalPages = 1;
@@ -80,7 +79,7 @@ class _ForumPageState extends State<ForumPage> {
 
   void updatePagination() {
     totalPages = (posts.length / itemsPerPage).ceil();
-    currentPage = 1; // Reset to first page when posts are updated
+    currentPage = 1; 
   }
 
   List<Post> getCurrentPagePosts() {
@@ -96,33 +95,33 @@ class _ForumPageState extends State<ForumPage> {
     if (refreshCount >= maxRefreshesPerHour) {
       final nextRefreshWindow = lastRefreshTime.add(const Duration(hours: 1));
       if (now.isBefore(nextRefreshWindow)) {
-        // Show a simple and clean centered popup dialog with dark glassmorphic design
+      
         showDialog(
           context: context,
-          barrierDismissible: false, // Prevent closing by tapping outside
+          barrierDismissible: false, 
           builder: (BuildContext context) {
             return Dialog(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12), // Rounded corners
+                borderRadius: BorderRadius.circular(12), 
               ),
               backgroundColor: Colors
-                  .transparent, // Transparent background for glassmorphism
+                  .transparent, 
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(12), // Rounded corners
+                borderRadius: BorderRadius.circular(12), 
                 child: BackdropFilter(
                   filter: ImageFilter.blur(
-                      sigmaX: 8.0, sigmaY: 8.0), // Slight blur effect
+                      sigmaX: 8.0, sigmaY: 8.0), 
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.black
-                          .withOpacity(0.6), // Semi-transparent dark background
+                          .withOpacity(0.6), 
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
                           spreadRadius: 2,
                           blurRadius: 8,
-                          offset: const Offset(0, 4), // Shadow effect
+                          offset: const Offset(0, 4), 
                         ),
                       ],
                     ),
@@ -134,13 +133,13 @@ class _ForumPageState extends State<ForumPage> {
                         Icon(
                           Icons.error_outline,
                           color: Colors.greenAccent,
-                          size: 40, // Smaller icon size
+                          size: 40, 
                         ),
                         const SizedBox(height: 12),
                         const Text(
                           'Refresh Limit Reached',
                           style: TextStyle(
-                            fontSize: 18, // Smaller font size
+                            fontSize: 18, 
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
@@ -150,7 +149,7 @@ class _ForumPageState extends State<ForumPage> {
                           'Your limit will reset after 1 hour.',
                           style: TextStyle(
                             color: Colors.white70,
-                            fontSize: 14, // Smaller font size for clarity
+                            fontSize: 14, 
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -158,22 +157,22 @@ class _ForumPageState extends State<ForumPage> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                                Colors.greenAccent, // Light blue button
+                                Colors.greenAccent, 
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 8),
                             shape: RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.circular(8), // Rounded button
+                                  BorderRadius.circular(8), 
                             ),
                           ),
                           onPressed: () {
-                            Navigator.of(context).pop(); // Close the dialog
+                            Navigator.of(context).pop(); 
                           },
                           child: const Text(
                             'OK',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14, // Smaller font size for the button
+                              fontSize: 14, 
                             ),
                           ),
                         ),
@@ -235,7 +234,7 @@ class _ForumPageState extends State<ForumPage> {
                 physics: const BouncingScrollPhysics(),
                 itemCount: currentPosts.isEmpty
                     ? 1
-                    : currentPosts.length + 2, // Empty state fallback
+                    : currentPosts.length + 2, 
                 itemBuilder: (context, index) {
                   if (index == 0) {
                     return Padding(
@@ -247,7 +246,7 @@ class _ForumPageState extends State<ForumPage> {
                       currentPosts.isEmpty) {
                     return const SizedBox(
                       height: 20,
-                    ); // Footer or fallback space
+                    ); 
                   }
                   final post = currentPosts[index - 1];
                   final userName = userNames[post.userId] ?? '';
@@ -393,12 +392,12 @@ class _ForumPageState extends State<ForumPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
       floatingActionButton: Padding(
         padding:
-            const EdgeInsets.only(bottom: 90), // Adjust this value as needed
+            const EdgeInsets.only(bottom: 90), 
         child: FloatingActionButton(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25), // Customize corner radius
+            borderRadius: BorderRadius.circular(25), 
           ),
           onPressed: () => Navigator.push(
             context,

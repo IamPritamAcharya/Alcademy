@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart'; // Add this package
+import 'package:flutter_spinkit/flutter_spinkit.dart'; 
 
 class ClubRepresentativesPage extends StatefulWidget {
   final String clubId;
@@ -96,7 +96,7 @@ class _ClubRepresentativesPageState extends State<ClubRepresentativesPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2), // Subtle separator
+            color: Colors.white.withOpacity(0.2), 
             height: 1,
           ),
         ),
@@ -219,7 +219,7 @@ class _ClubRepresentativesPageState extends State<ClubRepresentativesPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Modern pulse loading animation
+          
           SpinKitPulse(
             color: Colors.purpleAccent,
             size: 50.0,

@@ -6,7 +6,6 @@ class ApiService {
   static const String githubApiUrl =
       'https://api.github.com/repos/Academia-IGIT/DATA_hub/contents/Notes';
 
-  /// Fetch available notes from API or cache
   static Future<List<Map<String, String>>> fetchAvailableNotes() async {
     final prefs = await SharedPreferences.getInstance();
     final cachedData = prefs.getString('cachedYearLinks');
@@ -25,7 +24,6 @@ class ApiService {
       }
     }
 
-    // If no valid cached data, fetch from API
     try {
       final response = await http.get(Uri.parse(githubApiUrl));
       if (response.statusCode == 200) {
@@ -38,7 +36,7 @@ class ApiService {
                 })
             .toList();
 
-        // Cache the data for future use
+   
         await prefs.setString('cachedYearLinks', json.encode(notes));
         return notes;
       } else {
@@ -50,7 +48,6 @@ class ApiService {
     }
   }
 
-  /// Save user preferences
   static Future<void> saveUserPreferences({
     required String name,
     required String branch,
@@ -62,7 +59,7 @@ class ApiService {
     await prefs.setString('selectedYearUrl', noteUrl);
   }
 
-  /// Retrieve user preferences
+
   static Future<Map<String, String?>> getUserPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     return {

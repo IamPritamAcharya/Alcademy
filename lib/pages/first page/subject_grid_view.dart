@@ -86,12 +86,12 @@ class SubjectCard extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          // 📖 Main Content (Initials & Subject Name)
+          
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // 🔹 Glassy Initials Bubble
+                
                 Container(
                   width: 50,
                   height: 50,
@@ -113,7 +113,7 @@ class SubjectCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
 
-                // 📌 Subject Name (Modern Font)
+                
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: AutoSizeText(

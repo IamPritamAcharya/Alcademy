@@ -2,18 +2,18 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RefreshTracker {
-  static int refreshCount = 0; // Tracks the number of refreshes
-  static DateTime? lastRefreshTime; // Stores the timestamp of the last refresh
+  static int refreshCount = 0; 
+  static DateTime? lastRefreshTime; 
   static DateTime?
-      cooldownStartTime; // Stores the timestamp of when the cooldown started
-  static bool isCooldownActive = false; // Indicates if the cooldown is active
+      cooldownStartTime; 
+  static bool isCooldownActive = false; 
   static Timer? _cooldownTimer;
 
   static const Duration cooldownDuration =
-      Duration(minutes: 60); // Set cooldown time to 1 hour
+      Duration(minutes: 60); 
 
   static Future<void> init() async {
-    // Load saved data from shared preferences
+    
     final prefs = await SharedPreferences.getInstance();
 
     refreshCount = prefs.getInt('refreshCount') ?? 0;
@@ -42,57 +42,57 @@ class RefreshTracker {
     prefs.setBool('isCooldownActive', isCooldownActive);
   }
 
-  /// Call this method when a refresh is triggered.
-  /// Returns `true` if the refresh is allowed, or `false` if under cooldown.
+  
+  
   static Future<bool> incrementRefreshCount() async {
     if (isCooldownActive) {
-      // Check if cooldown is still active
+      
       if (DateTime.now().difference(cooldownStartTime!) < cooldownDuration) {
-        return false; // Cooldown is still active, block refresh
+        return false; 
       } else {
-        // Cooldown period has ended, reset counter and deactivate cooldown
+        
         refreshCount = 0;
         isCooldownActive = false;
-        await saveState(); // Save updated state
+        await saveState(); 
       }
     }
 
     if (lastRefreshTime == null ||
         DateTime.now().difference(lastRefreshTime!) > cooldownDuration) {
-      // Reset the counter if the last refresh was more than 1 hour ago
+      
       refreshCount = 0;
       isCooldownActive = false;
-      await saveState(); // Save updated state
+      await saveState(); 
     }
 
     refreshCount++;
     lastRefreshTime = DateTime.now();
-    await saveState(); // Save updated state
+    await saveState(); 
 
     if (refreshCount > 7) {
-      // Trigger cooldown if the count exceeds 3
+      
       _startCooldown();
-      await saveState(); // Save updated state
-      return false; // Block refresh due to excessive usage
+      await saveState(); 
+      return false; 
     }
 
-    return true; // Allow refresh
+    return true; 
   }
 
-  /// Starts the cooldown period and resets the counter after the cooldownDuration
+  
   static void _startCooldown() {
     isCooldownActive = true;
     cooldownStartTime =
-        DateTime.now(); // Store the timestamp when cooldown starts
-    _cooldownTimer?.cancel(); // Cancel any existing timer
+        DateTime.now(); 
+    _cooldownTimer?.cancel(); 
     _cooldownTimer = Timer(cooldownDuration, () {
-      refreshCount = 0; // Reset counter after cooldown duration
-      isCooldownActive = false; // Deactivate cooldown
-      saveState(); // Save updated state
+      refreshCount = 0; 
+      isCooldownActive = false; 
+      saveState(); 
     });
   }
 
-  /// Dispose of the cooldown timer when no longer needed
+  
   static void dispose() {
     _cooldownTimer?.cancel();
   }

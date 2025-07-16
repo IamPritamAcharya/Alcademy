@@ -23,11 +23,11 @@ class BudgetSection extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 31, 34, 35), // Card background color
+          color: const Color.fromARGB(255, 31, 34, 35), 
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05), // Minimal shadow
+              color: Colors.black.withOpacity(0.05), 
               blurRadius: 6,
               offset: const Offset(0, 2),
             ),
@@ -36,7 +36,7 @@ class BudgetSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Current Budget Section
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -92,7 +92,7 @@ class BudgetSection extends StatelessWidget {
               thickness: 0.5,
               height: 24,
             ),
-            // Today's Expense and Last 7 Days Section
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

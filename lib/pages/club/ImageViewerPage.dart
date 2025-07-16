@@ -46,22 +46,22 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
     try {
       final imageUrl = widget.images[_currentIndex];
 
-      // Get the bytes of the image
+      
       final response = await http.get(Uri.parse(imageUrl));
 
       if (response.statusCode == 200) {
-        // Get temporary directory
+        
         final directory = await getTemporaryDirectory();
 
-        // Extract filename from URL
+        
         final filename = imageUrl.split('/').last;
         final path = '${directory.path}/$filename';
 
-        // Write the file
+        
         final file = File(path);
         await file.writeAsBytes(response.bodyBytes);
 
-        // Share the file
+        
         await Share.shareXFiles(
           [XFile(path)],
           text: 'Image from club post',
@@ -89,7 +89,7 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Set system overlay style to be visible against black background
+    
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.black,
@@ -138,7 +138,7 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              // Toggle app bar visibility (optional enhancement)
+              
               Navigator.of(context).pop();
             },
             child: Center(
@@ -185,7 +185,7 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
           );
         },
       ),
-      // Optional: Page indicator for multiple images
+      
       bottomNavigationBar: widget.images.length > 1
           ? Container(
               color: Colors.black.withOpacity(0.5),

@@ -93,10 +93,10 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.transparent, // Light theme background
+      backgroundColor: Colors.transparent, 
       body: Stack(
         children: [
-          // Blurred shapes for the background
+        
           Positioned(
             top: -50,
             left: -60,
@@ -143,7 +143,7 @@ class _LoginFormState extends State<LoginForm> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Heading
+           
                       Text(
                         'Let’s Get Started!',
                         style: const TextStyle(
@@ -165,7 +165,7 @@ class _LoginFormState extends State<LoginForm> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 30),
-                      // Name Input Field
+                  
                       TextField(
                         controller: _nameController,
                         style: const TextStyle(color: Colors.black),
@@ -191,7 +191,7 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Branch Dropdown
+                 
                       DropdownWidget(
                         label: 'Select Your Branch',
                         items: const [
@@ -208,7 +208,7 @@ class _LoginFormState extends State<LoginForm> {
                             setState(() => _selectedBranch = value),
                       ),
                       const SizedBox(height: 20),
-                      // Notes Dropdown
+                
                       DropdownWidget(
                         label: 'Select Notes',
                         items: _availableNotes
@@ -222,7 +222,7 @@ class _LoginFormState extends State<LoginForm> {
                         },
                       ),
                       const SizedBox(height: 40),
-                      // Next Button
+                     
                       ElevatedButton(
                         onPressed: _saveData,
                         style: ElevatedButton.styleFrom(

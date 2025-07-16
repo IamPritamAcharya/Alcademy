@@ -13,7 +13,7 @@ class BarChartSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final now = DateTime.now();
 
-    // Calculate expenses for the last 7 days
+    
     final last7Days = List.generate(7, (index) {
       final day = now.subtract(Duration(days: index));
       final dailyExpenses = expenses.where((e) {
@@ -28,9 +28,9 @@ class BarChartSection extends StatelessWidget {
         'day': day,
         'value': dailyExpenses,
       };
-    }).reversed.toList(); // Reverse for chronological order.
+    }).reversed.toList(); 
 
-    // Handle edge case: If no expenses are found, set maxY to a default value.
+    
     final maxY = (last7Days.isNotEmpty
             ? last7Days
                 .map((data) => data['value'] as double)
@@ -43,15 +43,15 @@ class BarChartSection extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color:
-              const Color.fromARGB(255, 31, 34, 35), // Chart background color
-          borderRadius: BorderRadius.circular(16), // Rounded corners
+              const Color.fromARGB(255, 31, 34, 35), 
+          borderRadius: BorderRadius.circular(16), 
         ),
         padding: const EdgeInsets.all(16.0),
         child: SizedBox(
-          height: 300, // Adjust the height of the bar chart
+          height: 300, 
           child: BarChart(
             BarChartData(
-              maxY: maxY, // Dynamically calculated maximum Y-axis value
+              maxY: maxY, 
               barGroups: last7Days.map((data) {
                 final index = last7Days.indexOf(data);
                 return BarChartGroupData(
@@ -62,7 +62,7 @@ class BarChartSection extends StatelessWidget {
                       color: Colors.white,
                       width: 16,
                       borderRadius:
-                          BorderRadius.circular(16), // Rounded bar edges
+                          BorderRadius.circular(16), 
                     ),
                   ],
                 );
@@ -71,7 +71,7 @@ class BarChartSection extends StatelessWidget {
               titlesData: FlTitlesData(
                 leftTitles: AxisTitles(
                   sideTitles:
-                      SideTitles(showTitles: false), // Hide Y-axis titles
+                      SideTitles(showTitles: false), 
                 ),
                 topTitles:
                     AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -102,7 +102,7 @@ class BarChartSection extends StatelessWidget {
                 ),
               ),
               gridData: FlGridData(
-                show: false, // Hide grid lines for a cleaner look
+                show: false, 
               ),
             ),
           ),
@@ -112,7 +112,7 @@ class BarChartSection extends StatelessWidget {
   }
 
   String _getDayLetter(DateTime date) {
-    // Returns the first letter of the weekday
+    
     const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     return weekdays[date.weekday % 7];
   }

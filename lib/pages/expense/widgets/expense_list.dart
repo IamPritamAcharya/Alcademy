@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart'; // For date formatting
+import 'package:intl/intl.dart'; 
 
 class ExpenseListSection extends StatelessWidget {
   final List<Map<String, dynamic>> expenses;
@@ -22,7 +22,7 @@ class ExpenseListSection extends StatelessWidget {
       context: context,
       builder: (context) => Dialog(
         backgroundColor:
-            Colors.transparent, // Transparent background for glass effect
+            Colors.transparent, 
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
@@ -31,7 +31,7 @@ class ExpenseListSection extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.grey.shade800
-                    .withOpacity(0.1), // Frosted glass effect
+                    .withOpacity(0.1), 
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: Colors.white.withOpacity(0.2),
@@ -138,7 +138,7 @@ class ExpenseListSection extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1), // Minimal shadow
+                      color: Colors.black.withOpacity(0.1), 
                       blurRadius: 2,
                       offset: const Offset(0, 2),
                     ),
@@ -152,7 +152,7 @@ class ExpenseListSection extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Expense Details
+                      
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,13 +165,13 @@ class ExpenseListSection extends StatelessWidget {
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
-                              maxLines: 1, // Restrict to a single line
+                              maxLines: 1, 
                               overflow: TextOverflow
-                                  .ellipsis, // Add ellipsis if text overflows
+                                  .ellipsis, 
                             ),
                             const SizedBox(
                                 height:
-                                    8), // Increased space between name and date
+                                    8), 
                             Row(
                               children: [
                                 const Icon(
@@ -194,7 +194,7 @@ class ExpenseListSection extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      // Expense Amount
+                      
                       Text(
                         '₹${expense['value'].toStringAsFixed(2)}',
                         style: const TextStyle(

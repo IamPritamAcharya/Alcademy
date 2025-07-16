@@ -28,7 +28,7 @@ class _AboutPageState extends State<AboutPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2), // Subtle separator
+            color: Colors.white.withOpacity(0.2), 
             height: 1,
           ),
         ),
@@ -123,7 +123,7 @@ class _AboutPageState extends State<AboutPage> {
         children: [
           ClipOval(
             child: Image.asset(
-              'lib/file assets/codex.jpeg', // Replace with actual logo path
+              'lib/file assets/codex.jpeg', 
               height: 100,
               width: 100,
               fit: BoxFit.cover,
@@ -198,7 +198,7 @@ class _AboutPageState extends State<AboutPage> {
         iconColor: Colors.white,
         collapsedIconColor: Colors.white70,
         title: Text(
-          title, // Dynamically passing title
+          title, 
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,

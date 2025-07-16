@@ -26,7 +26,7 @@ class _PinPageState extends State<PinPage> {
   Future<void> _loadPreferences() async {
     final prefs = await SharedPreferences.getInstance();
 
-    // Load pinned items
+    
     final savedItems = prefs.getString('pinnedItems');
     if (savedItems != null) {
       setState(() {
@@ -36,7 +36,7 @@ class _PinPageState extends State<PinPage> {
       });
     }
 
-    // Load view mode
+    
     final savedViewMode = prefs.getBool('isGridView');
     if (savedViewMode != null) {
       setState(() {
@@ -48,10 +48,10 @@ class _PinPageState extends State<PinPage> {
   Future<void> _savePreferences() async {
     final prefs = await SharedPreferences.getInstance();
 
-    // Save pinned items
+    
     await prefs.setString('pinnedItems', json.encode(pinnedItems));
 
-    // Save view mode
+    
     await prefs.setBool('isGridView', isGridView);
   }
 
@@ -75,17 +75,17 @@ class _PinPageState extends State<PinPage> {
         context: context,
         builder: (context) => Dialog(
               backgroundColor:
-                  Colors.transparent, // Make background transparent
+                  Colors.transparent, 
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20), // Round the corners
+                borderRadius: BorderRadius.circular(20), 
                 child: BackdropFilter(
                   filter: ImageFilter.blur(
-                      sigmaX: 5.0, sigmaY: 5.0), // Apply blur effect
+                      sigmaX: 5.0, sigmaY: 5.0), 
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Colors.black
-                          .withOpacity(0.6), // Dark transparent background
+                          .withOpacity(0.6), 
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: const [
                         BoxShadow(
@@ -93,7 +93,7 @@ class _PinPageState extends State<PinPage> {
                           blurRadius: 10,
                           offset: Offset(0, 4),
                         ),
-                      ], // Add a shadow effect for depth
+                      ], 
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -112,7 +112,7 @@ class _PinPageState extends State<PinPage> {
                           decoration: InputDecoration(
                             hintText: 'https://example.com',
                             hintStyle: TextStyle(
-                                color: Colors.white70), // Light hint text
+                                color: Colors.white70), 
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white30),
                                 borderRadius: BorderRadius.circular(30)),
@@ -122,7 +122,7 @@ class _PinPageState extends State<PinPage> {
                           ),
                           keyboardType: TextInputType.url,
                           style: const TextStyle(
-                              color: Colors.white), // White text color
+                              color: Colors.white),
                         ),
                         const SizedBox(height: 20),
                         Row(
@@ -322,11 +322,11 @@ class _PinPageState extends State<PinPage> {
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: ReorderableListView.builder(
           onReorder: (int oldIndex, int newIndex) {
-            // Adjust indexes to account for the top and bottom SizedBox
+            
             final int adjustedOldIndex = oldIndex - 1;
             final int adjustedNewIndex = newIndex - 1;
 
-            // Only reorder if there are more than one item and valid indexes
+            
             if (pinnedItems.length > 1 &&
                 adjustedOldIndex >= 0 &&
                 adjustedNewIndex >= 0 &&
@@ -338,23 +338,23 @@ class _PinPageState extends State<PinPage> {
               _savePreferences();
             }
           },
-          itemCount: pinnedItems.length + 2, // Include the two SizedBox widgets
+          itemCount: pinnedItems.length + 2, 
           itemBuilder: (context, index) {
             if (index == 0) {
-              // Top spacer
+              
               return const SizedBox(
                 key: ValueKey("topSpacing"),
                 height: 10,
               );
             } else if (index == pinnedItems.length + 1) {
-              // Bottom spacer
+              
               return const SizedBox(
                 key: ValueKey("bottomSpacing"),
                 height: 10,
               );
             }
 
-            // Adjust index for pinnedItems
+            
             final itemIndex = index - 1;
             final item = pinnedItems[itemIndex];
             return GlassmorphicCard(
@@ -431,26 +431,26 @@ class _PinPageState extends State<PinPage> {
           builder: (_) => Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 20), // Add some spacing at the top
+              const SizedBox(height: 20), 
 
-              // Pin File Option
+              
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20.0), // Center text and icon
+                    horizontal: 20.0), 
                 title: Row(
                   mainAxisAlignment:
-                      MainAxisAlignment.center, // Center the Row content
+                      MainAxisAlignment.center, 
                   children: [
                     const Icon(
                       Icons.insert_drive_file,
                       color: Colors.white,
-                      size: 30, // Icon size
+                      size: 30, 
                     ),
-                    const SizedBox(width: 10), // Space between icon and text
+                    const SizedBox(width: 10), 
                     const Text(
                       'Pin File',
                       style: TextStyle(
-                          color: Colors.white, fontSize: 16), // Text styling
+                          color: Colors.white, fontSize: 16), 
                     ),
                   ],
                 ),
@@ -460,24 +460,24 @@ class _PinPageState extends State<PinPage> {
                 },
               ),
 
-              // Pin URL Option
+              
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20.0), // Center text and icon
+                    horizontal: 20.0), 
                 title: Row(
                   mainAxisAlignment:
-                      MainAxisAlignment.center, // Center the Row content
+                      MainAxisAlignment.center, 
                   children: [
                     const Icon(
                       Icons.link,
                       color: Colors.white,
-                      size: 30, // Icon size
+                      size: 30, 
                     ),
-                    const SizedBox(width: 10), // Space between icon and text
+                    const SizedBox(width: 10), 
                     const Text(
                       'Pin URL',
                       style: TextStyle(
-                          color: Colors.white, fontSize: 16), // Text styling
+                          color: Colors.white, fontSize: 16), 
                     ),
                   ],
                 ),
@@ -487,7 +487,7 @@ class _PinPageState extends State<PinPage> {
                 },
               ),
 
-              const SizedBox(height: 20), // Add some spacing at the bottom
+              const SizedBox(height: 20), 
             ],
           ),
         ),

@@ -101,7 +101,7 @@ class _ExpenseTrackerPageState extends State<ExpenseTrackerPage> {
               setState(() {
                 budget = updatedBudget;
               });
-              await _saveData(); // Save the updated budget
+              await _saveData(); 
             }
           },
         ),
@@ -177,7 +177,7 @@ class _ExpenseTrackerPageState extends State<ExpenseTrackerPage> {
                 setState(() {
                   budget = newBudget;
                 });
-                await _saveData(); // Save the updated budget
+                await _saveData(); 
               },
             ),
             const SizedBox(height: 10),

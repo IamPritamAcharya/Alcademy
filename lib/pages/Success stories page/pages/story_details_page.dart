@@ -13,13 +13,13 @@ class StoryDetailPage extends StatelessWidget {
   });
 
   Color getRandomVibrantColor() {
-    final hue = Random().nextInt(360); // Full color spectrum (0-360 degrees)
+    final hue = Random().nextInt(360); 
     final saturation = 0.8 +
         Random().nextDouble() *
-            0.2; // Saturation between 0.8 and 1.0 (very vibrant)
+            0.2; 
     final lightness = 0.45 +
         Random().nextDouble() *
-            0.15; // Lightness between 0.45 and 0.60 (balanced brightness)
+            0.15; 
 
     return HSLColor.fromAHSL(1, hue.toDouble(), saturation, lightness)
         .toColor();
@@ -28,22 +28,22 @@ class StoryDetailPage extends StatelessWidget {
   List<Color> generateColorShades(Color color) {
     final hslColor = HSLColor.fromColor(color);
     return [
-      hslColor.withLightness(0.85).toColor(), // Lightest
-      hslColor.withLightness(0.75).toColor(), // Light
-      hslColor.withLightness(0.65).toColor(), // Medium Light
-      hslColor.withLightness(0.55).toColor(), // Base
-      hslColor.withLightness(0.45).toColor(), // Medium Dark
-      hslColor.withLightness(0.35).toColor(), // Dark
+      hslColor.withLightness(0.85).toColor(), 
+      hslColor.withLightness(0.75).toColor(), 
+      hslColor.withLightness(0.65).toColor(), 
+      hslColor.withLightness(0.55).toColor(), 
+      hslColor.withLightness(0.45).toColor(), 
+      hslColor.withLightness(0.35).toColor(), 
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    final baseColor = getRandomVibrantColor(); // Get a random vibrant color
-    final colorShades = generateColorShades(baseColor); // Generate shades
+    final baseColor = getRandomVibrantColor(); 
+    final colorShades = generateColorShades(baseColor); 
 
     return Scaffold(
-      backgroundColor: const Color(0xFF121212), // Dark background
+      backgroundColor: const Color(0xFF121212), 
       appBar: AppBar(
         title: Text(
           name,
@@ -60,7 +60,7 @@ class StoryDetailPage extends StatelessWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2), // Subtle separator
+            color: Colors.white.withOpacity(0.2), 
             height: 1,
           ),
         ),
@@ -70,7 +70,7 @@ class StoryDetailPage extends StatelessWidget {
         child: MarkdownBody(
           data: body,
           styleSheet: MarkdownStyleSheet(
-            // Paragraph
+            
             p: const TextStyle(
               color: Color(0xFFF5F5F5),
               fontSize: 16,
@@ -78,7 +78,7 @@ class StoryDetailPage extends StatelessWidget {
             ),
             pPadding: const EdgeInsets.symmetric(vertical: 8),
 
-            // Headings
+            
             h1: TextStyle(
               color: colorShades[1],
               fontSize: 28,
@@ -122,7 +122,6 @@ class StoryDetailPage extends StatelessWidget {
             ),
             h6Padding: const EdgeInsets.symmetric(vertical: 4),
 
-            // Lists
             listBullet: TextStyle(
               color: colorShades[0],
               fontSize: 16,
@@ -130,14 +129,14 @@ class StoryDetailPage extends StatelessWidget {
             listBulletPadding:
                 const EdgeInsets.only(left: 12, top: 4, bottom: 4),
 
-            // Links
+            
             a: TextStyle(
               color: colorShades[0],
               decoration: TextDecoration.underline,
               fontWeight: FontWeight.w600,
             ),
 
-            // Emphasis
+            
             em: TextStyle(
               color: colorShades[0].withOpacity(0.8),
               fontStyle: FontStyle.italic,
@@ -147,7 +146,7 @@ class StoryDetailPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
 
-            // Blockquote
+            
             blockquotePadding: const EdgeInsets.all(12),
             blockquoteDecoration: BoxDecoration(
               color: Colors.white.withOpacity(0.05),
@@ -159,7 +158,7 @@ class StoryDetailPage extends StatelessWidget {
               ),
             ),
 
-            // Code block
+            
             codeblockPadding: const EdgeInsets.all(12),
             codeblockDecoration: BoxDecoration(
               color: Colors.black.withOpacity(0.1),
@@ -170,12 +169,12 @@ class StoryDetailPage extends StatelessWidget {
               ),
             ),
 
-            // Horizontal Rule
+            
             horizontalRuleDecoration: BoxDecoration(
               color: colorShades[5],
             ),
 
-            // Tables
+            
             tableHead: TextStyle(
               color: colorShades[1],
               fontWeight: FontWeight.bold,

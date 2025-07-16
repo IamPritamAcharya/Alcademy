@@ -11,7 +11,7 @@ class PostDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121212), // Dark background
+      backgroundColor: const Color(0xFF121212), 
       appBar: AppBar(
         title: const Text(
           '',
@@ -24,12 +24,12 @@ class PostDetailPage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF1F1F1F), // Slightly lighter dark tone
+        backgroundColor: const Color(0xFF1F1F1F), 
         iconTheme: const IconThemeData(color: Colors.white),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2), // Subtle separator
+            color: Colors.white.withOpacity(0.2),
             height: 1,
           ),
         ),
@@ -38,7 +38,7 @@ class PostDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Hero widget for image with fallback
+           
             post.imageUrl.isNotEmpty
                 ? Hero(
                     tag: post.id,
@@ -58,7 +58,7 @@ class PostDetailPage extends StatelessWidget {
                     size: 100,
                   ),
             const SizedBox(height: 16),
-            // Title with divider
+         
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
@@ -74,114 +74,114 @@ class PostDetailPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Divider(
-                    color: Colors.white.withOpacity(0.3), // Subtle divider
+                    color: Colors.white.withOpacity(0.3), 
                     thickness: 2,
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 16),
-            // Description in Markdown format
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: MarkdownBody(
                 data: post.description,
                 styleSheet: MarkdownStyleSheet(
-                  // General Text
+               
                   p: const TextStyle(
-                    color: Color(0xFFF5F5F5), // Light white for paragraphs
+                    color: Color(0xFFF5F5F5), 
                     fontSize: 16,
                     fontFamily: 'ProductSans',
                   ),
                   pPadding: const EdgeInsets.symmetric(vertical: 8),
                   h3: const TextStyle(
-                    color: Color(0xFFFFEED8), // Light orange
+                    color: Color(0xFFFFEED8), 
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'ProductSans',
                   ),
                   h3Padding: const EdgeInsets.symmetric(vertical: 8),
                   h4: const TextStyle(
-                    color: Color(0xFFFFDADA), // Light red
+                    color: Color(0xFFFFDADA), 
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'ProductSans',
                   ),
                   h4Padding: const EdgeInsets.symmetric(vertical: 6),
-                  // Headings
+             
                   h1: const TextStyle(
-                    color: Color(0xFFD8E6FF), // Light blue
+                    color: Color(0xFFD8E6FF), 
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'ProductSans',
                   ),
                   h1Padding: const EdgeInsets.symmetric(vertical: 10),
                   h2: const TextStyle(
-                    color: Color(0xFFDBFFE1), // Light green
+                    color: Color(0xFFDBFFE1),
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'ProductSans',
                   ),
                   h2Padding: const EdgeInsets.symmetric(vertical: 10),
 
-                  // Links
+                
                   a: const TextStyle(
-                    color: Color(0xFFADD8E6), // Light blue
+                    color: Color(0xFFADD8E6), 
                     decoration: TextDecoration.underline,
                     fontWeight: FontWeight.w600,
                   ),
 
-                  // Code Block
+                 
                   codeblockPadding: const EdgeInsets.all(12),
                   codeblockDecoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(
-                      color: const Color(0xFFCCCCCC), // Light grey
+                      color: const Color(0xFFCCCCCC), 
                       width: 1,
                     ),
                   ),
                   tableHead: const TextStyle(
-                    color: Color(0xFFD8E6FF), // Light blue for headers
+                    color: Color(0xFFD8E6FF), 
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                     fontFamily: 'ProductSans',
                   ),
-                  // Table Body Content Styles
+                
                   tableBody: const TextStyle(
-                    color: Colors.white, // Orange color for table body content
+                    color: Colors.white, 
                     fontSize: 14,
                     fontFamily: 'ProductSans',
                   ),
-                  // Table Cell Decoration
+                  
                   tableCellsDecoration: BoxDecoration(
                     color:
-                        Colors.black.withOpacity(0.1), // Subtle dark background
+                        Colors.black.withOpacity(0.1), 
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(
-                      color: Color(0xFFAAAAAA), // Light grey border
+                      color: Color(0xFFAAAAAA), 
                       width: 1,
                     ),
                   ),
                   blockquote: const TextStyle(
-                    color: Color(0xFFFFD700), // Gold color for blockquote text
+                    color: Color(0xFFFFD700), 
                     fontSize: 16,
                     fontStyle: FontStyle.italic,
                     fontFamily: 'ProductSans',
                   ),
-                  // Blockquote decoration (background, border)
+                  
                   blockquotePadding: const EdgeInsets.all(12),
                   blockquoteDecoration: BoxDecoration(
                     color:
-                        Colors.black.withOpacity(1), // Subtle dark background
+                        Colors.black.withOpacity(1),
                     border: const Border(
                       left: BorderSide(
-                        color: Color(0xFFADD8E6), // Light blue left border
+                        color: Color(0xFFADD8E6), 
                         width: 4,
                       ),
                     ),
                   ),
-                  // Bullet Points
+                
                   listBullet: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -196,7 +196,7 @@ class PostDetailPage extends StatelessWidget {
                       await launchUrl(uri,
                           mode: LaunchMode.externalApplication);
                     } else {
-                      // Handle the error if the URL can't be launched
+                     
                       print('Could not launch $href');
                     }
                   }

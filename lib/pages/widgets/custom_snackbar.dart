@@ -8,7 +8,7 @@ class CustomSnackBar {
     bool isCooldown = false,
     BuildContext? context,
   }) {
-    // Split the message by lines and create separate Text widgets
+    
     List<String> messageLines = message.split('\n');
 
     return SnackBar(
@@ -29,12 +29,12 @@ class CustomSnackBar {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0), // Blur effect
+            filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0), 
             child: Container(
               decoration: BoxDecoration(
                 color: isCooldown
                     ? Colors.redAccent.withOpacity(0.8)
-                    : Colors.black.withOpacity(0.6), // Frosted glass effect
+                    : Colors.black.withOpacity(0.6), 
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.all(16),

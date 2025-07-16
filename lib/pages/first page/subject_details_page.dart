@@ -62,10 +62,10 @@ class SubjectDetailsPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              const SizedBox(height: 8), // Ensure a larger gap at the top
+              const SizedBox(height: 8), 
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true, // Allows ListView to fit within the Column
+                shrinkWrap: true, 
                 itemCount: subject.items.length,
                 itemBuilder: (context, index) {
                   final item = subject.items[index];
@@ -78,7 +78,7 @@ class SubjectDetailsPage extends StatelessWidget {
                   );
                 },
               ),
-              const SizedBox(height: 8), // Ensure a larger gap at the bottom
+              const SizedBox(height: 8), 
             ],
           ),
         ),

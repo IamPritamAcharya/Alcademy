@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class GlassmorphicCard extends StatelessWidget {
   final Widget child;
   final VoidCallback onTap;
-  final Key? key; // Added the key parameter
+  final Key? key; 
 
   const GlassmorphicCard({
     required this.child,
     required this.onTap,
-    this.key, // Allow key to be passed
-  }) : super(key: key); // Pass the key to the superclass
+    this.key, 
+  }) : super(key: key); 
 
   @override
   Widget build(BuildContext context) {

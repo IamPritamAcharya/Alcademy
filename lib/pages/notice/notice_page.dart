@@ -34,7 +34,7 @@ class _NoticePageState extends State<NoticePage> {
   Future<void> fetchNotices() async {
     try {
       final randomValue =
-          Random().nextInt(100000); // Randomize to prevent caching
+          Random().nextInt(100000);
       final url = '$noticeUrl?random=$randomValue';
       final response = await http.get(Uri.parse(url));
 
@@ -110,7 +110,7 @@ class _NoticePageState extends State<NoticePage> {
                 bool isRefreshAllowed =
                     await RefreshTracker.incrementRefreshCount();
                 if (!isRefreshAllowed) {
-                  // Show the custom SnackBar when under cooldown
+               
                   ScaffoldMessenger.of(context).showSnackBar(
                     CustomSnackBar.build(
                       isCooldown: RefreshTracker.isCooldownActive,
@@ -119,7 +119,7 @@ class _NoticePageState extends State<NoticePage> {
                   return;
                 }
 
-                // Proceed with refresh logic
+             
                 await fetchNotices();
               },
               child: isLoading
