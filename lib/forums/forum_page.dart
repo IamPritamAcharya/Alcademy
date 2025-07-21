@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:port/config.dart';
 import 'package:port/forums/add_post_page.dart';
 import 'package:port/forums/post.dart';
-import 'package:port/forums/stories_widget.dart';
+import 'package:port/pages/stories/stories_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert'; 
 import 'database_service.dart';

@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:port/config.dart';
+import 'package:port/pages/stories/stories_widget.dart';
 import 'package:port/onboarding/user_data.dart';
 import 'package:port/pages/first%20page/ExpandableHeader.dart';
 import 'package:port/pages/first%20page/first_page_background.dart';
@@ -254,7 +255,6 @@ class _FirstPageState extends State<FirstPage>
                 return;
               }
 
-              
               _previousTheme = Map<String, dynamic>.from(currentTheme);
 
               setState(() {
@@ -262,7 +262,6 @@ class _FirstPageState extends State<FirstPage>
                 currentSentence = getRandomSentence();
               });
 
-              
               _colorTransitionController.reset();
               _colorTransitionController.forward();
 
@@ -290,9 +289,16 @@ class _FirstPageState extends State<FirstPage>
           theme: theme,
           scaffoldKey: widget.scaffoldKey,
           isOnlineNotifier: _isOnlineNotifier,
+          userName: _cachedUserName, // Pass the cached user name
+          currentSentence: currentSentence, // Pass the current sentence
+          subjects: subjects, // Pass the subjects list
         ),
-        _buildWelcomeCard(theme),
-        _buildStatsCards(theme),
+        SliverToBoxAdapter(
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: StoriesWidget(stories: storyUrls),
+          ),
+        ),
         _buildQuickAccessSection(),
         if (isLoading)
           const ShimmerGrid()
@@ -313,196 +319,14 @@ class _FirstPageState extends State<FirstPage>
     );
   }
 
-  Widget _buildWelcomeCard(Map<String, dynamic> theme) {
-    return SliverToBoxAdapter(
-      child: Container(
-        margin: const EdgeInsets.all(20),
-        padding: const EdgeInsets.all(25),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              theme['primary'].withOpacity(0.1),
-              theme['secondary'].withOpacity(0.1),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(25),
-          border: Border.all(
-            color: theme['primary'].withOpacity(0.3),
-            width: 1,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: theme['primary'].withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    LineIcons.user,
-                    color: theme['primary'],
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 15),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Welcome back,',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
-                        fontSize: 14,
-                      ),
-                    ),
-                    Text(
-                      _cachedUserName ?? 'User',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: theme['accent'].withOpacity(0.1),
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: theme['accent'].withOpacity(0.3),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    LineIcons.lightbulb,
-                    color: theme['accent'],
-                    size: 20,
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      currentSentence,
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
-                        fontSize: 16,
-                        height: 1.4,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStatsCards(Map<String, dynamic> theme) {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          children: [
-            Expanded(
-              child: _buildStatCard(
-                title: 'Subjects',
-                value: '${subjects.length}',
-                icon: LineIcons.book,
-                color: theme['primary'],
-              ),
-            ),
-            const SizedBox(width: 15),
-            Expanded(
-              child: _buildStatCard(
-                title: 'Theme',
-                value: theme['name'],
-                icon: LineIcons.palette,
-                color: theme['accent'],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStatCard({
-    required String title,
-    required String value,
-    required IconData icon,
-    required Color color,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: color, size: 24),
-          const SizedBox(height: 10),
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildQuickAccessSection() {
     return SliverToBoxAdapter(
       child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                'Quick Access',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
             TabsWidget(
-              onTabPressed: (tabName) {
-         
-              },
+              onTabPressed: (tabName) {},
             ),
           ],
         ),

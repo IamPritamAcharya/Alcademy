@@ -6,33 +6,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ConfigService {
   static const String settingsUrl =
       'https://raw.githubusercontent.com/IamPritamAcharya/DATA_hub/main/settings.json';
-  static const String fetchTime =
-      '00:00'; 
-
+  static const int fetchIntervalHours = 1; // Fetch every hour
 
   static Future<void> fetchAndUpdateConfig() async {
     final prefs = await SharedPreferences.getInstance();
 
-    String? lastFetchDate = prefs.getString('lastFetchDate');
+    String? lastFetchDateString = prefs.getString('lastFetchDate');
     DateTime now = DateTime.now();
-    DateTime todayFetchTime = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      int.parse(fetchTime.split(':')[0]),
-      int.parse(fetchTime.split(':')[1]),
-    );
 
-    if (lastFetchDate != null &&
-        DateTime.parse(lastFetchDate).isAfter(todayFetchTime)) {
-      print("Using cached configuration.");
-      _loadFromSharedPreferences(prefs);
-      return;
+    
+    if (lastFetchDateString != null) {
+      DateTime lastFetchDate = DateTime.parse(lastFetchDateString);
+      Duration timeSinceLastFetch = now.difference(lastFetchDate);
+
+      if (timeSinceLastFetch.inHours < fetchIntervalHours) {
+        print(
+            "Using cached configuration. Next fetch in ${fetchIntervalHours - timeSinceLastFetch.inHours} hour(s).");
+        _loadFromSharedPreferences(prefs);
+        return;
+      }
     }
 
     try {
       final response = await http.get(Uri.parse(settingsUrl)).timeout(
-        Duration(seconds: 10), 
+        Duration(seconds: 10),
         onTimeout: () {
           print("Request to $settingsUrl timed out");
           throw Exception("Request timeout");
@@ -53,11 +50,11 @@ class ConfigService {
         print("Configuration fetched, updated, and cached.");
       } else {
         print("Failed to fetch configuration: ${response.statusCode}");
-        _loadFromSharedPreferences(prefs); 
+        _loadFromSharedPreferences(prefs);
       }
     } catch (e) {
       print("Error fetching configuration: $e");
-      _loadFromSharedPreferences(prefs); 
+      _loadFromSharedPreferences(prefs);
     }
   }
 

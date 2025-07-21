@@ -14,18 +14,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
-  Color? receivedColor; 
+  Color? receivedColor;
 
   void updateColor(Color newColor) {
     setState(() {
-      receivedColor = newColor; 
+      receivedColor = newColor;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    RefreshTracker.init(); 
+    RefreshTracker.init();
   }
 
   @override
@@ -33,8 +33,7 @@ class _HomePageState extends State<HomePage> {
     final List<Widget> _pages = [
       FirstPage(
         scaffoldKey: _scaffoldKey,
-      ), 
-
+      ),
       ClubsPage(),
       NoticePage(),
     ];

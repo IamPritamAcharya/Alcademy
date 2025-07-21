@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html_parser;
 import 'package:port/pages/notice/pdf_view_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets/refresh_tracker.dart';
 import '../widgets/custom_snackbar.dart';
@@ -33,8 +34,7 @@ class _NoticePageState extends State<NoticePage> {
 
   Future<void> fetchNotices() async {
     try {
-      final randomValue =
-          Random().nextInt(100000);
+      final randomValue = Random().nextInt(100000);
       final url = '$noticeUrl?random=$randomValue';
       final response = await http.get(Uri.parse(url));
 
@@ -44,11 +44,20 @@ class _NoticePageState extends State<NoticePage> {
             document.querySelectorAll('tr[id^="noticerow_"]');
 
         final List<Notice> fetchedNotices = noticeElements.map((element) {
-          final title = element.children[0]?.text.trim() ?? 'No Title';
+          final titleElement = element.children[0];
+          final title = titleElement?.text.trim() ?? 'No Title';
           final date = element.children[1]?.text.trim() ?? 'No Date';
-          final downloadLink =
-              element.children[2]?.querySelector('a')?.attributes['href'] ??
-                  '#';
+
+          // Check for link in title column first (for external links)
+          String downloadLink =
+              titleElement?.querySelector('a')?.attributes['href'] ?? '';
+
+          // If no link in title, check download column (for PDFs)
+          if (downloadLink.isEmpty || downloadLink == '#') {
+            downloadLink =
+                element.children[2]?.querySelector('a')?.attributes['href'] ??
+                    '#';
+          }
 
           return Notice(title: title, date: date, downloadLink: downloadLink);
         }).toList();
@@ -67,13 +76,28 @@ class _NoticePageState extends State<NoticePage> {
     }
   }
 
-  void _openPDF(String url) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PDFViewPage(pdfUrl: url),
-      ),
-    );
+  void _openNotice(String url) async {
+    // Skip if no valid URL
+    if (url.isEmpty || url == '#') return;
+
+    if (url.toLowerCase().endsWith('.pdf')) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PDFViewPage(pdfUrl: url),
+        ),
+      );
+    } else {
+      try {
+        final uri = Uri.parse(url);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri);
+        }
+      } catch (e) {
+        // If URL launch fails, do nothing
+        print('Failed to launch URL: $url');
+      }
+    }
   }
 
   @override
@@ -110,7 +134,6 @@ class _NoticePageState extends State<NoticePage> {
                 bool isRefreshAllowed =
                     await RefreshTracker.incrementRefreshCount();
                 if (!isRefreshAllowed) {
-               
                   ScaffoldMessenger.of(context).showSnackBar(
                     CustomSnackBar.build(
                       isCooldown: RefreshTracker.isCooldownActive,
@@ -119,7 +142,6 @@ class _NoticePageState extends State<NoticePage> {
                   return;
                 }
 
-             
                 await fetchNotices();
               },
               child: isLoading
@@ -138,53 +160,53 @@ class _NoticePageState extends State<NoticePage> {
                       itemBuilder: (context, index) {
                         if (index < displayedNotices.length) {
                           final notice = displayedNotices[index];
-                          return Container(
-                            margin: const EdgeInsets.symmetric(vertical: 7),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.05),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: Colors.white.withOpacity(0.1),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 3),
+                          return GestureDetector(
+                            onTap: () => _openNotice(notice.downloadLink),
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: 7),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.1),
                                 ),
-                              ],
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                                child: ListTile(
-                                  title: Text(
-                                    notice.title,
-                                    style: TextStyle(
-                                      fontFamily: 'ProductSans',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 3),
                                   ),
-                                  subtitle: Padding(
-                                    padding: const EdgeInsets.only(top: 6.0),
-                                    child: Text(
-                                      notice.date,
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: BackdropFilter(
+                                  filter:
+                                      ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                                  child: ListTile(
+                                    title: Text(
+                                      notice.title,
                                       style: TextStyle(
                                         fontFamily: 'ProductSans',
-                                        fontSize: 14,
-                                        color: Colors.grey.shade400,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
                                       ),
                                     ),
-                                  ),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.open_in_browser_rounded,
+                                    subtitle: Padding(
+                                      padding: const EdgeInsets.only(top: 6.0),
+                                      child: Text(
+                                        notice.date,
+                                        style: TextStyle(
+                                          fontFamily: 'ProductSans',
+                                          fontSize: 14,
+                                          color: Colors.grey.shade400,
+                                        ),
+                                      ),
+                                    ),
+                                    trailing: Icon(
+                                        Icons.open_in_browser_rounded,
                                         color: Colors.greenAccent),
-                                    onPressed: () {
-                                      _openPDF(notice.downloadLink);
-                                    },
                                   ),
                                 ),
                               ),

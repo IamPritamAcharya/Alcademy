@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:port/config.dart';
-import 'package:port/forums/stories_widget.dart';
+import 'package:port/pages/stories/stories_widget.dart';
 import 'package:port/pages/club/club_detail_page.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:line_icons/line_icons.dart';

@@ -339,24 +339,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 child: ListView(
                   children: [
                     NavigationTile(
-                      icon: LineIcons.mapPin,
-                      title: "Pin Page",
-                      onTap: () {
-                        context.push('/pin');
-                      },
-                    ),
-                    NavigationTile(
                       icon: LineIcons.key,
                       title: "API Key",
                       onTap: () {
                         context.push('/api');
-                      },
-                    ),
-                    NavigationTile(
-                      icon: LineIcons.infoCircle,
-                      title: "About",
-                      onTap: () {
-                        context.push('/about');
                       },
                     ),
                     if (canUpload)

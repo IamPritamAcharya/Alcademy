@@ -20,7 +20,6 @@ import 'package:port/pages/college_res/Academic_calender_page.dart';
 import 'package:port/pages/college_res/holiday_list_page.dart';
 import 'package:port/pages/expense/expense.dart';
 import 'package:port/pages/notice/notice_page.dart';
-import 'package:port/pages/pin%20page/screens/pinpage.dart';
 import 'package:port/pages/results/results_page.dart';
 import 'package:port/pages/user/google_auth_widget.dart';
 import 'package:port/pages/user/userinfo.dart';
@@ -111,7 +110,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             path: "/user",
             builder: (context, state) => const UserProfilePage()),
         GoRoute(path: "/year", builder: (context, state) => YearPage()),
-        GoRoute(path: "/pin", builder: (context, state) => PinPage()),
         GoRoute(path: "/forum", builder: (context, state) => const ForumPage()),
         GoRoute(path: "/about", builder: (context, state) => AboutPage()),
         GoRoute(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:port/forums/storyscreen.dart';
+import 'package:port/pages/stories/storyscreen.dart';
 
 class StoriesWidget extends StatelessWidget {
   final List<Map<String, String>> stories;
