@@ -1,0 +1,121 @@
+{
+    "storyUrls": [
+        {
+            "type": "image",
+            "url": "https://i.imgur.com/Cko7fuj.png"
+        },
+        {
+            "type": "text",
+            "text": "🎉 Welcome to the Alcademy App!\n\nYour hub for clubs, posts, and collaboration at IGIT."
+        },
+        {
+            "type": "text",
+            "text": "🌐 Visit our website:\nhttps://aca-web-c0e77.web.app/"
+        },
+        {
+            "type": "text",
+            "text": "🚀 Stay connected with your clubs,\nshare posts, and explore events!"
+        },
+        {
+            "type": "text",
+            "text": "📱 Follow us for updates & announcements!",
+            "backgroundColor": "#4ECDC4"
+        },
+        {
+            "type": "text",
+            "text": "👥 Join our WhatsApp community:\nhttps://chat.whatsapp.com/DDuQv0UAkKpBmXB29fBjLw"
+        }
+    ],
+    "contributors": [
+        {
+            "name": "Sekhar Parida",
+            "url": "https://www.linkedin.com/in/sekhar-parida-07b994220/"
+        },
+        {
+            "name": "Jyotirmayee Sahoo",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Adarsh Kumar Mishra",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Aditya",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Priyaranjan Dash",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Seetal Panda",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Subhasmita Nayak",
+            "url": "https://www.youtube.com/@snmashart"
+        },
+        {
+            "name": "Md Arif Hussain",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Smrutirekha Moharana",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Smrutiprava Das",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Md Aadil Ahmad",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Pratyush Kumar Sahoo",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "K Bikram",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Banani Sahoo",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Ayush Arnab Mishra",
+            "url": "https://www.instagram.com/ayush_a_mishra_?igsh=MTRvdjRpbGRkMjBpaA=="
+        },
+        {
+            "name": "Priyankar Padhy",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Uditansu Mishra",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Shibasis Panda",
+            "url": "https://socialmedia.com/diana"
+        },
+        {
+            "name": "Subhalaxmi Sahoo",
+            "url": "https://socialmedia.com/diana"
+        }
+    ],
+    "bannedEmails": [
+        "pritamacharya1922@gmail.com",
+        "anotherbanned@example.com"
+    ],
+    "bannedWords": [
+        "nigga",
+        "paki",
+        "chutiya",
+        "bhosdike",
+        "gandu"
+    ],
+    "name_1st_tab": "Horizon!",
+    "markdownContent_1st_tab": "",
+    "showFirstTab": false
+}

@@ -31,19 +31,21 @@ class DefaultFirebaseOptions {
     }
   }
 
-  // Firebase configuration for Web
   static const FirebaseOptions web = FirebaseOptions(
-      apiKey: "AIzaSyAAQZNlxV9Rtjzj6ImdIQ0rSKARCjb6U3g",
-      authDomain: "igit-aca-f8d86.firebaseapp.com",
-      projectId: "igit-aca-f8d86",
-      storageBucket: "igit-aca-f8d86.firebasestorage.app",
-      messagingSenderId: "722495505334",
-      appId: "1:722495505334:web:f4614b2d2c69c64356f717",
-      measurementId: "G-XJ82NNLMLV");
+    apiKey: 'AIzaSyAAQZNlxV9Rtjzj6ImdIQ0rSKARCjb6U3g',
+    appId: '1:722495505334:web:f4614b2d2c69c64356f717',
+    messagingSenderId: '722495505334',
+    projectId: 'igit-aca-f8d86',
+    authDomain: 'igit-aca-f8d86.firebaseapp.com',
+    storageBucket: 'igit-aca-f8d86.firebasestorage.app',
+    measurementId: 'G-XJ82NNLMLV',
+  );
+
+  // Firebase configuration for Web
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBg9dXyBQ1m4DKzOOO7WLK8Kwu8vPzFxgc',
-    appId: '1:722495505334:android:070b8aff8a009b5756f717',
+    appId: '1:722495505334:android:e4ef8175afcac97956f717',
     messagingSenderId: '722495505334',
     projectId: 'igit-aca-f8d86',
     storageBucket: 'igit-aca-f8d86.firebasestorage.app',

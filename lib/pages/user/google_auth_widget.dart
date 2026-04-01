@@ -20,129 +20,153 @@ class _SignInWidgetState extends State<SignInWidget> {
   DateTime? _lastLoginTime;
   DateTime? _lastLogoutTime;
 
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    serverClientId:
+        '722495505334-m9rbec4ncl2rb26skkp1cviq2d8duh4e.apps.googleusercontent.com',
+  );
+
   @override
   void initState() {
     super.initState();
+
     _initializeAuthStateListener();
     _checkSession();
     _loadCooldownTimes();
   }
 
-  // Load stored cooldown times from SharedPreferences
   Future<void> _loadCooldownTimes() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _lastLoginTime =
-          DateTime.tryParse(prefs.getString('lastLoginTime') ?? '');
-      _lastLogoutTime =
-          DateTime.tryParse(prefs.getString('lastLogoutTime') ?? '');
-    });
-  }
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final lastLoginString = prefs.getString('lastLoginTime') ?? '';
+      final lastLogoutString = prefs.getString('lastLogoutTime') ?? '';
 
-  // Save cooldown times to SharedPreferences
-  Future<void> _saveCooldownTimes() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (_lastLoginTime != null) {
-      prefs.setString('lastLoginTime', _lastLoginTime!.toIso8601String());
-    }
-    if (_lastLogoutTime != null) {
-      prefs.setString('lastLogoutTime', _lastLogoutTime!.toIso8601String());
-    }
-  }
-
-  // Check if the user is already signed in
-  void _checkSession() {
-    final session =
-        supabase.auth.currentSession; // Correct method to get the session
-    if (session != null && session.user != null) {
       setState(() {
-        _userId = session.user?.id;
-        _email = session.user?.email;
-        _fullName =
-            session.user?.userMetadata?['full_name'] as String? ?? 'No Name';
+        _lastLoginTime = DateTime.tryParse(lastLoginString);
+        _lastLogoutTime = DateTime.tryParse(lastLogoutString);
       });
-    }
+    } catch (e) {}
   }
 
-  // Initialize the listener for auth state changes
-  void _initializeAuthStateListener() {
-    supabase.auth.onAuthStateChange.listen((data) {
-      final session = data.session;
-      final user = session?.user;
-
-      if (user != null) {
-        setState(() {
-          _userId = user.id;
-          _email = user.email;
-          _fullName = user.userMetadata?['full_name'] as String? ?? 'No Name';
-        });
-      } else {
-        setState(() {
-          _userId = null;
-          _email = null;
-          _fullName = null;
-        });
+  Future<void> _saveCooldownTimes() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (_lastLoginTime != null) {
+        final loginTimeString = _lastLoginTime!.toIso8601String();
+        await prefs.setString('lastLoginTime', loginTimeString);
       }
-    });
+      if (_lastLogoutTime != null) {
+        final logoutTimeString = _lastLogoutTime!.toIso8601String();
+        await prefs.setString('lastLogoutTime', logoutTimeString);
+      }
+    } catch (e) {}
   }
 
-  // Handle Google sign-in
+  void _checkSession() {
+    try {
+      final session = supabase.auth.currentSession;
+
+      if (session != null) {
+        setState(() {
+          _userId = session.user.id;
+          _email = session.user.email;
+          _fullName =
+              session.user.userMetadata?['full_name'] as String? ?? 'No Name';
+        });
+
+        print(
+            ' DEBUG: Set state - userId: $_userId, email: $_email, fullName: $_fullName');
+      } else {}
+    } catch (e) {}
+  }
+
+  void _initializeAuthStateListener() {
+    try {
+      supabase.auth.onAuthStateChange.listen((data) {
+        final session = data.session;
+        final user = session?.user;
+
+        if (user != null) {
+          setState(() {
+            _userId = user.id;
+            _email = user.email;
+            _fullName = user.userMetadata?['full_name'] as String? ?? 'No Name';
+          });
+
+          print(
+              ' DEBUG: Updated state after auth change - userId: $_userId, email: $_email, fullName: $_fullName');
+        } else {
+          setState(() {
+            _userId = null;
+            _email = null;
+            _fullName = null;
+          });
+        }
+      });
+    } catch (e) {}
+  }
+
   Future<void> _signInWithGoogle() async {
-    // Cooldown check (30 minutes)
-    if (_lastLoginTime != null &&
-        DateTime.now().difference(_lastLoginTime!).inMinutes < 30) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('You can only log in once every 30 minutes')),
-      );
-      return;
-    }
+    if (_lastLoginTime != null) {
+      final timeDifference =
+          DateTime.now().difference(_lastLoginTime!).inMinutes;
+
+      if (timeDifference < 30) {
+        print(
+            ' DEBUG: Sign-in blocked due to cooldown (${30 - timeDifference} minutes remaining)');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('You can only log in once every 30 minutes')),
+        );
+        return;
+      }
+    } else {}
 
     setState(() {
       _isLoading = true;
     });
 
-    const webClientId =
-        '722495505334-pqlj40pv7mgipconaq36mf3dtecl0b4m.apps.googleusercontent.com';
-
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn(
-        serverClientId: webClientId,
-      );
+      await _googleSignIn.signOut();
 
-      final googleUser = await googleSignIn.signIn();
+      final googleUser = await _googleSignIn.signIn();
+
       if (googleUser == null) {
         setState(() {
           _isLoading = false;
         });
-        return; // User canceled sign-in
+        return;
       }
 
       final googleAuth = await googleUser.authentication;
       final accessToken = googleAuth.accessToken;
       final idToken = googleAuth.idToken;
 
+      if (accessToken != null) {}
+      if (idToken != null) {}
+
       if (accessToken == null || idToken == null) {
-        throw 'Missing Google Auth tokens.';
+        throw 'Missing Google Auth tokens. AccessToken: $accessToken, IdToken: $idToken';
       }
 
-      await supabase.auth.signInWithIdToken(
+      final authResponse = await supabase.auth.signInWithIdToken(
         provider: OAuthProvider.google,
         idToken: idToken,
         accessToken: accessToken,
       );
 
+      if (authResponse.user != null) {}
+
+      final currentSession = supabase.auth.currentSession;
+
       setState(() {
-        _userId = supabase.auth.currentSession?.user?.id;
-        _email = supabase.auth.currentSession?.user?.email;
+        _userId = currentSession?.user.id;
+        _email = currentSession?.user.email;
         _fullName =
-            supabase.auth.currentSession?.user?.userMetadata?['full_name'] ??
-                'No Name';
+            currentSession?.user.userMetadata?['full_name'] ?? 'No Name';
         _lastLoginTime = DateTime.now();
       });
 
-      // Save the login time in SharedPreferences
       await _saveCooldownTimes();
-    } catch (error) {
+    } catch (error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Sign-in failed: $error')),
       );
@@ -153,23 +177,31 @@ class _SignInWidgetState extends State<SignInWidget> {
     }
   }
 
-  // Handle sign-out
   Future<void> _signOut() async {
-    // Cooldown check (30 minutes)
-    if (_lastLogoutTime != null &&
-        DateTime.now().difference(_lastLogoutTime!).inMinutes < 30) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('You can only log out once every 30 minutes')),
-      );
-      return;
-    }
+    if (_lastLogoutTime != null) {
+      final timeDifference =
+          DateTime.now().difference(_lastLogoutTime!).inMinutes;
+
+      if (timeDifference < 30) {
+        print(
+            ' DEBUG: Sign-out blocked due to cooldown (${30 - timeDifference} minutes remaining)');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('You can only log out once every 30 minutes')),
+        );
+        return;
+      }
+    } else {}
 
     setState(() {
       _isLoading = true;
     });
 
     try {
-      await supabase.auth.signOut();
+      await Future.wait([
+        supabase.auth.signOut(),
+        _googleSignIn.signOut(),
+      ]);
+
       setState(() {
         _userId = null;
         _email = null;
@@ -177,9 +209,8 @@ class _SignInWidgetState extends State<SignInWidget> {
         _lastLogoutTime = DateTime.now();
       });
 
-      // Save the logout time in SharedPreferences
       await _saveCooldownTimes();
-    } catch (error) {
+    } catch (error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Sign-out failed: $error')),
       );
@@ -198,7 +229,7 @@ class _SignInWidgetState extends State<SignInWidget> {
         children: [
           if (_userId != null)
             Container(
-              width: double.infinity, // Makes the box cover full width
+              width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -234,14 +265,23 @@ class _SignInWidgetState extends State<SignInWidget> {
                   const SizedBox(height: 20),
                   Center(
                     child: ElevatedButton(
-                      onPressed: _signOut,
-                      child: const Text(
-                        'Log out',
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
-                      ),
+                      onPressed: _isLoading ? null : _signOut,
+                      child: _isLoading
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text(
+                              'Log out',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
                     ),
                   ),
                 ],
@@ -249,7 +289,7 @@ class _SignInWidgetState extends State<SignInWidget> {
             )
           else
             Container(
-              width: double.infinity, // Makes the box cover full width
+              width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -278,26 +318,34 @@ class _SignInWidgetState extends State<SignInWidget> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: _signInWithGoogle,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'lib/file assets/googleicon.png', // Ensure the logo image is in the assets folder
-                          height: 24, // Adjust the size of the logo
-                          width: 24,
-                        ),
-                        const SizedBox(
-                            width: 16), // Spacing between the logo and text
-                        const Text(
-                          'Sign in with Google',
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+                    onPressed: _isLoading ? null : _signInWithGoogle,
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'lib/file assets/googleicon.png',
+                                height: 24,
+                                width: 24,
+                              ),
+                              const SizedBox(width: 16),
+                              const Text(
+                                'Sign in with Google',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                   )
                 ],
               ),

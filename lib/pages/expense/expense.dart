@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import 'dialogs/add_item_dialog.dart';
-import 'dialogs/budget_dialog.dart';
 import 'dialogs/edit_item_dialog.dart';
 import 'widgets/bar_chart_section.dart';
 import 'widgets/budget_section.dart';
@@ -11,7 +10,7 @@ import 'widgets/expense_list.dart';
 import 'widgets/pie_chart_section.dart';
 
 class ExpenseTrackerPage extends StatefulWidget {
-  const ExpenseTrackerPage({Key? key}) : super(key: key);
+  const ExpenseTrackerPage({super.key});
 
   @override
   State<ExpenseTrackerPage> createState() => _ExpenseTrackerPageState();
@@ -84,41 +83,6 @@ class _ExpenseTrackerPageState extends State<ExpenseTrackerPage> {
     }
   }
 
-  void _editBudget() {
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => BudgetSection(
-          budget: budget,
-          todaysExpense: _calculateTodaysExpenses(),
-          last7DaysExpense: _calculateLast7DaysExpenses(),
-          onUpdateBudget: (newBudget) async {
-            final updatedBudget = await showDialog<double>(
-              context: context,
-              builder: (context) => BudgetDialog(initialBudget: budget),
-            );
-
-            if (updatedBudget != null) {
-              setState(() {
-                budget = updatedBudget;
-              });
-              await _saveData(); 
-            }
-          },
-        ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const curve = Curves.easeOutBack;
-          var curvedAnimation =
-              CurvedAnimation(parent: animation, curve: curve);
-
-          return ScaleTransition(
-            scale: curvedAnimation,
-            alignment: Alignment.center,
-            child: child,
-          );
-        },
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

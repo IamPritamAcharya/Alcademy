@@ -6,10 +6,10 @@ class PieChartSection extends StatefulWidget {
   final double budget;
 
   const PieChartSection({
-    Key? key,
+    super.key,
     required this.expenses,
     required this.budget,
-  }) : super(key: key);
+  });
 
   @override
   State<PieChartSection> createState() => _PieChartSectionState();
@@ -47,7 +47,7 @@ class _PieChartSectionState extends State<PieChartSection>
     final totalExpenses =
         widget.expenses.fold(0.0, (sum, e) => sum + e['value']);
     final remainingBudget =
-        (widget.budget - totalExpenses).clamp(0.0, widget.budget) as double;
+        (widget.budget - totalExpenses).clamp(0.0, widget.budget);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),

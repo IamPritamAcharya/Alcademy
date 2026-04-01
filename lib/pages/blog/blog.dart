@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:port/pages/blog/blogview.dart';
 import 'dart:convert';
-import '../widgets/refresh_tracker.dart';
-import '../widgets/custom_snackbar.dart';
-import 'blogview.dart';
+import '../../utils/refresh_tracker.dart';
+import '../../utils/custom_snackbar.dart';
 
 class MarkdownListPage extends StatefulWidget {
   @override

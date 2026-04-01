@@ -1,16 +1,19 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:port/config.dart';
+import 'package:port/onboarding/utils/user_data.dart';
+import 'package:port/pages/first%20page/widgets/tabs_widget.dart';
+import 'package:port/utils/config.dart';
 import 'package:port/pages/stories/stories_widget.dart';
-import 'package:port/onboarding/user_data.dart';
+
 import 'package:port/pages/first%20page/ExpandableHeader.dart';
 import 'package:port/pages/first%20page/first_page_background.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../widgets/refresh_tracker.dart';
-import '../widgets/custom_snackbar.dart';
-import '../widgets/tabs_widget.dart';
+import '../../utils/refresh_tracker.dart';
+import '../../utils/custom_snackbar.dart';
+
 import 'shimmer_grid.dart';
 import 'subject_service.dart';
 import 'subject_model.dart';
@@ -229,6 +232,12 @@ class _FirstPageState extends State<FirstPage>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadUserData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
 
@@ -265,7 +274,10 @@ class _FirstPageState extends State<FirstPage>
               _colorTransitionController.reset();
               _colorTransitionController.forward();
 
-              await _fetchSelectedYearAndSubjects();
+              await Future.wait([
+                _fetchSelectedYearAndSubjects(),
+                _loadUserData(), 
+              ]);
             },
             child: Stack(
               children: [
@@ -289,9 +301,9 @@ class _FirstPageState extends State<FirstPage>
           theme: theme,
           scaffoldKey: widget.scaffoldKey,
           isOnlineNotifier: _isOnlineNotifier,
-          userName: _cachedUserName, // Pass the cached user name
-          currentSentence: currentSentence, // Pass the current sentence
-          subjects: subjects, // Pass the subjects list
+          userName: _cachedUserName,
+          currentSentence: currentSentence,
+          subjects: subjects,
         ),
         SliverToBoxAdapter(
           child: Align(

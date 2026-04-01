@@ -32,14 +32,13 @@ class CircuitPatternPainter extends CustomPainter {
     const spacing = 60.0;
     const nodeRadius = 1.5;
 
-    
-    for (double x = 0; x < size.width; x += spacing) {
-      for (double y = 0; y < size.height; y += spacing) {
+    for (double x = 0; x <= size.width + spacing; x += spacing) {
+      for (double y = 0; y <= size.height + spacing; y += spacing) {
         final offset = Offset(x, y);
 
         canvas.drawCircle(offset, nodeRadius, dotPaint);
 
-        if ((y / spacing) % 2 == 0 && x + spacing < size.width) {
+        if ((y / spacing) % 2 == 0 && x + spacing <= size.width + spacing) {
           canvas.drawLine(
             Offset(x + nodeRadius, y),
             Offset(x + spacing - nodeRadius, y),
@@ -47,7 +46,7 @@ class CircuitPatternPainter extends CustomPainter {
           );
         }
 
-        if ((x / spacing) % 2 == 0 && y + spacing < size.height) {
+        if ((x / spacing) % 2 == 0 && y + spacing <= size.height + spacing) {
           canvas.drawLine(
             Offset(x, y + nodeRadius),
             Offset(x, y + spacing - nodeRadius),
@@ -56,7 +55,8 @@ class CircuitPatternPainter extends CustomPainter {
         }
 
         if ((x / spacing + y / spacing) % 4 == 0) {
-          if (x + spacing < size.width && y + spacing < size.height) {
+          if (x + spacing <= size.width + spacing &&
+              y + spacing <= size.height + spacing) {
             canvas.drawLine(
               Offset(x + nodeRadius, y + nodeRadius),
               Offset(x + spacing - nodeRadius, y + spacing - nodeRadius),

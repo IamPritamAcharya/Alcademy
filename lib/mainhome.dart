@@ -1,10 +1,10 @@
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:port/pages/club/clubspage.dart';
-import 'package:port/pages/first%20page/drawer.dart';
+import 'package:port/utils/drawer.dart';
 import 'package:port/pages/notice/notice_page.dart';
 import 'package:port/pages/first%20page/first_page.dart';
-import 'package:port/pages/widgets/refresh_tracker.dart';
+import 'package:port/utils/refresh_tracker.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -73,6 +73,7 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: Colors.grey,
         height: 70,
         borderRadius: 30,
+        outlineBorderColor: Colors.white38,
         splashBorderRadius: 30,
       ),
     );

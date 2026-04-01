@@ -7,8 +7,8 @@ import 'package:html/parser.dart' as html_parser;
 import 'package:port/pages/notice/pdf_view_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../widgets/refresh_tracker.dart';
-import '../widgets/custom_snackbar.dart';
+import '../../utils/refresh_tracker.dart';
+import '../../utils/custom_snackbar.dart';
 
 class NoticePage extends StatefulWidget {
   @override
@@ -48,11 +48,9 @@ class _NoticePageState extends State<NoticePage> {
           final title = titleElement?.text.trim() ?? 'No Title';
           final date = element.children[1]?.text.trim() ?? 'No Date';
 
-          // Check for link in title column first (for external links)
           String downloadLink =
               titleElement?.querySelector('a')?.attributes['href'] ?? '';
 
-          // If no link in title, check download column (for PDFs)
           if (downloadLink.isEmpty || downloadLink == '#') {
             downloadLink =
                 element.children[2]?.querySelector('a')?.attributes['href'] ??
@@ -77,7 +75,6 @@ class _NoticePageState extends State<NoticePage> {
   }
 
   void _openNotice(String url) async {
-    // Skip if no valid URL
     if (url.isEmpty || url == '#') return;
 
     if (url.toLowerCase().endsWith('.pdf')) {
@@ -94,7 +91,6 @@ class _NoticePageState extends State<NoticePage> {
           await launchUrl(uri);
         }
       } catch (e) {
-        // If URL launch fails, do nothing
         print('Failed to launch URL: $url');
       }
     }

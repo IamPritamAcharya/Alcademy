@@ -1,12 +1,15 @@
 plugins {
     id("com.android.application")
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services")
+    // END: FlutterFire Configuration
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    // Flutter plugin must be applied after Android & Kotlin plugins
     id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
-    namespace = "com.example.port"
+    namespace = "com.alcademy.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -21,15 +24,35 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.port"
+        applicationId = "com.alcademy.app"
         minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        create("release") {
+            // Replace with your keystore details
+            storeFile = file("../keystore.jks")
+            storePassword = "mikumiku"
+            keyAlias = "alcademy-key"
+            keyPassword = "mikumiku"
+
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true           // Enables R8/ProGuard code shrinking
+            isShrinkResources = true         // Removes unused resources
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
             signingConfig = signingConfigs.getByName("debug")
         }
     }

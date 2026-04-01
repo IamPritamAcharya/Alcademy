@@ -34,20 +34,46 @@
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
+            
+            <!-- Default launcher intent -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- Enable Flutter deep linking -->
             <meta-data android:name="flutter_deeplinking_enabled" android:value="true"/>
             
+            <!-- Main domain deep linking with auto-verify -->
             <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Root domain -->
+                <data android:scheme="https"
+                    android:host="aca-web-c0e77.web.app" />
+
+                <!-- Posts -->
+                <data android:scheme="https"
+                    android:host="aca-web-c0e77.web.app"
+                    android:pathPrefix="/post" />
+
+                <!-- Clubs -->
+                <data android:scheme="https"
+                    android:host="aca-web-c0e77.web.app"
+                    android:pathPrefix="/club" />
+            </intent-filter>
+
+
+            <!-- Custom scheme for fallback (optional) -->
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="aca-web-c0e77.web.app" />
+                <data android:scheme="alcademy" />
             </intent-filter>
-
 
         </activity>
 

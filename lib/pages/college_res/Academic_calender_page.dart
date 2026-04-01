@@ -23,18 +23,18 @@ class _AcademicCalendarPageState extends State<AcademicCalendarPage> {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final DateTime now = DateTime.now();
-
-
+      final DateTime today = DateTime(now.year, now.month, now.day); // Today at 00:00:00
+      
       final String? cachedUrl = prefs.getString('academic_calendar_url');
       final String? lastUpdatedStr =
           prefs.getString('academic_calendar_last_updated');
       final DateTime? lastUpdated =
           lastUpdatedStr != null ? DateTime.tryParse(lastUpdatedStr) : null;
 
+      // Check if we have cached data and it's from today
       if (cachedUrl != null &&
           lastUpdated != null &&
-          now.difference(lastUpdated).inDays < 30) {
-
+          lastUpdated.isAfter(today.subtract(Duration(seconds: 1)))) {
         setState(() {
           pdfUrl = cachedUrl;
           isLoading = false;
@@ -42,19 +42,16 @@ class _AcademicCalendarPageState extends State<AcademicCalendarPage> {
         return;
       }
 
-
+      // Fetch new data
       final response = await http.get(Uri.parse(
           'https://raw.githubusercontent.com/Academia-IGIT/DATA_hub/main/academic_calender.txt'));
 
       if (response.statusCode == 200) {
         final String fetchedUrl = response.body.trim();
-
         if (fetchedUrl.isNotEmpty) {
-    
           await prefs.setString('academic_calendar_url', fetchedUrl);
           await prefs.setString(
               'academic_calendar_last_updated', now.toIso8601String());
-
           setState(() {
             pdfUrl = fetchedUrl;
             isLoading = false;
@@ -69,7 +66,6 @@ class _AcademicCalendarPageState extends State<AcademicCalendarPage> {
       setState(() {
         isLoading = false;
       });
-     
     }
   }
 

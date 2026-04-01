@@ -1,16 +1,19 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:port/pages/stories/random_bg.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StoryScreen extends StatefulWidget {
   final List<Map<String, String>> stories;
   final int initialIndex;
 
   const StoryScreen(
-      {Key? key, required this.stories, required this.initialIndex})
-      : super(key: key);
+      {super.key, required this.stories, required this.initialIndex});
 
   @override
   State<StoryScreen> createState() => _StoryScreenState();
@@ -22,20 +25,15 @@ class _StoryScreenState extends State<StoryScreen>
   int _currentIndex = 0;
   VideoPlayerController? _videoController;
   YoutubePlayerController? _youtubeController;
-  bool _isPaused = false;
   double _progress = 0.0;
   Timer? _progressTimer;
-  bool _isTransitioning = false;
 
-  
   late AnimationController _progressAnimationController;
   late Animation<double> _progressAnimation;
 
-  
   late AnimationController _blurAnimationController;
   late Animation<double> _blurAnimation;
 
-  
   late AnimationController _popOutAnimationController;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
@@ -46,7 +44,6 @@ class _StoryScreenState extends State<StoryScreen>
     _currentIndex = widget.initialIndex;
     _pageController = PageController(initialPage: _currentIndex);
 
-    
     _progressAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 50),
@@ -68,16 +65,14 @@ class _StoryScreenState extends State<StoryScreen>
       }
     });
 
-    
     _blurAnimationController = AnimationController(
       vsync: this,
-      duration:
-          const Duration(milliseconds: 300), 
+      duration: const Duration(milliseconds: 300),
     );
 
     _blurAnimation = Tween<double>(
       begin: 0.0,
-      end: 15.0, 
+      end: 15.0,
     ).animate(CurvedAnimation(
       parent: _blurAnimationController,
       curve: Curves.easeInOut,
@@ -89,7 +84,6 @@ class _StoryScreenState extends State<StoryScreen>
       }
     });
 
-    
     _popOutAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -126,6 +120,7 @@ class _StoryScreenState extends State<StoryScreen>
         _initializeVideoPlayer(story['url']!);
       }
     } else {
+      // For both image and text stories, use timer
       _startImageTimer();
     }
   }
@@ -178,12 +173,12 @@ class _StoryScreenState extends State<StoryScreen>
   }
 
   void _youtubePlayerListener() {
-    if (_youtubeController == null || !_youtubeController!.value.isReady)
+    if (_youtubeController == null || !_youtubeController!.value.isReady) {
       return;
+    }
 
     final playerState = _youtubeController!.value.playerState;
 
-    
     if (playerState == PlayerState.ended) {
       _youtubeController!.removeListener(_youtubePlayerListener);
       Future.microtask(() {
@@ -200,12 +195,11 @@ class _StoryScreenState extends State<StoryScreen>
         _videoController!.play();
         _startVideoProgress();
       }).catchError((error) {
-        print('Error loading video: $error');
+        debugPrint('Error loading video: $error');
       });
   }
 
   void _startImageTimer() {
-    const duration = Duration(seconds: 10);
     _progressTimer?.cancel();
 
     _progressTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
@@ -231,7 +225,6 @@ class _StoryScreenState extends State<StoryScreen>
 
         _updateProgress(newProgress);
 
-        
         if (newProgress >= 0.98) {
           _onStoryComplete();
           timer.cancel();
@@ -279,41 +272,31 @@ class _StoryScreenState extends State<StoryScreen>
   void _onStoryComplete() {
     _progressTimer?.cancel();
 
-    
     if (_currentIndex >= widget.stories.length - 1) {
-      
       _popOutAnimationController.forward().then((_) {
         Navigator.pop(context);
       });
       return;
     }
 
-    
-    setState(() {
-      _isTransitioning = true;
-    });
+    setState(() {});
 
-    
     _blurAnimationController.forward().then((_) {
-      
       setState(() {
         _currentIndex++;
       });
 
       _pageController.nextPage(
-        duration: const Duration(milliseconds: 100), 
+        duration: const Duration(milliseconds: 100),
         curve: Curves.easeInOut,
       );
 
       _loadStory();
 
-      
       Timer(const Duration(milliseconds: 150), () {
         if (mounted) {
           _blurAnimationController.reverse().then((_) {
-            setState(() {
-              _isTransitioning = false;
-            });
+            setState(() {});
           });
         }
       });
@@ -333,6 +316,110 @@ class _StoryScreenState extends State<StoryScreen>
     }
 
     _progressTimer?.cancel();
+  }
+
+  List<TextSpan> _parseTextWithLinks(String text) {
+    final List<TextSpan> spans = [];
+    final RegExp urlRegex = RegExp(
+      r'https?://[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,}[^\s]*',
+      caseSensitive: false,
+    );
+
+    int lastIndex = 0;
+    for (final Match match in urlRegex.allMatches(text)) {
+      if (match.start > lastIndex) {
+        spans.add(TextSpan(
+          text: text.substring(lastIndex, match.start),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+          ),
+        ));
+      }
+
+      String url = match.group(0)!;
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://$url';
+      }
+
+      spans.add(TextSpan(
+        text: match.group(0)!,
+        style: const TextStyle(
+          color: Color(0xFF00D4FF),
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          decoration: TextDecoration.underline,
+          decorationColor: Color(0xFF00D4FF),
+          decorationThickness: 2,
+        ),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () async {
+            try {
+              final Uri uri = Uri.parse(url);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            } catch (e) {
+              debugPrint('Error launching URL: $e');
+            }
+          },
+      ));
+
+      lastIndex = match.end;
+    }
+
+    if (lastIndex < text.length) {
+      spans.add(TextSpan(
+        text: text.substring(lastIndex),
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.w400,
+        ),
+      ));
+    }
+
+    return spans;
+  }
+
+  List<Color> _getTextStoryGradient(Map<String, String> story) {
+    final String? bgColor = story['backgroundColor'];
+    if (bgColor != null && bgColor.isNotEmpty) {
+      try {
+        String colorStr = bgColor;
+        if (colorStr.startsWith('#')) {
+          colorStr = colorStr.replaceFirst('#', '0xFF');
+        }
+        final Color baseColor = Color(int.parse(colorStr));
+        return [
+          baseColor,
+          baseColor.withOpacity(0.8),
+          baseColor.withOpacity(0.6),
+        ];
+      } catch (e) {}
+    }
+
+    final List<List<Color>> gradients = [
+      [const Color(0xFF667eea), const Color(0xFF764ba2)],
+      [const Color(0xFFf093fb), const Color(0xFFf5576c)],
+      [const Color(0xFF4facfe), const Color(0xFF00f2fe)],
+      [const Color(0xFF43e97b), const Color(0xFF38f9d7)],
+      [const Color(0xFFfa709a), const Color(0xFFfee140)],
+      [const Color(0xFFa8edea), const Color(0xFFfed6e3)],
+      [const Color(0xFFffecd2), const Color(0xFFfcb69f)],
+      [const Color(0xFFd299c2), const Color(0xFFfef9d7)],
+      [const Color(0xFF89f7fe), const Color(0xFF66a6ff)],
+      [const Color(0xFFfbc2eb), const Color(0xFFa6c1ee)],
+    ];
+
+    final int hash = (story['text'] ?? '').hashCode;
+    final selectedGradient = gradients[hash.abs() % gradients.length];
+    return [
+      selectedGradient[0],
+      selectedGradient[1],
+      selectedGradient[0].withOpacity(0.8),
+    ];
   }
 
   @override
@@ -359,7 +446,6 @@ class _StoryScreenState extends State<StoryScreen>
               child: GestureDetector(
                 onLongPress: () {
                   setState(() {
-                    _isPaused = true;
                     _videoController?.pause();
                     _youtubeController?.pause();
                     _pauseProgress();
@@ -367,7 +453,6 @@ class _StoryScreenState extends State<StoryScreen>
                 },
                 onLongPressUp: () {
                   setState(() {
-                    _isPaused = false;
                     _videoController?.play();
                     _youtubeController?.play();
                     _resumeProgress();
@@ -377,11 +462,8 @@ class _StoryScreenState extends State<StoryScreen>
                   final screenWidth = MediaQuery.of(context).size.width;
                   if (details.localPosition.dx < screenWidth / 2) {
                     if (_currentIndex > 0) {
-                      setState(() {
-                        _isTransitioning = true;
-                      });
+                      setState(() {});
 
-                      
                       _blurAnimationController.forward().then((_) {
                         setState(() {
                           _currentIndex--;
@@ -397,9 +479,7 @@ class _StoryScreenState extends State<StoryScreen>
                         Timer(const Duration(milliseconds: 150), () {
                           if (mounted) {
                             _blurAnimationController.reverse().then((_) {
-                              setState(() {
-                                _isTransitioning = false;
-                              });
+                              setState(() {});
                             });
                           }
                         });
@@ -422,10 +502,105 @@ class _StoryScreenState extends State<StoryScreen>
                         itemCount: widget.stories.length,
                         itemBuilder: (context, index) {
                           final story = widget.stories[index];
-                          if (story['type'] == 'image') {
-                            return Image.network(
-                              story['url'] ?? '',
+
+                          if (story['type'] == 'text') {
+                            final List<Color> gradientColors =
+                                _getTextStoryGradient(story);
+                            final String text = story['text'] ?? '';
+
+                            return Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: gradientColors,
+                                  stops: const [0.0, 0.6, 1.0],
+                                ),
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  gradient: RadialGradient(
+                                    center: Alignment.topRight,
+                                    radius: 1.2,
+                                    colors: [
+                                      Colors.white.withOpacity(0.1),
+                                      Colors.transparent,
+                                    ],
+                                  ),
+                                ),
+                                child: SafeArea(
+                                  child: Stack(
+                                    children: [
+                                      Positioned.fill(
+                                        child: CustomPaint(
+                                          painter: getRandomPainter(index),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 32.0,
+                                          vertical: 40.0,
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.all(24.0),
+                                              child: Center(
+                                                child: RichText(
+                                                  textAlign: TextAlign.center,
+                                                  text: TextSpan(
+                                                    children:
+                                                        _parseTextWithLinks(
+                                                            text),
+                                                    style: const TextStyle(
+                                                      fontFamily: 'ProductSans',
+                                                      height: 1.4,
+                                                      letterSpacing: 0.5,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 20),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else if (story['type'] == 'image') {
+                            return CachedNetworkImage(
+                              imageUrl: story['url'] ?? '',
                               fit: BoxFit.contain,
+                              width: double.infinity,
+                              height: double.infinity,
+                              placeholder: (context, url) => Container(
+                                color: Colors.black,
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                  ),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                color: Colors.black,
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.error,
+                                    color: Colors.white,
+                                    size: 50,
+                                  ),
+                                ),
+                              ),
+                              memCacheWidth: null,
+                              memCacheHeight: null,
+                              fadeInDuration: const Duration(milliseconds: 100),
                             );
                           } else if (_isYouTubeUrl(story['url'] ?? '')) {
                             return _youtubeController != null
@@ -445,7 +620,11 @@ class _StoryScreenState extends State<StoryScreen>
                                     ),
                                   )
                                 : const Center(
-                                    child: CircularProgressIndicator());
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    ),
+                                  );
                           } else if (_videoController != null &&
                               _videoController!.value.isInitialized) {
                             return AspectRatio(
@@ -454,7 +633,11 @@ class _StoryScreenState extends State<StoryScreen>
                             );
                           } else {
                             return const Center(
-                                child: CircularProgressIndicator());
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            );
                           }
                         },
                       ),

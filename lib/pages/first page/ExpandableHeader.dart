@@ -3,10 +3,10 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:auto_size_text/auto_size_text.dart'; // Add this import
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:port/pages/first%20page/private_page.dart';
+import 'package:port/pages/private/private_page.dart';
 
 class ExpandableHeader extends StatefulWidget {
   final Map<String, dynamic> theme;
@@ -101,11 +101,9 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Massive hero typography with arrow
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Modified Hello + Name text with AutoSizeText
                       Expanded(
                         child: ShaderMask(
                           shaderCallback: (bounds) => const LinearGradient(
@@ -153,12 +151,10 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
                         ),
                       ),
                       const SizedBox(width: 30),
-                      // iOS-style slideable arrow
                       _buildSlider(theme, context),
                     ],
                   ),
                   const SizedBox(height: 24),
-                  // Minimal quote container
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -205,12 +201,10 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
 
     Future<void> _authenticateAndNavigate() async {
       try {
-        // Check if biometric authentication is available
         final bool isAvailable = await localAuth.canCheckBiometrics;
         final bool isDeviceSupported = await localAuth.isDeviceSupported();
 
         if (!isAvailable || !isDeviceSupported) {
-          // Show error message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Biometric authentication not available'),
@@ -220,7 +214,6 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
           return;
         }
 
-        // Get available biometric types
         final List<BiometricType> availableBiometrics =
             await localAuth.getAvailableBiometrics();
 
@@ -234,17 +227,15 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
           return;
         }
 
-        // Attempt authentication
         final bool didAuthenticate = await localAuth.authenticate(
           localizedReason: 'Please authenticate to access private content',
           options: AuthenticationOptions(
-            biometricOnly: false, // Allows PIN/password as fallback
+            biometricOnly: false,
             stickyAuth: true,
           ),
         );
 
         if (didAuthenticate) {
-          // Navigate to private page
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -252,7 +243,6 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
             ),
           );
         } else {
-          // Authentication failed
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Authentication failed'),
@@ -283,18 +273,17 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
             RenderBox box = context.findRenderObject() as RenderBox;
             final localPosition = box.globalToLocal(details.globalPosition);
             double newOffset = localPosition.dx - padding - (thumbSize / 2);
-            // Smoother drag sensitivity
+
             setState(() {
               _sliderValue = (newOffset / maxOffset).clamp(0.0, 1.0);
             });
           },
           onHorizontalDragEnd: (_) {
             if (_sliderValue >= 0.8) {
-              // Trigger authentication when slider is near the end
               _authenticateAndNavigate();
             }
             setState(() {
-              _sliderValue = 0.0; // Reset
+              _sliderValue = 0.0;
             });
           },
           child: Container(
@@ -308,9 +297,8 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
             child: Stack(
               children: [
                 AnimatedPositioned(
-                  duration: Duration(
-                      milliseconds: 300), // Increased for smoother animation
-                  curve: Curves.easeInOut, // Smoother easing curve
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
                   left: padding + (_sliderValue * maxOffset),
                   top: padding,
                   child: Container(
@@ -455,13 +443,11 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
               ((totalHeight - currentHeight) / (totalHeight - minHeight))
                   .clamp(0.0, 1.0);
 
-          // Refined scaling
           final double actionSize = 48 - (collapseRatio * 8);
           final double statusFontSize = 13 - (collapseRatio * 1);
           final double horizontalPadding = 24 - (collapseRatio * 4);
           final double verticalPadding = 16 - (collapseRatio * 6);
 
-          // Sharp content fade
           final double contentOpacity = collapseRatio < 0.3
               ? 1.0
               : ((1.0 - collapseRatio) / 0.7).clamp(0.0, 1.0);
@@ -487,7 +473,6 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
             ),
             child: Container(
               decoration: BoxDecoration(
-                // Add a dark overlay to tone down bright colors
                 color: Colors.black.withOpacity(0.15),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(28),
@@ -497,7 +482,6 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
               child: SafeArea(
                 child: Column(
                   children: [
-                    // Compact header bar
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: horizontalPadding,
@@ -568,7 +552,6 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
                         ],
                       ),
                     ),
-                    // Hero content
                     Expanded(
                       child: SingleChildScrollView(
                         physics: const NeverScrollableScrollPhysics(),

@@ -86,12 +86,10 @@ class SubjectCard extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                
                 Container(
                   width: 50,
                   height: 50,
@@ -112,8 +110,6 @@ class SubjectCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-
-                
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: AutoSizeText(
