@@ -5,10 +5,6 @@
 </h1>
 
 <p align="center">
-  <img src="assets/banner.png" width="100%" />
-</p>
-
-<p align="center">
   <a href="https://play.google.com/store/apps/details?id=com.alcademy.app">
     <img src="https://img.shields.io/badge/Download-Play%20Store-green?style=for-the-badge&logo=google-play" />
   </a>
@@ -33,6 +29,11 @@
 <p align="center">
   <b>A production-scale academic platform used daily by 2000+ students, built under real-world constraints.</b>
 </p>
+
+<p align="center">
+  <img src="assets/banner.png" width="100%" />
+</p>
+
 
 ---
 
@@ -75,7 +76,6 @@ Alcademy is a **client-orchestrated academic ecosystem** designed for:
   <img src="assets/2.png" width="180" />
   <img src="assets/3.png" width="180" />
   <img src="assets/4.png" width="180" />
-  <img src="assets/5.png" width="180" />
 </p>
 
 ---
