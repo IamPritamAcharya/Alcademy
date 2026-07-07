@@ -8,11 +8,11 @@ class SharedMarkdownViewer extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const SharedMarkdownViewer({
-    Key? key,
+    super.key,
     required this.markdownData,
     this.compact = false,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

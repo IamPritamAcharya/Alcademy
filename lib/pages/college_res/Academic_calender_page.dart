@@ -1,10 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class AcademicCalendarPage extends StatefulWidget {
+  const AcademicCalendarPage({super.key});
+
   @override
   _AcademicCalendarPageState createState() => _AcademicCalendarPageState();
 }

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -11,6 +10,8 @@ import '../../utils/refresh_tracker.dart';
 import '../../utils/custom_snackbar.dart';
 
 class NoticePage extends StatefulWidget {
+  const NoticePage({super.key});
+
   @override
   _NoticePageState createState() => _NoticePageState();
 }
@@ -45,15 +46,15 @@ class _NoticePageState extends State<NoticePage> {
 
         final List<Notice> fetchedNotices = noticeElements.map((element) {
           final titleElement = element.children[0];
-          final title = titleElement?.text.trim() ?? 'No Title';
-          final date = element.children[1]?.text.trim() ?? 'No Date';
+          final title = titleElement.text.trim() ?? 'No Title';
+          final date = element.children[1].text.trim() ?? 'No Date';
 
           String downloadLink =
-              titleElement?.querySelector('a')?.attributes['href'] ?? '';
+              titleElement.querySelector('a')?.attributes['href'] ?? '';
 
           if (downloadLink.isEmpty || downloadLink == '#') {
             downloadLink =
-                element.children[2]?.querySelector('a')?.attributes['href'] ??
+                element.children[2].querySelector('a')?.attributes['href'] ??
                     '#';
           }
 

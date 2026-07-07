@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class WelcomePage extends StatelessWidget {
   final VoidCallback onNext;
-  const WelcomePage({Key? key, required this.onNext}) : super(key: key);
+  const WelcomePage({super.key, required this.onNext});
 
   @override
   Widget build(BuildContext context) {

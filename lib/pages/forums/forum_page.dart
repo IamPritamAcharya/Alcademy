@@ -11,7 +11,7 @@ import 'database_service.dart';
 import 'post_detail_page.dart';
 
 class ForumPage extends StatefulWidget {
-  const ForumPage({Key? key}) : super(key: key);
+  const ForumPage({super.key});
 
   @override
   State<ForumPage> createState() => _ForumPageState();

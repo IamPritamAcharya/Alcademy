@@ -8,6 +8,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class AmenitiesPage extends StatefulWidget {
+  const AmenitiesPage({super.key});
+
   @override
   _AmenitiesPageState createState() => _AmenitiesPageState();
 }
@@ -18,7 +20,7 @@ class _AmenitiesPageState extends State<AmenitiesPage> {
   List<dynamic> _filteredAmenities = [];
   List<String> _tags = [];
   int _currentPage = 1;
-  int _itemsPerPage = 10;
+  final int _itemsPerPage = 10;
   String _searchQuery = '';
   String _selectedTag = '';
   bool _isLoading = true;

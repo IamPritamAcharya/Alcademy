@@ -23,7 +23,7 @@ const Map<String, String> defaultImageUrls = {
 };
 
 class AddPostPage extends StatefulWidget {
-  const AddPostPage({Key? key}) : super(key: key);
+  const AddPostPage({super.key});
 
   @override
   State<AddPostPage> createState() => _AddPostPageState();

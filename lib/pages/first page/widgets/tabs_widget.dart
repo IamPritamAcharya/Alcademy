@@ -11,7 +11,7 @@ import 'first_tab_widget.dart';
 class TabsWidget extends StatelessWidget {
   final Function(String) onTabPressed;
 
-  const TabsWidget({Key? key, required this.onTabPressed}) : super(key: key);
+  const TabsWidget({super.key, required this.onTabPressed});
 
   @override
   Widget build(BuildContext context) {

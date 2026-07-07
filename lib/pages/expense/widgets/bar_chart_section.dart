@@ -5,9 +5,9 @@ class BarChartSection extends StatelessWidget {
   final List<Map<String, dynamic>> expenses;
 
   const BarChartSection({
-    Key? key,
+    super.key,
     required this.expenses,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import 'club_model.dart';
 
 class ClubDetailPage extends StatefulWidget {
   final Club club;
-  const ClubDetailPage({required this.club});
+  const ClubDetailPage({super.key, required this.club});
 
   @override
   State<ClubDetailPage> createState() => _ClubDetailPageState();
@@ -515,7 +515,7 @@ class _ClubDetailPageState extends State<ClubDetailPage>
 
 class ClubDetailPageFromLink extends StatelessWidget {
   final String clubId;
-  const ClubDetailPageFromLink({required this.clubId});
+  const ClubDetailPageFromLink({super.key, required this.clubId});
 
   @override
   Widget build(BuildContext context) {

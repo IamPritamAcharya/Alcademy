@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class ApiKeyPage extends StatefulWidget {
-  const ApiKeyPage({Key? key}) : super(key: key);
+  const ApiKeyPage({super.key});
 
   @override
   State<ApiKeyPage> createState() => _ApiKeyPageState();

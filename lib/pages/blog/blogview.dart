@@ -5,7 +5,7 @@ import 'package:port/utils/markdown_provider.dart';
 class MarkdownViewerPage extends StatefulWidget {
   final String url;
 
-  const MarkdownViewerPage({required this.url});
+  const MarkdownViewerPage({super.key, required this.url});
 
   @override
   State<MarkdownViewerPage> createState() => _MarkdownViewerPageState();

@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AddItemDialog extends StatefulWidget {
-  const AddItemDialog({Key? key}) : super(key: key);
+  const AddItemDialog({super.key});
 
   @override
   State<AddItemDialog> createState() => _AddItemDialogState();

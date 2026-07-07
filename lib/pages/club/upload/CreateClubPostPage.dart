@@ -176,7 +176,7 @@ class _CreateClubPostPageState extends State<CreateClubPostPage> {
 
     String today =
         DateTime.now().toString().substring(0, 10).replaceAll('-', '');
-    String prefKey = key + "_" + today;
+    String prefKey = "${key}_$today";
 
     int changes = prefs.getInt(prefKey) ?? 0;
     await prefs.setInt(prefKey, changes + 1);

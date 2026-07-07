@@ -8,8 +8,7 @@ class SubjectGradeInput extends StatefulWidget {
   final String semester;
 
   const SubjectGradeInput(
-      {Key? key, required this.branch, required this.semester})
-      : super(key: key);
+      {super.key, required this.branch, required this.semester});
 
   @override
   _SubjectGradeInputState createState() => _SubjectGradeInputState();

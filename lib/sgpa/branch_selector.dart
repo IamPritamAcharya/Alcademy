@@ -5,7 +5,7 @@ import 'subject_grade_input.dart';
 import 'data.dart';
 
 class BranchSelector extends StatefulWidget {
-  const BranchSelector({Key? key}) : super(key: key);
+  const BranchSelector({super.key});
 
   @override
   _BranchSelectorState createState() => _BranchSelectorState();
@@ -252,7 +252,7 @@ class _BranchSelectorState extends State<BranchSelector> {
                   child: const Text(
                     'Next',
                     style: TextStyle(
-                      color: const Color(0xFF1A1D1E),
+                      color: Color(0xFF1A1D1E),
                       fontSize: 16,
                       fontFamily: 'ProductSans',
                       fontWeight: FontWeight.bold,

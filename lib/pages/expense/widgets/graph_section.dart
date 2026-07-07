@@ -7,10 +7,10 @@ class GraphSection extends StatelessWidget {
   final double budget;
 
   const GraphSection({
-    Key? key,
+    super.key,
     required this.expenses,
     required this.budget,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

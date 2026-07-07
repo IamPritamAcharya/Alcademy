@@ -1,0 +1,159 @@
+{
+  "gateCategories": [
+    {
+      "name": "Previous Year Papers",
+      "icon": "history_edu_rounded",
+      "accent": "0xFF3DFFC0",
+      "resources": [
+        {
+          "title": "GATE 2026 Official PYQs",
+          "subtitle": "All branches — direct from IIT Guwahati",
+          "url": "https://gate2026.iitg.ac.in/download.html",
+          "tag": "Official",
+          "icon": "school_rounded",
+          "gradient": ["0xFF3DFFC0", "0xFF1A8A69"]
+        },
+        {
+          "title": "GATE PYQ — GeeksForGeeks",
+          "subtitle": "Topic-wise solved GATE questions",
+          "url": "https://www.geeksforgeeks.org/gate-previous-years-questions/",
+          "tag": "Free",
+          "icon": "quiz_rounded",
+          "gradient": ["0xFF4DA8FF", "0xFF1A5FA8"]
+        },
+        {
+          "title": "GATE PYQ PDFs — Gate2025",
+          "subtitle": "Year-wise PDFs for all branches",
+          "url": "https://www.gate2025.com/gate-previous-year-question-papers/",
+          "tag": "PDF",
+          "icon": "picture_as_pdf_rounded",
+          "gradient": ["0xFFFFB84D", "0xFFA86820"]
+        }
+      ]
+    },
+    {
+      "name": "Free Notes",
+      "icon": "menu_book_rounded",
+      "accent": "0xFFB97AFF",
+      "resources": [
+        {
+          "title": "NPTEL Lecture Notes",
+          "subtitle": "IIT faculty notes — all CS/EC/ME topics",
+          "url": "https://nptel.ac.in/courses",
+          "tag": "IIT",
+          "icon": "auto_stories_rounded",
+          "gradient": ["0xFFB97AFF", "0xFF5A20A8"]
+        },
+        {
+          "title": "GeeksForGeeks — CS Notes",
+          "subtitle": "DS, Algorithms, OS, DBMS, CN, CO",
+          "url": "https://www.geeksforgeeks.org/gate-cs-notes-gq/",
+          "tag": "CS",
+          "icon": "computer_rounded",
+          "gradient": ["0xFF3DFFC0", "0xFF1A8A69"]
+        },
+        {
+          "title": "Gate Overflow — GATE CS",
+          "subtitle": "Community-verified GATE CS questions",
+          "url": "https://gateoverflow.in/",
+          "tag": "Q&A",
+          "icon": "question_answer_rounded",
+          "gradient": ["0xFFFF7AA8", "0xFFA82060"]
+        },
+        {
+          "title": "Erwin Kreyszig Notes (Maths)",
+          "subtitle": "Engineering Mathematics — free archive",
+          "url": "https://archive.org/search?query=gate+mathematics",
+          "tag": "Maths",
+          "icon": "functions_rounded",
+          "gradient": ["0xFF4DFFE6", "0xFF1A8A80"]
+        }
+      ]
+    },
+    {
+      "name": "Video Lectures",
+      "icon": "play_circle_rounded",
+      "accent": "0xFFFF7A50",
+      "resources": [
+        {
+          "title": "NPTEL GATE Lectures",
+          "subtitle": "Official IIT video courses — free",
+          "url": "https://www.youtube.com/@nptel-noc",
+          "tag": "YouTube",
+          "icon": "smart_display_rounded",
+          "gradient": ["0xFFFF7A50", "0xFFA83200"]
+        },
+        {
+          "title": "GATE Lectures — Unacademy",
+          "subtitle": "Free GATE prep videos on YouTube",
+          "url": "https://www.youtube.com/@UnacademyGATE",
+          "tag": "YouTube",
+          "icon": "ondemand_video_rounded",
+          "gradient": ["0xFF4DA8FF", "0xFF1A5FA8"]
+        },
+        {
+          "title": "Ravindra Babu Ravula",
+          "subtitle": "Top-rated GATE CS teacher on YouTube",
+          "url": "https://www.youtube.com/@GATESmashers",
+          "tag": "YouTube",
+          "icon": "video_library_rounded",
+          "gradient": ["0xFFB97AFF", "0xFF5A20A8"]
+        }
+      ]
+    },
+    {
+      "name": "Mock Tests",
+      "icon": "timer_rounded",
+      "accent": "0xFFFFB84D",
+      "resources": [
+        {
+          "title": "GATE Virtual Calculator",
+          "subtitle": "Official GATE virtual calculator practice",
+          "url": "https://gate2025.iitr.ac.in/virtual-calculator.html",
+          "tag": "Official",
+          "icon": "calculate_rounded",
+          "gradient": ["0xFFFFB84D", "0xFFA86820"]
+        },
+        {
+          "title": "GateOverflow Mock Tests",
+          "subtitle": "Community GATE mock tests — free",
+          "url": "https://gateoverflow.in/tests/",
+          "tag": "Free",
+          "icon": "assignment_rounded",
+          "gradient": ["0xFF3DFFC0", "0xFF1A8A69"]
+        },
+        {
+          "title": "GATE 2025 Syllabus",
+          "subtitle": "Official branch-wise syllabus PDF",
+          "url": "https://gate2025.iitr.ac.in/syllabus.html",
+          "tag": "Official",
+          "icon": "list_alt_rounded",
+          "gradient": ["0xFFFF7AA8", "0xFFA82060"]
+        }
+      ]
+    }
+  ],
+  "pyqYears": [
+    "2025", "2024", "2023", "2022", "2021", "2020", "2019", "2018", "2017"
+  ],
+  "pyqBranches": [
+    {"name": "Computer Science (Session 1)", "code": "CS1"},
+    {"name": "Computer Science (Session 2)", "code": "CS2"},
+    {"name": "Civil Engg. (Paper 1)", "code": "CE1"},
+    {"name": "Civil Engg. (Paper 2)", "code": "CE2"},
+    {"name": "Mechanical Engg. (Paper 1)", "code": "ME1"},
+    {"name": "Mechanical Engg. (Paper 2)", "code": "ME2"},
+    {"name": "Electrical Engineering", "code": "EE"},
+    {"name": "Electronics & Comm.", "code": "EC"},
+    {"name": "Data Science & AI", "code": "DA"},
+    {"name": "Instrumentation", "code": "IN"},
+    {"name": "Aerospace Engg.", "code": "AE"},
+    {"name": "Chemical Engg.", "code": "CH"},
+    {"name": "Metallurgical Engg.", "code": "MT"},
+    {"name": "Production & Industrial", "code": "PI"},
+    {"name": "Biotechnology", "code": "BT"},
+    {"name": "Mathematics", "code": "MA"},
+    {"name": "Physics", "code": "PH"},
+    {"name": "Chemistry", "code": "CY"}
+  ]
+}

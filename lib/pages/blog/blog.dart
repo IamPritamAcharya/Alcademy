@@ -6,6 +6,8 @@ import '../../utils/refresh_tracker.dart';
 import '../../utils/custom_snackbar.dart';
 
 class MarkdownListPage extends StatefulWidget {
+  const MarkdownListPage({super.key});
+
   @override
   _MarkdownListPageState createState() => _MarkdownListPageState();
 }
@@ -198,7 +200,7 @@ class GlassmorphicCard extends StatelessWidget {
   final Widget child;
   final VoidCallback onTap;
 
-  const GlassmorphicCard({
+  const GlassmorphicCard({super.key, 
     required this.child,
     required this.onTap,
   });

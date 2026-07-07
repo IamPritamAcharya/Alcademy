@@ -8,6 +8,8 @@ class OnboardingPage2 extends StatelessWidget {
   final Color mutedGreen = const Color(0xFF81C784);
   final Color textColor = const Color(0xFF2E7D32);
 
+  const OnboardingPage2({super.key});
+
   Future<void> _openUrl(String url) async {
     if (await canLaunch(url)) {
       await launch(url);

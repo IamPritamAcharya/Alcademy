@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 final supabase = Supabase.instance.client;
 
 class SignInWidget extends StatefulWidget {
-  const SignInWidget({Key? key}) : super(key: key);
+  const SignInWidget({super.key});
 
   @override
   State<SignInWidget> createState() => _SignInWidgetState();
@@ -166,7 +166,7 @@ class _SignInWidgetState extends State<SignInWidget> {
       });
 
       await _saveCooldownTimes();
-    } catch (error, stackTrace) {
+    } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Sign-in failed: $error')),
       );
@@ -210,7 +210,7 @@ class _SignInWidgetState extends State<SignInWidget> {
       });
 
       await _saveCooldownTimes();
-    } catch (error, stackTrace) {
+    } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Sign-out failed: $error')),
       );

@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 class PDFViewPage extends StatelessWidget {
   final String pdfUrl;
 
-  PDFViewPage({required this.pdfUrl});
+  const PDFViewPage({super.key, required this.pdfUrl});
 
   void _downloadPDF(BuildContext context) async {
     try {
