@@ -4,86 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'gate_direct_pyq.dart';
-
-// Data models
-
-class GateResource {
-  final String title;
-  final String subtitle;
-  final String url;
-  final String tag;
-  final IconData icon;
-  final List<Color> gradient;
-
-  const GateResource({
-    required this.title,
-    required this.subtitle,
-    required this.url,
-    required this.tag,
-    required this.icon,
-    required this.gradient,
-  });
-}
-
-class GateCategory {
-  final String name;
-  final IconData icon;
-  final Color accent;
-  final List<GateResource> resources;
-
-  const GateCategory({
-    required this.name,
-    required this.icon,
-    required this.accent,
-    required this.resources,
-  });
-}
-
-// Curated GATE resource directory
-// All links point to publicly available, free educational content.
-// Opening them in-app via WebView is Play Store compliant.
-
-IconData getGateIconData(String name) {
-  switch (name) {
-    case 'history_edu_rounded':
-      return Icons.history_edu_rounded;
-    case 'school_rounded':
-      return Icons.school_rounded;
-    case 'quiz_rounded':
-      return Icons.quiz_rounded;
-    case 'picture_as_pdf_rounded':
-      return Icons.picture_as_pdf_rounded;
-    case 'menu_book_rounded':
-      return Icons.menu_book_rounded;
-    case 'auto_stories_rounded':
-      return Icons.auto_stories_rounded;
-    case 'computer_rounded':
-      return Icons.computer_rounded;
-    case 'question_answer_rounded':
-      return Icons.question_answer_rounded;
-    case 'functions_rounded':
-      return Icons.functions_rounded;
-    case 'play_circle_rounded':
-      return Icons.play_circle_rounded;
-    case 'smart_display_rounded':
-      return Icons.smart_display_rounded;
-    case 'ondemand_video_rounded':
-      return Icons.ondemand_video_rounded;
-    case 'video_library_rounded':
-      return Icons.video_library_rounded;
-    case 'timer_rounded':
-      return Icons.timer_rounded;
-    case 'calculate_rounded':
-      return Icons.calculate_rounded;
-    case 'assignment_rounded':
-      return Icons.assignment_rounded;
-    case 'list_alt_rounded':
-      return Icons.list_alt_rounded;
-    default:
-      return Icons.description_rounded;
-  }
-}
+import 'models/gate_model.dart';
+import 'utils/gate_utils.dart';
+import 'utils/gate_data_fetcher.dart';
+import 'gate_dynamic_pyq.dart';
+import 'gate_pdf_viewer.dart';
 
 // Main GATE Page
 
@@ -108,9 +33,7 @@ class _GatePageState extends State<GatePage> with TickerProviderStateMixin {
   }
 
   Future<void> _loadData() async {
-    final String response =
-        await rootBundle.loadString('lib/assets/gate_source.json');
-    final data = await json.decode(response);
+    final data = await fetchGateData();
 
     List<GateCategory> loadedCategories = [];
     for (var cat in data['gateCategories']) {
@@ -120,6 +43,8 @@ class _GatePageState extends State<GatePage> with TickerProviderStateMixin {
           title: res['title'],
           subtitle: res['subtitle'],
           url: res['url'],
+          keyUrl: res['keyUrl'],
+          subjectCodes: res['subjectCodes'] != null ? List<String>.from(res['subjectCodes']) : null,
           tag: res['tag'],
           icon: getGateIconData(res['icon']),
           gradient: [
@@ -168,28 +93,24 @@ class _GatePageState extends State<GatePage> with TickerProviderStateMixin {
   }
 
   void _openResource(GateResource resource) {
-    if (resource.url == 'https://gate2026.iitg.ac.in/download.html') {
+    if (resource.url.isEmpty) return;
+
+    if (resource.url.contains('{year}') || resource.url.contains('{branch}')) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const GateDirectPyqPage()),
+        MaterialPageRoute(builder: (_) => GateDynamicSelectionPage(resource: resource)),
       );
-      return;
+    } else if (resource.url.toLowerCase().endsWith('.pdf')) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => GatePdfViewer(url: resource.url, title: resource.title)),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => _GateWebView(resource: resource)),
+      );
     }
-
-    // Temporary: Block all other webviews and show Coming Soon
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text(
-          'Coming Soon! Stay tuned.',
-          style:
-              TextStyle(fontFamily: 'ProductSans', fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: const Color(0xFF1E1E1E),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        duration: const Duration(seconds: 2),
-      ),
-    );
   }
 
   @override
@@ -527,14 +448,7 @@ class _GateWebViewState extends State<_GateWebView> {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(NavigationDelegate(
-        onNavigationRequest: (request) async {
-          final url = request.url.toLowerCase();
-          // Force PDF links to open in external browser so Android handles the download seamlessly
-          if (url.endsWith('.pdf')) {
-            await launchUrl(Uri.parse(request.url),
-                mode: LaunchMode.externalApplication);
-            return NavigationDecision.prevent;
-          }
+        onNavigationRequest: (request) {
           return NavigationDecision.navigate;
         },
         onPageFinished: (_) => setState(() => _isLoading = false),
