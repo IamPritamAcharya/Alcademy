@@ -9,12 +9,12 @@ class BudgetSection extends StatelessWidget {
   final Future<void> Function(double newBudget) onUpdateBudget;
 
   const BudgetSection({
-    Key? key,
+    super.key,
     required this.budget,
     required this.todaysExpense,
     required this.last7DaysExpense,
     required this.onUpdateBudget,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

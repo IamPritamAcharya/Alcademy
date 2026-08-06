@@ -10,7 +10,7 @@ import 'google_auth_widget.dart';
 import 'profile_card.dart';
 
 class UserProfilePage extends StatefulWidget {
-  const UserProfilePage({Key? key}) : super(key: key);
+  const UserProfilePage({super.key});
 
   @override
   _UserProfilePageState createState() => _UserProfilePageState();

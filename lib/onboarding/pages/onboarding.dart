@@ -7,6 +7,8 @@ import 'package:port/onboarding/pages/loginpage.dart';
 import 'welcome_page.dart';
 
 class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }

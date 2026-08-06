@@ -11,7 +11,7 @@ import 'dart:convert';
 import 'private_content_viewer.dart';
 
 class PrivatePage extends StatefulWidget {
-  const PrivatePage({Key? key}) : super(key: key);
+  const PrivatePage({super.key});
 
   @override
   _PrivatePageState createState() => _PrivatePageState();
@@ -94,7 +94,7 @@ class _PrivatePageState extends State<PrivatePage> {
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final extension = path.extension(fileName);
       final nameWithoutExt = path.basenameWithoutExtension(fileName);
-      final newFileName = '${timestamp}_${nameWithoutExt}$extension';
+      final newFileName = '${timestamp}_$nameWithoutExt$extension';
       final newPath = '${_privateDirectory!.path}/$subfolder/$newFileName';
 
       await file.copy(newPath);

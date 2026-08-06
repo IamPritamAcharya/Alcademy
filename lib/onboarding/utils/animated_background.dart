@@ -5,10 +5,10 @@ class AnimatedBackground extends StatelessWidget {
   final Widget child;
 
   const AnimatedBackground({
-    Key? key,
+    super.key,
     required this.currentPage,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

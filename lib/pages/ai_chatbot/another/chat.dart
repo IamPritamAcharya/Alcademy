@@ -13,7 +13,7 @@ import 'EmptyChatPlaceholder.dart';
 class AiChatPage extends StatefulWidget {
   final String initialQuery;
 
-  const AiChatPage({Key? key, this.initialQuery = ""}) : super(key: key);
+  const AiChatPage({super.key, this.initialQuery = ""});
 
   @override
   State<AiChatPage> createState() => _AiChatPageState();

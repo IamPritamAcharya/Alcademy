@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 class PostDetailPage extends StatelessWidget {
   final Post post;
 
-  const PostDetailPage({Key? key, required this.post}) : super(key: key);
+  const PostDetailPage({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {

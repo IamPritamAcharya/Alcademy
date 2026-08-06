@@ -4,7 +4,7 @@ import 'package:port/onboarding/pages/login_form.dart';
 class LoginPage extends StatelessWidget {
   final VoidCallback onNextPressed;
 
-  const LoginPage({required this.onNextPressed, Key? key}) : super(key: key);
+  const LoginPage({required this.onNextPressed, super.key});
 
   @override
   Widget build(BuildContext context) {

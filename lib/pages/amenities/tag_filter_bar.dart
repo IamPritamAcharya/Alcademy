@@ -5,7 +5,7 @@ class TagFilterBar extends StatelessWidget {
   final String selectedTag;
   final Function(String) onTagSelected;
 
-  const TagFilterBar({
+  const TagFilterBar({super.key, 
     required this.tags,
     required this.selectedTag,
     required this.onTagSelected,

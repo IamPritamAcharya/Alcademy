@@ -7,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class UniqueDrawer extends StatefulWidget {
   final Color themeColor;
 
-  const UniqueDrawer({Key? key, required this.themeColor}) : super(key: key);
+  const UniqueDrawer({super.key, required this.themeColor});
 
   @override
   _UniqueDrawerState createState() => _UniqueDrawerState();
@@ -28,10 +28,6 @@ class _UniqueDrawerState extends State<UniqueDrawer>
     _loadUserData();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   Future<void> _loadUserData() async {
     final supabase = Supabase.instance.client;

@@ -4,7 +4,7 @@ import 'details_page.dart';
 class AmenitiesList extends StatelessWidget {
   final List<dynamic> items;
 
-  const AmenitiesList({required this.items, Key? key}) : super(key: key);
+  const AmenitiesList({required this.items, super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FirstPageBackground extends StatelessWidget {
-  const FirstPageBackground({Key? key}) : super(key: key);
+  const FirstPageBackground({super.key});
 
   @override
   Widget build(BuildContext context) {

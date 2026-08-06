@@ -1,12 +1,14 @@
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:port/pages/club/clubspage.dart';
+import 'package:port/pages/gate/gate_page.dart';
 import 'package:port/utils/drawer.dart';
 import 'package:port/pages/notice/notice_page.dart';
 import 'package:port/pages/first%20page/first_page.dart';
 import 'package:port/utils/refresh_tracker.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -30,11 +32,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _pages = [
+    final List<Widget> pages = [
       FirstPage(
         scaffoldKey: _scaffoldKey,
       ),
-      ClubsPage(),
+      GatePage(),
+      //ClubsPage(),
       NoticePage(),
     ];
 
@@ -44,7 +47,7 @@ class _HomePageState extends State<HomePage> {
       drawer: UniqueDrawer(themeColor: receivedColor ?? Colors.blue),
       body: IndexedStack(
         index: _selectedIndex,
-        children: _pages,
+        children: pages,
       ),
       bottomNavigationBar: CrystalNavigationBar(
         marginR: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -61,7 +64,9 @@ class _HomePageState extends State<HomePage> {
             selectedColor: Colors.white,
           ),
           CrystalNavigationBarItem(
-            icon: Icons.local_fire_department_rounded,
+            // icon: Icons.local_fire_department_rounded,
+            // selectedColor: Colors.red,
+            icon: Icons.school_rounded,
             selectedColor: Colors.red,
           ),
           CrystalNavigationBarItem(

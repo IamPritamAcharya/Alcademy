@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +8,8 @@ import '../../utils/refresh_tracker.dart';
 import '../../utils/custom_snackbar.dart';
 
 class NotesSelector extends StatefulWidget {
+  const NotesSelector({super.key});
+
   @override
   _NotesSelectorState createState() => _NotesSelectorState();
 }

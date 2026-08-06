@@ -33,10 +33,10 @@ class NoteEditor extends StatefulWidget {
   final Function(String)? onSave;
 
   const NoteEditor({
-    Key? key,
+    super.key,
     this.filePath,
     this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   _NoteEditorState createState() => _NoteEditorState();
@@ -54,15 +54,15 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
   String? _originalTitle;
   String? _originalContent;
 
-  bool _isBold = false;
-  bool _isItalic = false;
-  bool _isUnderline = false;
+  final bool _isBold = false;
+  final bool _isItalic = false;
+  final bool _isUnderline = false;
   double _fontSize = 16.0;
 
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
 
-  List<EditorState> _history = [];
+  final List<EditorState> _history = [];
   int _historyIndex = -1;
   bool _isUndoRedoOperation = false;
   static const int _maxHistorySize = 50;

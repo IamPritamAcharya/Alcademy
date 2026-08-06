@@ -10,11 +10,11 @@ class ExpenseListSection extends StatelessWidget {
   final Function(int) onDeleteExpense;
 
   const ExpenseListSection({
-    Key? key,
+    super.key,
     required this.expenses,
     required this.onEditExpense,
     required this.onDeleteExpense,
-  }) : super(key: key);
+  });
 
   void _showExpenseDetails(BuildContext context, Map<String, dynamic> expense,
       String formattedDate) {

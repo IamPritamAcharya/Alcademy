@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class HolidayListPage extends StatefulWidget {
+  const HolidayListPage({super.key});
+
   @override
   _HolidayListPageState createState() => _HolidayListPageState();
 }

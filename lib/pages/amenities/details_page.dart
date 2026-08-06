@@ -4,7 +4,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class DetailsPage extends StatefulWidget {
   final Map<String, dynamic> item;
 
-  DetailsPage({required this.item});
+  const DetailsPage({super.key, required this.item});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();

@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'subject_model.dart';
@@ -8,10 +7,10 @@ class SubjectGridView extends StatelessWidget {
   final Function(BuildContext, Subject) onSubjectTap;
 
   const SubjectGridView({
-    Key? key,
+    super.key,
     required this.subjects,
     required this.onSubjectTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +58,9 @@ class SubjectCard extends StatelessWidget {
   final Subject subject;
 
   const SubjectCard({
-    Key? key,
+    super.key,
     required this.subject,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
