@@ -119,8 +119,7 @@ class _SubjectGradeInputState extends State<SubjectGradeInput> {
                               ),
                               const SizedBox(width: 16),
                               SizedBox(
-                                width:
-                                    100, 
+                                width: (MediaQuery.of(context).size.width * 0.26),
                                 child: DropdownButtonFormField2<String>(
                                   value: selectedGrades[subject],
                                   isExpanded:
