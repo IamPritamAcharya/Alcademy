@@ -131,7 +131,7 @@ class OnboardingPage1 extends StatelessWidget {
     required Color color,
     required int sides,
   }) {
-    return Container(
+    return SizedBox(
       height: size,
       width: size,
       child: CustomPaint(

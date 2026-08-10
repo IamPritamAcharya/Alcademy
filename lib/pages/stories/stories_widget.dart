@@ -4,7 +4,7 @@ import 'package:port/pages/stories/storyscreen.dart';
 
 class StoriesWidget extends StatelessWidget {
   final List<Map<String, String>> stories;
-  const StoriesWidget({Key? key, required this.stories}) : super(key: key);
+  const StoriesWidget({super.key, required this.stories});
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +46,11 @@ class StoriesWidget extends StatelessWidget {
 class StoryCircle extends StatelessWidget {
   final Map<String, String> story;
   final int index;
-  const StoryCircle({Key? key, required this.story, required this.index})
-      : super(key: key);
+  const StoryCircle({super.key, required this.story, required this.index});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 70,
       height: 70,
       child: ClipOval(
@@ -67,7 +66,7 @@ class StoryCircle extends StatelessWidget {
 
 class TextStoryPreview extends StatelessWidget {
   final Map<String, String> story;
-  const TextStoryPreview({Key? key, required this.story}) : super(key: key);
+  const TextStoryPreview({super.key, required this.story});
 
   List<Color> _getTextStoryGradient(Map<String, String> story) {
     final String? bgColor = story['backgroundColor'];
@@ -191,7 +190,7 @@ class TextStoryPreview extends StatelessWidget {
 
 class OptimizedImage extends StatelessWidget {
   final String url;
-  const OptimizedImage({Key? key, required this.url}) : super(key: key);
+  const OptimizedImage({super.key, required this.url});
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +222,7 @@ class OptimizedImage extends StatelessWidget {
 
 class YouTubeThumbnail extends StatelessWidget {
   final String url;
-  const YouTubeThumbnail({Key? key, required this.url}) : super(key: key);
+  const YouTubeThumbnail({super.key, required this.url});
 
   String _extractYouTubeId(String url) {
     final Uri? uri = Uri.tryParse(url);

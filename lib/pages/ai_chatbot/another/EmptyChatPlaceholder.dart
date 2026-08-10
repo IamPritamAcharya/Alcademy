@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class EmptyChatPlaceholder extends StatelessWidget {
-  const EmptyChatPlaceholder({Key? key}) : super(key: key);
+  const EmptyChatPlaceholder({super.key});
 
   @override
   Widget build(BuildContext context) {

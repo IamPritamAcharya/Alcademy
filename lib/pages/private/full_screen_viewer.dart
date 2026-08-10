@@ -9,10 +9,10 @@ class FullScreenViewer extends StatefulWidget {
   final String type;
 
   const FullScreenViewer({
-    Key? key,
+    super.key,
     required this.filePath,
     required this.type,
-  }) : super(key: key);
+  });
 
   @override
   _FullScreenViewerState createState() => _FullScreenViewerState();
@@ -96,7 +96,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           : null,
       body: GestureDetector(
         onTap: _toggleAppBarVisibility,
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: FadeTransition(
@@ -505,8 +505,9 @@ class _FullScreenViewerState extends State<FullScreenViewer>
       final bytes = file.lengthSync();
       if (bytes < 1024) return '$bytes B';
       if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
-      if (bytes < 1024 * 1024 * 1024)
+      if (bytes < 1024 * 1024 * 1024) {
         return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+      }
       return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
     } catch (e) {
       return 'Unknown size';

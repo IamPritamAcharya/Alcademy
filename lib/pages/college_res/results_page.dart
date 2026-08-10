@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ResultWebView extends StatefulWidget {
-  const ResultWebView({Key? key}) : super(key: key);
+  const ResultWebView({super.key});
 
   @override
   _ResultWebViewState createState() => _ResultWebViewState();

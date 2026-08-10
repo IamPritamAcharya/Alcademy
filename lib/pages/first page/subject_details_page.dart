@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 import 'package:url_launcher/url_launcher.dart';
 import 'subject_model.dart';
 
 class SubjectDetailsPage extends StatelessWidget {
   final Subject subject;
 
-  const SubjectDetailsPage({required this.subject});
+  const SubjectDetailsPage({super.key, required this.subject});
 
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
@@ -91,7 +90,7 @@ class GlassmorphicCard extends StatelessWidget {
   final IconData icon;
   final String title;
 
-  const GlassmorphicCard({
+  const GlassmorphicCard({super.key, 
     required this.icon,
     required this.title,
   });

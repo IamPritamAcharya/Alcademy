@@ -5,6 +5,8 @@ import '../services/data_fetch_service.dart';
 import 'story_details_page.dart';
 
 class SuccessStoriesPage extends StatefulWidget {
+  const SuccessStoriesPage({super.key});
+
   @override
   _SuccessStoriesPageState createState() => _SuccessStoriesPageState();
 }
@@ -179,7 +181,7 @@ class GlassmorphicCard extends StatelessWidget {
   final Widget child;
   final VoidCallback onTap;
 
-  const GlassmorphicCard({
+  const GlassmorphicCard({super.key, 
     required this.child,
     required this.onTap,
   });

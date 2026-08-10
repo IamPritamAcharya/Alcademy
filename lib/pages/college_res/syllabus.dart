@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 class SyllabusPage extends StatefulWidget {
+  const SyllabusPage({super.key});
+
   @override
   _SyllabusPageState createState() => _SyllabusPageState();
 }
@@ -102,7 +104,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
       }).toList(),
       onChanged: onChanged,
       buttonStyleData: ButtonStyleData(
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12), 
         ),
@@ -248,7 +250,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
         backgroundColor: const Color(0xFF1A1D1E),
         title: const Text(
           'Syllabus',
-          style: const TextStyle(
+          style: TextStyle(
               fontFamily: 'ProductSans',
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -292,7 +294,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
 class SyllabusViewer extends StatelessWidget {
   final String url;
 
-  const SyllabusViewer({required this.url});
+  const SyllabusViewer({super.key, required this.url});
 
   @override
   Widget build(BuildContext context) {

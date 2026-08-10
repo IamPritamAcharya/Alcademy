@@ -5,7 +5,7 @@ import 'package:port/utils/markdown_provider.dart';
 class NotificationDetailPage extends StatelessWidget {
   final NotificationModel notification;
 
-  NotificationDetailPage({required this.notification});
+  const NotificationDetailPage({super.key, required this.notification});
 
   @override
   Widget build(BuildContext context) {
@@ -232,7 +232,7 @@ class NotificationDetailPage extends StatelessWidget {
                       ],
                     ],
                   );
-                }).toList(),
+                }),
               ],
               SizedBox(height: 40),
             ],

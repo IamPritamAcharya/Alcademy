@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -17,14 +16,14 @@ class ExpandableHeader extends StatefulWidget {
   final List subjects;
 
   const ExpandableHeader({
-    Key? key,
+    super.key,
     required this.theme,
     this.scaffoldKey,
     required this.isOnlineNotifier,
     this.userName,
     required this.currentSentence,
     required this.subjects,
-  }) : super(key: key);
+  });
 
   @override
   _ExpandableHeaderState createState() => _ExpandableHeaderState();
@@ -196,10 +195,10 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
   }
 
   Widget _buildSlider(Map<String, dynamic> theme, BuildContext context) {
-    double _sliderValue = 0.0;
+    double sliderValue = 0.0;
     final LocalAuthentication localAuth = LocalAuthentication();
 
-    Future<void> _authenticateAndNavigate() async {
+    Future<void> authenticateAndNavigate() async {
       try {
         final bool isAvailable = await localAuth.canCheckBiometrics;
         final bool isDeviceSupported = await localAuth.isDeviceSupported();
@@ -275,15 +274,15 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
             double newOffset = localPosition.dx - padding - (thumbSize / 2);
 
             setState(() {
-              _sliderValue = (newOffset / maxOffset).clamp(0.0, 1.0);
+              sliderValue = (newOffset / maxOffset).clamp(0.0, 1.0);
             });
           },
           onHorizontalDragEnd: (_) {
-            if (_sliderValue >= 0.8) {
-              _authenticateAndNavigate();
+            if (sliderValue >= 0.8) {
+              authenticateAndNavigate();
             }
             setState(() {
-              _sliderValue = 0.0;
+              sliderValue = 0.0;
             });
           },
           child: Container(
@@ -299,7 +298,7 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
                 AnimatedPositioned(
                   duration: Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
-                  left: padding + (_sliderValue * maxOffset),
+                  left: padding + (sliderValue * maxOffset),
                   top: padding,
                   child: Container(
                     height: thumbSize,
@@ -316,7 +315,7 @@ class _ExpandableHeaderState extends State<ExpandableHeader>
                       ],
                     ),
                     child: Icon(
-                      _sliderValue >= 0.8
+                      sliderValue >= 0.8
                           ? Icons.fingerprint
                           : Icons.chevron_right,
                       color: Colors.white,

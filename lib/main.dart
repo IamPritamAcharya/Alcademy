@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:port/pages/notes_selector_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -173,10 +174,11 @@ void main() async {
     print('Background message handler registered');
   }
 
+  await dotenv.load(fileName: ".env");
+
   await Supabase.initialize(
-    url: 'https://uyrsftytepfamdrrjnst.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5cnNmdHl0ZXBmYW1kcnJqbnN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1NzgzNzgsImV4cCI6MjA1MDE1NDM3OH0.b-aorUVNH0bvRfn-h34Wa7YHUvRVJjofkAllQ7cYhp0',
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
 
   if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux) {
@@ -200,7 +202,7 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   final bool isOnboardingComplete;
-  const MyApp({Key? key, required this.isOnboardingComplete}) : super(key: key);
+  const MyApp({super.key, required this.isOnboardingComplete});
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -275,8 +277,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       final selectedNotificationId =
           NotificationService.getSelectedNotificationId();
       if (selectedNotificationId != null && selectedNotificationId.isNotEmpty) {
-        print(
-            "App opened via notification, navigating to notifications page");
+        print("App opened via notification, navigating to notifications page");
         return "/notifications";
       }
     }
@@ -355,13 +356,23 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return MaterialApp.router(
       title: 'Alcademy',
       debugShowCheckedModeBanner: false,
+      color: const Color(0xFF121212),
       scrollBehavior: _CustomScrollBehavior(),
       theme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF121212),
+        canvasColor: const Color(0xFF121212),
         fontFamily: 'ProductSans',
         inputDecorationTheme:
             const InputDecorationTheme(focusColor: Colors.white),
         textSelectionTheme:
             const TextSelectionThemeData(cursorColor: Colors.white),
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          },
+        ),
       ),
       routerConfig: _router,
     );

@@ -12,12 +12,12 @@ class PrivateContentViewer extends StatefulWidget {
   final Function(int, String)? onUpdate;
 
   const PrivateContentViewer({
-    Key? key,
+    super.key,
     required this.contentType,
     required this.items,
     required this.onDelete,
     this.onUpdate,
-  }) : super(key: key);
+  });
 
   @override
   _PrivateContentViewerState createState() => _PrivateContentViewerState();
@@ -517,8 +517,9 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
   String _formatFileSize(int bytes) {
     if (bytes < 1024) return '$bytes B';
     if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
-    if (bytes < 1024 * 1024 * 1024)
+    if (bytes < 1024 * 1024 * 1024) {
       return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    }
     return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
   }
 

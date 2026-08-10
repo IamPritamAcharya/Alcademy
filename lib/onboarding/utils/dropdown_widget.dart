@@ -12,8 +12,8 @@ class DropdownWidget extends StatelessWidget {
     required this.items,
     this.value,
     this.onChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

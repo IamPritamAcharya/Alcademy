@@ -7,11 +7,11 @@ class EditItemDialog extends StatefulWidget {
   final DateTime initialDate;
 
   const EditItemDialog({
-    Key? key,
+    super.key,
     required this.initialItem,
     required this.initialValue,
     required this.initialDate,
-  }) : super(key: key);
+  });
 
   @override
   State<EditItemDialog> createState() => _EditItemDialogState();
@@ -45,14 +45,13 @@ class _EditItemDialogState extends State<EditItemDialog> {
               onPrimary: Colors.black, 
               surface: const Color(0xFF1A1D1E), 
               onSurface: Colors.white, 
-            ),
-            dialogBackgroundColor: const Color(0xFF1A1D1E), 
+            ), 
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 foregroundColor:
                     const Color.fromRGBO(0, 255, 127, 1), 
               ),
-            ),
+            ), dialogTheme: DialogThemeData(backgroundColor: const Color(0xFF1A1D1E)),
           ),
           child: child!,
         );

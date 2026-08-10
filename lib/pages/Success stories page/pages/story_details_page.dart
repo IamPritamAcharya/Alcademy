@@ -7,7 +7,7 @@ class StoryDetailPage extends StatelessWidget {
   final String name;
   final String body;
 
-  const StoryDetailPage({
+  const StoryDetailPage({super.key, 
     required this.name,
     required this.body,
   });

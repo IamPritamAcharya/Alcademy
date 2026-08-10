@@ -3,7 +3,7 @@ import 'package:port/utils/config.dart';
 import 'package:port/pages/first%20page/widgets/first_tab_page.dart';
 
 class FirstTabWidget extends StatelessWidget {
-  const FirstTabWidget({Key? key}) : super(key: key);
+  const FirstTabWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

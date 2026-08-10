@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:port/onboarding/utils/user_data.dart';
 import 'package:port/pages/first%20page/widgets/tabs_widget.dart';
@@ -26,7 +25,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class FirstPage extends StatefulWidget {
   final GlobalKey<ScaffoldState>? scaffoldKey;
 
-  const FirstPage({Key? key, this.scaffoldKey}) : super(key: key);
+  const FirstPage({super.key, this.scaffoldKey});
 
   @override
   _FirstPageState createState() => _FirstPageState();
@@ -92,7 +91,7 @@ class _FirstPageState extends State<FirstPage>
   ];
 
   late Map<String, dynamic> currentTheme;
-  ValueNotifier<bool> _isOnlineNotifier = ValueNotifier(true);
+  final ValueNotifier<bool> _isOnlineNotifier = ValueNotifier(true);
   late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
 
   @override

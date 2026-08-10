@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class BudgetDialog extends StatelessWidget {
   final double initialBudget;
 
-  const BudgetDialog({Key? key, required this.initialBudget}) : super(key: key);
+  const BudgetDialog({super.key, required this.initialBudget});
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import '../utils/dropdown_widget.dart';
 class LoginForm extends StatefulWidget {
   final VoidCallback onNextPressed;
 
-  const LoginForm({required this.onNextPressed, Key? key}) : super(key: key);
+  const LoginForm({required this.onNextPressed, super.key});
 
   @override
   State<LoginForm> createState() => _LoginFormState();

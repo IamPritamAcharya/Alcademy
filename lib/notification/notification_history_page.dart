@@ -7,6 +7,8 @@ import 'notification_service.dart';
 import 'notification_model.dart';
 
 class NotificationHistoryPage extends StatefulWidget {
+  const NotificationHistoryPage({super.key});
+
   @override
   _NotificationHistoryPageState createState() =>
       _NotificationHistoryPageState();
@@ -23,7 +25,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
   bool hasInitialized = false;
   int currentPage = 0;
   static const int pageSize = 10;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -191,8 +193,9 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
   }
 
   void _loadMoreNotifications() {
-    if (isLoadingMore || displayedNotifications.length >= notifications.length)
+    if (isLoadingMore || displayedNotifications.length >= notifications.length) {
       return;
+    }
 
     setState(() {
       isLoadingMore = true;

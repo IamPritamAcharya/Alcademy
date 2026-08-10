@@ -11,10 +11,10 @@ class ImageViewerPage extends StatefulWidget {
   final int initialIndex;
 
   const ImageViewerPage({
-    Key? key,
+    super.key,
     required this.images,
     required this.initialIndex,
-  }) : super(key: key);
+  });
 
   @override
   State<ImageViewerPage> createState() => _ImageViewerPageState();

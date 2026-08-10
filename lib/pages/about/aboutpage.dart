@@ -3,6 +3,8 @@ import 'package:port/utils/config.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatefulWidget {
+  const AboutPage({super.key});
+
   @override
   _AboutPageState createState() => _AboutPageState();
 }
@@ -28,7 +30,7 @@ class _AboutPageState extends State<AboutPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2), 
+            color: Colors.white.withOpacity(0.2),
             height: 1,
           ),
         ),
@@ -40,6 +42,8 @@ class _AboutPageState extends State<AboutPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _buildDeveloperCard(),
+              const SizedBox(height: 20),
+              _buildMaintainerCard(),
               const SizedBox(height: 20),
               _buildClubSection(),
               const SizedBox(height: 20),
@@ -117,13 +121,73 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
+  Widget _buildMaintainerCard() {
+    return _buildGlassBox(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 12),
+          const CircleAvatar(
+            radius: 50,
+            backgroundImage: AssetImage('lib/file assets/swayanshu.png'),
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            "Maintained by",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Colors.white70,
+            ),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            "Swayanshu Sarthak Sadangi",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "17th CSE ( 2024-28 )",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white70,
+            ),
+          ),
+          const SizedBox(height: 16),
+          GestureDetector(
+            onTap: () async {
+              final url = Uri.parse('https://swynx.dev');
+              if (await canLaunchUrl(url)) {
+                await launchUrl(url, mode: LaunchMode.externalApplication);
+              }
+            },
+            child: const Text(
+              "swynx.dev",
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.blueAccent,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+      ),
+    );
+  }
+
   Widget _buildClubSection() {
     return _buildGlassBox(
       child: Column(
         children: [
           ClipOval(
             child: Image.asset(
-              'lib/file assets/codex.jpeg', 
+              'lib/file assets/codex.jpeg',
               height: 100,
               width: 100,
               fit: BoxFit.cover,
@@ -198,7 +262,7 @@ class _AboutPageState extends State<AboutPage> {
         iconColor: Colors.white,
         collapsedIconColor: Colors.white70,
         title: Text(
-          title, 
+          title,
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,

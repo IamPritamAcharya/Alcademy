@@ -6,7 +6,7 @@ class SuccessStoryItem extends StatelessWidget {
   final String company;
   final VoidCallback onTap;
 
-  const SuccessStoryItem({
+  const SuccessStoryItem({super.key, 
     required this.name,
     required this.imageUrl,
     required this.company,

@@ -7,11 +7,11 @@ class ProfileCard extends StatelessWidget {
   final VoidCallback onEditName;
 
   const ProfileCard({
-    Key? key,
+    super.key,
     required this.userName,
     required this.branch,
     required this.onEditName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
