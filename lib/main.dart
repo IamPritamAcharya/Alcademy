@@ -164,8 +164,16 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    print('dotenv load warning: $e');
+  }
+
+  final supabaseUrl = dotenv.env['SUPABASE_URL'] ?? '';
+  final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'] ?? '';
+
   final results = await Future.wait([
-    dotenv.load(fileName: ".env"),
     SharedPreferences.getInstance(),
     if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux)
       Firebase.initializeApp(
@@ -173,9 +181,16 @@ void main() async {
       )
     else
       Future.value(null),
+    if (supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty)
+      Supabase.initialize(
+        url: supabaseUrl,
+        anonKey: supabaseAnonKey,
+      )
+    else
+      Future.value(null),
   ]);
 
-  final prefs = results[1] as SharedPreferences;
+  final prefs = results[0] as SharedPreferences;
   final bool isOnboardingComplete =
       prefs.getBool('onboarding_complete') ?? false;
 
@@ -185,11 +200,6 @@ void main() async {
     FirebaseMessaging.onBackgroundMessage(firebaseBackgroundHandler);
     print('Background message handler registered');
   }
-
-  await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL']!,
-    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
-  );
 
   runApp(MyApp(isOnboardingComplete: isOnboardingComplete));
 

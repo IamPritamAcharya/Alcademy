@@ -31,20 +31,21 @@ android {
         versionName = flutter.versionName
     }
 
-    signingConfigs {
-        create("release") {
-            // Replace with your keystore details
-            storeFile = file("../keystore.jks")
-            storePassword = "mikumiku"
-            keyAlias = "alcademy-key"
-            keyPassword = "mikumiku"
-
+    val keystoreFile = file("../keystore.jks")
+    if (keystoreFile.exists()) {
+        signingConfigs {
+            create("release") {
+                storeFile = keystoreFile
+                storePassword = "mikumiku"
+                keyAlias = "alcademy-key"
+                keyPassword = "mikumiku"
+            }
         }
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = if (keystoreFile.exists()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
             isMinifyEnabled = true           // Enables R8/ProGuard code shrinking
             isShrinkResources = true         // Removes unused resources
             proguardFiles(

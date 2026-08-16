@@ -98,10 +98,12 @@ flutter:
     - lib/file assets/yt.png
     - lib/file assets/whats.png
     - lib/file assets/me.jpg
+    - lib/file assets/swayanshu.png
     - lib/assets/syllabus.json
     - lib/file assets/collegeBack.png
     - lib/file assets/placeholderPerson.png
     - shorebird.yaml
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
