@@ -27,6 +27,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_complete', true);
 
+    if (!mounted) return;
     context.go('/home');
   }
 
@@ -107,8 +108,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ];
       case 2:
         return [
-          Color.fromARGB(255, 216, 255, 215),
-          Color.fromARGB(255, 197, 255, 201),
+          const Color(0xFFBAC4FF),
+          const Color(0xFF96A5FF),
         ];
       case 3:
       default:

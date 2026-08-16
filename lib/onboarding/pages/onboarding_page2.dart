@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OnboardingPage2 extends StatelessWidget {
-  final Color accentGreen = const Color(0xFF4CAF50);
-  final Color mutedGreen = const Color(0xFF81C784);
-  final Color textColor = const Color(0xFF2E7D32);
+  final Color accentPurple = const Color(0xFF5865F2);
+  final Color mutedPurple = const Color(0xFF6C79EE);
+  final Color textColor = const Color(0xFF1E2677);
+  final Color discordPurple = const Color(0xFF5865F2);
 
   const OnboardingPage2({super.key});
 
   Future<void> _openUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
       throw 'Could not launch $url';
     }
@@ -29,7 +31,7 @@ class OnboardingPage2 extends StatelessWidget {
             left: -100,
             child: _buildBlurredTriangle(
               size: 250,
-              color: mutedGreen.withOpacity(0.3),
+              color: mutedPurple.withValues(alpha: 0.3),
               angle: 5,
             ),
           ),
@@ -38,7 +40,7 @@ class OnboardingPage2 extends StatelessWidget {
             right: -50,
             child: _buildBlurredTriangle(
               size: 180,
-              color: accentGreen.withOpacity(0.2),
+              color: accentPurple.withValues(alpha: 0.2),
               angle: -10,
             ),
           ),
@@ -47,7 +49,7 @@ class OnboardingPage2 extends StatelessWidget {
             left: -60,
             child: _buildBlurredTriangle(
               size: 200,
-              color: mutedGreen.withOpacity(0.2),
+              color: mutedPurple.withValues(alpha: 0.2),
               angle: 50,
             ),
           ),
@@ -56,7 +58,7 @@ class OnboardingPage2 extends StatelessWidget {
             right: -30,
             child: _buildBlurredTriangle(
               size: 170,
-              color: accentGreen.withOpacity(0.3),
+              color: accentPurple.withValues(alpha: 0.3),
               angle: -40,
             ),
           ),
@@ -69,7 +71,7 @@ class OnboardingPage2 extends StatelessWidget {
                 Icon(
                   Icons.groups_rounded,
                   size: 80,
-                  color: accentGreen,
+                  color: accentPurple,
                 ),
                 const SizedBox(height: 30),
                 Text(
@@ -88,7 +90,7 @@ class OnboardingPage2 extends StatelessWidget {
                   "Stay connected to receive the latest updates, important announcements, and exclusive feature releases for the app.",
                   style: TextStyle(
                     fontSize: 18,
-                    color: textColor.withOpacity(0.8),
+                    color: textColor.withValues(alpha: 0.8),
                     height: 1.6,
                   ),
                   textAlign: TextAlign.center,
@@ -101,8 +103,8 @@ class OnboardingPage2 extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
                       colors: [
-                        mutedGreen,
-                        accentGreen,
+                        mutedPurple,
+                        accentPurple,
                       ],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
@@ -121,20 +123,19 @@ class OnboardingPage2 extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    _openUrl(
-                        "https://chat.whatsapp.com/DDuQv0UAkKpBmXB29fBjLw");
+                    _openUrl("https://discord.gg/d7AZzFwzwX");
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 48,
                       vertical: 16,
                     ),
-                    backgroundColor: accentGreen,
+                    backgroundColor: discordPurple,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                     elevation: 0,
-                    shadowColor: accentGreen.withOpacity(0.4),
+                    shadowColor: accentPurple.withValues(alpha: 0.4),
                   ),
                 ),
               ],
