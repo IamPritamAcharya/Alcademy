@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:port/utils/config.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,7 +31,7 @@ class _AboutPageState extends State<AboutPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -47,7 +48,7 @@ class _AboutPageState extends State<AboutPage> {
               const SizedBox(height: 20),
               _buildClubSection(),
               const SizedBox(height: 20),
-              _buildWhatsAppSection(),
+              _buildDiscordSection(),
               const SizedBox(height: 20),
               _buildContributorsDropdown(),
               const SizedBox(height: 20),
@@ -213,15 +214,19 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  Widget _buildWhatsAppSection() {
+  Widget _buildDiscordSection() {
     return _buildGlassBox(
       child: Column(
         children: [
           const SizedBox(height: 6),
-          Image.asset('lib/file assets/whats.png', height: 85, width: 85),
-          const SizedBox(height: 18),
+          const Icon(
+            LineIcons.discord,
+            size: 70,
+            color: Color(0xFF5865F2),
+          ),
+          const SizedBox(height: 14),
           const Text(
-            "Join Our WhatsApp Group",
+            "Join Our Discord Group",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -236,16 +241,17 @@ class _AboutPageState extends State<AboutPage> {
           ),
           const SizedBox(height: 12),
           ElevatedButton.icon(
-            icon: const Icon(Icons.link, color: Colors.black),
+            icon: const Icon(Icons.link, color: Colors.white),
             label: const Text(
               "Join Now",
-              style: TextStyle(color: Colors.black),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             onPressed: () {
-              _openUrl("https://chat.whatsapp.com/DDuQv0UAkKpBmXB29fBjLw");
+              _openUrl("https://discord.gg/d7AZzFwzwX");
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
+              backgroundColor: const Color(0xFF5865F2),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -332,14 +338,14 @@ class _AboutPageState extends State<AboutPage> {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.2)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.4),
+            color: Colors.black.withValues(alpha: 0.4),
             blurRadius: 8,
-            offset: Offset(2, 2),
+            offset: const Offset(2, 2),
           ),
         ],
       ),
@@ -355,8 +361,9 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   Future<void> _openUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       throw 'Could not launch $url';
     }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
+import 'package:port/pages/amenities/amenities_page.dart.dart';
 import 'package:port/pages/notes_selector_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -16,7 +18,6 @@ import 'package:port/notification/notification_history_page.dart';
 import 'package:port/notification/notification_service.dart';
 import 'package:port/onboarding/pages/onboarding.dart';
 import 'package:port/pages/about/aboutpage.dart';
-import 'package:port/pages/amenities/amenities_page.dart.dart';
 import 'package:port/pages/club/club_detail_page.dart';
 import 'package:port/pages/club/club_post_detail.dart';
 import 'package:port/pages/club/upload/CreateClubPostPage.dart';
@@ -163,24 +164,39 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.linux) {
-    print('Skipping Firebase initialization on Linux');
-  } else {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  final results = await Future.wait([
+    dotenv.load(fileName: ".env"),
+    SharedPreferences.getInstance(),
+    if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux)
+      Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      )
+    else
+      Future.value(null),
+  ]);
 
+  final prefs = results[1] as SharedPreferences;
+  final bool isOnboardingComplete =
+      prefs.getBool('onboarding_complete') ?? false;
+
+  ConfigService.loadCachedConfig(prefs);
+
+  if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux) {
     FirebaseMessaging.onBackgroundMessage(firebaseBackgroundHandler);
     print('Background message handler registered');
   }
-
-  await dotenv.load(fileName: ".env");
 
   await Supabase.initialize(
     url: dotenv.env['SUPABASE_URL']!,
     anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
 
+  runApp(MyApp(isOnboardingComplete: isOnboardingComplete));
+
+  _initBackgroundServices();
+}
+
+void _initBackgroundServices() async {
   if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux) {
     try {
       final notificationService = NotificationService();
@@ -191,13 +207,11 @@ void main() async {
     }
   }
 
-  final prefs = await SharedPreferences.getInstance();
-  final bool isOnboardingComplete =
-      prefs.getBool('onboarding_complete') ?? false;
-
-  await ConfigService.fetchAndUpdateConfig();
-
-  runApp(MyApp(isOnboardingComplete: isOnboardingComplete));
+  try {
+    await ConfigService.fetchAndUpdateConfig();
+  } catch (e) {
+    print('Failed to fetch remote config: $e');
+  }
 }
 
 class MyApp extends StatefulWidget {

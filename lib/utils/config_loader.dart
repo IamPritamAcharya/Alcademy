@@ -58,6 +58,10 @@ class ConfigService {
     }
   }
 
+  static void loadCachedConfig(SharedPreferences prefs) {
+    _loadFromSharedPreferences(prefs);
+  }
+
   static void _loadFromSharedPreferences(SharedPreferences prefs) {
     try {
       String? storyUrlsString = prefs.getString('storyUrls');
