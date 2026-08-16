@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -163,24 +164,39 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.linux) {
-    print('Skipping Firebase initialization on Linux');
-  } else {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  final results = await Future.wait([
+    dotenv.load(fileName: ".env"),
+    SharedPreferences.getInstance(),
+    if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux)
+      Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      )
+    else
+      Future.value(null),
+  ]);
 
+  final prefs = results[1] as SharedPreferences;
+  final bool isOnboardingComplete =
+      prefs.getBool('onboarding_complete') ?? false;
+
+  ConfigService.loadCachedConfig(prefs);
+
+  if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux) {
     FirebaseMessaging.onBackgroundMessage(firebaseBackgroundHandler);
     print('Background message handler registered');
   }
-
-  await dotenv.load(fileName: ".env");
 
   await Supabase.initialize(
     url: dotenv.env['SUPABASE_URL']!,
     anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
 
+  runApp(MyApp(isOnboardingComplete: isOnboardingComplete));
+
+  _initBackgroundServices();
+}
+
+void _initBackgroundServices() async {
   if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux) {
     try {
       final notificationService = NotificationService();
@@ -191,13 +207,11 @@ void main() async {
     }
   }
 
-  final prefs = await SharedPreferences.getInstance();
-  final bool isOnboardingComplete =
-      prefs.getBool('onboarding_complete') ?? false;
-
-  await ConfigService.fetchAndUpdateConfig();
-
-  runApp(MyApp(isOnboardingComplete: isOnboardingComplete));
+  try {
+    await ConfigService.fetchAndUpdateConfig();
+  } catch (e) {
+    print('Failed to fetch remote config: $e');
+  }
 }
 
 class MyApp extends StatefulWidget {
