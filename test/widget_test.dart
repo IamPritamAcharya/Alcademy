@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:port/onboarding/pages/welcome_page.dart';
-import 'package:port/onboarding/utils/user_data.dart';
-import 'package:port/pages/user/userinfo.dart';
+import 'package:port/features/onboarding/presentation/welcome_page.dart';
+import 'package:port/features/profile/data/profile_repository.dart';
+import 'package:port/features/profile/presentation/profile_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -44,7 +44,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('New Name'), findsOneWidget);
-    expect(await UserData.getUserName(), 'New Name');
-    expect(await UserData.getUserBranch(), 'Computer Science');
+    expect(await ProfileRepository.getUserName(), 'New Name');
+    expect(await ProfileRepository.getUserBranch(), 'Computer Science');
   });
 }

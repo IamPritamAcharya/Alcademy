@@ -1,0 +1,77 @@
+import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:port/features/home/presentation/widgets/app_drawer.dart';
+import 'package:port/features/notices/presentation/notice_page.dart';
+import 'package:port/features/home/presentation/home_content_page.dart';
+import 'package:port/core/network/refresh_tracker.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  int _selectedIndex = 0;
+  Color? receivedColor;
+
+  void updateColor(Color newColor) {
+    setState(() {
+      receivedColor = newColor;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    RefreshTracker.init();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      HomeContentPage(
+        scaffoldKey: _scaffoldKey,
+      ),
+      NoticePage(),
+    ];
+
+    return Scaffold(
+      extendBody: true,
+      key: _scaffoldKey,
+      drawer: UniqueDrawer(themeColor: receivedColor ?? Colors.blue),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: pages,
+      ),
+      bottomNavigationBar: CrystalNavigationBar(
+        marginR: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+        paddingR: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: [
+          CrystalNavigationBarItem(
+            icon: Icons.home_work_rounded,
+            selectedColor: Colors.white,
+          ),
+          CrystalNavigationBarItem(
+            icon: Icons.event_note_outlined,
+            selectedColor: Colors.greenAccent,
+          ),
+        ],
+        backgroundColor: const Color(0xFF191B1A).withValues(alpha: 0.5),
+        unselectedItemColor: Colors.grey,
+        height: 70,
+        borderRadius: 30,
+        outlineBorderColor: Colors.white38,
+        splashBorderRadius: 30,
+      ),
+    );
+  }
+}

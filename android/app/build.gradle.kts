@@ -1,26 +1,32 @@
+import com.android.build.api.dsl.ApplicationExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
     id("com.google.gms.google-services")
     // END: FlutterFire Configuration
-    id("kotlin-android")
-    // Flutter plugin must be applied after Android & Kotlin plugins
+    // Flutter plugin must be applied after the Android plugin
     id("dev.flutter.flutter-gradle-plugin")
+}
+
+// Flutter reads the namespace from an `android { ... }` block before building.
+// Use a local function to retain that syntax with AGP's public DSL type.
+fun android(configure: ApplicationExtension.() -> Unit) {
+    extensions.configure<ApplicationExtension> {
+        configure()
+    }
 }
 
 android {
     namespace = "com.alcademy.app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973"
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
         isCoreLibraryDesugaringEnabled = true
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     defaultConfig {
@@ -43,7 +49,7 @@ android {
     }
 
     buildTypes {
-        release {
+        named("release") {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true           // Enables R8/ProGuard code shrinking
             isShrinkResources = true         // Removes unused resources
@@ -52,9 +58,15 @@ android {
                 "proguard-rules.pro"
             )
         }
-        debug {
+        named("debug") {
             signingConfig = signingConfigs.getByName("debug")
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 

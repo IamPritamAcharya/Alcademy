@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+import 'package:port/features/expenses/presentation/widgets/pie_chart_section.dart';
+import 'package:port/features/expenses/presentation/widgets/bar_chart_section.dart';
+
+class GraphSection extends StatelessWidget {
+  final List<Map<String, dynamic>> expenses;
+  final double budget;
+
+  const GraphSection({
+    super.key,
+    required this.expenses,
+    required this.budget,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 250,
+      child: PageView(
+        children: [
+          PieChartSection(expenses: expenses, budget: budget),
+          BarChartSection(expenses: expenses),
+        ],
+      ),
+    );
+  }
+}

@@ -1,0 +1,37 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:port/features/notes/models/subject.dart';
+
+class SubjectRepository {
+  String _url;
+
+  SubjectRepository(String initialUrl) : _url = initialUrl;
+
+  set url(String newUrl) {
+    _url = newUrl;
+  }
+
+  Future<List<Subject>> fetchSubjects() async {
+    final response = await http.get(Uri.parse(_url));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      return data.map((subjectJson) => Subject.fromJson(subjectJson)).toList();
+    } else {
+      throw Exception('Failed to load subjects');
+    }
+  }
+
+  Future<List<Subject>> fetchSubjectsWithCacheBust() async {
+    final cacheBustedUrl =
+        '$_url?timestamp=${DateTime.now().millisecondsSinceEpoch}';
+    final response = await http.get(Uri.parse(cacheBustedUrl));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      return data.map((subjectJson) => Subject.fromJson(subjectJson)).toList();
+    } else {
+      throw Exception('Failed to load subjects with cache busting');
+    }
+  }
+}
