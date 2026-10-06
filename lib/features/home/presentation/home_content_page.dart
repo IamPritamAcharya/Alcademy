@@ -1,23 +1,21 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:port/features/profile/data/profile_repository.dart';
 import 'package:port/features/home/presentation/widgets/tabs_widget.dart';
 import 'package:port/core/config/app_config.dart';
 import 'package:port/features/stories/presentation/stories_widget.dart';
 
-import 'package:port/features/home/presentation/widgets/expandable_header.dart';
-import 'package:port/features/home/presentation/widgets/home_background.dart';
+import 'package:port/features/home/presentation/widgets/home_header.dart';
+import 'package:port/features/home/presentation/widgets/home_style.dart';
+import 'package:port/features/home/presentation/widgets/home_subject_list.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:port/core/network/refresh_tracker.dart';
 import 'package:port/shared/widgets/custom_snackbar.dart';
 
-import 'package:port/features/notes/presentation/widgets/shimmer_grid.dart';
 import 'package:port/features/notes/data/subject_repository.dart';
 import 'package:port/features/notes/models/subject.dart';
 import 'package:port/features/notes/presentation/subject_details_page.dart';
-import 'package:port/features/notes/presentation/widgets/subject_grid_view.dart';
 import 'package:port/features/home/presentation/greetings.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -32,7 +30,7 @@ class HomeContentPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<HomeContentPage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -43,54 +41,6 @@ class _FirstPageState extends State<HomeContentPage>
   late String currentSentence;
   String? _cachedUserName;
 
-  late AnimationController _colorTransitionController;
-  late Animation<double> _colorTransition;
-  Map<String, dynamic>? _previousTheme;
-
-  static final List<Map<String, dynamic>> creativeThemes = [
-    {
-      'primary': Color(0xFF667eea),
-      'secondary': Color(0xFF764ba2),
-      'accent': Color(0xFFf093fb),
-      'background': Color(0xFF0a0a0a),
-      'surface': Color(0xFF1a1a1a),
-      'name': 'Cosmic'
-    },
-    {
-      'primary': Color(0xFF4facfe),
-      'secondary': Color(0xFF00f2fe),
-      'accent': Color(0xFFa8edea),
-      'background': Color(0xFF0a0a0a),
-      'surface': Color(0xFF1a1a1a),
-      'name': 'Ocean'
-    },
-    {
-      'primary': Color(0xFFfa709a),
-      'secondary': Color(0xFFfee140),
-      'accent': Color(0xFFfccb90),
-      'background': Color(0xFF0a0a0a),
-      'surface': Color(0xFF1a1a1a),
-      'name': 'Sunset'
-    },
-    {
-      'primary': Color(0xFF43e97b),
-      'secondary': Color(0xFF38f9d7),
-      'accent': Color(0xFFffeaa7),
-      'background': Color(0xFF0a0a0a),
-      'surface': Color(0xFF1a1a1a),
-      'name': 'Nature'
-    },
-    {
-      'primary': Color(0xFFf76b1c),
-      'secondary': Color(0xFFfad961),
-      'accent': Color(0xFFa8e6cf),
-      'background': Color(0xFF0a0a0a),
-      'surface': Color(0xFF1a1a1a),
-      'name': 'Aurora'
-    },
-  ];
-
-  late Map<String, dynamic> currentTheme;
   final ValueNotifier<bool> _isOnlineNotifier = ValueNotifier(true);
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
@@ -99,8 +49,6 @@ class _FirstPageState extends State<HomeContentPage>
     super.initState();
     AppConfiguration.current.addListener(_onConfigChanged);
     currentSentence = getRandomSentence();
-    currentTheme = _getRandomTheme();
-    _initAnimations();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initConnectivity();
@@ -109,25 +57,9 @@ class _FirstPageState extends State<HomeContentPage>
     });
   }
 
-  void _initAnimations() {
-    _colorTransitionController = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-
-    _colorTransition = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _colorTransitionController,
-      curve: Curves.easeInOut,
-    ));
-  }
-
   @override
   void dispose() {
     AppConfiguration.current.removeListener(_onConfigChanged);
-    _colorTransitionController.dispose();
     _isOnlineNotifier.dispose();
     _connectivitySubscription?.cancel();
     super.dispose();
@@ -148,8 +80,9 @@ class _FirstPageState extends State<HomeContentPage>
       final results = await Connectivity().checkConnectivity();
       if (!mounted) return;
       _updateConnectionStatus(results);
-      _connectivitySubscription =
-          Connectivity().onConnectivityChanged.listen(_updateConnectionStatus);
+      _connectivitySubscription = Connectivity().onConnectivityChanged.listen(
+        _updateConnectionStatus,
+      );
     } catch (e) {
       _updateConnectionStatus([]);
     }
@@ -157,39 +90,12 @@ class _FirstPageState extends State<HomeContentPage>
 
   void _updateConnectionStatus(List<ConnectivityResult> results) {
     if (!mounted) return;
-    final isOnline = results.isNotEmpty &&
+    final isOnline =
+        results.isNotEmpty &&
         results.any((result) => result != ConnectivityResult.none);
     if (_isOnlineNotifier.value != isOnline) {
       _isOnlineNotifier.value = isOnline;
     }
-  }
-
-  Map<String, dynamic> _getRandomTheme() {
-    final random = Random();
-    return creativeThemes[random.nextInt(creativeThemes.length)];
-  }
-
-  Color _interpolateColor(Color color1, Color color2, double t) {
-    return Color.lerp(color1, color2, t) ?? color1;
-  }
-
-  Map<String, dynamic> _getInterpolatedTheme() {
-    if (_previousTheme == null) return currentTheme;
-
-    final t = _colorTransition.value;
-    return {
-      'primary': _interpolateColor(
-          _previousTheme!['primary'], currentTheme['primary'], t),
-      'secondary': _interpolateColor(
-          _previousTheme!['secondary'], currentTheme['secondary'], t),
-      'accent': _interpolateColor(
-          _previousTheme!['accent'], currentTheme['accent'], t),
-      'background': _interpolateColor(
-          _previousTheme!['background'], currentTheme['background'], t),
-      'surface': _interpolateColor(
-          _previousTheme!['surface'], currentTheme['surface'], t),
-      'name': t > 0.5 ? currentTheme['name'] : _previousTheme!['name'],
-    };
   }
 
   Future<void> _fetchSelectedYearAndSubjects() async {
@@ -202,7 +108,8 @@ class _FirstPageState extends State<HomeContentPage>
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final selectedYearUrl = prefs.getString('selectedYearUrl') ??
+      final selectedYearUrl =
+          prefs.getString('selectedYearUrl') ??
           'https://raw.githubusercontent.com/Academia-IGIT/DATA_hub/main/firstyear.json';
 
       subjectService.url = selectedYearUrl;
@@ -229,7 +136,9 @@ class _FirstPageState extends State<HomeContentPage>
   }
 
   Future<void> _navigateToSubjectDetails(
-      BuildContext context, Subject subject) async {
+    BuildContext context,
+    Subject subject,
+  ) async {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -248,197 +157,213 @@ class _FirstPageState extends State<HomeContentPage>
     if (mounted) setState(() {});
   }
 
+  Future<void> _refresh() async {
+    final allowed = await RefreshTracker.incrementRefreshCount();
+    if (!mounted) return;
+    if (!allowed) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(CustomSnackBar.build(isCooldown: true, context: context));
+      return;
+    }
+    setState(() => currentSentence = getRandomSentence());
+    await Future.wait([_fetchSelectedYearAndSubjects(), _loadUserData()]);
+  }
+
+  Future<void> _chooseYear() async {
+    await context.push('/year');
+    if (!mounted) return;
+    await _fetchSelectedYearAndSubjects();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    return AnimatedBuilder(
-      animation: _colorTransition,
-      builder: (context, child) {
-        final theme = _getInterpolatedTheme();
-
-        return Scaffold(
-          backgroundColor: theme['background'],
-          body: RefreshIndicator(
-            color: theme['primary'],
-            backgroundColor: theme['surface'],
-            onRefresh: () async {
-              bool isRefreshAllowed =
-                  await RefreshTracker.incrementRefreshCount();
-              if (!isRefreshAllowed) {
-                if (!context.mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  CustomSnackBar.build(
-                    isCooldown: true,
-                    context: context,
+    return Scaffold(
+      backgroundColor: HomeStyle.background,
+      body: SafeArea(
+        bottom: false,
+        child: RefreshIndicator(
+          color: HomeStyle.text,
+          backgroundColor: HomeStyle.background,
+          onRefresh: _refresh,
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            slivers: [
+              SliverToBoxAdapter(
+                child: HomeHeader(
+                  isOnlineNotifier: _isOnlineNotifier,
+                  userName: _cachedUserName,
+                  currentSentence: currentSentence,
+                  onMenu: () => widget.scaffoldKey?.currentState?.openDrawer(),
+                ),
+              ),
+              if (storyUrls.isNotEmpty) ...[
+                const SliverToBoxAdapter(
+                  child: _SectionHeading(
+                    title: 'Around campus',
+                    eyebrow: 'THE NOTICEBOARD',
                   ),
-                );
-                return;
-              }
-
-              _previousTheme = Map<String, dynamic>.from(currentTheme);
-
-              setState(() {
-                currentTheme = _getRandomTheme();
-                currentSentence = getRandomSentence();
-              });
-
-              _colorTransitionController.reset();
-              _colorTransitionController.forward();
-
-              await Future.wait([
-                _fetchSelectedYearAndSubjects(),
-                _loadUserData(),
-              ]);
-            },
-            child: Stack(
-              children: [
-                Positioned.fill(child: FirstPageBackground()),
-                _buildMainContent(theme),
+                ),
+                SliverToBoxAdapter(child: StoriesWidget(stories: storyUrls)),
               ],
-            ),
+              const SliverToBoxAdapter(
+                child: _SectionHeading(
+                  title: 'The essentials',
+                  eyebrow: 'YOUR CAMPUS TOOLKIT',
+                ),
+              ),
+              SliverToBoxAdapter(child: TabsWidget(onTabPressed: (_) {})),
+              SliverToBoxAdapter(
+                child: _SectionHeading(
+                  title: 'Your subjects',
+                  eyebrow: 'THE STUDY SHELF',
+                  action: TextButton.icon(
+                    onPressed: _chooseYear,
+                    icon: const Icon(Icons.tune_rounded, size: 16),
+                    label: const Text('Change year'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: HomeStyle.accent,
+                      textStyle: const TextStyle(
+                        fontFamily: 'ProductSans',
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              if (isLoading)
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.all(32),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: HomeStyle.text,
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  ),
+                )
+              else if (errorMessage != null)
+                SliverToBoxAdapter(
+                  child: _buildState(
+                    title: 'The shelf couldn’t load.',
+                    message: errorMessage!,
+                    retry: true,
+                  ),
+                )
+              else if (subjects.isNotEmpty)
+                HomeSubjectList(
+                  subjects: subjects,
+                  onSubjectTap: _navigateToSubjectDetails,
+                )
+              else
+                SliverToBoxAdapter(
+                  child: _buildState(
+                    title: 'A fresh shelf.',
+                    message:
+                        'No subjects available yet. Try another year or check back later.',
+                  ),
+                ),
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(24, 28, 24, 32),
+                  child: Text(
+                    'ONE CHAPTER AT A TIME.',
+                    style: HomeStyle.eyebrow,
+                  ),
+                ),
+              ),
+            ],
           ),
-        );
-      },
-    );
-  }
-
-  Widget _buildMainContent(Map<String, dynamic> theme) {
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(
-        parent: AlwaysScrollableScrollPhysics(),
+        ),
       ),
-      slivers: [
-        ExpandableHeader(
-          theme: theme,
-          scaffoldKey: widget.scaffoldKey,
-          isOnlineNotifier: _isOnlineNotifier,
-          userName: _cachedUserName,
-          currentSentence: currentSentence,
-          subjects: subjects,
-        ),
-        SliverToBoxAdapter(
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: StoriesWidget(stories: storyUrls),
-          ),
-        ),
-        _buildQuickAccessSection(),
-        if (isLoading)
-          const ShimmerGrid()
-        else if (errorMessage != null)
-          SliverToBoxAdapter(child: _buildErrorCard())
-        else if (subjects.isNotEmpty)
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            sliver: SubjectGridView(
-              subjects: subjects,
-              onSubjectTap: _navigateToSubjectDetails,
-            ),
-          )
-        else
-          SliverToBoxAdapter(child: _buildEmptyState(theme)),
-        const SliverToBoxAdapter(child: SizedBox(height: 100)),
-      ],
     );
   }
 
-  Widget _buildQuickAccessSection() {
-    return SliverToBoxAdapter(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TabsWidget(
-            onTabPressed: (tabName) {},
+  Widget _buildState({
+    required String title,
+    required String message,
+    bool retry = false,
+  }) => Container(
+    margin: const EdgeInsets.symmetric(horizontal: 24),
+    padding: const EdgeInsets.all(24),
+    decoration: BoxDecoration(
+      color: HomeStyle.surface,
+      borderRadius: BorderRadius.circular(4),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            color: HomeStyle.text,
+            fontSize: 21,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          message,
+          style: const TextStyle(
+            color: HomeStyle.muted,
+            fontSize: 14,
+            height: 1.5,
+          ),
+        ),
+        if (retry) ...[
+          const SizedBox(height: 12),
+          TextButton.icon(
+            onPressed: _fetchSelectedYearAndSubjects,
+            style: TextButton.styleFrom(foregroundColor: HomeStyle.text),
+            icon: const Icon(Icons.refresh_rounded, size: 18),
+            label: const Text('Try again'),
           ),
         ],
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
 
-  Widget _buildErrorCard() {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(25),
-      decoration: BoxDecoration(
-        color: Colors.red.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
-      ),
-      child: Column(
-        children: [
-          Icon(LineIcons.exclamationTriangle, color: Colors.red, size: 48),
-          const SizedBox(height: 15),
-          Text(
-            'Something went wrong',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            errorMessage ?? 'Please try again',
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.7),
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _fetchSelectedYearAndSubjects,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
+class _SectionHeading extends StatelessWidget {
+  final String title;
+  final String eyebrow;
+  final Widget? action;
+  const _SectionHeading({
+    required this.title,
+    required this.eyebrow,
+    this.action,
+  });
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(24, 28, 24, 16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(eyebrow, style: HomeStyle.eyebrow),
+        const SizedBox(height: 5),
+        Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 16,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                color: HomeStyle.text,
+                fontSize: 25,
+                letterSpacing: -.6,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            child: const Text('Retry'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEmptyState(Map<String, dynamic> theme) {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(40),
-      decoration: BoxDecoration(
-        color: theme['surface'].withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: theme['surface'].withOpacity(0.3)),
-      ),
-      child: Column(
-        children: [
-          Icon(
-            LineIcons.book,
-            size: 64,
-            color: Colors.white.withValues(alpha: 0.5),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'No subjects available',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            'Check back later for updates',
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.7),
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+            if (action != null) action!,
+          ],
+        ),
+      ],
+    ),
+  );
 }

@@ -1,109 +1,97 @@
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:port/features/ai_chat/presentation/chat_page.dart';
 import 'package:port/core/config/app_config.dart';
+import 'package:port/features/ai_chat/presentation/chat_page.dart';
 import 'package:port/features/blog/presentation/blog_page.dart';
 import 'package:port/features/success_stories/presentation/success_stories_page.dart';
 import 'package:port/features/expenses/presentation/expense_tracker_page.dart';
 import 'package:port/features/college_resources/presentation/erp_page.dart';
-import 'package:port/features/home/presentation/widgets/first_tab_widget.dart';
+import 'package:port/features/home/presentation/widgets/first_tab_page.dart';
+import 'package:port/features/home/presentation/widgets/home_style.dart';
 
 class TabsWidget extends StatelessWidget {
   final Function(String) onTabPressed;
-
   const TabsWidget({super.key, required this.onTabPressed});
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> tabs = [
-      {
-        'name': 'Expense Tracker',
-        'icon': LineIcons.wallet,
-        'page': ExpenseTrackerPage(),
-      },
-      {
-        'name': 'ERP',
-        'icon': LineIcons.userCog,
-        'page': AcademicWebViewPage(),
-      },
-      {
-        'name': 'Blog',
-        'icon': LineIcons.newspaper,
-        'page': MarkdownListPage(),
-      },
-      {
-        'name': 'Success Stories',
-        'icon': LineIcons.trophy,
-        'page': SuccessStoriesPage(),
-      },
-      {
-        'name': 'AI Chat',
-        'icon': LineIcons.rocketChat,
-        'page': AiChatPage(),
-      }
+    final tabs = <({String name, IconData icon, Widget Function() page})>[
+      if (showFirstTab)
+        (
+          name: nameFirstTab,
+          icon: Icons.auto_stories_outlined,
+          page: () => const FirstTabPage(),
+        ),
+      (
+        name: 'Expenses',
+        icon: Icons.account_balance_wallet_outlined,
+        page: () => const ExpenseTrackerPage(),
+      ),
+      (
+        name: 'ERP',
+        icon: Icons.school_outlined,
+        page: () => AcademicWebViewPage(),
+      ),
+      (
+        name: 'Blog',
+        icon: Icons.article_outlined,
+        page: () => MarkdownListPage(),
+      ),
+      (
+        name: 'Success stories',
+        icon: Icons.emoji_events_outlined,
+        page: () => SuccessStoriesPage(),
+      ),
+      (
+        name: 'AI chat',
+        icon: Icons.chat_bubble_outline_rounded,
+        page: () => const AiChatPage(),
+      ),
     ];
-
     return SizedBox(
-      height: 75,
+      height: 112,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        itemCount: tabs.length + (showFirstTab ? 1 : 0),
-        separatorBuilder: (_, __) => const SizedBox(width: 14),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
+        itemCount: tabs.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 10),
         itemBuilder: (context, index) {
-          if (showFirstTab && index == 0) {
-            return FirstTabWidget();
-          }
-
-          final tabIndex = showFirstTab ? index - 1 : index;
-          final String name = tabs[tabIndex]['name'] as String;
-          final IconData icon = tabs[tabIndex]['icon'] as IconData;
-          final Widget page = tabs[tabIndex]['page'] as Widget;
-
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => page),
-              );
-              onTabPressed(name);
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                color: Colors.white.withValues(alpha: 0.1),
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.2),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+          final tab = tabs[index];
+          return SizedBox(
+            width: 108,
+            child: Material(
+              color: HomeStyle.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
               ),
-              child: Row(
-                children: [
-                  Icon(
-                    icon,
-                    color: Colors.white.withValues(alpha: 0.9),
-                    size: 22,
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => tab.page()),
+                  );
+                  onTabPressed(tab.name);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(tab.icon, color: HomeStyle.text, size: 23),
+                      Text(
+                        tab.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: HomeStyle.text,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 10),
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontFamily: 'ProductSans',
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.3,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           );

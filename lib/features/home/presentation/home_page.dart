@@ -1,6 +1,7 @@
-import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:port/features/home/presentation/widgets/app_drawer.dart';
+import 'package:port/features/home/presentation/widgets/home_style.dart';
 import 'package:port/features/notices/presentation/notice_page.dart';
 import 'package:port/features/home/presentation/home_content_page.dart';
 import 'package:port/core/network/refresh_tracker.dart';
@@ -15,13 +16,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
-  Color? receivedColor;
-
-  void updateColor(Color newColor) {
-    setState(() {
-      receivedColor = newColor;
-    });
-  }
 
   @override
   void initState() {
@@ -30,47 +24,97 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final List<Widget> pages = [
-      HomeContentPage(
-        scaffoldKey: _scaffoldKey,
-      ),
-      NoticePage(),
-    ];
-
-    return Scaffold(
-      extendBody: true,
+  Widget build(BuildContext context) => AnnotatedRegion<SystemUiOverlayStyle>(
+    value: SystemUiOverlayStyle.light,
+    child: Scaffold(
       key: _scaffoldKey,
-      drawer: UniqueDrawer(themeColor: receivedColor ?? Colors.blue),
+      backgroundColor: HomeStyle.background,
+      drawer: const UniqueDrawer(themeColor: HomeStyle.sage),
       body: IndexedStack(
         index: _selectedIndex,
-        children: pages,
-      ),
-      bottomNavigationBar: CrystalNavigationBar(
-        marginR: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-        paddingR: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        items: [
-          CrystalNavigationBarItem(
-            icon: Icons.home_work_rounded,
-            selectedColor: Colors.white,
-          ),
-          CrystalNavigationBarItem(
-            icon: Icons.event_note_outlined,
-            selectedColor: Colors.greenAccent,
-          ),
+        children: [
+          HomeContentPage(scaffoldKey: _scaffoldKey),
+          NoticePage(),
         ],
-        backgroundColor: const Color(0xFF191B1A).withValues(alpha: 0.5),
-        unselectedItemColor: Colors.grey,
-        height: 70,
-        borderRadius: 30,
-        outlineBorderColor: Colors.white38,
-        splashBorderRadius: 30,
+      ),
+      bottomNavigationBar: HomeNavigation(
+        selectedIndex: _selectedIndex,
+        onSelected: (index) => setState(() => _selectedIndex = index),
+      ),
+    ),
+  );
+}
+
+class HomeNavigation extends StatelessWidget {
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+  const HomeNavigation({
+    super.key,
+    required this.selectedIndex,
+    required this.onSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) => Material(
+    color: HomeStyle.background,
+    child: Container(
+      decoration: const BoxDecoration(
+        border: Border(top: BorderSide(color: HomeStyle.rule)),
+      ),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+          child: Row(
+            children: [
+              _destination(0, 'Home', Icons.home_outlined),
+              const SizedBox(width: 12),
+              _destination(1, 'Notices', Icons.article_outlined),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+
+  Widget _destination(int index, String label, IconData icon) {
+    final selected = index == selectedIndex;
+    return Expanded(
+      child: Semantics(
+        selected: selected,
+        child: InkWell(
+          onTap: () => onSelected(index),
+          borderRadius: BorderRadius.circular(4),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+            decoration: BoxDecoration(
+              color: selected ? HomeStyle.forest : Colors.transparent,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  size: 21,
+                  color: selected ? HomeStyle.text : HomeStyle.muted,
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: selected ? HomeStyle.text : HomeStyle.muted,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
