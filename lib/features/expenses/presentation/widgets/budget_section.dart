@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 
 import 'package:port/features/expenses/presentation/dialogs/budget_dialog.dart';
@@ -23,15 +24,8 @@ class BudgetSection extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 31, 34, 35),
+          color: AppStyle.surface,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +42,7 @@ class BudgetSection extends StatelessWidget {
                         style: TextStyle(
                           fontFamily: 'ProductSans',
                           fontSize: 16,
-                          color: Colors.grey,
+                          color: AppStyle.muted,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -58,7 +52,7 @@ class BudgetSection extends StatelessWidget {
                         style: const TextStyle(
                           fontFamily: 'ProductSans',
                           fontSize: 24,
-                          color: Colors.white,
+                          color: AppStyle.text,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -66,11 +60,7 @@ class BudgetSection extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(
-                    Icons.edit,
-                    color: Colors.grey.shade400,
-                    size: 24,
-                  ),
+                  icon: Icon(Icons.edit, color: AppStyle.muted, size: 24),
                   onPressed: () async {
                     final newBudget = await showDialog<double>(
                       context: context,
@@ -86,11 +76,7 @@ class BudgetSection extends StatelessWidget {
                 ),
               ],
             ),
-            const Divider(
-              color: Colors.grey,
-              thickness: 0.5,
-              height: 24,
-            ),
+            const Divider(color: AppStyle.muted, thickness: 0.5, height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -98,7 +84,7 @@ class BudgetSection extends StatelessWidget {
                   child: _buildExpenseItem(
                     title: "Today's Expense",
                     value: '₹${todaysExpense.toStringAsFixed(2)}',
-                    color: Colors.redAccent,
+                    color: AppStyle.danger,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -106,7 +92,7 @@ class BudgetSection extends StatelessWidget {
                   child: _buildExpenseItem(
                     title: "Last 7 Days",
                     value: '₹${last7DaysExpense.toStringAsFixed(2)}',
-                    color: Colors.blueAccent,
+                    color: AppStyle.blue,
                   ),
                 ),
               ],
@@ -130,7 +116,7 @@ class BudgetSection extends StatelessWidget {
           style: const TextStyle(
             fontFamily: 'ProductSans',
             fontSize: 16,
-            color: Colors.grey,
+            color: AppStyle.muted,
             fontWeight: FontWeight.w500,
           ),
         ),

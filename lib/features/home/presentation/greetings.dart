@@ -9,7 +9,7 @@ final Map<String, List<String>> timeBasedGreetings = {
     "Who even wakes up this early?",
     "Sun’s up, but my soul isn’t.",
     "5 more minutes… forever.",
-    "Early morning = regrets already."
+    "Early morning = regrets already.",
   ],
   "morning": [
     "Good morning!",
@@ -18,7 +18,7 @@ final Map<String, List<String>> timeBasedGreetings = {
     "Why is morning a thing?",
     "Still tired. Send caffeine.",
     "Let’s pretend to be productive.",
-    "Survived the alarm, barely."
+    "Survived the alarm, barely.",
   ],
   "midday": [
     "Good afternoon!",
@@ -27,7 +27,7 @@ final Map<String, List<String>> timeBasedGreetings = {
     "Is napping a sport yet?",
     "I’m running on snacks and hope.",
     "Halfway through, kinda.",
-    "Assignments? What assignments?"
+    "Assignments? What assignments?",
   ],
   "lateAfternoon": [
     "Stay focused!",
@@ -36,7 +36,7 @@ final Map<String, List<String>> timeBasedGreetings = {
     "Just surviving, you?",
     "Productivity is a myth.",
     "Countdown to dinner starts now.",
-    "Brain: Offline. Send help."
+    "Brain: Offline. Send help.",
   ],
   "earlyEvening": [
     "Twilight is here!",
@@ -44,7 +44,7 @@ final Map<String, List<String>> timeBasedGreetings = {
     "Sunset vibes!",
     "Let the procrastination marathon begin.",
     "Should I study or nap? Neither.",
-    "One more scroll, I promise."
+    "One more scroll, I promise.",
   ],
   "evening": [
     "Good evening!",
@@ -53,7 +53,7 @@ final Map<String, List<String>> timeBasedGreetings = {
     "Pretending tomorrow doesn’t exist.",
     "Time to overthink everything.",
     "Netflix, then panic later.",
-    "Can I skip to the weekend?"
+    "Can I skip to the weekend?",
   ],
   "lateEvening": [
     "Time to slow down!",
@@ -62,7 +62,7 @@ final Map<String, List<String>> timeBasedGreetings = {
     "Netflix and avoid responsibilities.",
     "Sleep is optional, right?",
     "Dreaming of deadlines already.",
-    "Why am I still awake?"
+    "Why am I still awake?",
   ],
   "midnight": [
     "Sleep mode: ON!",
@@ -71,35 +71,39 @@ final Map<String, List<String>> timeBasedGreetings = {
     "Midnight snacks are life.",
     "Why do my best ideas come now?",
     "Tomorrow’s problems can wait.",
-    "Is it late, or is it early?"
-  ]
+    "Is it late, or is it early?",
+  ],
 };
 
-String getRandomSentence() {
+String getRandomSentence({String? previous}) {
   final hour = DateTime.now().hour;
 
   if (hour >= 5 && hour < 8) {
-    return _getRandomGreeting("earlyMorning");
+    return _getRandomGreeting("earlyMorning", previous: previous);
   } else if (hour >= 8 && hour < 12) {
-    return _getRandomGreeting("morning");
+    return _getRandomGreeting("morning", previous: previous);
   } else if (hour >= 12 && hour < 15) {
-    return _getRandomGreeting("midday");
+    return _getRandomGreeting("midday", previous: previous);
   } else if (hour >= 15 && hour < 18) {
-    return _getRandomGreeting("lateAfternoon");
+    return _getRandomGreeting("lateAfternoon", previous: previous);
   } else if (hour >= 18 && hour < 19) {
-    return _getRandomGreeting("earlyEvening");
+    return _getRandomGreeting("earlyEvening", previous: previous);
   } else if (hour >= 19 && hour < 21) {
-    return _getRandomGreeting("evening");
+    return _getRandomGreeting("evening", previous: previous);
   } else if (hour >= 21 && hour < 23) {
-    return _getRandomGreeting("lateEvening");
+    return _getRandomGreeting("lateEvening", previous: previous);
   } else {
-    return _getRandomGreeting("midnight");
+    return _getRandomGreeting("midnight", previous: previous);
   }
 }
 
-String _getRandomGreeting(String timeCategory) {
-  final greetings = timeBasedGreetings[timeCategory];
-  return greetings![Random().nextInt(greetings.length)];
+String _getRandomGreeting(String timeCategory, {String? previous}) {
+  final greetings = timeBasedGreetings[timeCategory]!;
+  final candidates = greetings
+      .where((greeting) => greeting != previous)
+      .toList();
+  final choices = candidates.isEmpty ? greetings : candidates;
+  return choices[Random().nextInt(choices.length)];
 }
 
 IconData getIconForTimeOfDay() {

@@ -1,145 +1,184 @@
 import 'package:flutter/material.dart';
+import 'package:port/shared/theme/app_style.dart';
+import 'package:port/features/amenities/presentation/amenity_photo.dart';
 import 'package:port/features/amenities/presentation/details_page.dart';
 
 class AmenitiesList extends StatelessWidget {
   final List<dynamic> items;
-
-  const AmenitiesList({required this.items, super.key});
+  final int startIndex;
+  const AmenitiesList({required this.items, this.startIndex = 0, super.key});
 
   @override
-  Widget build(BuildContext context) {
-    if (items.isEmpty) {
-      return const Center(
-        child: Text(
-          'No amenities available',
-          style: TextStyle(
-              color: Colors.grey, fontSize: 16, fontFamily: 'ProductSans'),
+  Widget build(BuildContext context) => Column(
+    children: [
+      for (var i = 0; i < items.length; i++)
+        AmenityEntry(
+          item: items[i] as Map<String, dynamic>,
+          index: startIndex + i,
+          featured: i == 0 && startIndex == 0,
         ),
-      );
-    }
+    ],
+  );
+}
 
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final item = items[index];
-        final images = (item['images'] as List<dynamic>? ?? []).cast<String>();
-        final imageUrl =
-            images.isNotEmpty ? images[0] : 'https://via.placeholder.com/150';
-        final name = item['name'] ?? 'Unknown Name';
-        final tag = item['tag'] ?? 'Unknown Tag';
-
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailsPage(item: item),
-              ),
-            );
-          },
-          child: Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            clipBehavior: Clip.antiAlias,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            elevation: 10,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 27, 27, 27),
-                    const Color(0xFF1A1D1E),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+class AmenityEntry extends StatelessWidget {
+  final Map<String, dynamic> item;
+  final int index;
+  final bool featured;
+  final String heroPrefix;
+  const AmenityEntry({
+    super.key,
+    required this.item,
+    required this.index,
+    this.featured = false,
+    this.heroPrefix = 'amenity',
+  });
+  @override
+  Widget build(BuildContext context) {
+    final images = (item['images'] as List<dynamic>? ?? []).cast<String>();
+    final name = item['name'] as String? ?? 'Unnamed amenity';
+    final tag = item['tag'] as String? ?? 'Campus';
+    final heroTag = '$heroPrefix:$name:$index';
+    final accent = AppStyle.highlights[index % AppStyle.highlights.length];
+    void open() => Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => DetailsPage(item: item, heroTag: heroTag),
+      ),
+    );
+    if (featured) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Material(
+          color: AppStyle.surface,
+          borderRadius: BorderRadius.circular(8),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: open,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AspectRatio(
+                  aspectRatio: 1.85,
+                  child: Hero(
+                    tag: heroTag,
+                    child: AmenityPhoto(url: images.firstOrNull),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.5),
-                    blurRadius: 10,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
+                Padding(
+                  padding: const EdgeInsets.all(18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Hero(
-                        tag: item['name'] ?? 'unknown',
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                          child: Image.network(
-                            imageUrl,
-                            height: 160,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Container(
-                              height: 200,
-                              color: Colors.grey[800],
-                              child: const Icon(Icons.broken_image,
-                                  color: Colors.grey, size: 50),
-                            ),
-                          ),
+                      Text(
+                        tag.toUpperCase(),
+                        style: TextStyle(
+                          color: accent,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.4,
                         ),
                       ),
-                      Positioned(
-                        top: 10,
-                        left: 10,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.6),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            tag,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontFamily: 'ProductSans',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
+                      const SizedBox(height: 10),
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            name,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: 'ProductSans',
+                          Expanded(
+                            child: Text(
+                              name,
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                                height: 1.2,
+                                letterSpacing: -.7,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 4),
+                            child: Icon(
+                              Icons.north_east_rounded,
+                              color: AppStyle.muted,
+                              size: 20,
                             ),
                           ),
                         ],
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        );
-      },
+        ),
+      );
+    }
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: open,
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
+          decoration: const BoxDecoration(
+            border: Border(bottom: BorderSide(color: AppStyle.rule)),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 72,
+                height: 88,
+                child: Hero(
+                  tag: heroTag,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: AmenityPhoto(url: images.firstOrNull),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${(index + 1).toString().padLeft(2, '0')} / ${tag.toUpperCase()}',
+                      style: TextStyle(
+                        color: accent,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.1,
+                        height: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        height: 1.3,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: -.3,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Padding(
+                padding: EdgeInsets.only(top: 24),
+                child: Icon(
+                  Icons.north_east_rounded,
+                  size: 17,
+                  color: AppStyle.muted,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

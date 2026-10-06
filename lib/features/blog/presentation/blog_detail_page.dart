@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:port/features/blog/data/blog_repository.dart';
@@ -30,20 +31,23 @@ class _MarkdownViewerPageState extends State<MarkdownViewerPage>
     super.build(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
         title: const Text(
           '',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'ProductSans',
-              letterSpacing: 3),
+            fontSize: 22,
+            color: AppStyle.text,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'ProductSans',
+            letterSpacing: -.5,
+          ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF1F1F1F),
-        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: false,
+        backgroundColor: AppStyle.surface,
+        iconTheme: const IconThemeData(color: AppStyle.text),
         bottom: const AppBarDivider(),
       ),
       body: FutureBuilder<String>(
@@ -51,30 +55,32 @@ class _MarkdownViewerPageState extends State<MarkdownViewerPage>
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              color: const Color(0xFF121212),
+              color: AppStyle.background,
               child: const Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppStyle.text),
                 ),
               ),
             );
           } else if (snapshot.hasError) {
             return Container(
-              color: const Color(0xFF121212),
+              color: AppStyle.background,
               child: Center(
                 child: Text(
                   'Error: ${snapshot.error}',
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: AppStyle.text),
                 ),
               ),
             );
           } else {
             return Container(
-              color: const Color(0xFF121212),
+              color: AppStyle.background,
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 child: SharedMarkdownViewer(
                   markdownData: snapshot.data ?? '',
                   compact: false,

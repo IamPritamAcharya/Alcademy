@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:port/shared/theme/app_style.dart';
 import 'package:go_router/go_router.dart';
 import 'package:port/features/notifications/data/notification_service.dart';
 import 'package:port/features/onboarding/presentation/onboarding_page.dart';
@@ -29,7 +30,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   void _initializeRouter() {
     _router = createAppRouter(
-        initialLocation: _getInitialLocation(), buildHome: _buildHomePage);
+      initialLocation: _getInitialLocation(),
+      buildHome: _buildHomePage,
+    );
   }
 
   String _getInitialLocation() {
@@ -38,7 +41,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           NotificationService.getSelectedNotificationId();
       if (selectedNotificationId != null && selectedNotificationId.isNotEmpty) {
         debugPrint(
-            "App opened via notification, navigating to notifications page");
+          "App opened via notification, navigating to notifications page",
+        );
         return "/notifications";
       }
     }
@@ -96,7 +100,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         if (selectedNotificationId != null &&
             selectedNotificationId.isNotEmpty) {
           debugPrint(
-              "App resumed via notification, navigating to notifications");
+            "App resumed via notification, navigating to notifications",
+          );
 
           final currentLocation =
               _router.routerDelegate.currentConfiguration.fullPath;
@@ -119,7 +124,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return MaterialApp.router(
       title: 'Alcademy',
       debugShowCheckedModeBanner: false,
-      color: const Color(0xFF121212),
+      color: AppStyle.background,
       scrollBehavior: AppScrollBehavior(),
       theme: buildAppTheme(),
       routerConfig: _router,

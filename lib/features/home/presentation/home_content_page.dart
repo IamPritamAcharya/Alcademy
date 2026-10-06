@@ -6,7 +6,7 @@ import 'package:port/core/config/app_config.dart';
 import 'package:port/features/stories/presentation/stories_widget.dart';
 
 import 'package:port/features/home/presentation/widgets/home_header.dart';
-import 'package:port/features/home/presentation/widgets/home_style.dart';
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/features/home/presentation/widgets/home_subject_list.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,15 +22,16 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 class HomeContentPage extends StatefulWidget {
   final GlobalKey<ScaffoldState>? scaffoldKey;
+  final bool isActive;
 
-  const HomeContentPage({super.key, this.scaffoldKey});
+  const HomeContentPage({super.key, this.scaffoldKey, this.isActive = true});
 
   @override
   State<HomeContentPage> createState() => _FirstPageState();
 }
 
 class _FirstPageState extends State<HomeContentPage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
   @override
   bool get wantKeepAlive => true;
 
@@ -48,6 +49,7 @@ class _FirstPageState extends State<HomeContentPage>
   void initState() {
     super.initState();
     AppConfiguration.current.addListener(_onConfigChanged);
+    WidgetsBinding.instance.addObserver(this);
     currentSentence = getRandomSentence();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -60,6 +62,7 @@ class _FirstPageState extends State<HomeContentPage>
   @override
   void dispose() {
     AppConfiguration.current.removeListener(_onConfigChanged);
+    WidgetsBinding.instance.removeObserver(this);
     _isOnlineNotifier.dispose();
     _connectivitySubscription?.cancel();
     super.dispose();
@@ -153,6 +156,27 @@ class _FirstPageState extends State<HomeContentPage>
     _loadUserData();
   }
 
+  void _refreshGreeting() {
+    if (mounted) {
+      setState(
+        () => currentSentence = getRandomSentence(previous: currentSentence),
+      );
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeContentPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isActive && !oldWidget.isActive) _refreshGreeting();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && widget.isActive) {
+      _refreshGreeting();
+    }
+  }
+
   void _onConfigChanged() {
     if (mounted) setState(() {});
   }
@@ -166,7 +190,7 @@ class _FirstPageState extends State<HomeContentPage>
       ).showSnackBar(CustomSnackBar.build(isCooldown: true, context: context));
       return;
     }
-    setState(() => currentSentence = getRandomSentence());
+    _refreshGreeting();
     await Future.wait([_fetchSelectedYearAndSubjects(), _loadUserData()]);
   }
 
@@ -180,12 +204,12 @@ class _FirstPageState extends State<HomeContentPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      backgroundColor: HomeStyle.background,
+      backgroundColor: AppStyle.background,
       body: SafeArea(
         bottom: false,
         child: RefreshIndicator(
-          color: HomeStyle.text,
-          backgroundColor: HomeStyle.background,
+          color: AppStyle.text,
+          backgroundColor: AppStyle.background,
           onRefresh: _refresh,
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(
@@ -196,7 +220,14 @@ class _FirstPageState extends State<HomeContentPage>
                 child: HomeHeader(
                   isOnlineNotifier: _isOnlineNotifier,
                   userName: _cachedUserName,
+                  resourceCount: isLoading
+                      ? null
+                      : subjects.fold<int>(
+                          0,
+                          (total, subject) => total + subject.items.length,
+                        ),
                   currentSentence: currentSentence,
+                  onNewGreeting: _refreshGreeting,
                   onMenu: () => widget.scaffoldKey?.currentState?.openDrawer(),
                 ),
               ),
@@ -215,7 +246,9 @@ class _FirstPageState extends State<HomeContentPage>
                   eyebrow: 'YOUR CAMPUS TOOLKIT',
                 ),
               ),
-              SliverToBoxAdapter(child: TabsWidget(onTabPressed: (_) {})),
+              SliverToBoxAdapter(
+                child: TabsWidget(onTabPressed: (_) => _refreshGreeting()),
+              ),
               SliverToBoxAdapter(
                 child: _SectionHeading(
                   title: 'Your subjects',
@@ -225,7 +258,7 @@ class _FirstPageState extends State<HomeContentPage>
                     icon: const Icon(Icons.tune_rounded, size: 16),
                     label: const Text('Change year'),
                     style: TextButton.styleFrom(
-                      foregroundColor: HomeStyle.accent,
+                      foregroundColor: AppStyle.accent,
                       textStyle: const TextStyle(
                         fontFamily: 'ProductSans',
                         fontSize: 12,
@@ -240,7 +273,7 @@ class _FirstPageState extends State<HomeContentPage>
                     padding: EdgeInsets.all(32),
                     child: Center(
                       child: CircularProgressIndicator(
-                        color: HomeStyle.text,
+                        color: AppStyle.text,
                         strokeWidth: 2,
                       ),
                     ),
@@ -272,7 +305,7 @@ class _FirstPageState extends State<HomeContentPage>
                   padding: EdgeInsets.fromLTRB(24, 28, 24, 32),
                   child: Text(
                     'ONE CHAPTER AT A TIME.',
-                    style: HomeStyle.eyebrow,
+                    style: AppStyle.eyebrow,
                   ),
                 ),
               ),
@@ -291,7 +324,7 @@ class _FirstPageState extends State<HomeContentPage>
     margin: const EdgeInsets.symmetric(horizontal: 24),
     padding: const EdgeInsets.all(24),
     decoration: BoxDecoration(
-      color: HomeStyle.surface,
+      color: AppStyle.surface,
       borderRadius: BorderRadius.circular(4),
     ),
     child: Column(
@@ -300,7 +333,7 @@ class _FirstPageState extends State<HomeContentPage>
         Text(
           title,
           style: const TextStyle(
-            color: HomeStyle.text,
+            color: AppStyle.text,
             fontSize: 21,
             fontWeight: FontWeight.bold,
           ),
@@ -309,7 +342,7 @@ class _FirstPageState extends State<HomeContentPage>
         Text(
           message,
           style: const TextStyle(
-            color: HomeStyle.muted,
+            color: AppStyle.muted,
             fontSize: 14,
             height: 1.5,
           ),
@@ -318,7 +351,7 @@ class _FirstPageState extends State<HomeContentPage>
           const SizedBox(height: 12),
           TextButton.icon(
             onPressed: _fetchSelectedYearAndSubjects,
-            style: TextButton.styleFrom(foregroundColor: HomeStyle.text),
+            style: TextButton.styleFrom(foregroundColor: AppStyle.text),
             icon: const Icon(Icons.refresh_rounded, size: 18),
             label: const Text('Try again'),
           ),
@@ -344,7 +377,7 @@ class _SectionHeading extends StatelessWidget {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(eyebrow, style: HomeStyle.eyebrow),
+        Text(eyebrow, style: AppStyle.eyebrow),
         const SizedBox(height: 5),
         Wrap(
           alignment: WrapAlignment.spaceBetween,
@@ -354,7 +387,7 @@ class _SectionHeading extends StatelessWidget {
             Text(
               title,
               style: const TextStyle(
-                color: HomeStyle.text,
+                color: AppStyle.text,
                 fontSize: 25,
                 letterSpacing: -.6,
                 fontWeight: FontWeight.bold,

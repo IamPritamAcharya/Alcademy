@@ -1,10 +1,7 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:port/features/profile/data/profile_repository.dart';
-import 'package:port/features/profile/presentation/navigation_tile.dart';
 import 'package:port/features/profile/presentation/profile_card.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -52,127 +49,116 @@ class _UserProfilePageState extends State<UserProfilePage> {
     showDialog(
       context: context,
       builder: (context) => Center(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 4, sigmaY: 8),
-          child: Dialog(
-            backgroundColor: Colors.black.withValues(alpha: 0.1),
-            shape: RoundedRectangleBorder(
+        child: Dialog(
+          backgroundColor: AppStyle.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppStyle.surface,
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: AppStyle.text.withValues(alpha: 0.15),
+                width: 1.5,
+              ),
             ),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.15),
-                  width: 1.5,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "Update Name",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'ProductSans',
+                    color: AppStyle.text,
+                  ),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.3),
-                    blurRadius: 10,
-                    offset: const Offset(0, 5),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: nameController,
+                  style: const TextStyle(
+                    color: AppStyle.text,
+                    fontFamily: 'ProductSans',
                   ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    "Update Name",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'ProductSans',
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: nameController,
-                    style: const TextStyle(
-                      color: Colors.white,
+                  cursorColor: AppStyle.accent,
+                  decoration: InputDecoration(
+                    hintText: "Enter your name",
+                    hintStyle: TextStyle(
+                      color: AppStyle.text.withValues(alpha: 0.5),
                       fontFamily: 'ProductSans',
                     ),
-                    cursorColor: Colors.greenAccent,
-                    decoration: InputDecoration(
-                      hintText: "Enter your name",
-                      hintStyle: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.5),
-                        fontFamily: 'ProductSans',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: AppStyle.text.withValues(alpha: 0.3),
+                        width: 1.5,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Colors.white.withValues(alpha: 0.3),
-                          width: 1.5,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          color: Colors.greenAccent,
-                          width: 1.5,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white.withValues(alpha: 0.1),
                     ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: AppStyle.accent,
+                        width: 1.5,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: AppStyle.rule.withValues(alpha: .65),
                   ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text(
-                          "Cancel",
-                          style: TextStyle(
-                            color: Colors.redAccent,
-                            fontFamily: 'ProductSans',
-                          ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(
+                          color: AppStyle.danger,
+                          fontFamily: 'ProductSans',
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final newName = nameController.text.trim();
-                          if (newName.isNotEmpty) {
-                            await ProfileRepository.saveUserName(newName);
-                            if (!mounted || !context.mounted) return;
-                            if (mounted) {
-                              setState(() {
-                                userName = newName;
-                              });
-                            }
-                            Navigator.of(context).pop();
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final newName = nameController.text.trim();
+                        if (newName.isNotEmpty) {
+                          await ProfileRepository.saveUserName(newName);
+                          if (!mounted || !context.mounted) return;
+                          if (mounted) {
+                            setState(() {
+                              userName = newName;
+                            });
                           }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Colors.greenAccent.withValues(alpha: 0.8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
-                          ),
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppStyle.accent.withValues(alpha: 0.8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Text(
-                          "Save",
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontFamily: 'ProductSans',
-                            fontWeight: FontWeight.bold,
-                          ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                      child: const Text(
+                        "Save",
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontFamily: 'ProductSans',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -189,21 +175,24 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1D1E),
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: true,
+        centerTitle: false,
         title: const Text(
-          "PROFILE",
+          "Profile",
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              fontFamily: 'ProductSans',
-              letterSpacing: 2),
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: AppStyle.text,
+            fontFamily: 'ProductSans',
+            letterSpacing: -.5,
+          ),
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: AppStyle.text),
         bottom: const AppBarDivider(),
       ),
       body: FutureBuilder<void>(
@@ -215,7 +204,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             return const Center(
               child: Text(
                 "Error loading profile data",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: AppStyle.text),
               ),
             );
           }
@@ -227,27 +216,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 userName: userName ?? "User Name",
                 branch: branch ?? "Branch Name",
                 onEditName: updateUserName,
-              ),
-              const SizedBox(height: 25),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  color: Colors.white.withValues(alpha: 0.1),
-                  height: 1,
-                ),
-              ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    NavigationTile(
-                      icon: LineIcons.key,
-                      title: "API Key",
-                      onTap: () {
-                        context.push('/api');
-                      },
-                    ),
-                  ],
-                ),
               ),
             ],
           );

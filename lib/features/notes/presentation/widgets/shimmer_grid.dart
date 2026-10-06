@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -15,52 +16,33 @@ class ShimmerGrid extends StatelessWidget {
           mainAxisSpacing: 0,
           childAspectRatio: 1.1,
         ),
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            return Shimmer.fromColors(
-              baseColor: const Color(0xFF1F1F1F),
-              highlightColor: const Color(0xFF3A3A3A),
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2A2A2A),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
-                      blurRadius: 6,
-                      offset: const Offset(0, 3),
-                    ),
+        delegate: SliverChildBuilderDelegate((context, index) {
+          return Shimmer.fromColors(
+            baseColor: AppStyle.surface,
+            highlightColor: AppStyle.rule,
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppStyle.surface,
+                borderRadius: BorderRadius.circular(12),
+
+                border: Border.all(color: AppStyle.rule.withValues(alpha: .65)),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(height: 32, width: 32, color: AppStyle.rule),
+                    const SizedBox(height: 8),
+                    Container(height: 16, width: 80, color: AppStyle.rule),
                   ],
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.1),
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 32,
-                        width: 32,
-                        color: const Color(0xFF3A3A3A),
-                      ),
-                      const SizedBox(height: 8),
-                      Container(
-                        height: 16,
-                        width: 80,
-                        color: const Color(0xFF3A3A3A),
-                      ),
-                    ],
-                  ),
                 ),
               ),
-            );
-          },
-          childCount: 4,
-        ),
+            ),
+          );
+        }, childCount: 4),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:port/core/config/app_config.dart';
 import 'package:port/features/home/presentation/widgets/first_tab_page.dart';
@@ -18,11 +19,11 @@ class FirstTabWidget extends StatelessWidget {
             MaterialPageRoute(builder: (context) => const FirstTabPage()),
           );
         },
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: AppStyle.radius,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: Colors.white.withValues(alpha: 0.05),
+            borderRadius: AppStyle.radius,
+            color: AppStyle.surface,
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.15),
@@ -30,23 +31,12 @@ class FirstTabWidget extends StatelessWidget {
                 offset: const Offset(0, 3),
               ),
             ],
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.1),
-            ),
+            border: Border.all(color: AppStyle.rule.withValues(alpha: .65)),
           ),
           child: ShaderMask(
             shaderCallback: (Rect bounds) {
               return LinearGradient(
-                colors: [
-                  Color(0xFF9C27B0),
-                  Color(0xFFFF5722),
-                  Color(0xFFFFD700),
-                  Color(0xFF4CAF50),
-                  Color(0xFF00BCD4),
-                  Color.fromRGBO(216, 72, 241, 1),
-                  Color(0xFFFF5722),
-                  Color(0xFF607D8B),
-                ],
+                colors: AppStyle.highlights,
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               ).createShader(bounds);
@@ -54,9 +44,7 @@ class FirstTabWidget extends StatelessWidget {
             blendMode: BlendMode.srcATop,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-              ),
+              decoration: BoxDecoration(borderRadius: AppStyle.radius),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +52,7 @@ class FirstTabWidget extends StatelessWidget {
                 children: [
                   Icon(
                     icon,
-                    color: Colors.white.withValues(alpha: 0.8),
+                    color: AppStyle.text.withValues(alpha: 0.8),
                     size: 20,
                   ),
                   const SizedBox(width: 8),
@@ -72,7 +60,7 @@ class FirstTabWidget extends StatelessWidget {
                     nameFirstTab,
                     style: const TextStyle(
                       fontFamily: 'ProductSans',
-                      color: Colors.white,
+                      color: AppStyle.text,
                       fontWeight: FontWeight.w400,
                       fontSize: 14,
                       letterSpacing: 1.2,

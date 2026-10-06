@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:port/shared/theme/app_style.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -16,8 +16,11 @@ class ExpenseListSection extends StatelessWidget {
     required this.onDeleteExpense,
   });
 
-  void _showExpenseDetails(BuildContext context, Map<String, dynamic> expense,
-      String formattedDate) {
+  void _showExpenseDetails(
+    BuildContext context,
+    Map<String, dynamic> expense,
+    String formattedDate,
+  ) {
     showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -25,68 +28,66 @@ class ExpenseListSection extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade800.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  width: 1.5,
-                ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppStyle.surface,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: AppStyle.rule, width: 1.5),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 25.0,
+                left: 25,
+                right: 25,
+                bottom: 15,
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 25.0, left: 25, right: 25, bottom: 15),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      expense['item'],
-                      style: const TextStyle(
-                        fontFamily: 'ProductSans',
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    expense['item'],
+                    style: const TextStyle(
+                      fontFamily: 'ProductSans',
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppStyle.text,
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Amount: ₹${expense['value'].toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        fontFamily: 'ProductSans',
-                        fontSize: 16,
-                        color: Colors.greenAccent,
-                      ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Amount: ₹${expense['value'].toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      fontFamily: 'ProductSans',
+                      fontSize: 16,
+                      color: AppStyle.accent,
                     ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Date: $formattedDate',
-                      style: const TextStyle(
-                        fontFamily: 'ProductSans',
-                        fontSize: 16,
-                        color: Colors.blueAccent,
-                      ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Date: $formattedDate',
+                    style: const TextStyle(
+                      fontFamily: 'ProductSans',
+                      fontSize: 16,
+                      color: AppStyle.blue,
                     ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text(
-                          'Close',
-                          style: TextStyle(
-                            fontFamily: 'ProductSans',
-                            color: Colors.grey,
-                            fontSize: 16,
-                          ),
+                  ),
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text(
+                        'Close',
+                        style: TextStyle(
+                          fontFamily: 'ProductSans',
+                          color: AppStyle.muted,
+                          fontSize: 16,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -103,8 +104,9 @@ class ExpenseListSection extends StatelessWidget {
       itemCount: expenses.length,
       itemBuilder: (context, index) {
         final expense = expenses[index];
-        final formattedDate =
-            DateFormat('dd/MM/yyyy').format(DateTime.parse(expense['date']));
+        final formattedDate = DateFormat(
+          'dd/MM/yyyy',
+        ).format(DateTime.parse(expense['date']));
 
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -116,15 +118,15 @@ class ExpenseListSection extends StatelessWidget {
                 children: [
                   SlidableAction(
                     onPressed: (_) => onEditExpense(index),
-                    backgroundColor: const Color.fromRGBO(0, 255, 127, 1),
-                    foregroundColor: const Color.fromARGB(255, 31, 34, 35),
+                    backgroundColor: AppStyle.accent,
+                    foregroundColor: AppStyle.surface,
                     icon: Icons.edit_rounded,
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   SlidableAction(
                     onPressed: (_) => onDeleteExpense(index),
-                    backgroundColor: Colors.redAccent,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppStyle.danger,
+                    foregroundColor: AppStyle.text,
                     icon: Icons.delete_outline_rounded,
                     borderRadius: BorderRadius.circular(16.0),
                   ),
@@ -132,15 +134,8 @@ class ExpenseListSection extends StatelessWidget {
               ),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.035),
+                  color: AppStyle.text.withValues(alpha: 0.035),
                   borderRadius: BorderRadius.circular(16.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 2,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -158,7 +153,7 @@ class ExpenseListSection extends StatelessWidget {
                               expense['item'],
                               style: const TextStyle(
                                 fontFamily: 'ProductSans',
-                                color: Colors.white,
+                                color: AppStyle.text,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -171,14 +166,14 @@ class ExpenseListSection extends StatelessWidget {
                                 const Icon(
                                   Icons.calendar_today_outlined,
                                   size: 12,
-                                  color: Colors.white54,
+                                  color: AppStyle.muted,
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
                                   formattedDate,
                                   style: const TextStyle(
                                     fontFamily: 'ProductSans',
-                                    color: Colors.white54,
+                                    color: AppStyle.muted,
                                     fontSize: 13,
                                   ),
                                 ),
@@ -192,7 +187,7 @@ class ExpenseListSection extends StatelessWidget {
                         '₹${expense['value'].toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontFamily: 'ProductSans',
-                          color: Color.fromRGBO(0, 255, 127, 1),
+                          color: AppStyle.accent,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),

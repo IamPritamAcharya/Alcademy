@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:port/shared/theme/app_style.dart';
 
 class AnimatedBackground extends StatelessWidget {
   final int currentPage;
   final Widget child;
-
   const AnimatedBackground({
     super.key,
     required this.currentPage,
@@ -11,50 +11,30 @@ class AnimatedBackground extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 600),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: _getBackgroundColors(),
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+  Widget build(BuildContext context) => Scaffold(
+    body: AnimatedContainer(
+      duration: MediaQuery.disableAnimationsOf(context)
+          ? Duration.zero
+          : const Duration(milliseconds: 600),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Color.alphaBlend(
+              [
+                AppStyle.accent,
+                AppStyle.blue,
+                AppStyle.lilac,
+                AppStyle.paper,
+              ][currentPage].withValues(alpha: .08),
+              AppStyle.background,
             ),
-          ),
-          child,
-        ],
+            AppStyle.background,
+          ],
+        ),
       ),
-    );
-  }
-
-  List<Color> _getBackgroundColors() {
-    switch (currentPage) {
-      case 0:
-        return [
-          const Color(0xFFFFE0B2),
-          const Color(0xFFFFCCBC),
-        ];
-      case 1:
-        return [
-          const Color.fromARGB(255, 201, 245, 252),
-          const Color.fromARGB(255, 188, 228, 255),
-        ];
-      case 2:
-        return [
-          const Color.fromARGB(255, 216, 255, 215),
-          const Color.fromARGB(255, 197, 255, 201),
-        ];
-      case 3:
-      default:
-        return [
-          const Color(0xFFF1F8E9),
-          const Color(0xFFF1F8E9),
-        ];
-    }
-  }
+      child: child,
+    ),
+  );
 }

@@ -1,7 +1,7 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:port/shared/widgets/markdown_viewer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:port/core/config/app_config.dart';
 
@@ -10,31 +10,33 @@ class FirstTabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ValueListenableBuilder<AppConfig>(
-        valueListenable: AppConfiguration.current,
-        builder: (context, config, child) => _buildPage(context),
-      );
+    valueListenable: AppConfiguration.current,
+    builder: (context, config, child) => _buildPage(context),
+  );
 
   Widget _buildPage(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1D1E),
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
         title: Text(
           nameFirstTab,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
-            letterSpacing: 2,
+            color: AppStyle.text,
+            letterSpacing: -.5,
           ),
         ),
-        backgroundColor: const Color(0xFF1A1D1E),
+        backgroundColor: AppStyle.background,
         elevation: 0,
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: false,
+        iconTheme: const IconThemeData(color: AppStyle.text),
         bottom: const AppBarDivider(),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
@@ -44,92 +46,6 @@ class FirstTabPage extends StatelessWidget {
               SharedMarkdownViewer(
                 enableDefaultLinks: false,
                 markdownData: markdownContentFirstTab,
-                styleSheet: MarkdownStyleSheet(
-                  p: const TextStyle(
-                    color: Color(0xFFFAFAFA),
-                    fontSize: 16,
-                    height: 1.5,
-                  ),
-                  h1: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFE57373),
-                  ),
-                  h2: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF64B5F6),
-                  ),
-                  h3: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF81C784),
-                  ),
-                  h4: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFFFD54F),
-                  ),
-                  h5: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF4FC3F7),
-                  ),
-                  h6: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF9575CD),
-                  ),
-                  blockquote: const TextStyle(
-                    color: Color(0xFFFFCC80),
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16,
-                  ),
-                  blockquotePadding: const EdgeInsets.all(16),
-                  blockquoteDecoration: BoxDecoration(
-                    color: const Color(0xFF2E2E2E),
-                    border: Border(
-                      left: BorderSide(
-                        color: Color(0xFFFFCC80),
-                        width: 4,
-                      ),
-                    ),
-                  ),
-                  a: const TextStyle(
-                    color: Color(0xFF64B5F6),
-                    decoration: TextDecoration.underline,
-                  ),
-                  listBullet: const TextStyle(
-                    color: Color(0xFF4FC3F7),
-                    fontSize: 16,
-                  ),
-                  codeblockPadding: const EdgeInsets.all(16),
-                  codeblockDecoration: BoxDecoration(
-                    color: const Color(0xFF263238),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  code: const TextStyle(
-                    color: Color(0xFFFFF176),
-                    fontFamily: 'Courier',
-                    fontSize: 14,
-                  ),
-                  tableHead: const TextStyle(
-                    color: Color(0xFF64B5F6),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                  tableBody: const TextStyle(
-                    color: Color(0xFFFAFAFA),
-                    fontSize: 14,
-                  ),
-                  tableCellsDecoration: BoxDecoration(
-                    color: const Color(0xFF2C2F33),
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(
-                      color: const Color(0xFF757575),
-                    ),
-                  ),
-                ),
                 onTapLink: (text, href, title) {
                   if (href != null) {
                     launchUrl(Uri.parse(href));

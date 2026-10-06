@@ -1,3 +1,5 @@
+import 'package:port/shared/widgets/app_bar_divider.dart';
+import 'package:port/shared/theme/app_style.dart';
 import '../models/editor_state.dart';
 import 'widgets/note_formatting_sheet.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +11,7 @@ class NoteEditor extends StatefulWidget {
   final String? filePath;
   final Function(String)? onSave;
 
-  const NoteEditor({
-    super.key,
-    this.filePath,
-    this.onSave,
-  });
+  const NoteEditor({super.key, this.filePath, this.onSave});
 
   @override
   State<NoteEditor> createState() => _NoteEditorState();
@@ -71,7 +69,8 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
   }
 
   void _onTextChanged() {
-    final hasChanges = _titleController.text != (_originalTitle ?? '') ||
+    final hasChanges =
+        _titleController.text != (_originalTitle ?? '') ||
         _contentController.text != (_originalContent ?? '');
 
     if (hasChanges != _hasUnsavedChanges) {
@@ -125,9 +124,11 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
     _contentController.text = state.content;
 
     _titleController.selection = TextSelection.collapsed(
-        offset: state.titleCursorPosition.clamp(0, state.title.length));
+      offset: state.titleCursorPosition.clamp(0, state.title.length),
+    );
     _contentController.selection = TextSelection.collapsed(
-        offset: state.contentCursorPosition.clamp(0, state.content.length));
+      offset: state.contentCursorPosition.clamp(0, state.content.length),
+    );
 
     _isUndoRedoOperation = false;
     setState(() {});
@@ -144,9 +145,11 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
     _contentController.text = state.content;
 
     _titleController.selection = TextSelection.collapsed(
-        offset: state.titleCursorPosition.clamp(0, state.title.length));
+      offset: state.titleCursorPosition.clamp(0, state.title.length),
+    );
     _contentController.selection = TextSelection.collapsed(
-        offset: state.contentCursorPosition.clamp(0, state.content.length));
+      offset: state.contentCursorPosition.clamp(0, state.content.length),
+    );
 
     _isUndoRedoOperation = false;
     setState(() {});
@@ -203,25 +206,32 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
     return await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-            backgroundColor: Colors.grey[900],
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            title: const Text('Unsaved Changes',
-                style: TextStyle(color: Colors.white)),
+            backgroundColor: AppStyle.background,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            title: const Text(
+              'Unsaved Changes',
+              style: TextStyle(color: AppStyle.text),
+            ),
             content: const Text(
               'You have unsaved changes. Do you want to discard them?',
-              style: TextStyle(color: Colors.white70),
+              style: TextStyle(color: AppStyle.muted),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel',
-                    style: TextStyle(color: Colors.white54)),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(color: AppStyle.muted),
+                ),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child:
-                    const Text('Discard', style: TextStyle(color: Colors.red)),
+                child: const Text(
+                  'Discard',
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
               TextButton(
                 onPressed: () async {
@@ -229,7 +239,10 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
                   if (!context.mounted || !saved) return;
                   Navigator.pop(context, true);
                 },
-                child: const Text('Save', style: TextStyle(color: Colors.teal)),
+                child: const Text(
+                  'Save',
+                  style: TextStyle(color: AppStyle.blue),
+                ),
               ),
             ],
           ),
@@ -268,17 +281,18 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
       }
 
       final filePath = await _notes.save(
-          title: title,
-          content: content,
-          filePath: widget.filePath,
-          metadata: {
-            'fontSize': _fontSize,
-            'formatting': {
-              'bold': _isBold,
-              'italic': _isItalic,
-              'underline': _isUnderline
-            },
-          });
+        title: title,
+        content: content,
+        filePath: widget.filePath,
+        metadata: {
+          'fontSize': _fontSize,
+          'formatting': {
+            'bold': _isBold,
+            'italic': _isItalic,
+            'underline': _isUnderline,
+          },
+        },
+      );
       if (!mounted) return false;
 
       setState(() {
@@ -359,7 +373,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
   void _formatText() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.grey[900],
+      backgroundColor: AppStyle.background,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -391,10 +405,12 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: AppStyle.background,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        title: const Text('Note Statistics',
-            style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Note Statistics',
+          style: TextStyle(color: AppStyle.text),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -408,7 +424,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close', style: TextStyle(color: Colors.teal)),
+            child: const Text('Close', style: TextStyle(color: AppStyle.blue)),
           ),
         ],
       ),
@@ -423,12 +439,14 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
         children: [
           Text(
             label,
-            style: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
+            style: TextStyle(color: AppStyle.text.withValues(alpha: 0.7)),
           ),
           Text(
             value,
             style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold),
+              color: AppStyle.text,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
@@ -439,7 +457,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppStyle.surface,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -450,7 +468,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.red,
+        backgroundColor: AppStyle.surface,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -460,239 +478,174 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        backgroundColor: Colors.black87,
-        body: Center(
-          child: CircularProgressIndicator(color: Colors.teal),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-
+    const fieldBorder = InputBorder.none;
+    const fieldDecoration = InputDecoration(
+      filled: false,
+      border: fieldBorder,
+      enabledBorder: fieldBorder,
+      focusedBorder: fieldBorder,
+      disabledBorder: fieldBorder,
+      contentPadding: EdgeInsets.zero,
+    );
     return PopScope<Object?>(
       canPop: !_hasUnsavedChanges || _allowPop,
       onPopInvokedWithResult: _handlePop,
       child: Scaffold(
-        backgroundColor: Colors.black87,
         appBar: AppBar(
+          centerTitle: false,
           title: Text(
-            _isEditing ? 'Edit Note' : 'View Note',
-            style: const TextStyle(color: Colors.white),
+            _isEditing ? 'Write a note' : 'Notebook',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          iconTheme: const IconThemeData(color: Colors.white),
+          bottom: const AppBarDivider(),
           actions: [
-            if (_hasUnsavedChanges)
-              Container(
-                margin: const EdgeInsets.only(right: 8),
-                child: const Icon(
-                  Icons.circle,
-                  color: Colors.orange,
-                  size: 12,
-                ),
-              ),
             IconButton(
-              icon: Icon(_isEditing ? Icons.visibility : Icons.edit),
+              tooltip: _isEditing ? 'Read note' : 'Edit note',
+              icon: Icon(
+                _isEditing ? Icons.visibility_outlined : Icons.edit_outlined,
+              ),
               onPressed: _toggleEditing,
             ),
-            if (_isEditing) ...[
-              IconButton(
-                icon: const Icon(Icons.text_fields),
-                onPressed: _formatText,
-              ),
-              IconButton(
-                icon: const Icon(Icons.analytics_outlined),
-                onPressed: _showWordCount,
-              ),
-            ],
             IconButton(
-              icon: const Icon(Icons.save),
+              tooltip: 'Save note',
+              icon: Icon(
+                _hasUnsavedChanges ? Icons.save : Icons.save_outlined,
+                color: _hasUnsavedChanges ? AppStyle.accent : AppStyle.muted,
+              ),
               onPressed: _saveNote,
+            ),
+            PopupMenuButton<String>(
+              tooltip: 'Note options',
+              onSelected: (value) {
+                if (value == 'format') {
+                  _formatText();
+                } else if (value == 'statistics') {
+                  _showWordCount();
+                }
+              },
+              itemBuilder: (_) => [
+                if (_isEditing)
+                  const PopupMenuItem(
+                    value: 'format',
+                    child: Text('Formatting'),
+                  ),
+                const PopupMenuItem(
+                  value: 'statistics',
+                  child: Text('Word count'),
+                ),
+              ],
             ),
           ],
         ),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.black87,
-                Colors.grey[900]!,
-              ],
-            ),
-          ),
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: SafeArea(
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.all(20),
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.2),
-                      ),
-                    ),
-                    child: TextField(
-                      controller: _titleController,
-                      focusNode: _titleFocusNode,
-                      enabled: _isEditing,
-                      maxLines: null,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      decoration: InputDecoration(
-                        hintText:
-                            _isEditing ? 'Note title...' : 'Untitled Note',
-                        hintStyle: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.5),
-                          fontWeight: FontWeight.normal,
-                        ),
-                        border: InputBorder.none,
-                        prefixIcon: Container(
-                          margin: const EdgeInsets.only(right: 15),
-                          child: const Icon(
-                            Icons.title,
-                            color: Colors.teal,
-                          ),
-                        ),
-                        prefixIconConstraints: const BoxConstraints(
-                          minWidth: 0,
-                          minHeight: 0,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.05),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: TextField(
-                        controller: _contentController,
-                        focusNode: _contentFocusNode,
-                        enabled: _isEditing,
-                        maxLines: null,
-                        expands: true,
-                        textAlignVertical: TextAlignVertical.top,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: _fontSize,
-                          height: 1.6,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: _isEditing
-                              ? 'Start writing your note...\n\n• Use bullet points\n• Add checkboxes □\n• Include important details'
-                              : 'No content',
-                          hintStyle: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.3),
-                            fontSize: _fontSize,
-                          ),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (_isEditing)
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.1),
-                        border: Border(
-                          top: BorderSide(
-                            color: Colors.white.withValues(alpha: 0.2),
-                          ),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          _buildToolbarButton(
-                            icon: Icons.undo,
-                            onPressed: _canUndo() ? _undo : null,
-                            isEnabled: _canUndo(),
-                          ),
-                          _buildToolbarButton(
-                            icon: Icons.redo,
-                            onPressed: _canRedo() ? _redo : null,
-                            isEnabled: _canRedo(),
-                          ),
-                          const SizedBox(width: 20),
-                          _buildToolbarButton(
-                            icon: Icons.content_copy,
-                            onPressed: () {
-                              if (_contentController.text.isNotEmpty) {
-                                Clipboard.setData(ClipboardData(
-                                    text: _contentController.text));
-                                _showSuccessSnackBar(
-                                    'Content copied to clipboard');
-                              }
-                            },
-                          ),
-                          _buildToolbarButton(
-                            icon: Icons.content_paste,
-                            onPressed: () async {
-                              final data =
-                                  await Clipboard.getData('text/plain');
-                              if (!mounted) return;
-                              if (data != null && data.text != null) {
-                                _insertText(data.text!);
-                                _showSuccessSnackBar('Content pasted');
-                              }
-                            },
-                          ),
-                          const Spacer(),
-                          Text(
-                            '${_contentController.text.length} chars',
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.5),
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
+        body: FadeTransition(
+          opacity: _fadeAnimation,
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            children: [
+              Text(
+                _isEditing
+                    ? 'DRAFT / ${_hasUnsavedChanges ? 'UNSAVED' : 'SAVED'}'
+                    : 'PERSONAL ARCHIVE / NOTE',
+                style: AppStyle.eyebrow,
               ),
-            ),
+              const SizedBox(height: 18),
+              TextField(
+                controller: _titleController,
+                focusNode: _titleFocusNode,
+                readOnly: !_isEditing,
+                maxLines: null,
+                style: const TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w600,
+                  height: 1.2,
+                  letterSpacing: -.8,
+                ),
+                decoration: fieldDecoration.copyWith(hintText: 'Untitled note'),
+              ),
+              const SizedBox(height: 24),
+              const Divider(color: AppStyle.rule),
+              const SizedBox(height: 24),
+              TextField(
+                controller: _contentController,
+                focusNode: _contentFocusNode,
+                readOnly: !_isEditing,
+                minLines: 12,
+                maxLines: null,
+                style: TextStyle(
+                  fontSize: _fontSize,
+                  height: 1.7,
+                  color: AppStyle.text,
+                ),
+                decoration: fieldDecoration.copyWith(
+                  hintText: _isEditing ? 'Start writing…' : 'No content',
+                ),
+              ),
+            ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildToolbarButton({
-    required IconData icon,
-    required VoidCallback? onPressed,
-    bool isEnabled = true,
-  }) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        margin: const EdgeInsets.only(right: 10),
-        decoration: BoxDecoration(
-          color: isEnabled
-              ? Colors.white.withValues(alpha: 0.1)
-              : Colors.white.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Icon(
-          icon,
-          color: isEnabled
-              ? Colors.white.withValues(alpha: 0.8)
-              : Colors.white.withValues(alpha: 0.3),
-          size: 18,
-        ),
+        bottomNavigationBar: !_isEditing
+            ? null
+            : SafeArea(
+                minimum: const EdgeInsets.fromLTRB(12, 8, 16, 12),
+                child: Row(
+                  children: [
+                    IconButton(
+                      tooltip: 'Undo',
+                      icon: const Icon(Icons.undo_rounded, size: 21),
+                      onPressed: _canUndo() ? _undo : null,
+                    ),
+                    IconButton(
+                      tooltip: 'Redo',
+                      icon: const Icon(Icons.redo_rounded, size: 21),
+                      onPressed: _canRedo() ? _redo : null,
+                    ),
+                    IconButton(
+                      tooltip: 'Copy content',
+                      icon: const Icon(Icons.content_copy_rounded, size: 19),
+                      onPressed: () {
+                        if (_contentController.text.isNotEmpty) {
+                          Clipboard.setData(
+                            ClipboardData(text: _contentController.text),
+                          );
+                          _showSuccessSnackBar('Content copied to clipboard');
+                        }
+                      },
+                    ),
+                    IconButton(
+                      tooltip: 'Paste',
+                      icon: const Icon(Icons.content_paste_rounded, size: 19),
+                      onPressed: () async {
+                        final data = await Clipboard.getData('text/plain');
+                        if (!mounted) return;
+                        if (data?.text != null) {
+                          _insertText(data!.text!);
+                          _showSuccessSnackBar('Content pasted');
+                        }
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ValueListenableBuilder<TextEditingValue>(
+                        valueListenable: _contentController,
+                        builder: (_, value, __) => Text(
+                          '${value.text.length} chars',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AppStyle.muted,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }

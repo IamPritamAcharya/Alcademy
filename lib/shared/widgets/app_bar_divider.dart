@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 
 class AppBarDivider extends StatelessWidget implements PreferredSizeWidget {
@@ -7,8 +8,6 @@ class AppBarDivider extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(1);
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: Colors.white.withValues(alpha: 0.2),
-        height: 1,
-      );
+  Widget build(BuildContext context) =>
+      Container(color: AppStyle.rule, height: 1);
 }

@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:port/features/notes/models/subject.dart';
@@ -22,7 +23,7 @@ class SubjectGridView extends StatelessWidget {
             "No subjects found.",
             style: TextStyle(
               fontFamily: 'ProductSans',
-              color: Colors.white.withValues(alpha: 0.6),
+              color: AppStyle.text.withValues(alpha: 0.6),
               fontSize: 16,
             ),
           ),
@@ -39,16 +40,13 @@ class SubjectGridView extends StatelessWidget {
           mainAxisSpacing: 16,
           childAspectRatio: 1,
         ),
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            final subject = subjects[index];
-            return GestureDetector(
-              onTap: () => onSubjectTap(context, subject),
-              child: SubjectCard(subject: subject),
-            );
-          },
-          childCount: subjects.length,
-        ),
+        delegate: SliverChildBuilderDelegate((context, index) {
+          final subject = subjects[index];
+          return GestureDetector(
+            onTap: () => onSubjectTap(context, subject),
+            child: SubjectCard(subject: subject),
+          );
+        }, childCount: subjects.length),
       ),
     );
   }
@@ -57,10 +55,7 @@ class SubjectGridView extends StatelessWidget {
 class SubjectCard extends StatelessWidget {
   final Subject subject;
 
-  const SubjectCard({
-    super.key,
-    required this.subject,
-  });
+  const SubjectCard({super.key, required this.subject});
 
   @override
   Widget build(BuildContext context) {
@@ -70,18 +65,10 @@ class SubjectCard extends StatelessWidget {
       width: 140,
       height: 140,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withValues(alpha: 0.05),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
-          ),
-        ],
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
-        ),
+        borderRadius: AppStyle.radius,
+        color: AppStyle.surface,
+
+        border: Border.all(color: AppStyle.rule.withValues(alpha: .65)),
       ),
       child: Stack(
         children: [
@@ -94,9 +81,8 @@ class SubjectCard extends StatelessWidget {
                   height: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.white.withValues(alpha: 0.1),
-                    border:
-                        Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                    color: AppStyle.rule.withValues(alpha: .65),
+                    border: Border.all(color: AppStyle.rule),
                   ),
                   alignment: Alignment.center,
                   child: Text(
@@ -104,7 +90,7 @@ class SubjectCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: AppStyle.text,
                       letterSpacing: 1.2,
                     ),
                   ),
@@ -118,7 +104,7 @@ class SubjectCard extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontFamily: 'ProductSans',
-                      color: Colors.white,
+                      color: AppStyle.text,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 0.3,

@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:port/shared/theme/app_style.dart';
 
 class ProfileCard extends StatelessWidget {
   final String userName;
   final String branch;
   final VoidCallback onEditName;
-
   const ProfileCard({
     super.key,
     required this.userName,
@@ -14,87 +14,65 @@ class ProfileCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF1A1D1E).withValues(alpha: 0.6),
-              Colors.grey.shade800.withValues(alpha: 0.2),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+  Widget build(BuildContext context) => Container(
+    margin: const EdgeInsets.symmetric(horizontal: 24),
+    padding: const EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: AppStyle.surface,
+      borderRadius: AppStyle.radius,
+      border: Border.all(color: AppStyle.rule),
+    ),
+    child: Row(
+      children: [
+        Container(
+          width: 3,
+          height: 72,
+          decoration: const BoxDecoration(
+            color: AppStyle.accent,
+            borderRadius: AppStyle.radius,
           ),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.3),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(width: 16),
-            Container(
-              height: 80,
-              width: 1.5,
-              color: Colors.white.withValues(alpha: 0.2),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AutoSizeText(
-                            userName,
-                            maxLines: 1,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontFamily: 'ProductSans',
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: onEditName,
-                          icon: const Icon(
-                            Icons.edit_note_outlined,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 2),
-                    AutoSizeText(
-                      branch,
-                      maxLines: 1,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white54,
-                        fontFamily: 'ProductSans',
-                      ),
-                    ),
-                  ],
+        const SizedBox(width: 18),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('YOUR PROFILE', style: AppStyle.eyebrow),
+              const SizedBox(height: 10),
+              AutoSizeText(
+                userName,
+                maxLines: 2,
+                minFontSize: 16,
+                style: const TextStyle(
+                  color: AppStyle.text,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: -.5,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 6),
+              Text(
+                branch,
+                style: const TextStyle(
+                  color: AppStyle.muted,
+                  fontSize: 14,
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+        const SizedBox(width: 8),
+        IconButton(
+          tooltip: 'Edit name',
+          onPressed: onEditName,
+          icon: const Icon(
+            Icons.edit_note_outlined,
+            color: AppStyle.paper,
+            size: 26,
+          ),
+        ),
+      ],
+    ),
+  );
 }

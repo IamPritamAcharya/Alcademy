@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 
 class AddItemDialog extends StatefulWidget {
@@ -21,132 +21,124 @@ class _AddItemDialogState extends State<AddItemDialog> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade800.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    width: 1.5,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'Add Expense',
-                        style: TextStyle(
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppStyle.surface,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: AppStyle.rule, width: 1.5),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Add Expense',
+                      style: TextStyle(
+                        fontFamily: 'ProductSans',
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppStyle.text,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _itemController,
+                      style: const TextStyle(
+                        fontFamily: 'ProductSans',
+                        fontSize: 18,
+                        color: AppStyle.text,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Item Name',
+                        labelStyle: TextStyle(
                           fontFamily: 'ProductSans',
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: AppStyle.muted,
+                        ),
+                        filled: true,
+                        fillColor: AppStyle.rule.withValues(alpha: 0.2),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppStyle.rule),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppStyle.text),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      TextField(
-                        controller: _itemController,
-                        style: const TextStyle(
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _valueController,
+                      keyboardType: TextInputType.number,
+                      style: const TextStyle(
+                        fontFamily: 'ProductSans',
+                        fontSize: 18,
+                        color: AppStyle.text,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Amount',
+                        labelStyle: TextStyle(
                           fontFamily: 'ProductSans',
-                          fontSize: 18,
-                          color: Colors.white,
+                          color: AppStyle.muted,
                         ),
-                        decoration: InputDecoration(
-                          labelText: 'Item Name',
-                          labelStyle: TextStyle(
-                            fontFamily: 'ProductSans',
-                            color: Colors.grey.shade400,
-                          ),
-                          filled: true,
-                          fillColor:
-                              Colors.grey.shade700.withValues(alpha: 0.2),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade700),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
+                        filled: true,
+                        fillColor: AppStyle.rule.withValues(alpha: 0.2),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppStyle.rule),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppStyle.text),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      TextField(
-                        controller: _valueController,
-                        keyboardType: TextInputType.number,
-                        style: const TextStyle(
-                          fontFamily: 'ProductSans',
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: 'Amount',
-                          labelStyle: TextStyle(
-                            fontFamily: 'ProductSans',
-                            color: Colors.grey.shade400,
-                          ),
-                          filled: true,
-                          fillColor:
-                              Colors.grey.shade700.withValues(alpha: 0.2),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade700),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text(
-                              'Cancel',
-                              style: TextStyle(
-                                fontFamily: 'ProductSans',
-                                color: Colors.grey,
-                              ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              fontFamily: 'ProductSans',
+                              color: AppStyle.muted,
                             ),
                           ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromRGBO(0, 255, 127, 1),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: () {
-                              final item = _itemController.text.trim();
-                              final value =
-                                  double.tryParse(_valueController.text.trim());
-                              if (item.isNotEmpty && value != null) {
-                                Navigator.pop(context, {
-                                  'item': item,
-                                  'value': value,
-                                  'date': DateTime.now().toIso8601String(),
-                                });
-                              }
-                            },
-                            child: const Text(
-                              'Add',
-                              style: TextStyle(
-                                fontFamily: 'ProductSans',
-                                color: Colors.white,
-                              ),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppStyle.accent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                          onPressed: () {
+                            final item = _itemController.text.trim();
+                            final value = double.tryParse(
+                              _valueController.text.trim(),
+                            );
+                            if (item.isNotEmpty && value != null) {
+                              Navigator.pop(context, {
+                                'item': item,
+                                'value': value,
+                                'date': DateTime.now().toIso8601String(),
+                              });
+                            }
+                          },
+                          child: const Text(
+                            'Add',
+                            style: TextStyle(
+                              fontFamily: 'ProductSans',
+                              color: AppStyle.onAccent,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),

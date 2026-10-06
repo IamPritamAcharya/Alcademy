@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -22,9 +23,11 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
   Future<void> _initializeWebViewController() async {
     _webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setUserAgent(isDesktopView
-          ? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-          : 'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Mobile Safari/537.36')
+      ..setUserAgent(
+        isDesktopView
+            ? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            : 'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Mobile Safari/537.36',
+      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {
@@ -45,11 +48,15 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
 
   Future<void> _loadInitialPage() async {
     try {
-      await _webViewController.loadRequest(Uri.parse(
-          'https://igit.icrp.in/academic/Student-cp/Students_profile.aspx'));
+      await _webViewController.loadRequest(
+        Uri.parse(
+          'https://igit.icrp.in/academic/Student-cp/Students_profile.aspx',
+        ),
+      );
     } catch (e) {
-      await _webViewController
-          .loadRequest(Uri.parse('https://igit.icrp.in/academic/'));
+      await _webViewController.loadRequest(
+        Uri.parse('https://igit.icrp.in/academic/'),
+      );
     }
   }
 
@@ -57,8 +64,9 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
     setState(() {
       isLoading = true;
     });
-    await _webViewController
-        .loadRequest(Uri.parse('https://igit.icrp.in/academic/'));
+    await _webViewController.loadRequest(
+      Uri.parse('https://igit.icrp.in/academic/'),
+    );
   }
 
   Future<void> _toggleDesktopView() async {
@@ -67,9 +75,11 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
     });
 
     // user agent
-    await _webViewController.setUserAgent(isDesktopView
-        ? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        : 'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Mobile Safari/537.36');
+    await _webViewController.setUserAgent(
+      isDesktopView
+          ? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+          : 'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Mobile Safari/537.36',
+    );
 
     // viewport changes
     await _injectViewportMetaTag();
@@ -120,119 +130,123 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (didPop, result) async {
-          if (didPop) return;
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
 
-          if (await _webViewController.canGoBack()) {
-            await _webViewController.goBack();
-          } else {
-            if (!context.mounted) return;
-            Navigator.of(context).pop();
-          }
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color(0xFF1A1D1E),
-            elevation: 0,
-            centerTitle: true,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () async {
-                if (await _webViewController.canGoBack()) {
-                  await _webViewController.goBack();
-                } else {
-                  if (!context.mounted) return;
-                  Navigator.of(context).pop();
-                }
-              },
+        if (await _webViewController.canGoBack()) {
+          await _webViewController.goBack();
+        } else {
+          if (!context.mounted) return;
+          Navigator.of(context).pop();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppStyle.background,
+          elevation: 0,
+          centerTitle: false,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: AppStyle.text),
+            onPressed: () async {
+              if (await _webViewController.canGoBack()) {
+                await _webViewController.goBack();
+              } else {
+                if (!context.mounted) return;
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+          title: Text(
+            isDesktopView ? 'Desktop View' : 'Mobile View',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: AppStyle.text,
+              fontSize: 16,
+              fontFamily: 'ProductSans',
             ),
-            title: Text(
-              isDesktopView ? 'Desktop View' : 'Mobile View',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontFamily: 'ProductSans',
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1),
+            child: Container(
+              color: AppStyle.text.withValues(alpha: 0.6),
+              height: 1,
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                isDesktopView
+                    ? Icons.desktop_windows_rounded
+                    : Icons.smartphone_rounded,
+                color: AppStyle.text,
               ),
+              tooltip: isDesktopView ? 'Switch to Mobile' : 'Switch to Desktop',
+              onPressed: _toggleDesktopView,
             ),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(1),
-              child: Container(
-                color: Colors.white.withValues(alpha: 0.6),
-                height: 1,
-              ),
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(
-                  isDesktopView
-                      ? Icons.desktop_windows_rounded
-                      : Icons.smartphone_rounded,
-                  color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ElevatedButton(
+                onPressed: _relogin,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppStyle.surface,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                    ),
+                  ),
                 ),
-                tooltip:
-                    isDesktopView ? 'Switch to Mobile' : 'Switch to Desktop',
-                onPressed: _toggleDesktopView,
+                child: const Text(
+                  'Login',
+                  style: TextStyle(
+                    fontFamily: 'ProductSans',
+                    color: AppStyle.onAccent,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: ElevatedButton(
-                  onPressed: _relogin,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2C2F30),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
+            ),
+          ],
+        ),
+        body: Stack(
+          children: [
+            WebViewWidget(controller: _webViewController),
+            if (isLoading)
+              Container(
+                color: AppStyle.background.withValues(alpha: 0.8),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        color: AppStyle.text,
+                        backgroundColor: AppStyle.background,
                       ),
-                    ),
-                  ),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
-                      fontFamily: 'ProductSans',
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
+                      SizedBox(height: 16),
+                      Text(
+                        isDesktopView
+                            ? 'Loading Desktop View...'
+                            : 'Loading Mobile View...',
+                        style: TextStyle(
+                          color: AppStyle.text,
+                          fontSize: 16,
+                          fontFamily: 'ProductSans',
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
-          body: Stack(
-            children: [
-              WebViewWidget(controller: _webViewController),
-              if (isLoading)
-                Container(
-                  color: const Color(0xFF1A1D1E).withValues(alpha: 0.8),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(
-                          color: Colors.white,
-                          backgroundColor: const Color(0xFF1A1D1E),
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          isDesktopView
-                              ? 'Loading Desktop View...'
-                              : 'Loading Mobile View...',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'ProductSans',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ));
+          ],
+        ),
+      ),
+    );
   }
 }

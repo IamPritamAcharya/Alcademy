@@ -1,7 +1,12 @@
+import 'dart:io';
+import 'package:port/features/home/presentation/widgets/home_pressable.dart';
+import 'package:port/shared/widgets/app_bar_divider.dart';
+import 'package:port/shared/widgets/collection_intro.dart';
+import 'widgets/private_note_dialog.dart';
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/features/private_space/data/private_space_repository.dart';
 import 'package:port/features/private_space/data/note_repository.dart';
 import 'package:port/features/private_space/models/private_category.dart';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,7 +14,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:port/features/private_space/presentation/private_content_viewer.dart';
 
 class PrivatePage extends StatefulWidget {
-  const PrivatePage({super.key});
+  final PrivateSpaceRepository? repository;
+  final NoteRepository? notes;
+  const PrivatePage({super.key, this.repository, this.notes});
 
   @override
   State<PrivatePage> createState() => _PrivatePageState();
@@ -17,19 +24,27 @@ class PrivatePage extends StatefulWidget {
 
 class _PrivatePageState extends State<PrivatePage> {
   final ImagePicker _picker = ImagePicker();
-  final _repository = PrivateSpaceRepository();
-  final _notes = NoteRepository();
+  late final _repository = widget.repository ?? PrivateSpaceRepository();
+  late final _notes = widget.notes ?? NoteRepository();
   List<String> _privatePhotos = [];
   List<String> _privateVideos = [];
   List<String> _privateDocuments = [];
   List<String> _privateNotes = [];
 
   bool _isLoading = true;
+  final _collectionChanges = ValueNotifier<int>(0);
+  Future<Map<String, dynamic>?>? _notePreview;
 
   @override
   void initState() {
     super.initState();
     _initializePrivateSpace();
+  }
+
+  @override
+  void dispose() {
+    _collectionChanges.dispose();
+    super.dispose();
   }
 
   Future<void> _initializePrivateSpace() async {
@@ -56,6 +71,7 @@ class _PrivatePageState extends State<PrivatePage> {
         _privateVideos = manifest[PrivateCategory.videos]!;
         _privateDocuments = manifest[PrivateCategory.documents]!;
         _privateNotes = manifest[PrivateCategory.notes]!;
+        _refreshNotePreview();
       });
     }
   }
@@ -68,6 +84,7 @@ class _PrivatePageState extends State<PrivatePage> {
         PrivateCategory.documents: _privateDocuments,
         PrivateCategory.notes: _privateNotes,
       });
+      if (mounted) _collectionChanges.value++;
     } catch (e) {
       if (mounted) _showErrorMessage('Failed to save content: $e');
     }
@@ -88,39 +105,56 @@ class _PrivatePageState extends State<PrivatePage> {
     }
   }
 
-  Future<void> _addPrivatePhoto() async {
-    showModalBottomSheet(
+  Future<void> _addPrivatePhoto() => _showImportSheet(
+    'Add photo',
+    Icons.camera_alt_outlined,
+    'Take Photo',
+    () => _pickImage(ImageSource.camera),
+    Icons.photo_library_outlined,
+    () => _pickImage(ImageSource.gallery),
+  );
+
+  Future<void> _showImportSheet(
+    String title,
+    IconData cameraIcon,
+    String cameraLabel,
+    VoidCallback camera,
+    IconData galleryIcon,
+    VoidCallback gallery,
+  ) async {
+    await showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.grey[900],
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(2),
+      useSafeArea: true,
+      builder: (context) => SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -.5,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            _buildBottomSheetOption(
-              icon: Icons.camera_alt,
-              title: 'Take Photo',
-              onTap: () => _pickImage(ImageSource.camera),
-            ),
-            const SizedBox(height: 10),
-            _buildBottomSheetOption(
-              icon: Icons.photo_library,
-              title: 'Choose from Gallery',
-              onTap: () => _pickImage(ImageSource.gallery),
-            ),
-          ],
+              const SizedBox(height: 20),
+              _buildBottomSheetOption(
+                icon: cameraIcon,
+                title: cameraLabel,
+                onTap: camera,
+              ),
+              const SizedBox(height: 12),
+              _buildBottomSheetOption(
+                icon: galleryIcon,
+                title: 'Choose from Gallery',
+                onTap: gallery,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -152,43 +186,14 @@ class _PrivatePageState extends State<PrivatePage> {
     }
   }
 
-  Future<void> _addPrivateVideo() async {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.grey[900],
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: 20),
-            _buildBottomSheetOption(
-              icon: Icons.videocam,
-              title: 'Record Video',
-              onTap: () => _pickVideo(ImageSource.camera),
-            ),
-            const SizedBox(height: 10),
-            _buildBottomSheetOption(
-              icon: Icons.video_library,
-              title: 'Choose from Gallery',
-              onTap: () => _pickVideo(ImageSource.gallery),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  Future<void> _addPrivateVideo() => _showImportSheet(
+    'Add video',
+    Icons.videocam_outlined,
+    'Record Video',
+    () => _pickVideo(ImageSource.camera),
+    Icons.video_library_outlined,
+    () => _pickVideo(ImageSource.gallery),
+  );
 
   Future<void> _pickVideo(ImageSource source) async {
     Navigator.pop(context);
@@ -252,138 +257,9 @@ class _PrivatePageState extends State<PrivatePage> {
   }
 
   Future<void> _addPrivateNote() async {
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController noteController = TextEditingController();
-
-    showDialog(
+    await showDialog<void>(
       context: context,
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.3),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Add Private Note',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: titleController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white.withValues(alpha: 0.05),
-                      hintText: 'Note title...',
-                      hintStyle: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.5),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white.withValues(alpha: 0.3),
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.teal,
-                          width: 1.5,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(maxHeight: 120),
-                    child: TextField(
-                      controller: noteController,
-                      maxLines: null,
-                      expands: true,
-                      textAlignVertical: TextAlignVertical.top,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white.withValues(alpha: 0.05),
-                        hintText: 'Enter your private note...',
-                        hintStyle: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white.withValues(alpha: 0.3),
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Colors.teal,
-                            width: 1.5,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.white.withValues(alpha: 0.7),
-                        ),
-                        child: const Text('Cancel'),
-                      ),
-                      const SizedBox(width: 10),
-                      TextButton(
-                        onPressed: () async {
-                          if (noteController.text.isNotEmpty) {
-                            await _saveNote(
-                              titleController.text,
-                              noteController.text,
-                            );
-                            if (!context.mounted) return;
-                            Navigator.pop(context);
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.teal,
-                        ),
-                        child: const Text('Save'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      builder: (_) => PrivateNoteDialog(onSave: _saveNote),
     );
   }
 
@@ -395,6 +271,7 @@ class _PrivatePageState extends State<PrivatePage> {
       if (mounted) {
         setState(() {
           _privateNotes.add(notePath);
+          _refreshNotePreview();
         });
       }
       await _savePrivateContent();
@@ -408,35 +285,41 @@ class _PrivatePageState extends State<PrivatePage> {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
-  }) {
-    return InkWell(
+  }) => Material(
+    color: AppStyle.surface,
+    borderRadius: BorderRadius.circular(8),
+    clipBehavior: Clip.antiAlias,
+    child: InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(12),
-        ),
+      child: Padding(
+        padding: const EdgeInsets.all(18),
         child: Row(
           children: [
-            Icon(icon, color: Colors.white, size: 24),
-            const SizedBox(width: 15),
-            Text(
-              title,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+            Icon(icon, color: AppStyle.paper, size: 24),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(fontSize: 16, height: 1.3),
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Icon(
+              Icons.north_east_rounded,
+              color: AppStyle.muted,
+              size: 18,
             ),
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
 
   void _showSuccessMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppStyle.surface,
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -448,7 +331,7 @@ class _PrivatePageState extends State<PrivatePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.red,
+        backgroundColor: AppStyle.surface,
         duration: const Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -463,6 +346,14 @@ class _PrivatePageState extends State<PrivatePage> {
         builder: (context) => PrivateContentViewer(
           contentType: type,
           items: items,
+          collectionChanges: _collectionChanges,
+          onAdd: switch (type) {
+            'Photos' => _addPrivatePhoto,
+            'Videos' => _addPrivateVideo,
+            'Documents' => _addPrivateDocument,
+            'Notes' => _addPrivateNote,
+            _ => null,
+          },
           onDelete: (index) async {
             try {
               final filePath = items[index];
@@ -481,6 +372,7 @@ class _PrivatePageState extends State<PrivatePage> {
                     break;
                   case 'Notes':
                     _privateNotes.removeAt(index);
+                    _refreshNotePreview();
                     break;
                 }
               });
@@ -495,6 +387,7 @@ class _PrivatePageState extends State<PrivatePage> {
               switch (type) {
                 case 'Notes':
                   _privateNotes[index] = updatedPath;
+                  _refreshNotePreview();
                   break;
               }
             });
@@ -505,454 +398,370 @@ class _PrivatePageState extends State<PrivatePage> {
     );
   }
 
+  void _refreshNotePreview() {
+    _notePreview = _privateNotes.isEmpty
+        ? null
+        : _notes.read(_privateNotes.last).then((note) => note?.toJson());
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return Scaffold(
-        backgroundColor: const Color(0xFF0F0F0F),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: const CircularProgressIndicator(
-                  color: Color(0xFF00D4AA),
-                  strokeWidth: 3,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Loading Private Space...',
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.7),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
+    final total =
+        _privatePhotos.length +
+        _privateVideos.length +
+        _privateDocuments.length +
+        _privateNotes.length;
     return Scaffold(
-      backgroundColor: const Color(0xFF0F0F0F),
       appBar: AppBar(
-        title: const Text(
-          'Private Space',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Divider(height: 1, color: Colors.white24),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-          color: Colors.white,
-          onPressed: () => Navigator.pop(context),
-        ),
+        title: const Text('Private Space'),
+        bottom: const AppBarDivider(),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF0F0F0F), Color(0xFF1A1A1A)],
-          ),
-        ),
-        child: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              const Color(0xFF00D4AA).withValues(alpha: 0.1),
-                              const Color(0xFF00A693).withValues(alpha: 0.05),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: const Color(
-                              0xFF00D4AA,
-                            ).withValues(alpha: 0.2),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(
-                                0xFF00D4AA,
-                              ).withValues(alpha: 0.1),
-                              blurRadius: 20,
-                              offset: const Offset(0, 8),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    const Color(0xFF00D4AA),
-                                    const Color(0xFF00A693),
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(16),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(
-                                      0xFF00D4AA,
-                                    ).withValues(alpha: 0.3),
-                                    blurRadius: 12,
-                                    offset: const Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: const Icon(
-                                Icons.shield_outlined,
-                                color: Colors.white,
-                                size: 28,
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Welcome to Private Space',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: -0.3,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    'Your content is stored privately in a separate secure folder',
-                                    style: TextStyle(
-                                      color: Colors.white.withValues(
-                                        alpha: 0.7,
-                                      ),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 40),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Private Content',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: -0.5,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF1A1A1A),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.1),
-                              ),
-                            ),
-                            child: Text(
-                              '${_privatePhotos.length + _privateVideos.length + _privateDocuments.length + _privateNotes.length} items',
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.7),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView(
+              padding: EdgeInsets.fromLTRB(
+                20,
+                0,
+                20,
+                16 + MediaQuery.paddingOf(context).bottom,
               ),
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
-                sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 0.75,
-                  ),
-                  delegate: SliverChildListDelegate([
-                    _buildModernPrivateItem(
-                      icon: Icons.photo_camera_outlined,
-                      title: 'Photos',
-                      subtitle: '${_privatePhotos.length} items',
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF8B5CF6), Color(0xFFA855F7)],
-                      ),
-                      shadowColor: const Color(0xFF8B5CF6),
-                      onTap: () =>
-                          _navigateToContentViewer('Photos', _privatePhotos),
-                      onAdd: _addPrivatePhoto,
-                    ),
-                    _buildModernPrivateItem(
-                      icon: Icons.play_circle_outline,
-                      title: 'Videos',
-                      subtitle: '${_privateVideos.length} items',
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF3B82F6), Color(0xFF1D4ED8)],
-                      ),
-                      shadowColor: const Color(0xFF3B82F6),
-                      onTap: () =>
-                          _navigateToContentViewer('Videos', _privateVideos),
-                      onAdd: _addPrivateVideo,
-                    ),
-                    _buildModernPrivateItem(
-                      icon: Icons.description_outlined,
-                      title: 'Documents',
-                      subtitle: '${_privateDocuments.length} files',
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
-                      ),
-                      shadowColor: const Color(0xFFF59E0B),
-                      onTap: () => _navigateToContentViewer(
-                        'Documents',
-                        _privateDocuments,
-                      ),
-                      onAdd: _addPrivateDocument,
-                    ),
-                    _buildModernPrivateItem(
-                      icon: Icons.edit_note_outlined,
-                      title: 'Notes',
-                      subtitle: '${_privateNotes.length} notes',
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF00D4AA), Color(0xFF00A693)],
-                      ),
-                      shadowColor: const Color(0xFF00D4AA),
-                      onTap: () =>
-                          _navigateToContentViewer('Notes', _privateNotes),
-                      onAdd: _addPrivateNote,
-                    ),
-                  ]),
+              children: [
+                CollectionIntro(
+                  eyebrow:
+                      'ON THIS DEVICE / $total ${total == 1 ? 'ITEM' : 'ITEMS'}',
+                  title: 'Personal archive.',
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 40),
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1A1A1A),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.1),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.blue.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Icon(
-                            Icons.info_outline,
-                            color: Colors.blue.shade400,
-                            size: 20,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Text(
-                            'Files are copied and stored independently. Even if deleted from the original location, they remain accessible here.',
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.8),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              height: 1.4,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildModernPrivateItem({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Gradient gradient,
-    required Color shadowColor,
-    required VoidCallback onTap,
-    required VoidCallback onAdd,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF1A1A1A),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-          boxShadow: [
-            BoxShadow(
-              color: shadowColor.withValues(alpha: 0.1),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              flex: 5,
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: Column(
+                _notebook(),
+                const SizedBox(height: 16),
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        gradient: gradient,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: shadowColor.withValues(alpha: 0.3),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
+                    Expanded(
+                      child: _mediaPanel(
+                        'Photos',
+                        _privatePhotos,
+                        Icons.photo_outlined,
+                        AppStyle.lilac,
+                        _addPrivatePhoto,
                       ),
-                      child: Icon(icon, color: Colors.white, size: 24),
                     ),
-                    const Spacer(),
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -0.3,
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _mediaPanel(
+                        'Videos',
+                        _privateVideos,
+                        Icons.play_arrow_rounded,
+                        AppStyle.blue,
+                        _addPrivateVideo,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      subtitle,
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.6),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(height: 16),
+                _documents(),
+                const SizedBox(height: 24),
+                const Text(
+                  'Imported files are copies. The originals remain in your gallery or file manager.',
+                  style: TextStyle(
+                    fontSize: 12,
+                    height: 1.6,
+                    color: AppStyle.muted,
+                  ),
+                ),
+              ],
             ),
-            Flexible(
-              flex: 1,
-              child: GestureDetector(
-                onTap: onAdd,
-                child: Container(
-                  width: double.infinity,
-                  constraints: const BoxConstraints(minHeight: 36),
-                  decoration: BoxDecoration(
-                    gradient: gradient,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
+    );
+  }
+
+  Widget _notebook() => HomePressable(
+    key: const ValueKey('private-notes'),
+    color: AppStyle.surface,
+    borderRadius: BorderRadius.circular(8),
+    onTap: () => _navigateToContentViewer('Notes', _privateNotes),
+    child: Stack(
+      children: [
+        const Positioned.fill(
+          child: IgnorePointer(child: CustomPaint(painter: _NotebookPainter())),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(44, 16, 18, 22),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Expanded(
+                    child: Text('THE NOTEBOOK', style: AppStyle.eyebrow),
+                  ),
+                  IconButton(
+                    tooltip: 'Add notes',
+                    onPressed: _addPrivateNote,
+                    style: IconButton.styleFrom(
+                      backgroundColor: AppStyle.cover,
+                      foregroundColor: AppStyle.paper,
                     ),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.2),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: shadowColor.withValues(alpha: 0.3),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
+                    icon: const Icon(Icons.add_rounded, size: 22),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              FutureBuilder<Map<String, dynamic>?>(
+                future: _notePreview,
+                builder: (_, snapshot) {
+                  final note = snapshot.data;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        note?['title'] as String? ?? 'Notes',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w600,
+                          height: 1.2,
+                          letterSpacing: -.7,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        note?['content'] as String? ?? 'No notes saved yet.',
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          height: 1.6,
+                          color: AppStyle.muted,
+                        ),
                       ),
                     ],
+                  );
+                },
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '${_privateNotes.length} ${_privateNotes.length == 1 ? 'note' : 'notes'}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppStyle.accent,
+                      ),
+                    ),
                   ),
-                  child: const Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
+                  const Icon(
+                    Icons.arrow_forward_rounded,
+                    size: 20,
+                    color: AppStyle.paper,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+
+  Widget _mediaPanel(
+    String title,
+    List<String> items,
+    IconData icon,
+    Color accent,
+    VoidCallback add,
+  ) => Material(
+    key: ValueKey('private-${title.toLowerCase()}'),
+    color: AppStyle.surface,
+    borderRadius: BorderRadius.circular(8),
+    clipBehavior: Clip.antiAlias,
+    child: Column(
+      children: [
+        InkWell(
+          onTap: () => _navigateToContentViewer(title, items),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 18, 16, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 102,
+                  width: double.infinity,
+                  child: Center(
+                    child: Stack(
+                      clipBehavior: Clip.none,
                       children: [
-                        Icon(Icons.add, color: Colors.white, size: 14),
-                        SizedBox(width: 4),
-                        Text(
-                          'Add',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
+                        Transform.rotate(
+                          angle: -.13,
+                          child: Container(
+                            width: 72,
+                            height: 86,
+                            decoration: BoxDecoration(
+                              color: AppStyle.cover,
+                              border: Border.all(color: AppStyle.rule),
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                        ),
+                        Transform.rotate(
+                          angle: .08,
+                          child: Container(
+                            width: 72,
+                            height: 86,
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: AppStyle.background,
+                              border: Border.all(color: AppStyle.rule),
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            child: title == 'Photos' && items.isNotEmpty
+                                ? Image.file(
+                                    File(items.last),
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) =>
+                                        Icon(icon, size: 32, color: accent),
+                                  )
+                                : Icon(icon, size: 32, color: accent),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
+                const SizedBox(height: 18),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    height: 1.2,
+                    letterSpacing: -.5,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  '${items.length} ${items.length == 1 ? 'item' : 'items'}',
+                  style: const TextStyle(fontSize: 12, color: AppStyle.muted),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const Divider(height: 1, color: AppStyle.rule),
+        Semantics(
+          button: true,
+          label: 'Add ${title.toLowerCase()}',
+          child: InkWell(
+            onTap: add,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Row(
+                children: [
+                  Icon(Icons.add_rounded, size: 18, color: accent),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Add',
+                      style: TextStyle(
+                        color: accent,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+
+  Widget _documents() => Material(
+    key: const ValueKey('private-documents'),
+    color: AppStyle.surface,
+    borderRadius: BorderRadius.circular(8),
+    clipBehavior: Clip.antiAlias,
+    child: InkWell(
+      onTap: () => _navigateToContentViewer('Documents', _privateDocuments),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 60,
+              decoration: BoxDecoration(
+                color: AppStyle.cover,
+                borderRadius: BorderRadius.circular(3),
+                border: const Border(
+                  left: BorderSide(color: AppStyle.gold, width: 3),
+                ),
+              ),
+              child: const Icon(
+                Icons.description_outlined,
+                size: 26,
+                color: AppStyle.gold,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Documents',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      height: 1.2,
+                      letterSpacing: -.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${_privateDocuments.length} ${_privateDocuments.length == 1 ? 'file' : 'files'}',
+                    style: const TextStyle(fontSize: 12, color: AppStyle.muted),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              tooltip: 'Add documents',
+              onPressed: _addPrivateDocument,
+              icon: const Icon(
+                Icons.add_rounded,
+                size: 22,
+                color: AppStyle.gold,
               ),
             ),
           ],
         ),
       ),
-    );
+    ),
+  );
+}
+
+class _NotebookPainter extends CustomPainter {
+  const _NotebookPainter();
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = AppStyle.rule;
+    canvas.drawLine(const Offset(26, 0), Offset(26, size.height), paint);
+    for (double y = 30; y < size.height - 10; y += 32) {
+      canvas.drawCircle(Offset(13, y), 3, Paint()..color = AppStyle.background);
+    }
+    for (double y = size.height - 44; y < size.height; y += 12) {
+      canvas.drawLine(
+        Offset(size.width * .65, y),
+        Offset(size.width - 18, y),
+        Paint()..color = AppStyle.rule.withValues(alpha: .4),
+      );
+    }
   }
+
+  @override
+  bool shouldRepaint(_NotebookPainter oldDelegate) => false;
 }

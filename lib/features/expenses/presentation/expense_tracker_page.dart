@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:port/features/expenses/data/expenses_repository.dart';
 import 'package:port/features/expenses/models/expense.dart';
@@ -84,21 +85,24 @@ class _ExpenseTrackerPageState extends State<ExpenseTrackerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1D1E),
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
         title: const Text(
-          'EXPENSES',
+          'Expenses',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'ProductSans',
-              letterSpacing: 4),
+            fontSize: 22,
+            color: AppStyle.text,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'ProductSans',
+            letterSpacing: -.5,
+          ),
         ),
         bottom: const AppBarDivider(),
-        iconTheme: const IconThemeData(color: Colors.white),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF1A1D1E),
+        iconTheme: const IconThemeData(color: AppStyle.text),
+        centerTitle: false,
+        backgroundColor: AppStyle.background,
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_sweep_outlined),
@@ -108,7 +112,7 @@ class _ExpenseTrackerPageState extends State<ExpenseTrackerPage> {
               });
               _saveData();
             },
-            color: Colors.white,
+            color: AppStyle.text,
           ),
         ],
       ),
@@ -161,7 +165,7 @@ class _ExpenseTrackerPageState extends State<ExpenseTrackerPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addExpense,
-        backgroundColor: const Color.fromRGBO(0, 255, 127, 1),
+        backgroundColor: AppStyle.accent,
         child: const Icon(Icons.add, color: Colors.black),
       ),
     );

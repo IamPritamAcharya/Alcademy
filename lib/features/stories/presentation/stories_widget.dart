@@ -1,193 +1,151 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:port/features/stories/presentation/story_screen.dart';
+import 'package:port/shared/theme/app_style.dart';
+import 'package:port/features/home/presentation/widgets/home_pressable.dart';
 
 class StoriesWidget extends StatelessWidget {
   final List<Map<String, String>> stories;
   const StoriesWidget({super.key, required this.stories});
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-        child: Row(
-          children: [
-            for (int index = 0; index < stories.length; index++)
-              Padding(
-                padding: EdgeInsets.only(
-                  left: index == 0 ? 16.0 : 8.0,
-                  right: 8.0,
+  Widget build(BuildContext context) => SizedBox(
+    height: 148,
+    child: ListView.separated(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
+      itemCount: stories.length,
+      separatorBuilder: (_, __) => const SizedBox(width: 12),
+      itemBuilder: (context, index) {
+        final story = stories[index];
+        final isText = story['type'] == 'text';
+        final isImage = story['type'] == 'image';
+        final tint = AppStyle.highlights[index % AppStyle.highlights.length];
+        final label = isText
+            ? 'A quick read'
+            : isImage
+            ? 'In pictures'
+            : 'Watch this';
+        return SizedBox(
+          width: 116,
+          child: Semantics(
+            label: 'Story ${index + 1}: ${story['title'] ?? label}',
+            button: true,
+            child: HomePressable(
+              entranceOrder: index,
+              color: AppStyle.surface,
+              borderRadius: BorderRadius.circular(16),
+              side: BorderSide(color: tint.withValues(alpha: .25)),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      StoryScreen(stories: stories, initialIndex: index),
                 ),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StoryScreen(
-                          stories: stories,
-                          initialIndex: index,
+              ),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  if (isText)
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color.alphaBlend(
+                              tint.withValues(alpha: .26),
+                              AppStyle.surface,
+                            ),
+                            AppStyle.background,
+                          ],
                         ),
                       ),
-                    );
-                  },
-                  child: StoryCircle(story: stories[index], index: index),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class StoryCircle extends StatelessWidget {
-  final Map<String, String> story;
-  final int index;
-  const StoryCircle({super.key, required this.story, required this.index});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 70,
-      height: 70,
-      child: ClipOval(
-        child: story['type'] == 'text'
-            ? TextStoryPreview(story: story)
-            : story['type'] == 'image'
-                ? OptimizedImage(url: story['url']!)
-                : YouTubeThumbnail(url: story['url']!),
-      ),
-    );
-  }
-}
-
-class TextStoryPreview extends StatelessWidget {
-  final Map<String, String> story;
-  const TextStoryPreview({super.key, required this.story});
-
-  List<Color> _getTextStoryGradient(Map<String, String> story) {
-    final String? bgColor = story['backgroundColor'];
-    if (bgColor != null && bgColor.isNotEmpty) {
-      try {
-        String colorStr = bgColor;
-        if (colorStr.startsWith('#')) {
-          colorStr = colorStr.replaceFirst('#', '0xFF');
-        }
-        final Color baseColor = Color(int.parse(colorStr));
-        return [
-          baseColor,
-          baseColor.withValues(alpha: 0.8),
-        ];
-      } catch (e) {
-        debugPrint('Operation failed: $e');
-      }
-    }
-
-    final List<List<Color>> gradients = [
-      [const Color(0xFF667eea), const Color(0xFF764ba2)],
-      [const Color(0xFFf093fb), const Color(0xFFf5576c)],
-      [const Color(0xFF4facfe), const Color(0xFF00f2fe)],
-      [const Color(0xFF43e97b), const Color(0xFF38f9d7)],
-      [const Color(0xFFfa709a), const Color(0xFFfee140)],
-      [const Color(0xFFa8edea), const Color(0xFFfed6e3)],
-      [const Color(0xFFffecd2), const Color(0xFFfcb69f)],
-      [const Color(0xFFd299c2), const Color(0xFFfef9d7)],
-      [const Color(0xFF89f7fe), const Color(0xFF66a6ff)],
-      [const Color(0xFFfbc2eb), const Color(0xFFa6c1ee)],
-    ];
-
-    final int hash = (story['text'] ?? '').hashCode;
-    final selectedGradient = gradients[hash.abs() % gradients.length];
-    return selectedGradient;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final List<Color> gradientColors = _getTextStoryGradient(story);
-    final String text = story['text'] ?? '';
-
-    String previewText =
-        text.length > 15 ? '${text.substring(0, 15)}...' : text;
-
-    return Container(
-      width: 70,
-      height: 70,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: gradientColors,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: gradientColors[0].withValues(alpha: 0.4),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            top: -15,
-            right: -15,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.15),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 34, 12, 34),
+                        child: Text(
+                          story['text'] ?? '',
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: AppStyle.text,
+                            fontSize: 13,
+                            height: 1.2,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    )
+                  else if (isImage)
+                    OptimizedImage(url: story['url'] ?? '')
+                  else
+                    YouTubeThumbnail(url: story['url'] ?? ''),
+                  if (!isText)
+                    const DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0x55000000),
+                            Colors.transparent,
+                            Color(0xDD15151E),
+                          ],
+                          stops: [0, .35, 1],
+                        ),
+                      ),
+                    ),
+                  Positioned(
+                    top: 10,
+                    left: 10,
+                    right: 10,
+                    child: Row(
+                      children: [
+                        Icon(
+                          isText
+                              ? Icons.format_quote_rounded
+                              : isImage
+                              ? Icons.photo_outlined
+                              : Icons.play_circle_outline_rounded,
+                          color: isText ? tint : Colors.white,
+                          size: 17,
+                        ),
+                        const Spacer(),
+                        Text(
+                          '${index + 1}'.padLeft(2, '0'),
+                          style: TextStyle(
+                            color: isText ? tint : Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    left: 10,
+                    right: 10,
+                    bottom: 10,
+                    child: Text(
+                      label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: AppStyle.text,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-          Positioned(
-            bottom: -10,
-            left: -10,
-            child: Container(
-              width: 25,
-              height: 25,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.1),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 15,
-            left: 5,
-            child: Container(
-              width: 15,
-              height: 15,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.08),
-              ),
-            ),
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                previewText,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 9,
-                  fontWeight: FontWeight.w700,
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+        );
+      },
+    ),
+  );
 }
 
 class OptimizedImage extends StatelessWidget {
@@ -211,11 +169,8 @@ class OptimizedImage extends StatelessWidget {
           ),
         ),
       ),
-      errorWidget: (context, url, error) => const Icon(
-        Icons.error,
-        color: Colors.red,
-        size: 30,
-      ),
+      errorWidget: (context, url, error) =>
+          const Icon(Icons.error, color: Colors.red, size: 30),
       fadeInDuration: const Duration(milliseconds: 200),
       fadeOutDuration: const Duration(milliseconds: 200),
     );

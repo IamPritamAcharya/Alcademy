@@ -1,5 +1,6 @@
+import 'package:port/shared/widgets/editorial_list_row.dart';
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:port/features/notifications/presentation/notification_detail_page.dart';
@@ -72,9 +73,12 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setStringList(
-          'read_notifications', readNotifications.toList());
+        'read_notifications',
+        readNotifications.toList(),
+      );
       debugPrint(
-          'Saved read status for ${readNotifications.length} notifications');
+        'Saved read status for ${readNotifications.length} notifications',
+      );
     } catch (e) {
       debugPrint('Error saving read status: $e');
     }
@@ -136,8 +140,8 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
   Future<void> _silentSync() async {
     try {
       await NotificationService().syncNotifications();
-      final loadedNotifications =
-          await NotificationService().getAllNotifications();
+      final loadedNotifications = await NotificationService()
+          .getAllNotifications();
 
       if (mounted && loadedNotifications.length != notifications.length) {
         if (mounted) {
@@ -171,8 +175,8 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
   Future<void> _loadNotifications() async {
     try {
       debugPrint("Loading notifications...");
-      final loadedNotifications =
-          await NotificationService().getAllNotifications();
+      final loadedNotifications = await NotificationService()
+          .getAllNotifications();
 
       if (mounted) {
         if (mounted) {
@@ -188,7 +192,8 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
         for (int i = 0; i < notifications.length && i < 3; i++) {
           final n = notifications[i];
           debugPrint(
-              "  ${i + 1}. ${n.title} - ${n.body.substring(0, n.body.length.clamp(0, 50))}...");
+            "  ${i + 1}. ${n.title} - ${n.body.substring(0, n.body.length.clamp(0, 50))}...",
+          );
         }
       }
     } catch (e) {
@@ -220,14 +225,16 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
         final endIndex = (startIndex + pageSize).clamp(0, notifications.length);
 
         setState(() {
-          displayedNotifications
-              .addAll(notifications.sublist(startIndex, endIndex));
+          displayedNotifications.addAll(
+            notifications.sublist(startIndex, endIndex),
+          );
           currentPage++;
           isLoadingMore = false;
         });
 
         debugPrint(
-            'Loaded page $currentPage: ${displayedNotifications.length}/${notifications.length}');
+          'Loaded page $currentPage: ${displayedNotifications.length}/${notifications.length}',
+        );
       }
     });
   }
@@ -308,64 +315,57 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: AlertDialog(
-                backgroundColor: Colors.white.withValues(alpha: 0.08),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
-                ),
-                title: Text(
-                  'Delete Notification',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0, 1),
-                        blurRadius: 4,
-                        color: Colors.black.withValues(alpha: 0.5),
-                      ),
-                    ],
-                  ),
-                ),
-                content: Text(
-                  'Are you sure you want to delete this notification? This action cannot be undone.',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    height: 1.4,
-                  ),
-                ),
-                actionsPadding:
-                    EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      backgroundColor: Colors.white.withValues(alpha: 0.05),
-                    ),
-                    child: Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.redAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      backgroundColor: Colors.redAccent.withValues(alpha: 0.15),
-                    ),
-                    child: Text('Delete'),
-                  ),
-                ],
+            return AlertDialog(
+              backgroundColor: AppStyle.text.withValues(alpha: 0.08),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(color: AppStyle.rule),
               ),
+              title: Text(
+                'Delete Notification',
+                style: TextStyle(
+                  color: AppStyle.text,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                  shadows: [
+                    Shadow(
+                      offset: Offset(0, 1),
+                      blurRadius: 4,
+                      color: Colors.black.withValues(alpha: 0.5),
+                    ),
+                  ],
+                ),
+              ),
+              content: Text(
+                'Are you sure you want to delete this notification? This action cannot be undone.',
+                style: TextStyle(color: AppStyle.muted, height: 1.4),
+              ),
+              actionsPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppStyle.text,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    backgroundColor: AppStyle.surface,
+                  ),
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppStyle.danger,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    backgroundColor: AppStyle.danger.withValues(alpha: 0.15),
+                  ),
+                  child: Text('Delete'),
+                ),
+              ],
             );
           },
         ) ??
@@ -446,20 +446,22 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF121212),
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
-        centerTitle: true,
+        centerTitle: false,
         title: Text(
           'Notifications',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
+            color: AppStyle.text,
+            fontSize: 22,
             fontWeight: FontWeight.w600,
           ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: AppStyle.text),
         bottom: const AppBarDivider(),
       ),
       body: Container(
@@ -467,37 +469,33 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF121212),
-              Color(0xFF1A1A1A),
-            ],
+            colors: [AppStyle.background, AppStyle.surface],
           ),
         ),
         child: isLoading && !hasInitialized
             ? _buildLoadingState()
             : notifications.isEmpty
-                ? _buildEmptyState()
-                : RefreshIndicator(
-                    onRefresh: _refreshNotifications,
-                    backgroundColor: Color(0xFF2A2A2A),
-                    color: Colors.blue,
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      physics: BouncingScrollPhysics(),
-                      padding: EdgeInsets.fromLTRB(16, 10, 16, 8),
-                      itemCount: displayedNotifications.length +
-                          (isLoadingMore ? 1 : 0),
-                      itemBuilder: (context, index) {
-                        if (index == displayedNotifications.length) {
-                          return _buildLoadingMoreIndicator();
-                        }
-                        final notification = displayedNotifications[index];
-                        final isRead =
-                            readNotifications.contains(notification.id);
-                        return _buildNotificationCard(notification, isRead);
-                      },
-                    ),
-                  ),
+            ? _buildEmptyState()
+            : RefreshIndicator(
+                onRefresh: _refreshNotifications,
+                backgroundColor: AppStyle.surface,
+                color: AppStyle.blue,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  physics: BouncingScrollPhysics(),
+                  padding: EdgeInsets.fromLTRB(16, 10, 16, 8),
+                  itemCount:
+                      displayedNotifications.length + (isLoadingMore ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == displayedNotifications.length) {
+                      return _buildLoadingMoreIndicator();
+                    }
+                    final notification = displayedNotifications[index];
+                    final isRead = readNotifications.contains(notification.id);
+                    return _buildNotificationCard(notification, isRead);
+                  },
+                ),
+              ),
       ),
     );
   }
@@ -508,16 +506,13 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+            valueColor: AlwaysStoppedAnimation<Color>(AppStyle.blue),
             strokeWidth: 2.5,
           ),
           SizedBox(height: 16),
           Text(
             'Loading notifications...',
-            style: TextStyle(
-              color: Colors.grey[400],
-              fontSize: 14,
-            ),
+            style: TextStyle(color: AppStyle.muted, fontSize: 14),
           ),
         ],
       ),
@@ -532,7 +527,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
         width: 20,
         height: 20,
         child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+          valueColor: AlwaysStoppedAnimation<Color>(AppStyle.blue),
           strokeWidth: 2,
         ),
       ),
@@ -550,13 +545,13 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
               width: 100,
               height: 100,
               decoration: BoxDecoration(
-                color: Color(0xFF2A2A2A).withValues(alpha: 0.5),
+                color: AppStyle.surface.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Icon(
                 Icons.notifications_off_rounded,
                 size: 50,
-                color: Colors.grey[600],
+                color: AppStyle.rule,
               ),
             ),
             SizedBox(height: 24),
@@ -564,17 +559,14 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
               'No notifications yet',
               style: TextStyle(
                 fontSize: 22,
-                color: Colors.white,
+                color: AppStyle.text,
                 fontWeight: FontWeight.w600,
               ),
             ),
             SizedBox(height: 8),
             Text(
               'Notifications will appear here when you receive them',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[400],
-              ),
+              style: TextStyle(fontSize: 16, color: AppStyle.muted),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 32),
@@ -586,18 +578,20 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
                       height: 16,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          AppStyle.blue,
+                        ),
                       ),
                     )
                   : Icon(Icons.refresh_rounded),
               label: Text(isRefreshing ? 'Refreshing...' : 'Refresh'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue.withValues(alpha: 0.2),
-                foregroundColor: Colors.blue,
+                backgroundColor: AppStyle.blue.withValues(alpha: 0.2),
+                foregroundColor: AppStyle.blue,
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
-                  side: BorderSide(color: Colors.blue.withValues(alpha: 0.3)),
+                  side: BorderSide(color: AppStyle.blue.withValues(alpha: 0.3)),
                 ),
               ),
             ),
@@ -607,155 +601,40 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
     );
   }
 
-  Widget _buildNotificationCard(NotificationModel notification, bool isRead) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        color: Color(0xFF1A1A1A).withValues(alpha: 0.6),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: isRead
-              ? Colors.white.withValues(alpha: 0.08)
-              : Colors.blue.withValues(alpha: 0.4),
-          width: 0.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 12,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(14),
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          onTap: () => _showNotificationDetail(notification.id),
-          child: Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.white.withValues(alpha: 0.01),
-                  Colors.white.withValues(alpha: 0.02),
-                ],
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 42,
-                  height: 42,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Colors.blue.withValues(alpha: 0.8),
-                        Colors.blue.shade600.withValues(alpha: 0.9),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.blue.withValues(alpha: 0.3),
-                      width: 0.5,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.blue.withValues(alpha: 0.3),
-                        blurRadius: 8,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    Icons.notifications_rounded,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-                SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        notification.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                          color: Colors.white.withValues(alpha: 0.95),
-                          height: 1.2,
-                          letterSpacing: 0.2,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        notification.body,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey[400],
-                          height: 1.3,
-                          letterSpacing: 0.1,
-                        ),
-                      ),
-                      SizedBox(height: 6),
-                      Text(
-                        _formatTime(notification.timestamp),
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey[500],
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.3,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 12),
-                GestureDetector(
-                  onTap: () => _deleteNotification(notification.id),
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.red.withValues(alpha: 0.3),
-                        width: 0.5,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.red.withValues(alpha: 0.1),
-                          blurRadius: 4,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      Icons.delete_outline_rounded,
-                      size: 18,
-                      color: Colors.red.shade300,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+  Widget _buildNotificationCard(
+    NotificationModel notification,
+    bool isRead,
+  ) => EditorialListRow(
+    number: 0,
+    leading: Padding(
+      padding: const EdgeInsets.only(top: 3),
+      child: SizedBox(
+        width: 12,
+        height: 12,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isRead ? AppStyle.rule : AppStyle.gold,
           ),
         ),
       ),
-    );
-  }
+    ),
+    title: notification.title,
+    category:
+        '${isRead ? 'Read' : 'Unread'} · ${_formatTime(notification.timestamp)}',
+    subtitle: notification.body,
+    accent: isRead ? AppStyle.muted : AppStyle.gold,
+    trailing: IconButton(
+      tooltip: 'Delete notification',
+      onPressed: () => _deleteNotification(notification.id),
+      icon: const Icon(
+        Icons.delete_outline_rounded,
+        color: AppStyle.muted,
+        size: 19,
+      ),
+    ),
+    onTap: () => _showNotificationDetail(notification.id),
+  );
 
   String _formatTime(DateTime dateTime) {
     final now = DateTime.now();

@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:port/features/notifications/models/notification_model.dart';
@@ -11,20 +12,22 @@ class NotificationDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF121212),
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
-        centerTitle: true,
+        centerTitle: false,
         title: Text(
           'Notification Details',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
+            color: AppStyle.text,
+            fontSize: 22,
             fontWeight: FontWeight.w600,
           ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: AppStyle.text),
         bottom: const AppBarDivider(),
       ),
       body: Container(
@@ -34,10 +37,7 @@ class NotificationDetailPage extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF121212),
-              Color(0xFF1A1A1A),
-            ],
+            colors: [AppStyle.background, AppStyle.surface],
           ),
         ),
         child: SingleChildScrollView(
@@ -45,29 +45,20 @@ class NotificationDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               Center(
                 child: Container(
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.blue.shade400, Colors.blue.shade600],
+                      colors: [AppStyle.blue, AppStyle.blue],
                     ),
                     borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.blue.withValues(alpha: 0.4),
-                        blurRadius: 20,
-                        offset: Offset(0, 8),
-                      ),
-                    ],
                   ),
                   child: Icon(
                     Icons.notifications_rounded,
-                    color: Colors.white,
+                    color: AppStyle.onAccent,
                     size: 40,
                   ),
                 ),
@@ -79,7 +70,7 @@ class NotificationDetailPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 24,
-                    color: Colors.white,
+                    color: AppStyle.text,
                     fontWeight: FontWeight.w700,
                     height: 1.4,
                     letterSpacing: 0.3,
@@ -91,17 +82,17 @@ class NotificationDetailPage extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.05),
+                    color: AppStyle.surface,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.1),
+                      color: AppStyle.rule.withValues(alpha: .65),
                     ),
                   ),
                   child: Text(
                     _formatDateTime(notification.timestamp),
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.grey[300],
+                      color: AppStyle.muted,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 0.5,
                     ),
@@ -116,7 +107,7 @@ class NotificationDetailPage extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       Colors.transparent,
-                      Colors.grey.withValues(alpha: 0.3),
+                      AppStyle.muted.withValues(alpha: 0.3),
                       Colors.transparent,
                     ],
                   ),
@@ -128,7 +119,7 @@ class NotificationDetailPage extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
-                  color: Colors.blue.shade300,
+                  color: AppStyle.blue,
                   letterSpacing: 0.5,
                 ),
               ),
@@ -138,7 +129,7 @@ class NotificationDetailPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: Colors.grey[200],
+                  color: AppStyle.muted,
                   height: 1.6,
                   letterSpacing: 0.3,
                 ),
@@ -153,7 +144,7 @@ class NotificationDetailPage extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         Colors.transparent,
-                        Colors.grey.withValues(alpha: 0.3),
+                        AppStyle.muted.withValues(alpha: 0.3),
                         Colors.transparent,
                       ],
                     ),
@@ -165,7 +156,7 @@ class NotificationDetailPage extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
-                    color: Colors.blue.shade300,
+                    color: AppStyle.blue,
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -180,7 +171,7 @@ class NotificationDetailPage extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 15,
-                          color: Colors.orange.shade300,
+                          color: AppStyle.gold,
                           letterSpacing: 0.3,
                         ),
                       ),
@@ -189,18 +180,11 @@ class NotificationDetailPage extends StatelessWidget {
                         width: double.infinity,
                         padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Color(0xFF1A1A1A).withValues(alpha: 0.6),
+                          color: AppStyle.surface.withValues(alpha: 0.6),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: Colors.grey.withValues(alpha: 0.15),
+                            color: AppStyle.muted.withValues(alpha: 0.15),
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.2),
-                              blurRadius: 8,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
                         ),
                         child: SharedMarkdownViewer(
                           markdownData: entry.value?.toString() ?? 'No value',
@@ -217,7 +201,7 @@ class NotificationDetailPage extends StatelessWidget {
                             gradient: LinearGradient(
                               colors: [
                                 Colors.transparent,
-                                Colors.grey.withValues(alpha: 0.2),
+                                AppStyle.muted.withValues(alpha: 0.2),
                                 Colors.transparent,
                               ],
                             ),
@@ -250,7 +234,7 @@ class NotificationDetailPage extends StatelessWidget {
       'Sep',
       'Oct',
       'Nov',
-      'Dec'
+      'Dec',
     ];
     return '${months[dateTime.month - 1]} ${dateTime.day}, ${dateTime.year} at ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
   }

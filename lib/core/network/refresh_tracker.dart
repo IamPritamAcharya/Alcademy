@@ -2,6 +2,9 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RefreshTracker {
+  // Temporarily disabled while testing; set true to restore the refresh cap.
+  static const bool refreshLimitEnabled = false;
+
   static int refreshCount = 0;
   static DateTime? lastRefreshTime;
   static DateTime? cooldownStartTime;
@@ -11,6 +14,15 @@ class RefreshTracker {
   static const Duration cooldownDuration = Duration(minutes: 60);
 
   static Future<void> init() async {
+    if (!refreshLimitEnabled) {
+      _cooldownTimer?.cancel();
+      refreshCount = 0;
+      lastRefreshTime = null;
+      cooldownStartTime = null;
+      isCooldownActive = false;
+      return;
+    }
+
     final prefs = await SharedPreferences.getInstance();
 
     refreshCount = prefs.getInt('refreshCount') ?? 0;
@@ -34,12 +46,16 @@ class RefreshTracker {
     }
     if (cooldownStartTime != null) {
       prefs.setString(
-          'cooldownStartTime', cooldownStartTime!.toIso8601String());
+        'cooldownStartTime',
+        cooldownStartTime!.toIso8601String(),
+      );
     }
     prefs.setBool('isCooldownActive', isCooldownActive);
   }
 
   static Future<bool> incrementRefreshCount() async {
+    if (!refreshLimitEnabled) return true;
+
     if (isCooldownActive) {
       if (DateTime.now().difference(cooldownStartTime!) < cooldownDuration) {
         return false;

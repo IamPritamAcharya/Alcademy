@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -81,13 +82,12 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           ? AppBar(
               backgroundColor: Colors.black.withValues(alpha: 0.5),
               elevation: 0,
-              iconTheme: const IconThemeData(color: Colors.white),
+              iconTheme: const IconThemeData(color: AppStyle.text),
               title: Text(
                 _getTitle(),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: AppStyle.text, fontSize: 16),
               ),
               actions: [
                 IconButton(
@@ -143,10 +143,8 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           child: Image.file(
             File(widget.filePath),
             fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) => _buildErrorWidget(
-              'Failed to load image',
-              Icons.broken_image,
-            ),
+            errorBuilder: (context, error, stackTrace) =>
+                _buildErrorWidget('Failed to load image', Icons.broken_image),
           ),
         ),
       ),
@@ -161,12 +159,12 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Container(
             padding: const EdgeInsets.all(30),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1),
+              color: AppStyle.rule.withValues(alpha: .65),
               shape: BoxShape.circle,
             ),
             child: const Icon(
               Icons.play_circle_filled,
-              color: Colors.white,
+              color: AppStyle.text,
               size: 80,
             ),
           ),
@@ -174,7 +172,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           const Text(
             'Video Player',
             style: TextStyle(
-              color: Colors.white,
+              color: AppStyle.text,
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
@@ -183,7 +181,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Text(
             'Tap to play video\n(Video player integration needed)',
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.7),
+              color: AppStyle.text.withValues(alpha: 0.7),
               fontSize: 14,
             ),
             textAlign: TextAlign.center,
@@ -194,15 +192,15 @@ class _FullScreenViewerState extends State<FullScreenViewer>
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Video player integration needed'),
-                  backgroundColor: Colors.orange,
+                  backgroundColor: AppStyle.gold,
                 ),
               );
             },
             icon: const Icon(Icons.play_arrow),
             label: const Text('Play Video'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white.withValues(alpha: 0.2),
-              foregroundColor: Colors.white,
+              backgroundColor: AppStyle.rule,
+              foregroundColor: AppStyle.text,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25),
@@ -224,20 +222,16 @@ class _FullScreenViewerState extends State<FullScreenViewer>
             Container(
               padding: const EdgeInsets.all(30),
               decoration: BoxDecoration(
-                color: Colors.orange.withValues(alpha: 0.2),
+                color: AppStyle.gold.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                _getDocumentIcon(),
-                color: Colors.orange,
-                size: 60,
-              ),
+              child: Icon(_getDocumentIcon(), color: AppStyle.gold, size: 60),
             ),
             const SizedBox(height: 20),
             Text(
               path.basename(widget.filePath),
               style: const TextStyle(
-                color: Colors.white,
+                color: AppStyle.text,
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
@@ -247,7 +241,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
             Text(
               _getFileSize(),
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.7),
+                color: AppStyle.text.withValues(alpha: 0.7),
                 fontSize: 14,
               ),
             ),
@@ -261,9 +255,10 @@ class _FullScreenViewerState extends State<FullScreenViewer>
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content:
-                            Text('Open with external app functionality needed'),
-                        backgroundColor: Colors.blue,
+                        content: Text(
+                          'Open with external app functionality needed',
+                        ),
+                        backgroundColor: AppStyle.blue,
                       ),
                     );
                   },
@@ -294,15 +289,12 @@ class _FullScreenViewerState extends State<FullScreenViewer>
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-            child: CircularProgressIndicator(color: Colors.teal),
+            child: CircularProgressIndicator(color: AppStyle.blue),
           );
         }
 
         if (snapshot.hasError || !snapshot.hasData) {
-          return _buildErrorWidget(
-            'Failed to load note',
-            Icons.note_outlined,
-          );
+          return _buildErrorWidget('Failed to load note', Icons.note_outlined);
         }
 
         final noteData = snapshot.data!;
@@ -325,16 +317,16 @@ class _FullScreenViewerState extends State<FullScreenViewer>
                   padding: const EdgeInsets.all(20),
                   margin: const EdgeInsets.only(bottom: 20),
                   decoration: BoxDecoration(
-                    color: Colors.teal.withValues(alpha: 0.1),
+                    color: AppStyle.blue.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(15),
                     border: Border.all(
-                      color: Colors.teal.withValues(alpha: 0.3),
+                      color: AppStyle.blue.withValues(alpha: 0.3),
                     ),
                   ),
                   child: Text(
                     noteData['title'],
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppStyle.text,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -344,13 +336,13 @@ class _FullScreenViewerState extends State<FullScreenViewer>
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.05),
+                  color: AppStyle.surface,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: SelectableText(
                   noteData['content'] ?? 'No content',
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: AppStyle.text,
                     fontSize: 16,
                     height: 1.6,
                   ),
@@ -362,7 +354,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
                 Container(
                   padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.05),
+                    color: AppStyle.surface,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -392,7 +384,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Text(
             '$label: ',
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.7),
+              color: AppStyle.text.withValues(alpha: 0.7),
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
@@ -400,7 +392,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Text(
             '${date.day}/${date.month}/${date.year} at ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.9),
+              color: AppStyle.text.withValues(alpha: 0.9),
               fontSize: 12,
             ),
           ),
@@ -419,12 +411,10 @@ class _FullScreenViewerState extends State<FullScreenViewer>
       icon: Icon(icon, size: 20),
       label: Text(label),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white.withValues(alpha: 0.2),
-        foregroundColor: Colors.white,
+        backgroundColor: AppStyle.rule,
+        foregroundColor: AppStyle.text,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       ),
     );
   }
@@ -440,17 +430,13 @@ class _FullScreenViewerState extends State<FullScreenViewer>
               color: Colors.red.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              icon,
-              color: Colors.red,
-              size: 60,
-            ),
+            child: Icon(icon, color: Colors.red, size: 60),
           ),
           const SizedBox(height: 20),
           Text(
             message,
             style: const TextStyle(
-              color: Colors.white,
+              color: AppStyle.text,
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
@@ -460,7 +446,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Text(
             'Please try again or check if the file exists',
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.7),
+              color: AppStyle.text.withValues(alpha: 0.7),
               fontSize: 14,
             ),
             textAlign: TextAlign.center,
@@ -471,10 +457,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
   }
 
   Widget _buildUnsupportedViewer() {
-    return _buildErrorWidget(
-      'Unsupported file type',
-      Icons.help_outline,
-    );
+    return _buildErrorWidget('Unsupported file type', Icons.help_outline);
   }
 
   String _getTitle() {
@@ -542,15 +525,17 @@ class _FullScreenViewerState extends State<FullScreenViewer>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: AppStyle.background,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        title: const Text('File Information',
-            style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'File Information',
+          style: TextStyle(color: AppStyle.text),
+        ),
         content: _buildFileInfoContent(),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close', style: TextStyle(color: Colors.teal)),
+            child: const Text('Close', style: TextStyle(color: AppStyle.blue)),
           ),
         ],
       ),
@@ -563,7 +548,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
       if (stat == null) {
         return const Text(
           'File information not available',
-          style: TextStyle(color: Colors.white70),
+          style: TextStyle(color: AppStyle.muted),
         );
       }
 
@@ -602,7 +587,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Text(
             label,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.7),
+              color: AppStyle.text.withValues(alpha: 0.7),
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
@@ -610,10 +595,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           const SizedBox(height: 4),
           SelectableText(
             value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-            ),
+            style: const TextStyle(color: AppStyle.text, fontSize: 14),
           ),
         ],
       ),

@@ -1,3 +1,6 @@
+import 'package:port/shared/widgets/editorial_list_row.dart';
+import 'package:port/shared/widgets/collection_intro.dart';
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:port/features/blog/data/blog_repository.dart';
@@ -22,20 +25,17 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
     markdownFilesFuture = _fetchMarkdownFiles();
   }
 
-  Future<List<Map<String, String>>> _fetchMarkdownFiles(
-          {bool forceRefresh = false}) =>
-      _repository.getFiles(forceRefresh: forceRefresh);
+  Future<List<Map<String, String>>> _fetchMarkdownFiles({
+    bool forceRefresh = false,
+  }) => _repository.getFiles(forceRefresh: forceRefresh);
 
   Future<void> _handleRefresh() async {
     bool isRefreshAllowed = await RefreshTracker.incrementRefreshCount();
     if (!isRefreshAllowed) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar.build(
-          isCooldown: true,
-          context: context,
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(CustomSnackBar.build(isCooldown: true, context: context));
       return;
     }
 
@@ -50,47 +50,50 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1D1E),
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
         title: const Text(
-          'BLOGS',
+          'Blogs',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'ProductSans',
-              letterSpacing: 4),
+            fontSize: 22,
+            color: AppStyle.text,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'ProductSans',
+            letterSpacing: -.5,
+          ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF1A1D1E),
-        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: false,
+        backgroundColor: AppStyle.background,
+        iconTheme: const IconThemeData(color: AppStyle.text),
         bottom: const AppBarDivider(),
       ),
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
-        color: Colors.white,
-        backgroundColor: const Color(0xFF1A1D1E),
+        color: AppStyle.text,
+        backgroundColor: AppStyle.background,
         child: FutureBuilder<List<Map<String, String>>>(
           future: markdownFilesFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppStyle.text),
                 ),
               );
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(
                   'Error: ${snapshot.error}',
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: AppStyle.text),
                 ),
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Center(
                 child: Text(
                   'No markdown files found.',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: AppStyle.text),
                 ),
               );
             }
@@ -98,83 +101,35 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
             final files = snapshot.data!;
             return ListView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: files.length,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              itemCount: files.length + 1,
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
               itemBuilder: (context, index) {
-                final file = files[index];
-                return GlassmorphicCard(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            MarkdownViewerPage(url: file['download_url']!),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: ListTile(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 12),
-                      leading: const Icon(
-                        Icons.description,
-                        color: Colors.white,
-                        size: 36,
-                      ),
-                      title: Text(
-                        file['name']!.replaceAll('.md', ''),
-                        style: const TextStyle(
-                          fontFamily: 'ProductSans',
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
+                if (index == 0) {
+                  return CollectionIntro(
+                    title: 'Worth a read.',
+                    eyebrow: 'THE READING ROOM',
+                    detail: '${files.length} articles from the campus journal',
+                  );
+                }
+                final file = files[index - 1];
+                return EditorialListRow(
+                  number: index,
+                  title: file['name']!
+                      .replaceAll('.md', '')
+                      .replaceAll('_', ' '),
+                  category: 'Article',
+                  accent: AppStyle.accent,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          MarkdownViewerPage(url: file['download_url']!),
                     ),
                   ),
                 );
               },
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-class GlassmorphicCard extends StatelessWidget {
-  final Widget child;
-  final VoidCallback onTap;
-
-  const GlassmorphicCard({
-    super.key,
-    required this.child,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withValues(alpha: 0.05),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
-          ),
-        ],
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
-        ),
-      ),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: child,
         ),
       ),
     );

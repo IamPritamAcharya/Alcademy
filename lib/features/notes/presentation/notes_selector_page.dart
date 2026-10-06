@@ -1,3 +1,6 @@
+import 'package:port/shared/widgets/editorial_list_row.dart';
+import 'package:port/shared/widgets/collection_intro.dart';
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:port/features/notes/data/notes_repository.dart';
@@ -42,7 +45,9 @@ class _NotesSelectorState extends State<NotesSelector> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar.build(
-            message: 'Error fetching data: $e', isCooldown: false),
+          message: 'Error fetching data: $e',
+          isCooldown: false,
+        ),
       );
     } finally {
       if (mounted) setState(() => isLoading = false);
@@ -53,11 +58,9 @@ class _NotesSelectorState extends State<NotesSelector> {
     bool isRefreshAllowed = await RefreshTracker.incrementRefreshCount();
     if (!isRefreshAllowed) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar.build(
-          isCooldown: true,
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(CustomSnackBar.build(isCooldown: true));
       return;
     }
     try {
@@ -87,112 +90,70 @@ class _NotesSelectorState extends State<NotesSelector> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1D1E),
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
           'Select Your Notes',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            fontSize: 24,
-            color: Colors.white,
+            fontSize: 22,
+            color: AppStyle.text,
             fontWeight: FontWeight.bold,
             fontFamily: 'ProductSans',
           ),
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
-        centerTitle: true,
+        iconTheme: const IconThemeData(color: AppStyle.text),
+        centerTitle: false,
         bottom: const AppBarDivider(),
       ),
       body: isLoading
           ? const Center(
               child: CircularProgressIndicator(
-                color: Colors.greenAccent,
-                backgroundColor: Color(0xFF1A1D1E),
+                color: AppStyle.accent,
+                backgroundColor: AppStyle.background,
               ),
             )
           : RefreshIndicator(
-              backgroundColor: const Color(0xFF1A1D1E),
-              color: Colors.greenAccent,
+              backgroundColor: AppStyle.background,
+              color: AppStyle.accent,
               onRefresh: _refreshYearLinks,
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
                 itemCount: yearLinks.length + 1,
                 itemBuilder: (context, index) {
                   if (index == 0) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 25),
-                      child: const Text(
-                        'Tip: After selecting an item, pull to refresh on the home page to update notes.',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic,
-                          fontFamily: 'ProductSans',
-                          letterSpacing: 2,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                    return const CollectionIntro(
+                      title: 'Choose your year.',
+                      eyebrow: 'THE STUDY SHELF',
+                      detail: 'Find the resources for your current year.',
                     );
                   }
 
                   final year = yearLinks[index - 1];
                   final isSelected = selectedYearUrl == year['url'];
 
-                  return GestureDetector(
-                    onTap: () async {
-                      await _saveSelectedYear(year['url']!);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: isSelected
-                            ? Colors.greenAccent.withValues(alpha: 0.1)
-                            : Colors.white.withValues(alpha: 0.05),
-                        border: Border.all(
-                          color: isSelected
-                              ? Colors.greenAccent
-                              : Colors.white.withValues(alpha: 0.1),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.2),
-                            blurRadius: 6,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 0,
-                            horizontal: 24,
-                          ),
-                          leading: Icon(
-                            isSelected
-                                ? Icons.check_circle
-                                : Icons.circle_outlined,
-                            color:
-                                isSelected ? Colors.greenAccent : Colors.white,
-                            size: 20,
-                          ),
-                          title: Text(
-                            year['name']!,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'ProductSans',
-                              color: isSelected
-                                  ? Colors.greenAccent
-                                  : Colors.white70,
-                            ),
-                          ),
+                  return Semantics(
+                    selected: isSelected,
+                    child: EditorialListRow(
+                      number: index,
+                      title: year['name']!,
+                      category: isSelected ? 'Selected year' : 'Study year',
+                      accent: isSelected ? AppStyle.accent : AppStyle.muted,
+                      trailing: Padding(
+                        padding: const EdgeInsets.only(top: 18),
+                        child: Icon(
+                          isSelected
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_unchecked,
+                          color: isSelected ? AppStyle.accent : AppStyle.muted,
+                          size: 22,
                         ),
                       ),
+                      onTap: () => _saveSelectedYear(year['url']!),
                     ),
                   );
                 },

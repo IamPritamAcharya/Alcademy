@@ -1,3 +1,6 @@
+import 'package:port/shared/widgets/editorial_list_row.dart';
+import 'package:port/shared/widgets/collection_intro.dart';
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,128 +14,66 @@ class SubjectDetailsPage extends StatelessWidget {
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
-      await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       throw 'Could not launch $url';
     }
   }
 
-  IconData _getIconForUrl(String url) {
-    if (url.contains('youtube.com') || url.contains('youtu.be')) {
-      return Icons.play_circle_fill_rounded;
-    } else if (url.contains('drive.google.com')) {
-      return Icons.picture_as_pdf_rounded;
-    } else {
-      return Icons.link_rounded;
+  String _resourceKind(String url) {
+    final host = Uri.tryParse(url)?.host ?? '';
+    if (host.contains('youtube.com') || host.contains('youtu.be')) {
+      return 'Video';
     }
+    if (host.contains('drive.google.com') ||
+        url.toLowerCase().endsWith('.pdf')) {
+      return 'Document';
+    }
+    return 'Link';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF181818),
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
         title: Text(
-          subject.name,
+          'Resources',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: const TextStyle(
-            fontSize: 24,
-            color: Colors.white,
+            fontSize: 22,
+            color: AppStyle.text,
             fontWeight: FontWeight.bold,
             fontFamily: 'ProductSans',
           ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF1A1D1E),
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
+        centerTitle: false,
+        backgroundColor: AppStyle.background,
+        iconTheme: const IconThemeData(color: AppStyle.text),
         bottom: const AppBarDivider(),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 8),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: subject.items.length,
-                itemBuilder: (context, index) {
-                  final item = subject.items[index];
-                  return GestureDetector(
-                    onTap: () => _launchURL(item.url),
-                    child: GlassmorphicCard(
-                      icon: _getIconForUrl(item.url),
-                      title: item.name,
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class GlassmorphicCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-
-  const GlassmorphicCard({
-    super.key,
-    required this.icon,
-    required this.title,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withValues(alpha: 0.05),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
-          ),
-        ],
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
-        ),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: ListTile(
-          leading: Icon(
-            icon,
-            color: Colors.white,
-            size: 24,
-          ),
-          title: Text(
-            title,
-            style: const TextStyle(
-              fontFamily: 'ProductSans',
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          trailing: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: Colors.white70,
-            size: 18,
-          ),
-        ),
+      body: ListView.builder(
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
+        itemCount: subject.items.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return CollectionIntro(
+              title: subject.name,
+              eyebrow: 'THE RESOURCE INDEX',
+              detail: '${subject.items.length} resources for this subject',
+            );
+          }
+          final item = subject.items[index - 1];
+          return EditorialListRow(
+            number: index,
+            title: item.name,
+            category: _resourceKind(item.url),
+            accent: AppStyle.blue,
+            subtitle: Uri.tryParse(item.url)?.host,
+            onTap: () => _launchURL(item.url),
+          );
+        },
       ),
     );
   }

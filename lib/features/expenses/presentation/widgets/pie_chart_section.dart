@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -44,16 +45,20 @@ class _PieChartSectionState extends State<PieChartSection>
 
   @override
   Widget build(BuildContext context) {
-    final totalExpenses =
-        widget.expenses.fold(0.0, (sum, e) => sum + e['value']);
-    final remainingBudget =
-        (widget.budget - totalExpenses).clamp(0.0, widget.budget);
+    final totalExpenses = widget.expenses.fold(
+      0.0,
+      (sum, e) => sum + e['value'],
+    );
+    final remainingBudget = (widget.budget - totalExpenses).clamp(
+      0.0,
+      widget.budget,
+    );
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 31, 34, 35),
+          color: AppStyle.surface,
           borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.all(16.0),
@@ -73,7 +78,7 @@ class _PieChartSectionState extends State<PieChartSection>
                         title: totalExpenses > 0
                             ? '₹${totalExpenses.toStringAsFixed(0)}'
                             : '',
-                        color: Colors.redAccent,
+                        color: AppStyle.danger,
                         titleStyle: const TextStyle(
                           fontFamily: 'ProductSans',
                           fontSize: 14,
@@ -87,7 +92,7 @@ class _PieChartSectionState extends State<PieChartSection>
                         title: remainingBudget > 0
                             ? '₹${remainingBudget.toStringAsFixed(0)}'
                             : '',
-                        color: const Color.fromRGBO(0, 255, 127, 1),
+                        color: AppStyle.blue,
                         titleStyle: const TextStyle(
                           fontFamily: 'ProductSans',
                           fontSize: 14,

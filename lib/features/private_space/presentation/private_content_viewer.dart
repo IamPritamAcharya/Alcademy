@@ -1,3 +1,8 @@
+import 'package:port/shared/widgets/app_bar_divider.dart';
+import 'package:port/shared/widgets/collection_intro.dart';
+import 'package:port/shared/widgets/search_results_page.dart';
+import 'package:port/shared/widgets/editorial_list_row.dart';
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import '../data/note_repository.dart';
@@ -11,6 +16,8 @@ class PrivateContentViewer extends StatefulWidget {
   final List<String> items;
   final Function(int) onDelete;
   final Function(int, String)? onUpdate;
+  final VoidCallback? onAdd;
+  final Listenable? collectionChanges;
 
   const PrivateContentViewer({
     super.key,
@@ -18,6 +25,8 @@ class PrivateContentViewer extends StatefulWidget {
     required this.items,
     required this.onDelete,
     this.onUpdate,
+    this.onAdd,
+    this.collectionChanges,
   });
 
   @override
@@ -26,7 +35,6 @@ class PrivateContentViewer extends StatefulWidget {
 
 class _PrivateContentViewerState extends State<PrivateContentViewer> {
   bool _isGridView = true;
-  String _searchQuery = '';
   List<String> _filteredItems = [];
   final _notes = NoteRepository();
   final _metadata = FileMetadataRepository();
@@ -39,23 +47,33 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
   void initState() {
     super.initState();
     _filteredItems = widget.items;
+    _isGridView =
+        widget.contentType == 'Photos' || widget.contentType == 'Videos';
     _refreshMetadata();
+    widget.collectionChanges?.addListener(_onCollectionChanged);
   }
 
   @override
   void didUpdateWidget(covariant PrivateContentViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _applyFilter();
+    if (oldWidget.collectionChanges != widget.collectionChanges) {
+      oldWidget.collectionChanges?.removeListener(_onCollectionChanged);
+      widget.collectionChanges?.addListener(_onCollectionChanged);
+    }
+    _filteredItems = widget.items;
     _refreshMetadata();
   }
 
-  void _applyFilter() {
-    _filteredItems = widget.items
-        .where((item) => path
-            .basename(item)
-            .toLowerCase()
-            .contains(_searchQuery.toLowerCase()))
-        .toList();
+  @override
+  void dispose() {
+    widget.collectionChanges?.removeListener(_onCollectionChanged);
+    super.dispose();
+  }
+
+  void _onCollectionChanged() {
+    if (!mounted) return;
+    setState(() => _filteredItems = widget.items);
+    _refreshMetadata();
   }
 
   void _refreshMetadata() {
@@ -89,29 +107,31 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
     }
   }
 
-  void _filterItems(String query) {
-    setState(() {
-      _searchQuery = query;
-      _applyFilter();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
+        centerTitle: false,
         title: Text(
           'Private ${widget.contentType}',
-          style: const TextStyle(color: Colors.white),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(color: AppStyle.text),
         ),
+        bottom: const AppBarDivider(),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: AppStyle.text),
         actions: [
           if (widget.items.isNotEmpty) ...[
             IconButton(
-              icon: Icon(_isGridView ? Icons.list : Icons.grid_view),
+              tooltip: _isGridView ? 'Show list' : 'Show grid',
+              icon: Icon(
+                _isGridView
+                    ? Icons.view_agenda_outlined
+                    : Icons.grid_view_rounded,
+              ),
               onPressed: () {
                 setState(() {
                   _isGridView = !_isGridView;
@@ -120,113 +140,85 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
             ),
             IconButton(
               icon: const Icon(Icons.search),
-              onPressed: _showSearchDialog,
+              tooltip: 'Search private ${widget.contentType.toLowerCase()}',
+              onPressed: _openSearch,
             ),
           ],
         ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (_searchQuery.isNotEmpty)
-            Container(
-              margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.search, color: Colors.white54, size: 20),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'Search: $_searchQuery',
-                      style: const TextStyle(color: Colors.white54),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => _filterItems(''),
-                    child: const Icon(Icons.close,
-                        color: Colors.white54, size: 20),
-                  ),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: CollectionIntro(
+              eyebrow: 'PERSONAL ARCHIVE',
+              title: widget.contentType,
+              detail:
+                  '${widget.items.length} saved items · Hold an item for options',
             ),
+          ),
           Expanded(
             child: _filteredItems.isEmpty
                 ? _buildEmptyState()
                 : _isGridView
-                    ? _buildGridView()
-                    : _buildListView(),
+                ? _buildGridView()
+                : _buildListView(),
           ),
         ],
       ),
+      bottomNavigationBar: widget.onAdd == null
+          ? null
+          : SafeArea(
+              minimum: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+              child: FilledButton.icon(
+                onPressed: widget.onAdd,
+                icon: const Icon(Icons.add_rounded, size: 20),
+                label: Text(switch (widget.contentType) {
+                  'Photos' => 'Add photo',
+                  'Videos' => 'Add video',
+                  'Documents' => 'Add document',
+                  'Notes' => 'New note',
+                  _ => 'Add item',
+                }),
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 18,
+                    horizontal: 16,
+                  ),
+                ),
+              ),
+            ),
     );
   }
 
-  Widget _buildEmptyState() {
-    if (widget.items.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                _getEmptyStateIcon(),
-                size: 60,
-                color: Colors.white.withValues(alpha: 0.5),
-              ),
+  Widget _buildEmptyState() => Center(
+    child: Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(_getEmptyStateIcon(), size: 56, color: AppStyle.muted),
+          const SizedBox(height: 20),
+          Text(
+            'No ${widget.contentType.toLowerCase()} added yet',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: AppStyle.muted,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
-            const SizedBox(height: 20),
-            Text(
-              'No ${widget.contentType.toLowerCase()} added yet',
-              style: const TextStyle(
-                color: Colors.white54,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Tap the + button to add your first ${widget.contentType.toLowerCase().substring(0, widget.contentType.length - 1)}',
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.3),
-                fontSize: 14,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.search_off,
-              size: 60,
-              color: Colors.white54,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'No results found for "$_searchQuery"',
-              style: const TextStyle(
-                color: Colors.white54,
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-  }
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Add an item from your private space to get started.',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: AppStyle.muted, fontSize: 14, height: 1.5),
+          ),
+        ],
+      ),
+    ),
+  );
 
   IconData _getEmptyStateIcon() {
     switch (widget.contentType) {
@@ -245,12 +237,12 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
 
   Widget _buildGridView() {
     return GridView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 1.0,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        mainAxisExtent: 132 + MediaQuery.textScalerOf(context).scale(14) * 4,
       ),
       itemCount: _filteredItems.length,
       itemBuilder: (context, index) {
@@ -261,7 +253,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
 
   Widget _buildListView() {
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
       itemCount: _filteredItems.length,
       itemBuilder: (context, index) {
         return _buildListItem(index);
@@ -271,38 +263,49 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
 
   Widget _buildGridItem(int index) {
     final item = _filteredItems[index];
-    return GestureDetector(
-      onTap: () => _openFullScreenViewer(item),
-      onLongPress: () => _showOptionsBottomSheet(index),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Stack(
-            children: [
-              _buildContentPreview(item),
-              Positioned(
-                top: 8,
-                right: 8,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Icon(
-                    _getContentIcon(),
-                    color: Colors.white,
-                    size: 16,
-                  ),
+    final media =
+        widget.contentType == 'Photos' || widget.contentType == 'Videos';
+    return Material(
+      color: AppStyle.surface,
+      borderRadius: BorderRadius.circular(6),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => _openFullScreenViewer(item),
+        onLongPress: () => _showOptionsBottomSheet(index),
+        child: Column(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: double.infinity,
+                child: _buildContentPreview(item),
+              ),
+            ),
+            if (media)
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _getItemTitle(item),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Icon(
+                      _getContentIcon(),
+                      color: _getContentColor(),
+                      size: 16,
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );
@@ -310,62 +313,83 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
 
   Widget _buildListItem(int index) {
     final item = _filteredItems[index];
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-      ),
-      child: ListTile(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
         onTap: () => _openFullScreenViewer(item),
         onLongPress: () => _showOptionsBottomSheet(index),
-        contentPadding: const EdgeInsets.all(12),
-        leading: Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: _getContentColor().withValues(alpha: 0.2),
-            borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
+          decoration: const BoxDecoration(
+            border: Border(bottom: BorderSide(color: AppStyle.rule)),
           ),
-          child: widget.contentType == 'Photos'
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.file(
-                    File(item),
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Icon(
-                      Icons.broken_image,
-                      color: Colors.white54,
-                    ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 44,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: AppStyle.surface,
+                  borderRadius: BorderRadius.circular(3),
+                  border: Border(
+                    left: BorderSide(color: _getContentColor(), width: 3),
                   ),
-                )
-              : Icon(
-                  _getContentIcon(),
-                  color: _getContentColor(),
-                  size: 24,
                 ),
-        ),
-        title: Text(
-          _getItemTitle(item),
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
+                child: widget.contentType == 'Photos'
+                    ? Image.file(
+                        File(item),
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Icon(
+                          Icons.photo_outlined,
+                          color: _getContentColor(),
+                        ),
+                      )
+                    : Icon(
+                        widget.contentType == 'Documents'
+                            ? _getDocumentIcon(item)
+                            : _getContentIcon(),
+                        color: _getContentColor(),
+                        size: 26,
+                      ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _getItemTitle(item),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        height: 1.3,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: -.3,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _getItemSubtitle(item),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        height: 1.4,
+                        color: AppStyle.muted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Padding(
+                padding: EdgeInsets.only(top: 22),
+                child: Icon(
+                  Icons.north_east_rounded,
+                  color: AppStyle.muted,
+                  size: 18,
+                ),
+              ),
+            ],
           ),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          _getItemSubtitle(item),
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.6),
-            fontSize: 12,
-          ),
-        ),
-        trailing: Icon(
-          Icons.arrow_forward_ios,
-          color: Colors.white.withValues(alpha: 0.3),
-          size: 16,
         ),
       ),
     );
@@ -380,13 +404,9 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
           width: double.infinity,
           height: double.infinity,
           errorBuilder: (context, error, stackTrace) => Container(
-            color: Colors.grey[800],
+            color: AppStyle.surface,
             child: const Center(
-              child: Icon(
-                Icons.broken_image,
-                color: Colors.white54,
-                size: 40,
-              ),
+              child: Icon(Icons.broken_image, color: AppStyle.muted, size: 40),
             ),
           ),
         );
@@ -396,7 +416,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
           child: const Center(
             child: Icon(
               Icons.play_circle_filled,
-              color: Colors.white,
+              color: AppStyle.text,
               size: 50,
             ),
           ),
@@ -407,15 +427,11 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                _getDocumentIcon(filePath),
-                color: Colors.orange,
-                size: 40,
-              ),
+              Icon(_getDocumentIcon(filePath), color: AppStyle.gold, size: 40),
               const SizedBox(height: 8),
               Text(
                 path.basename(filePath),
-                style: const TextStyle(color: Colors.white, fontSize: 12),
+                style: const TextStyle(color: AppStyle.text, fontSize: 12),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -433,17 +449,13 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
-                    Icons.note,
-                    color: Colors.teal,
-                    size: 30,
-                  ),
+                  Icon(Icons.note, color: AppStyle.blue, size: 30),
                   const SizedBox(height: 8),
                   if (noteData != null) ...[
                     Text(
                       noteData['title'] ?? 'Untitled',
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppStyle.text,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -455,7 +467,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
                       child: Text(
                         noteData['content'] ?? '',
                         style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.8),
+                          color: AppStyle.text.withValues(alpha: 0.8),
                           fontSize: 10,
                         ),
                         maxLines: 4,
@@ -465,7 +477,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
                   ] else
                     const Text(
                       'Loading...',
-                      style: TextStyle(color: Colors.white54, fontSize: 10),
+                      style: TextStyle(color: AppStyle.muted, fontSize: 10),
                     ),
                 ],
               ),
@@ -474,13 +486,9 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
         );
       default:
         return Container(
-          color: Colors.grey[800],
+          color: AppStyle.surface,
           child: const Center(
-            child: Icon(
-              Icons.file_present,
-              color: Colors.white54,
-              size: 40,
-            ),
+            child: Icon(Icons.file_present, color: AppStyle.muted, size: 40),
           ),
         );
     }
@@ -504,15 +512,15 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
   Color _getContentColor() {
     switch (widget.contentType) {
       case 'Photos':
-        return Colors.purple;
+        return AppStyle.lilac;
       case 'Videos':
-        return Colors.blue;
+        return AppStyle.blue;
       case 'Documents':
-        return Colors.orange;
+        return AppStyle.gold;
       case 'Notes':
-        return Colors.teal;
+        return AppStyle.blue;
       default:
-        return Colors.grey;
+        return AppStyle.muted;
     }
   }
 
@@ -600,10 +608,8 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => FullScreenViewer(
-            filePath: item,
-            type: widget.contentType,
-          ),
+          builder: (context) =>
+              FullScreenViewer(filePath: item, type: widget.contentType),
         ),
       );
     }
@@ -612,7 +618,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
   void _showOptionsBottomSheet(int index) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.grey[900],
+      backgroundColor: AppStyle.background,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -625,7 +631,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.3),
+                color: AppStyle.text.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -668,17 +674,17 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.1),
+          color: AppStyle.rule.withValues(alpha: .65),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           children: [
-            Icon(icon, color: color ?? Colors.white, size: 24),
+            Icon(icon, color: color ?? AppStyle.text, size: 24),
             const SizedBox(width: 15),
             Text(
               title,
               style: TextStyle(
-                color: color ?? Colors.white,
+                color: color ?? AppStyle.text,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -693,18 +699,23 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: AppStyle.background,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        title: const Text('Delete Item', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Delete Item',
+          style: TextStyle(color: AppStyle.text),
+        ),
         content: Text(
           'Are you sure you want to delete this item permanently? This action cannot be undone.',
-          style: TextStyle(color: Colors.white.withValues(alpha: 0.8)),
+          style: TextStyle(color: AppStyle.text.withValues(alpha: 0.8)),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel',
-                style: TextStyle(color: Colors.white.withValues(alpha: 0.7))),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: AppStyle.text.withValues(alpha: 0.7)),
+            ),
           ),
           TextButton(
             onPressed: () {
@@ -722,53 +733,28 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
     );
   }
 
-  void _showSearchDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        String searchText = _searchQuery;
-        return AlertDialog(
-          backgroundColor: Colors.grey[900],
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          title: const Text('Search', style: TextStyle(color: Colors.white)),
-          content: TextField(
-            autofocus: true,
-            style: const TextStyle(color: Colors.white),
-            onChanged: (value) => searchText = value,
-            decoration: InputDecoration(
-              hintText: 'Search ${widget.contentType.toLowerCase()}...',
-              hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
-              enabledBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Colors.white.withValues(alpha: 0.3)),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.teal),
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-              ),
-            ),
+  void _openSearch() => Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => SearchResultsPage<String>(
+        title: 'Search private ${widget.contentType.toLowerCase()}',
+        hint: 'Find ${widget.contentType.toLowerCase()}',
+        items: List.of(widget.items),
+        searchableText: (item) =>
+            '${_getItemTitle(item)} ${path.basename(item)}',
+        resultBuilder: (_, item, index) => EditorialListRow(
+          number: index + 1,
+          title: _getItemTitle(item),
+          category: widget.contentType,
+          subtitle: _getItemSubtitle(item),
+          accent: _getContentColor(),
+          leading: SizedBox(
+            width: 28,
+            child: Icon(_getContentIcon(), size: 24, color: _getContentColor()),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                _filterItems('');
-                Navigator.pop(context);
-              },
-              child:
-                  const Text('Clear', style: TextStyle(color: Colors.orange)),
-            ),
-            TextButton(
-              onPressed: () {
-                _filterItems(searchText);
-                Navigator.pop(context);
-              },
-              child: const Text('Search', style: TextStyle(color: Colors.teal)),
-            ),
-          ],
-        );
-      },
-    );
-  }
+          onTap: () => _openFullScreenViewer(item),
+        ),
+      ),
+    ),
+  );
 }

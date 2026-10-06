@@ -1,565 +1,414 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:port/features/home/presentation/widgets/home_pressable.dart';
 import 'package:port/features/profile/data/profile_repository.dart';
+import 'package:port/shared/theme/app_style.dart';
 
 class UniqueDrawer extends StatefulWidget {
   final Color themeColor;
-
   const UniqueDrawer({super.key, required this.themeColor});
 
   @override
   State<UniqueDrawer> createState() => _UniqueDrawerState();
 }
 
-class _UniqueDrawerState extends State<UniqueDrawer>
-    with TickerProviderStateMixin {
-  String userName = "Guest User";
-  String userBranch = "Alcademy Student";
-  bool _isLoading = true;
-  ImageProvider? _imageProvider;
+class _UniqueDrawerState extends State<UniqueDrawer> {
+  String _name = 'Guest User';
+  String _branch = 'Alcademy Student';
 
   @override
   void initState() {
     super.initState();
-
-    _loadUserData();
+    _loadProfile();
   }
 
-  Future<void> _loadUserData() async {
-    final savedUserName = await ProfileRepository.getUserName();
-    final savedBranch = await ProfileRepository.getUserBranch();
+  Future<void> _loadProfile() async {
+    final name = await ProfileRepository.getUserName();
+    final branch = await ProfileRepository.getUserBranch();
     if (!mounted) return;
-    userName = savedUserName ?? "Guest User";
-    userBranch = savedBranch ?? "Alcademy Student";
-    _imageProvider = const AssetImage('assets/images/placeholderPerson.png');
+    setState(() {
+      _name = name ?? 'Guest User';
+      _branch = branch ?? 'Alcademy Student';
+    });
+  }
 
-    if (mounted) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
+  void _open(String route) {
+    final router = GoRouter.of(context);
+    Navigator.pop(context);
+    router.push(route);
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<BentoItem> bentoItems = [
-      BentoItem(
-        icon: LineIcons.user,
-        route: '/user',
-        label: 'Profile',
-        subtitle: 'Your name & branch',
-        size: BentoSize.large,
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Colors.blue.withValues(alpha: 0.8),
-            Colors.purple.withValues(alpha: 0.6),
-          ],
-        ),
-      ),
-      BentoItem(
-        icon: LineIcons.bookOpen,
-        route: '/syllabus',
-        label: 'Syllabus',
-        size: BentoSize.medium,
-        gradient: LinearGradient(
-          colors: [
-            Colors.green.withValues(alpha: 0.7),
-            Colors.teal.withValues(alpha: 0.5),
-          ],
-        ),
-      ),
-      BentoItem(
-        icon: LineIcons.calculator,
-        route: '/sgpa',
-        label: 'SGPA',
-        size: BentoSize.medium,
-        gradient: LinearGradient(
-          colors: [
-            Colors.orange.withValues(alpha: 0.7),
-            Colors.deepOrange.withValues(alpha: 0.5),
-          ],
-        ),
-      ),
-      BentoItem(
-        icon: LineIcons.calendar,
-        route: '/calendar',
-        label: 'Calendar',
-        subtitle: 'View schedules & events',
-        size: BentoSize.large,
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            Colors.indigo.withValues(alpha: 0.8),
-            Colors.blue.withValues(alpha: 0.6),
-          ],
-        ),
-      ),
-      BentoItem(
-        icon: LineIcons.hotel,
-        route: '/amenities',
-        label: 'Amenities',
-        size: BentoSize.small,
-        gradient: LinearGradient(
-          colors: [
-            Colors.cyan.withValues(alpha: 0.6),
-            Colors.blue.withValues(alpha: 0.4),
-          ],
-        ),
-      ),
-      BentoItem(
-        icon: LineIcons.calendarWithDayFocus,
-        route: '/holiday',
-        label: 'Holidays',
-        size: BentoSize.small,
-        gradient: LinearGradient(
-          colors: [
-            Colors.pink.withValues(alpha: 0.6),
-            Colors.purple.withValues(alpha: 0.4),
-          ],
-        ),
-      ),
-      BentoItem(
-        icon: LineIcons.windowRestore,
-        route: '/result',
-        label: 'Results',
-        size: BentoSize.small,
-        gradient: LinearGradient(
-          colors: [
-            Colors.amber.withValues(alpha: 0.6),
-            Colors.orange.withValues(alpha: 0.4),
-          ],
-        ),
-      ),
-      BentoItem(
-        icon: LineIcons.info,
-        route: '/about',
-        label: 'About',
-        size: BentoSize.small,
-        gradient: LinearGradient(
-          colors: [
-            Colors.grey.withValues(alpha: 0.6),
-            Colors.blueGrey.withValues(alpha: 0.4),
-          ],
-        ),
-      ),
-      BentoItem(
-        icon: LineIcons.bell,
-        route: '/notifications',
-        label: 'Notifications',
-        subtitle: 'View recent alerts & updates',
-        size: BentoSize.large,
-        gradient: LinearGradient(
-          colors: [
-            Colors.orangeAccent.withValues(alpha: 0.6),
-            Colors.pinkAccent.withValues(alpha: 0.4),
-          ],
-        ),
-      ),
-    ];
-
+    final scale = MediaQuery.textScalerOf(context);
+    final compactHeight = 78 + scale.scale(18) * 2.4;
     return Drawer(
-      backgroundColor: const Color(0xFF0A0A0A),
-      child: Column(
-        children: [
-          _buildModernHeader(),
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: _buildBentoGrid(bentoItems),
+      width: math.min(MediaQuery.sizeOf(context).width * .92, 390),
+      backgroundColor: AppStyle.background,
+      shape: const RoundedRectangleBorder(),
+      child: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Expanded(
+                          child: Text(
+                            'ALCADEMY / MENU',
+                            style: AppStyle.eyebrow,
+                          ),
+                        ),
+                        IconButton(
+                          tooltip: 'Close navigation menu',
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.close_rounded, size: 21),
+                          style: IconButton.styleFrom(
+                            side: const BorderSide(color: AppStyle.rule),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Explore.',
+                      style: TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: -2.5,
+                        height: 1.05,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    _profile(),
+                    const SizedBox(height: 24),
+                    Row(
+                      children: [
+                        const Text('01 / STUDY', style: AppStyle.eyebrow),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Container(height: 1, color: AppStyle.rule),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: _tile(
+                            label: 'Syllabus',
+                            route: '/syllabus',
+                            icon: Icons.auto_stories_outlined,
+                            height: compactHeight * 2 + 12,
+                            fill: AppStyle.paper,
+                            ink: AppStyle.background,
+                            accent: AppStyle.background,
+                            order: 1,
+                            feature: true,
+                            caption: 'THE STUDY SHELF',
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          flex: 5,
+                          child: Column(
+                            children: [
+                              _tile(
+                                label: 'SGPA',
+                                route: '/sgpa',
+                                icon: Icons.calculate_outlined,
+                                height: compactHeight,
+                                accent: AppStyle.accent,
+                                order: 2,
+                              ),
+                              const SizedBox(height: 12),
+                              _tile(
+                                label: 'Results',
+                                route: '/result',
+                                icon: Icons.assessment_outlined,
+                                height: compactHeight,
+                                accent: AppStyle.blue,
+                                order: 3,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      children: [
+                        const Text('02 / CAMPUS', style: AppStyle.eyebrow),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Container(height: 1, color: AppStyle.rule),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    _tile(
+                      label: 'Calendar',
+                      route: '/calendar',
+                      icon: Icons.calendar_month_outlined,
+                      height: 74 + scale.scale(24) * 2.4,
+                      accent: AppStyle.gold,
+                      order: 4,
+                      wide: true,
+                      caption: 'SCHEDULES & EVENTS',
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _tile(
+                            label: 'Amenities',
+                            route: '/amenities',
+                            icon: Icons.location_on_outlined,
+                            height: compactHeight,
+                            accent: AppStyle.blue,
+                            order: 5,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _tile(
+                            label: 'Holidays',
+                            route: '/holiday',
+                            icon: Icons.wb_sunny_outlined,
+                            height: compactHeight,
+                            accent: AppStyle.gold,
+                            order: 5,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    _tile(
+                      label: 'Notifications',
+                      route: '/notifications',
+                      icon: Icons.notifications_none_rounded,
+                      height: 74 + scale.scale(24) * 2.4,
+                      accent: AppStyle.lilac,
+                      order: 6,
+                      wide: true,
+                      caption: 'CAMPUS UPDATES',
+                    ),
+                    const SizedBox(height: 22),
+                    HomePressable(
+                      color: Colors.transparent,
+                      onTap: () => _open('/about'),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.blur_on_rounded,
+                              color: AppStyle.muted,
+                              size: 24,
+                            ),
+                            const SizedBox(width: 12),
+                            const Expanded(
+                              child: Text(
+                                'About',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            const Icon(
+                              Icons.arrow_forward_rounded,
+                              color: AppStyle.muted,
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const Divider(color: AppStyle.rule),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Made by Pritam Acharya',
+                      style: TextStyle(color: AppStyle.muted, fontSize: 11),
+                    ),
+                  ],
                 ),
-                SliverToBoxAdapter(
-                  child: Divider(
-                    color: Colors.white12,
-                    height: 0.5,
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: _buildFooter(),
-                ),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildModernHeader() {
-    return Container(
-      width: double.infinity,
-      height: 205,
-      decoration: BoxDecoration(
-        image: const DecorationImage(
-          image: AssetImage('assets/images/collegeBack.png'),
-          fit: BoxFit.cover,
-        ),
+  Widget _profile() => HomePressable(
+    color: AppStyle.surface.withValues(alpha: .4),
+    side: const BorderSide(color: AppStyle.rule),
+    borderRadius: BorderRadius.circular(8),
+    onTap: () => _open('/user'),
+    child: Padding(
+      padding: const EdgeInsets.all(14),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 52,
+            decoration: BoxDecoration(
+              color: AppStyle.surface,
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: AppStyle.rule),
+            ),
+            child: const Icon(
+              Icons.person_outline_rounded,
+              color: AppStyle.paper,
+              size: 28,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _branch,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 11, color: AppStyle.muted),
+                ),
+                const SizedBox(height: 5),
+                const Text(
+                  'Profile',
+                  style: TextStyle(fontSize: 11, color: AppStyle.lilac),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          const Icon(Icons.north_east_rounded, color: AppStyle.muted, size: 19),
+        ],
       ),
+    ),
+  );
+
+  Widget _tile({
+    required String label,
+    required String route,
+    required IconData icon,
+    required double height,
+    required Color accent,
+    required int order,
+    Color fill = AppStyle.surface,
+    Color ink = AppStyle.text,
+    bool feature = false,
+    bool wide = false,
+    String? caption,
+  }) => SizedBox(
+    height: height,
+    child: HomePressable(
+      entranceOrder: order,
+      color: fill,
+      borderRadius: BorderRadius.circular(8),
+      onTap: () => _open(route),
       child: Stack(
         children: [
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withValues(alpha: 0.3),
-                    Colors.black.withValues(alpha: 0.6),
-                  ],
-                ),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
+          if (feature)
+            Positioned(
+              top: 54,
+              left: -20,
+              right: -20,
+              child: ExcludeSemantics(
+                child: Transform.rotate(
+                  angle: -.18,
+                  child: Icon(
+                    icon,
+                    size: 136,
+                    color: ink.withValues(alpha: .13),
+                  ),
                 ),
               ),
             ),
-          ),
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
+          if (wide)
+            Positioned(
+              right: -14,
+              top: -18,
+              child: ExcludeSemantics(
+                child: Transform.rotate(
+                  angle: .16,
+                  child: Icon(
+                    icon,
+                    size: 112,
+                    color: accent.withValues(alpha: .07),
+                  ),
                 ),
               ),
-              child: CustomPaint(
-                painter: GeometricPatternPainter(),
-              ),
             ),
-          ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
+            padding: const EdgeInsets.all(16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.3),
-                          width: 3,
-                        ),
-                      ),
-                      child: _isLoading
-                          ? const CircleAvatar(
-                              radius: 32,
-                              backgroundColor: Colors.white12,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : CircleAvatar(
-                              radius: 32,
-                              backgroundImage: _imageProvider,
-                            ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            userName,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: -0.5,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            userBranch,
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.8),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
+                    Icon(icon, color: accent, size: 26),
+                    const Spacer(),
+                    Icon(
+                      Icons.north_east_rounded,
+                      color: ink.withValues(alpha: .5),
+                      size: 16,
                     ),
                   ],
                 ),
-                const Spacer(),
-                Container(
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.2),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.verified_user,
-                        color: Colors.white.withValues(alpha: 0.9),
-                        size: 16,
-                      ),
-                      const SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (caption != null) ...[
                       Text(
-                        'Alcademy Student Portal',
+                        caption,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.9),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
+                          color: ink.withValues(alpha: .6),
+                          fontSize: 9,
+                          letterSpacing: 1.2,
+                          height: 1.3,
                         ),
                       ),
+                      const SizedBox(height: 8),
                     ],
-                  ),
+                    Text(
+                      label,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: ink,
+                        fontSize: feature || wide ? 24 : 18,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: -.6,
+                        height: 1.15,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Divider(
-              color: Colors.white12,
-              height: 0.5,
-            ),
-          )
         ],
       ),
-    );
-  }
-
-  Widget _buildBentoGrid(List<BentoItem> items) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-      child: Column(
-        children: [
-          _buildBentoRow([items[0]]),
-          const SizedBox(height: 12),
-          _buildBentoRow([items[1], items[2]]),
-          const SizedBox(height: 12),
-          _buildBentoRow([items[3]]),
-          const SizedBox(height: 12),
-          _buildBentoRow([items[4], items[5]]),
-          const SizedBox(height: 12),
-          _buildBentoRow([items[6], items[7]]),
-          const SizedBox(height: 12),
-          _buildBentoRow([items[8]]),
-          const SizedBox(height: 24),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBentoRow(List<BentoItem> items) {
-    return Row(
-      children: items.map((item) {
-        final isLarge = item.size == BentoSize.large;
-        return Expanded(
-          flex: isLarge ? 2 : 1,
-          child: Container(
-            margin: EdgeInsets.only(
-              right: items.indexOf(item) == items.length - 1 ? 0 : 12,
-            ),
-            child: _buildBentoCard(item),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildBentoCard(BentoItem item) {
-    final isLarge = item.size == BentoSize.large;
-    final height = isLarge ? 125.0 : 100.0;
-
-    return GestureDetector(
-      onTap: () {
-        context.push(item.route);
-        Navigator.pop(context);
-      },
-      child: Container(
-        height: height,
-        decoration: BoxDecoration(
-          gradient: item.gradient,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.1),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: (item.gradient.colors.last).withValues(alpha: 0.2),
-              blurRadius: 10,
-              spreadRadius: 1,
-            ),
-          ],
-        ),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: CustomPaint(
-                  painter: CardPatternPainter(),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.3),
-                      ),
-                    ),
-                    child: Icon(
-                      item.icon,
-                      color: Colors.white,
-                      size: isLarge ? 24 : 20,
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    item.label,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: isLarge ? 18 : 16,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.3,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  if (isLarge && item.subtitle != null) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      item.subtitle!,
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.8),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            Positioned(
-              top: 12,
-              right: 12,
-              child: Icon(
-                Icons.arrow_outward,
-                color: Colors.white.withValues(alpha: 0.6),
-                size: 16,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFooter() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: const Text(
-        'Alcademy v2.0 - by Pritam Acharya',
-        style: TextStyle(
-          color: Colors.white24,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          letterSpacing: 0.5,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-}
-
-enum BentoSize { small, medium, large }
-
-class BentoItem {
-  final IconData icon;
-  final String route;
-  final String label;
-  final String? subtitle;
-  final BentoSize size;
-  final Gradient gradient;
-
-  BentoItem({
-    required this.icon,
-    required this.route,
-    required this.label,
-    this.subtitle,
-    required this.size,
-    required this.gradient,
-  });
-}
-
-class GeometricPatternPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.1)
-      ..strokeWidth = 1.5
-      ..style = PaintingStyle.stroke;
-
-    for (int i = 0; i < 5; i++) {
-      final rect = Rect.fromLTWH(
-        size.width * 0.7 + i * 10,
-        size.height * 0.2 + i * 8,
-        30,
-        30,
-      );
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(rect, const Radius.circular(6)),
-        paint,
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class CardPatternPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.05)
-      ..strokeWidth = 1
-      ..style = PaintingStyle.stroke;
-
-    final path = Path();
-    path.moveTo(size.width * 0.7, 0);
-    path.lineTo(size.width, size.height * 0.3);
-    path.lineTo(size.width, 0);
-    path.close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+    ),
+  );
 }

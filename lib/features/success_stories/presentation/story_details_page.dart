@@ -1,6 +1,6 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:port/shared/widgets/markdown_viewer.dart';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,53 +9,36 @@ class StoryDetailPage extends StatelessWidget {
   final String name;
   final String body;
 
-  const StoryDetailPage({
-    super.key,
-    required this.name,
-    required this.body,
-  });
-
-  Color getRandomVibrantColor() {
-    final hue = Random().nextInt(360);
-    final saturation = 0.8 + Random().nextDouble() * 0.2;
-    final lightness = 0.45 + Random().nextDouble() * 0.15;
-
-    return HSLColor.fromAHSL(1, hue.toDouble(), saturation, lightness)
-        .toColor();
-  }
-
-  List<Color> generateColorShades(Color color) {
-    final hslColor = HSLColor.fromColor(color);
-    return [
-      hslColor.withLightness(0.85).toColor(),
-      hslColor.withLightness(0.75).toColor(),
-      hslColor.withLightness(0.65).toColor(),
-      hslColor.withLightness(0.55).toColor(),
-      hslColor.withLightness(0.45).toColor(),
-      hslColor.withLightness(0.35).toColor(),
-    ];
-  }
+  const StoryDetailPage({super.key, required this.name, required this.body});
 
   @override
   Widget build(BuildContext context) {
-    final baseColor = getRandomVibrantColor();
-    final colorShades = generateColorShades(baseColor);
+    const colorShades = [
+      AppStyle.blue,
+      AppStyle.text,
+      AppStyle.paper,
+      AppStyle.lilac,
+      AppStyle.accent,
+      AppStyle.muted,
+    ];
 
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
         title: Text(
           name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            fontSize: 24,
-            color: Colors.white,
+            fontSize: 22,
+            color: AppStyle.text,
             fontWeight: FontWeight.bold,
             fontFamily: 'ProductSans',
           ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF1A1D1E),
-        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: false,
+        backgroundColor: AppStyle.background,
+        iconTheme: const IconThemeData(color: AppStyle.text),
         bottom: const AppBarDivider(),
       ),
       body: SingleChildScrollView(
@@ -65,7 +48,7 @@ class StoryDetailPage extends StatelessWidget {
           markdownData: body,
           styleSheet: MarkdownStyleSheet(
             p: const TextStyle(
-              color: Color(0xFFF5F5F5),
+              color: AppStyle.text,
               fontSize: 16,
               fontFamily: 'ProductSans',
             ),
@@ -112,12 +95,12 @@ class StoryDetailPage extends StatelessWidget {
               fontFamily: 'ProductSans',
             ),
             h6Padding: const EdgeInsets.symmetric(vertical: 4),
-            listBullet: TextStyle(
-              color: colorShades[0],
-              fontSize: 16,
+            listBullet: TextStyle(color: colorShades[0], fontSize: 16),
+            listBulletPadding: const EdgeInsets.only(
+              left: 12,
+              top: 4,
+              bottom: 4,
             ),
-            listBulletPadding:
-                const EdgeInsets.only(left: 12, top: 4, bottom: 4),
             a: TextStyle(
               color: colorShades[0],
               decoration: TextDecoration.underline,
@@ -128,31 +111,21 @@ class StoryDetailPage extends StatelessWidget {
               fontStyle: FontStyle.italic,
             ),
             strong: const TextStyle(
-              color: Color(0xFFF5F5F5),
+              color: AppStyle.text,
               fontWeight: FontWeight.bold,
             ),
             blockquotePadding: const EdgeInsets.all(12),
             blockquoteDecoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.05),
-              border: Border(
-                left: BorderSide(
-                  color: colorShades[3],
-                  width: 4,
-                ),
-              ),
+              color: AppStyle.surface,
+              border: Border(left: BorderSide(color: colorShades[3], width: 4)),
             ),
             codeblockPadding: const EdgeInsets.all(12),
             codeblockDecoration: BoxDecoration(
               color: Colors.black.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(4),
-              border: Border.all(
-                color: colorShades[4],
-                width: 1,
-              ),
+              border: Border.all(color: colorShades[4], width: 1),
             ),
-            horizontalRuleDecoration: BoxDecoration(
-              color: colorShades[5],
-            ),
+            horizontalRuleDecoration: BoxDecoration(color: colorShades[5]),
             tableHead: TextStyle(
               color: colorShades[1],
               fontWeight: FontWeight.bold,
@@ -160,13 +133,13 @@ class StoryDetailPage extends StatelessWidget {
               fontFamily: 'ProductSans',
             ),
             tableBody: const TextStyle(
-              color: Color(0xFFF5F5F5),
+              color: AppStyle.text,
               fontSize: 14,
               fontFamily: 'ProductSans',
             ),
             tablePadding: const EdgeInsets.symmetric(vertical: 6),
             tableBorder: TableBorder.all(
-              color: Colors.white.withValues(alpha: 0.1),
+              color: AppStyle.rule.withValues(alpha: .65),
               width: 1,
             ),
             tableCellsPadding: const EdgeInsets.all(8),

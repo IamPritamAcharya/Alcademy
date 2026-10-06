@@ -1,6 +1,7 @@
+import 'package:port/app/theme.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'support/load_fonts.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:port/features/onboarding/presentation/onboarding_page.dart';
@@ -10,12 +11,7 @@ import 'package:port/features/expenses/presentation/expense_tracker_page.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  setUpAll(() async {
-    final loader = FontLoader('ProductSans')
-      ..addFont(rootBundle.load('assets/fonts/Product Sans Regular.ttf'))
-      ..addFont(rootBundle.load('assets/fonts/Product Sans Bold.ttf'));
-    await loader.load();
-  });
+  setUpAll(loadAppFonts);
   final screens = <String, Widget Function()>{
     'onboarding': () => const OnboardingScreen(),
     'profile': () => const UserProfilePage(),
@@ -23,8 +19,7 @@ void main() {
     'expenses': () => const ExpenseTrackerPage(),
   };
   for (final screen in screens.entries) {
-    testWidgets('${screen.key} matches the pre-refactor screen',
-        (tester) async {
+    testWidgets('${screen.key} matches its approved screen', (tester) async {
       tester.view.physicalSize = const Size(430, 932);
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
@@ -40,15 +35,21 @@ void main() {
         'expenses': '[]',
         'budget': 1000.0,
       });
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(fontFamily: 'ProductSans'),
-        home: RepaintBoundary(
-            key: const ValueKey('screen'), child: screen.value()),
-      ));
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: buildAppTheme(),
+          home: RepaintBoundary(
+            key: const ValueKey('screen'),
+            child: screen.value(),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
-      await expectLater(find.byKey(const ValueKey('screen')),
-          matchesGoldenFile('goldens/${screen.key}.png'));
+      await expectLater(
+        find.byKey(const ValueKey('screen')),
+        matchesGoldenFile('goldens/${screen.key}.png'),
+      );
     });
   }
 }

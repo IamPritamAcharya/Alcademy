@@ -1,13 +1,11 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class BarChartSection extends StatelessWidget {
   final List<Map<String, dynamic>> expenses;
 
-  const BarChartSection({
-    super.key,
-    required this.expenses,
-  });
+  const BarChartSection({super.key, required this.expenses});
 
   @override
   Widget build(BuildContext context) {
@@ -15,24 +13,24 @@ class BarChartSection extends StatelessWidget {
 
     final last7Days = List.generate(7, (index) {
       final day = now.subtract(Duration(days: index));
-      final dailyExpenses = expenses.where((e) {
-        final date = DateTime.tryParse(e['date'] ?? '');
-        return date != null &&
-            date.year == day.year &&
-            date.month == day.month &&
-            date.day == day.day;
-      }).fold(0.0, (sum, e) => sum + (e['value'] as double? ?? 0.0));
+      final dailyExpenses = expenses
+          .where((e) {
+            final date = DateTime.tryParse(e['date'] ?? '');
+            return date != null &&
+                date.year == day.year &&
+                date.month == day.month &&
+                date.day == day.day;
+          })
+          .fold(0.0, (sum, e) => sum + (e['value'] as double? ?? 0.0));
 
-      return {
-        'day': day,
-        'value': dailyExpenses,
-      };
+      return {'day': day, 'value': dailyExpenses};
     }).reversed.toList();
 
-    final maxY = (last7Days.isNotEmpty
+    final maxY =
+        (last7Days.isNotEmpty
             ? last7Days
-                .map((data) => data['value'] as double)
-                .reduce((a, b) => a > b ? a : b)
+                  .map((data) => data['value'] as double)
+                  .reduce((a, b) => a > b ? a : b)
             : 0.0) +
         50;
 
@@ -40,7 +38,7 @@ class BarChartSection extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 31, 34, 35),
+          color: AppStyle.surface,
           borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.all(16.0),
@@ -56,7 +54,7 @@ class BarChartSection extends StatelessWidget {
                   barRods: [
                     BarChartRodData(
                       toY: data['value'] as double,
-                      color: Colors.white,
+                      color: AppStyle.text,
                       width: 16,
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -68,10 +66,12 @@ class BarChartSection extends StatelessWidget {
                 leftTitles: AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
-                topTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                rightTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                topTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                rightTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
@@ -86,7 +86,7 @@ class BarChartSection extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: AppStyle.text,
                             ),
                           ),
                         );
@@ -96,9 +96,7 @@ class BarChartSection extends StatelessWidget {
                   ),
                 ),
               ),
-              gridData: FlGridData(
-                show: false,
-              ),
+              gridData: FlGridData(show: false),
             ),
           ),
         ),

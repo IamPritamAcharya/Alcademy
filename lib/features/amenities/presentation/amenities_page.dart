@@ -1,202 +1,272 @@
-import 'package:port/shared/widgets/app_bar_divider.dart';
+import 'dart:convert';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:port/shared/theme/app_style.dart';
+import 'package:port/shared/widgets/app_bar_divider.dart';
+import 'package:port/shared/widgets/collection_intro.dart';
 import 'package:port/features/amenities/presentation/amenities_list.dart';
 import 'package:port/features/amenities/presentation/pagination_controls.dart';
-import 'package:port/features/amenities/presentation/search_bar.dart';
+import 'package:port/shared/widgets/search_results_page.dart';
 import 'package:port/features/amenities/presentation/tag_filter_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class AmenitiesPage extends StatefulWidget {
-  const AmenitiesPage({super.key});
-
+  final http.Client? client;
+  const AmenitiesPage({super.key, this.client});
   @override
   State<AmenitiesPage> createState() => _AmenitiesPageState();
 }
 
 class _AmenitiesPageState extends State<AmenitiesPage> {
-  late Future<void> _dataFuture;
-  List<dynamic> _allAmenities = [];
-  List<dynamic> _filteredAmenities = [];
-  List<String> _tags = [];
-  int _currentPage = 1;
-  final int _itemsPerPage = 10;
-  String _searchQuery = '';
-  String _selectedTag = '';
-  bool _isLoading = true;
+  late final _client = widget.client ?? http.Client();
+  final _scroll = ScrollController();
+  List<Map<String, dynamic>> _all = [];
+  int _page = 1;
+  static const _perPage = 10;
+  String _tag = '';
+  bool _loading = true;
+  String? _error;
+
+  List<Map<String, dynamic>> get _filtered => _all.where((item) {
+    return _tag.isEmpty || item['tag'] == _tag;
+  }).toList();
 
   @override
   void initState() {
     super.initState();
-    _dataFuture = _initializeData();
+    _load();
   }
 
-  Future<void> _initializeData() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? cachedData = prefs.getString('amenities_data');
-
-      if (cachedData != null) {
-        _parseAmenities(json.decode(cachedData));
-      } else {
-        await _fetchAndCacheAmenities();
-      }
-
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-      debugPrint('Initialization Error: $e');
-    }
+  @override
+  void dispose() {
+    _scroll.dispose();
+    if (widget.client == null) _client.close();
+    super.dispose();
   }
 
-  Future<void> _fetchAndCacheAmenities() async {
-    final url =
-        'https://raw.githubusercontent.com/Academia-IGIT/DATA_hub/main/amenities.json';
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('amenities_data', json.encode(data));
-        _parseAmenities(data);
-      } else {
-        debugPrint('Error: Failed to load data');
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      debugPrint('Fetch Error: $e');
-      throw Exception('Error fetching data: $e');
-    }
-  }
-
-  void _parseAmenities(dynamic data) {
-    try {
-      final amenities = (data as List).map((item) {
-        return {
-          'name': item['name'] ?? 'Unknown',
-          'tag': item['tag'] ?? 'Unknown',
-          'images': (item['images'] as List<dynamic>? ?? []).cast<String>(),
-          'description': item['description'] ?? '',
+  List<Map<String, dynamic>> _parse(String text) =>
+      (jsonDecode(text) as List).map((raw) {
+        final item = raw as Map<String, dynamic>;
+        return <String, dynamic>{
+          'name': item['name'] as String? ?? 'Unnamed amenity',
+          'tag': item['tag'] as String? ?? 'Campus',
+          'images': (item['images'] as List? ?? [])
+              .whereType<String>()
+              .toList(),
+          'description': item['description'] as String? ?? '',
         };
       }).toList();
 
+  Future<void> _load({bool refresh = false}) async {
+    if (mounted) {
       setState(() {
-        _allAmenities = amenities;
-        _filteredAmenities = List.from(amenities);
-        _tags = amenities.map((e) => e['tag'] as String).toSet().toList();
+        _loading = _all.isEmpty;
+        _error = null;
       });
-    } catch (e) {
-      debugPrint('Parsing Error: $e');
-      throw Exception('Error parsing data: $e');
+    }
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      List<Map<String, dynamic>>? items;
+      final cached = prefs.getString('amenities_data');
+      if (!refresh && cached != null) {
+        try {
+          items = _parse(cached);
+        } catch (_) {
+          /* Retry a damaged cache from the source. */
+        }
+      }
+      if (items == null) {
+        final response = await _client
+            .get(
+              Uri.parse(
+                'https://raw.githubusercontent.com/Academia-IGIT/DATA_hub/main/amenities.json',
+              ),
+            )
+            .timeout(const Duration(seconds: 20));
+        if (response.statusCode != 200) {
+          throw Exception('Amenities unavailable');
+        }
+        items = _parse(response.body);
+        await prefs.setString('amenities_data', response.body);
+      }
+      if (!mounted) return;
+      setState(() {
+        _all = items!;
+        if (!_all.any((item) => item['tag'] == _tag)) _tag = '';
+        _page = _page.clamp(
+          1,
+          math.max(1, (_filtered.length / _perPage).ceil()),
+        );
+        _loading = false;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        _error = 'The campus guide couldn’t update. Please try again.';
+      });
     }
   }
 
-  void _applyFilters() {
+  void _clearFilters() {
     setState(() {
-      _filteredAmenities = _allAmenities
-          .where((item) =>
-              (_selectedTag.isEmpty ||
-                  item['tag']
-                      .toLowerCase()
-                      .contains(_selectedTag.toLowerCase())) &&
-              (item['name']
-                      .toLowerCase()
-                      .contains(_searchQuery.toLowerCase()) ||
-                  item['tag']
-                      .toLowerCase()
-                      .contains(_searchQuery.toLowerCase())))
-          .toList();
-      _currentPage = 1;
+      _tag = '';
+      _page = 1;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final filtered = _filtered;
+    final pages = math.max(1, (filtered.length / _perPage).ceil());
+    final start = (_page - 1) * _perPage;
+    final items = filtered.skip(start).take(_perPage).toList();
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1D1E),
       appBar: AppBar(
-        title: const Text(
-          'Amenities',
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'ProductSans',
-            letterSpacing: 2,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF1A1D1E),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Amenities'),
         bottom: const AppBarDivider(),
       ),
-      body: FutureBuilder<void>(
-        future: _dataFuture,
-        builder: (context, snapshot) {
-          if (_isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (_filteredAmenities.isEmpty) {
-            return const Center(
-              child: Text(
-                'No amenities found.',
-                style: TextStyle(color: Colors.white),
+      body: RefreshIndicator(
+        onRefresh: () => _load(refresh: true),
+        child: ListView(
+          controller: _scroll,
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.fromLTRB(
+            20,
+            0,
+            20,
+            12 + MediaQuery.paddingOf(context).bottom,
+          ),
+          children: [
+            const CollectionIntro(
+              eyebrow: 'THE CAMPUS GUIDE',
+              title: 'Around campus.',
+              detail:
+                  'Spaces, facilities, and the places that make up your campus.',
+            ),
+            SearchEntryPoint(
+              hint: 'Find a place or facility',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SearchResultsPage<Map<String, dynamic>>(
+                    title: 'Search amenities',
+                    hint: 'Find a place or facility',
+                    items: List.of(_all),
+                    searchableText: (item) => '${item['name']} ${item['tag']}',
+                    resultBuilder: (_, item, index) => AmenityEntry(
+                      item: item,
+                      index: index,
+                      heroPrefix: 'amenity-search',
+                    ),
+                  ),
+                ),
               ),
-            );
-          } else {
-            final totalPages =
-                (_filteredAmenities.length / _itemsPerPage).ceil();
-            final paginatedAmenities = _filteredAmenities
-                .skip((_currentPage - 1) * _itemsPerPage)
-                .take(_itemsPerPage)
-                .toList();
-
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  SearchBar1(
-                    onSearch: (query) {
-                      setState(() {
-                        _searchQuery = query;
-                        _applyFilters();
-                      });
-                    },
+            ),
+            const SizedBox(height: 12),
+            TagFilterBar(
+              tags: _all.map((item) => item['tag'] as String).toSet().toList(),
+              selectedTag: _tag,
+              onTagSelected: (tag) => setState(() {
+                _tag = tag;
+                _page = 1;
+              }),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Text(
+                  _loading
+                      ? 'LOADING PLACES'
+                      : '${filtered.length} ${filtered.length == 1 ? 'PLACE' : 'PLACES'}',
+                  style: AppStyle.eyebrow,
+                ),
+                const SizedBox(width: 12),
+                Expanded(child: Container(height: 1, color: AppStyle.rule)),
+              ],
+            ),
+            const SizedBox(height: 16),
+            if (_loading)
+              const Padding(
+                padding: EdgeInsets.all(40),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            else ...[
+              if (_error != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _error!,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: AppStyle.muted,
+                          height: 1.5,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => _load(refresh: true),
+                        child: const Text('Try again'),
+                      ),
+                    ],
                   ),
-                  TagFilterBar(
-                    tags: _tags,
-                    selectedTag: _selectedTag,
-                    onTagSelected: (tag) {
-                      setState(() {
-                        _selectedTag = tag;
-                        _applyFilters();
-                      });
-                    },
+                ),
+              if (items.isNotEmpty)
+                AmenitiesList(items: items, startIndex: start)
+              else if (_error == null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _tag.isNotEmpty
+                            ? 'No places in this category.'
+                            : 'No amenities listed yet.',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          height: 1.3,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Try another category or pull down to update the guide.',
+                        style: TextStyle(
+                          color: AppStyle.muted,
+                          fontSize: 13,
+                          height: 1.5,
+                        ),
+                      ),
+                      if (_tag.isNotEmpty)
+                        TextButton(
+                          onPressed: _clearFilters,
+                          child: const Text('Clear filters'),
+                        ),
+                    ],
                   ),
-                  AmenitiesList(items: paginatedAmenities),
-                  PaginationControls(
-                    currentPage: _currentPage,
-                    totalPages: totalPages,
-                    onPageChanged: (page) {
-                      setState(() {
-                        _currentPage = page;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            );
-          }
-        },
+                ),
+              if (pages > 1)
+                PaginationControls(
+                  currentPage: _page,
+                  totalPages: pages,
+                  onPageChanged: (page) {
+                    setState(() => _page = page);
+                    _scroll.animateTo(
+                      0,
+                      duration: MediaQuery.disableAnimationsOf(context)
+                          ? Duration.zero
+                          : const Duration(milliseconds: 280),
+                      curve: Curves.easeOutCubic,
+                    );
+                  },
+                ),
+            ],
+          ],
+        ),
       ),
     );
   }

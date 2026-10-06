@@ -9,7 +9,6 @@ A Flutter app for academic resources, college notices, and student utilities.
 - SGPA calculator and expense tracker.
 - Local profile with a name and branch stored on the device.
 - Private files and notes protected with device authentication.
-- AI assistant with a user-provided Gemini API key.
 - Firebase push notifications and notification history.
 
 The app uses Firebase for notifications and GitHub for content and settings.
@@ -45,13 +44,14 @@ flutter run -d <device-id>
 
 Use the phone's ID from `flutter devices`. Android Firebase configuration is
 included in `android/app/google-services.json` and `lib/firebase_options.dart`.
-Online content and notifications require an internet connection. Set your Gemini
-API key through the profile's API Key page to use the AI assistant.
+Online content and notifications require an internet connection.
 
 ## Project structure
 
 `lib/main.dart` starts the app. `lib/app/` owns bootstrap, routing, and the theme.
 `lib/core/` contains shared configuration, networking, and cache helpers.
+`lib/shared/theme/app_style.dart` owns the app palette; `lib/app/theme.dart`
+styles Material controls with the same always-dark colors.
 `lib/features/` groups each feature's screens (`presentation`), repositories
 (`data`), and models. Reusable UI lives in `lib/shared/widgets/`.
 Images, fonts, and bundled syllabus data live under `assets/`. JSON examples used
@@ -70,9 +70,8 @@ flutter build apk --debug
 ```
 
 Tests cover cached notes, document expiry, blog refresh, local expenses, notice
-parsing, chat requests, and private-note metadata preservation. Screenshot tests
-compare onboarding, profile, notes selection, and expenses with the pre-refactor
-checkpoint `3f94401`, using bundled fonts at 430 × 932 pixels. Run them with the
-same Flutter SDK used to generate the screenshots; review visual differences
-before updating golden files. Device rendering and native integrations still need
+parsing, and private-note metadata preservation. Screenshot tests cover onboarding,
+profile, notes selection, expenses, and notices using the neutral dark theme and bundled
+fonts at 430 × 932 pixels. Run them with the same Flutter SDK used to generate the
+screenshots; review visual differences before updating golden files. Device rendering and native integrations still need
 verification on the phone.

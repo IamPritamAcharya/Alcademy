@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'widgets/animated_background.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -43,10 +44,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             onPageChanged: _onPageChanged,
             children: [
               WelcomePage(
-                  onNext: () => _pageController.nextPage(
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.easeInOut,
-                      )),
+                onNext: () => _pageController.nextPage(
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                ),
+              ),
               OnboardingPage1(
                 onNext: () => _pageController.nextPage(
                   duration: Duration(milliseconds: 500),
@@ -72,8 +74,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     height: 12,
                     width: _currentPage == index ? 24 : 12,
                     decoration: BoxDecoration(
-                      color:
-                          _currentPage == index ? Colors.white : Colors.white70,
+                      color: _currentPage == index
+                          ? AppStyle.accent
+                          : AppStyle.rule,
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),

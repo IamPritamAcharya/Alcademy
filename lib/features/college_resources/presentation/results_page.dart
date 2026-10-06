@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
@@ -72,7 +73,8 @@ class _ResultWebViewState extends State<ResultWebView> {
           ),
         )
         ..setUserAgent(
-            "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1");
+          "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1",
+        );
 
       _controller?.clearCache().then((_) {
         if (mounted) {
@@ -107,7 +109,8 @@ class _ResultWebViewState extends State<ResultWebView> {
         });
 
         _controller!.loadRequest(
-            Uri.parse("https://igitsarang.ac.in/downloads/results"));
+          Uri.parse("https://igitsarang.ac.in/downloads/results"),
+        );
       }
     } catch (e) {
       _handleError("Failed to load page: $e");
@@ -364,19 +367,21 @@ class _ResultWebViewState extends State<ResultWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1D1E),
+      backgroundColor: AppStyle.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1A1D1E),
+        backgroundColor: AppStyle.background,
         elevation: 0,
-        centerTitle: true,
+        centerTitle: false,
         title: Text(
           pdfUrl == null ? "IGIT Results" : "Viewing PDF",
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: const TextStyle(
-            fontSize: 24,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: AppStyle.text,
             fontFamily: 'ProductSans',
-            letterSpacing: 2,
+            letterSpacing: -.5,
           ),
         ),
         leading: pdfUrl != null
@@ -397,7 +402,7 @@ class _ResultWebViewState extends State<ResultWebView> {
             onPressed: _resetWebView,
           ),
         ],
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: AppStyle.text),
         bottom: const AppBarDivider(),
       ),
       body: SafeArea(
@@ -408,12 +413,15 @@ class _ResultWebViewState extends State<ResultWebView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error_outline,
-                        color: Colors.red, size: 48),
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 48,
+                    ),
                     const SizedBox(height: 16),
                     const Text(
                       "Something went wrong",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(color: AppStyle.text, fontSize: 18),
                     ),
                     const SizedBox(height: 8),
                     Padding(
@@ -421,7 +429,9 @@ class _ResultWebViewState extends State<ResultWebView> {
                       child: Text(
                         errorMessage,
                         style: const TextStyle(
-                            color: Colors.white70, fontSize: 14),
+                          color: AppStyle.muted,
+                          fontSize: 14,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -442,32 +452,33 @@ class _ResultWebViewState extends State<ResultWebView> {
                     pdfUrl!,
                     onDocumentLoadFailed:
                         (PdfDocumentLoadFailedDetails details) {
-                      _handleError("Failed to load PDF: ${details.error}");
-                      if (mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content:
-                                Text('Failed to load PDF: ${details.error}'),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      }
-                    },
+                          _handleError("Failed to load PDF: ${details.error}");
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Failed to load PDF: ${details.error}',
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
                   ),
                 ],
               ),
             if (isLoading)
               Container(
-                color: const Color(0xFF1A1D1E),
+                color: AppStyle.background,
                 child: const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircularProgressIndicator(color: Colors.white),
+                      CircularProgressIndicator(color: AppStyle.text),
                       SizedBox(height: 16),
                       Text(
                         "Loading results...",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        style: TextStyle(fontSize: 16, color: AppStyle.text),
                       ),
                     ],
                   ),

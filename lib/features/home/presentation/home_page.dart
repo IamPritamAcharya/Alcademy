@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:port/features/home/presentation/widgets/app_drawer.dart';
-import 'package:port/features/home/presentation/widgets/home_style.dart';
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/features/notices/presentation/notice_page.dart';
 import 'package:port/features/home/presentation/home_content_page.dart';
 import 'package:port/core/network/refresh_tracker.dart';
@@ -28,12 +28,18 @@ class _HomePageState extends State<HomePage> {
     value: SystemUiOverlayStyle.light,
     child: Scaffold(
       key: _scaffoldKey,
-      backgroundColor: HomeStyle.background,
-      drawer: const UniqueDrawer(themeColor: HomeStyle.sage),
+      backgroundColor: AppStyle.background,
+      drawer: const UniqueDrawer(themeColor: AppStyle.paper),
       body: IndexedStack(
         index: _selectedIndex,
         children: [
-          HomeContentPage(scaffoldKey: _scaffoldKey),
+          TickerMode(
+            enabled: _selectedIndex == 0,
+            child: HomeContentPage(
+              scaffoldKey: _scaffoldKey,
+              isActive: _selectedIndex == 0,
+            ),
+          ),
           NoticePage(),
         ],
       ),
@@ -56,10 +62,10 @@ class HomeNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-    color: HomeStyle.background,
+    color: AppStyle.background,
     child: Container(
       decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: HomeStyle.rule)),
+        border: Border(top: BorderSide(color: AppStyle.rule)),
       ),
       child: SafeArea(
         top: false,
@@ -89,7 +95,7 @@ class HomeNavigation extends StatelessWidget {
             duration: const Duration(milliseconds: 180),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
             decoration: BoxDecoration(
-              color: selected ? HomeStyle.forest : Colors.transparent,
+              color: selected ? AppStyle.cover : Colors.transparent,
               borderRadius: BorderRadius.circular(4),
             ),
             child: Row(
@@ -98,7 +104,7 @@ class HomeNavigation extends StatelessWidget {
                 Icon(
                   icon,
                   size: 21,
-                  color: selected ? HomeStyle.text : HomeStyle.muted,
+                  color: selected ? AppStyle.text : AppStyle.muted,
                 ),
                 const SizedBox(width: 8),
                 Flexible(
@@ -107,7 +113,7 @@ class HomeNavigation extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
-                      color: selected ? HomeStyle.text : HomeStyle.muted,
+                      color: selected ? AppStyle.text : AppStyle.muted,
                     ),
                   ),
                 ),

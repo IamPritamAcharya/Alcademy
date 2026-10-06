@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -12,8 +13,11 @@ class StoryScreen extends StatefulWidget {
   final List<Map<String, String>> stories;
   final int initialIndex;
 
-  const StoryScreen(
-      {super.key, required this.stories, required this.initialIndex});
+  const StoryScreen({
+    super.key,
+    required this.stories,
+    required this.initialIndex,
+  });
 
   @override
   State<StoryScreen> createState() => _StoryScreenState();
@@ -49,13 +53,12 @@ class _StoryScreenState extends State<StoryScreen>
       duration: const Duration(milliseconds: 50),
     );
 
-    _progressAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _progressAnimationController,
-      curve: Curves.linear,
-    ));
+    _progressAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _progressAnimationController,
+        curve: Curves.linear,
+      ),
+    );
 
     _progressAnimation.addListener(() {
       if (mounted) {
@@ -70,13 +73,12 @@ class _StoryScreenState extends State<StoryScreen>
       duration: const Duration(milliseconds: 300),
     );
 
-    _blurAnimation = Tween<double>(
-      begin: 0.0,
-      end: 15.0,
-    ).animate(CurvedAnimation(
-      parent: _blurAnimationController,
-      curve: Curves.easeInOut,
-    ));
+    _blurAnimation = Tween<double>(begin: 0.0, end: 15.0).animate(
+      CurvedAnimation(
+        parent: _blurAnimationController,
+        curve: Curves.easeInOut,
+      ),
+    );
 
     _blurAnimation.addListener(() {
       if (mounted) {
@@ -89,21 +91,16 @@ class _StoryScreenState extends State<StoryScreen>
       duration: const Duration(milliseconds: 400),
     );
 
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.3,
-    ).animate(CurvedAnimation(
-      parent: _popOutAnimationController,
-      curve: Curves.easeInBack,
-    ));
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.3).animate(
+      CurvedAnimation(
+        parent: _popOutAnimationController,
+        curve: Curves.easeInBack,
+      ),
+    );
 
-    _opacityAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.0,
-    ).animate(CurvedAnimation(
-      parent: _popOutAnimationController,
-      curve: Curves.easeIn,
-    ));
+    _opacityAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(parent: _popOutAnimationController, curve: Curves.easeIn),
+    );
 
     _loadStory();
   }
@@ -134,9 +131,7 @@ class _StoryScreenState extends State<StoryScreen>
 
   void _updateProgress(double newProgress) {
     if (mounted) {
-      _progressAnimationController.animateTo(
-        newProgress.clamp(0.0, 1.0),
-      );
+      _progressAnimationController.animateTo(newProgress.clamp(0.0, 1.0));
     }
   }
 
@@ -191,12 +186,14 @@ class _StoryScreenState extends State<StoryScreen>
 
   void _initializeVideoPlayer(String url) {
     _videoController = VideoPlayerController.networkUrl(Uri.parse(url))
-      ..initialize().then((_) {
-        _videoController!.play();
-        _startVideoProgress();
-      }).catchError((error) {
-        debugPrint('Error loading video: $error');
-      });
+      ..initialize()
+          .then((_) {
+            _videoController!.play();
+            _startVideoProgress();
+          })
+          .catchError((error) {
+            debugPrint('Error loading video: $error');
+          });
   }
 
   void _startImageTimer() {
@@ -328,14 +325,16 @@ class _StoryScreenState extends State<StoryScreen>
     int lastIndex = 0;
     for (final Match match in urlRegex.allMatches(text)) {
       if (match.start > lastIndex) {
-        spans.add(TextSpan(
-          text: text.substring(lastIndex, match.start),
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
+        spans.add(
+          TextSpan(
+            text: text.substring(lastIndex, match.start),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+            ),
           ),
-        ));
+        );
       }
 
       String url = match.group(0)!;
@@ -343,41 +342,45 @@ class _StoryScreenState extends State<StoryScreen>
         url = 'https://$url';
       }
 
-      spans.add(TextSpan(
-        text: match.group(0)!,
-        style: const TextStyle(
-          color: Color(0xFF00D4FF),
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          decoration: TextDecoration.underline,
-          decorationColor: Color(0xFF00D4FF),
-          decorationThickness: 2,
-        ),
-        recognizer: TapGestureRecognizer()
-          ..onTap = () async {
-            try {
-              final Uri uri = Uri.parse(url);
-              if (await canLaunchUrl(uri)) {
-                await launchUrl(uri, mode: LaunchMode.externalApplication);
+      spans.add(
+        TextSpan(
+          text: match.group(0)!,
+          style: const TextStyle(
+            color: AppStyle.blue,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            decoration: TextDecoration.underline,
+            decorationColor: AppStyle.blue,
+            decorationThickness: 2,
+          ),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () async {
+              try {
+                final Uri uri = Uri.parse(url);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+                }
+              } catch (e) {
+                debugPrint('Error launching URL: $e');
               }
-            } catch (e) {
-              debugPrint('Error launching URL: $e');
-            }
-          },
-      ));
+            },
+        ),
+      );
 
       lastIndex = match.end;
     }
 
     if (lastIndex < text.length) {
-      spans.add(TextSpan(
-        text: text.substring(lastIndex),
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.w400,
+      spans.add(
+        TextSpan(
+          text: text.substring(lastIndex),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+          ),
         ),
-      ));
+      );
     }
 
     return spans;
@@ -402,25 +405,12 @@ class _StoryScreenState extends State<StoryScreen>
       }
     }
 
-    final List<List<Color>> gradients = [
-      [const Color(0xFF667eea), const Color(0xFF764ba2)],
-      [const Color(0xFFf093fb), const Color(0xFFf5576c)],
-      [const Color(0xFF4facfe), const Color(0xFF00f2fe)],
-      [const Color(0xFF43e97b), const Color(0xFF38f9d7)],
-      [const Color(0xFFfa709a), const Color(0xFFfee140)],
-      [const Color(0xFFa8edea), const Color(0xFFfed6e3)],
-      [const Color(0xFFffecd2), const Color(0xFFfcb69f)],
-      [const Color(0xFFd299c2), const Color(0xFFfef9d7)],
-      [const Color(0xFF89f7fe), const Color(0xFF66a6ff)],
-      [const Color(0xFFfbc2eb), const Color(0xFFa6c1ee)],
-    ];
-
-    final int hash = (story['text'] ?? '').hashCode;
-    final selectedGradient = gradients[hash.abs() % gradients.length];
+    final hash = (story['text'] ?? '').hashCode.abs();
+    final accent = AppStyle.highlights[hash % AppStyle.highlights.length];
     return [
-      selectedGradient[0],
-      selectedGradient[1],
-      selectedGradient[0].withValues(alpha: 0.8),
+      Color.alphaBlend(accent.withValues(alpha: .22), AppStyle.background),
+      AppStyle.cover,
+      AppStyle.background,
     ];
   }
 
@@ -548,15 +538,17 @@ class _StoryScreenState extends State<StoryScreen>
                                               MainAxisAlignment.center,
                                           children: [
                                             Container(
-                                              padding:
-                                                  const EdgeInsets.all(24.0),
+                                              padding: const EdgeInsets.all(
+                                                24.0,
+                                              ),
                                               child: Center(
                                                 child: RichText(
                                                   textAlign: TextAlign.center,
                                                   text: TextSpan(
                                                     children:
                                                         _parseTextWithLinks(
-                                                            text),
+                                                          text,
+                                                        ),
                                                     style: const TextStyle(
                                                       fontFamily: 'ProductSans',
                                                       height: 1.4,
@@ -586,7 +578,8 @@ class _StoryScreenState extends State<StoryScreen>
                                 child: const Center(
                                   child: CircularProgressIndicator(
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white),
+                                      Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -624,7 +617,8 @@ class _StoryScreenState extends State<StoryScreen>
                                 : const Center(
                                     child: CircularProgressIndicator(
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.white),
+                                        Colors.white,
+                                      ),
                                     ),
                                   );
                           } else if (_videoController != null &&
@@ -636,8 +630,9 @@ class _StoryScreenState extends State<StoryScreen>
                           } else {
                             return const Center(
                               child: CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
                               ),
                             );
                           }
@@ -653,18 +648,20 @@ class _StoryScreenState extends State<StoryScreen>
                           widget.stories.length,
                           (index) => Expanded(
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 2.0),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 2.0,
+                              ),
                               child: AnimatedContainer(
                                 duration: const Duration(milliseconds: 50),
                                 child: LinearProgressIndicator(
                                   value: index < _currentIndex
                                       ? 1.0
                                       : index == _currentIndex
-                                          ? _progress
-                                          : 0.0,
-                                  backgroundColor:
-                                      Colors.grey.withValues(alpha: 0.5),
+                                      ? _progress
+                                      : 0.0,
+                                  backgroundColor: Colors.grey.withValues(
+                                    alpha: 0.5,
+                                  ),
                                   color: Colors.white,
                                   minHeight: 3.0,
                                 ),

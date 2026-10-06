@@ -1,3 +1,4 @@
+import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:port/features/onboarding/data/onboarding_repository.dart';
 import 'package:port/features/onboarding/presentation/widgets/dropdown_widget.dart';
@@ -34,10 +35,12 @@ class _LoginFormState extends State<ProfileSetupForm> {
       }
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Failed to load notes. Please try again later.'),
-        backgroundColor: Colors.red,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to load notes. Please try again later.'),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       if (mounted) {
         if (mounted) {
@@ -51,10 +54,12 @@ class _LoginFormState extends State<ProfileSetupForm> {
     if (_nameController.text.isEmpty ||
         _selectedBranch == null ||
         _selectedNote == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Please fill in all fields.'),
-        backgroundColor: Colors.red,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill in all fields.'),
+          backgroundColor: Colors.red,
+        ),
+      );
       return;
     }
 
@@ -81,89 +86,32 @@ class _LoginFormState extends State<ProfileSetupForm> {
     super.dispose();
   }
 
-  Widget _buildBlurredShape({
-    required double size,
-    required Color color,
-    required double angle,
-  }) {
-    return Transform.rotate(
-      angle: angle,
-      child: Container(
-        height: size,
-        width: size,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: color,
-              blurRadius: 50,
-              spreadRadius: 20,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          Positioned(
-            top: -50,
-            left: -60,
-            child: _buildBlurredShape(
-              size: 180,
-              color: Colors.pinkAccent.withValues(alpha: 0.2),
-              angle: 30,
+          SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(
+              24,
+              80,
+              24,
+              MediaQuery.viewInsetsOf(context).bottom + 40,
             ),
-          ),
-          Positioned(
-            bottom: -70,
-            right: -40,
-            child: _buildBlurredShape(
-              size: 220,
-              color: Colors.pinkAccent.withValues(alpha: 0.2),
-              angle: -45,
-            ),
-          ),
-          Positioned(
-            top: 200,
-            left: 20,
-            child: _buildBlurredShape(
-              size: 140,
-              color: Colors.pinkAccent.withValues(alpha: 0.25),
-              angle: 15,
-            ),
-          ),
-          Positioned(
-            bottom: 100,
-            right: 100,
-            child: _buildBlurredShape(
-              size: 160,
-              color: Colors.pinkAccent.withValues(alpha: 0.3),
-              angle: -60,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(24.0),
             child: _isLoading
                 ? const Center(
-                    child: CircularProgressIndicator(color: Colors.tealAccent),
+                    child: CircularProgressIndicator(color: AppStyle.accent),
                   )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         'Let’s Get Started!',
                         style: const TextStyle(
-                          color: Colors.black,
+                          color: AppStyle.text,
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'ProductSans',
@@ -174,7 +122,7 @@ class _LoginFormState extends State<ProfileSetupForm> {
                       Text(
                         'Fill in your details to begin your journey.',
                         style: TextStyle(
-                          color: Colors.black54,
+                          color: AppStyle.muted,
                           fontSize: 16,
                           fontFamily: 'ProductSans',
                         ),
@@ -183,21 +131,23 @@ class _LoginFormState extends State<ProfileSetupForm> {
                       const SizedBox(height: 30),
                       TextField(
                         controller: _nameController,
-                        style: const TextStyle(color: Colors.black),
+                        style: const TextStyle(color: AppStyle.text),
                         decoration: InputDecoration(
                           labelText: 'Your Name',
-                          labelStyle: const TextStyle(color: Colors.black54),
+                          labelStyle: const TextStyle(color: AppStyle.muted),
                           filled: true,
-                          fillColor: Colors.white.withValues(alpha: 0.7),
+                          fillColor: AppStyle.surface,
                           enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.circular(30),
+                            borderSide: const BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            borderRadius: AppStyle.radius,
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.pinkAccent),
-                            borderRadius: BorderRadius.circular(30),
+                            borderSide: const BorderSide(
+                              color: AppStyle.accent,
+                            ),
+                            borderRadius: AppStyle.radius,
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             vertical: 16,
@@ -216,7 +166,7 @@ class _LoginFormState extends State<ProfileSetupForm> {
                           'Civil',
                           'Chemical',
                           'Metallurgical',
-                          'Production'
+                          'Production',
                         ],
                         onChanged: (value) =>
                             setState(() => _selectedBranch = value),
@@ -229,8 +179,9 @@ class _LoginFormState extends State<ProfileSetupForm> {
                             .toList(),
                         onChanged: (value) {
                           final selectedNote = _availableNotes.firstWhere(
-                              (note) => note['name'] == value,
-                              orElse: () => {});
+                            (note) => note['name'] == value,
+                            orElse: () => {},
+                          );
                           setState(() => _selectedNote = selectedNote['url']);
                         },
                       ),
@@ -238,17 +189,17 @@ class _LoginFormState extends State<ProfileSetupForm> {
                       ElevatedButton(
                         onPressed: _saveData,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.pink,
+                          backgroundColor: AppStyle.accent,
                           padding: const EdgeInsets.symmetric(vertical: 18),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40),
+                            borderRadius: AppStyle.radius,
                           ),
                           elevation: 0,
                         ),
                         child: const Text(
                           'Next',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppStyle.onAccent,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
