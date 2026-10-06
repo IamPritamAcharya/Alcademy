@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:port/firebase_options.dart';
 import 'package:port/core/config/config_service.dart';
+import 'package:port/core/storage/github_cache_migration.dart';
 import 'package:port/features/notifications/data/notification_service.dart';
 import 'package:port/features/notifications/data/background_notification_handler.dart';
 import 'app.dart';
@@ -35,6 +36,7 @@ Future<void> bootstrap() async {
   }
 
   final prefs = await SharedPreferences.getInstance();
+  await migrateGitHubContentCache(prefs);
   final bool isOnboardingComplete =
       prefs.getBool('onboarding_complete') ?? false;
 

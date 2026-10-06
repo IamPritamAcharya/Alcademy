@@ -1,8 +1,7 @@
-import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:port/features/amenities/data/amenities_repository.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:port/shared/widgets/collection_intro.dart';
@@ -19,7 +18,7 @@ class AmenitiesPage extends StatefulWidget {
 }
 
 class _AmenitiesPageState extends State<AmenitiesPage> {
-  late final _client = widget.client ?? http.Client();
+  late final _repository = AmenitiesRepository(client: widget.client);
   final _scroll = ScrollController();
   List<Map<String, dynamic>> _all = [];
   int _page = 1;
@@ -41,22 +40,8 @@ class _AmenitiesPageState extends State<AmenitiesPage> {
   @override
   void dispose() {
     _scroll.dispose();
-    if (widget.client == null) _client.close();
     super.dispose();
   }
-
-  List<Map<String, dynamic>> _parse(String text) =>
-      (jsonDecode(text) as List).map((raw) {
-        final item = raw as Map<String, dynamic>;
-        return <String, dynamic>{
-          'name': item['name'] as String? ?? 'Unnamed amenity',
-          'tag': item['tag'] as String? ?? 'Campus',
-          'images': (item['images'] as List? ?? [])
-              .whereType<String>()
-              .toList(),
-          'description': item['description'] as String? ?? '',
-        };
-      }).toList();
 
   Future<void> _load({bool refresh = false}) async {
     if (mounted) {
@@ -66,33 +51,10 @@ class _AmenitiesPageState extends State<AmenitiesPage> {
       });
     }
     try {
-      final prefs = await SharedPreferences.getInstance();
-      List<Map<String, dynamic>>? items;
-      final cached = prefs.getString('amenities_data');
-      if (!refresh && cached != null) {
-        try {
-          items = _parse(cached);
-        } catch (_) {
-          /* Retry a damaged cache from the source. */
-        }
-      }
-      if (items == null) {
-        final response = await _client
-            .get(
-              Uri.parse(
-                'https://raw.githubusercontent.com/Academia-IGIT/DATA_hub/main/amenities.json',
-              ),
-            )
-            .timeout(const Duration(seconds: 20));
-        if (response.statusCode != 200) {
-          throw Exception('Amenities unavailable');
-        }
-        items = _parse(response.body);
-        await prefs.setString('amenities_data', response.body);
-      }
+      final items = await _repository.load(forceRefresh: refresh);
       if (!mounted) return;
       setState(() {
-        _all = items!;
+        _all = items;
         if (!_all.any((item) => item['tag'] == _tag)) _tag = '';
         _page = _page.clamp(
           1,

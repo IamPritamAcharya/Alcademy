@@ -3,9 +3,17 @@ import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:port/features/profile/data/profile_repository.dart';
 import 'package:port/features/profile/presentation/profile_card.dart';
+import 'package:port/features/college_resources/data/erp_credentials_repository.dart';
+import 'package:port/features/profile/presentation/erp_credentials_section.dart';
 
 class UserProfilePage extends StatefulWidget {
-  const UserProfilePage({super.key});
+  final bool focusErpCredentials;
+  final ErpCredentialsRepository erpCredentials;
+  const UserProfilePage({
+    super.key,
+    this.focusErpCredentials = false,
+    this.erpCredentials = const ErpCredentialsRepository(),
+  });
 
   @override
   State<UserProfilePage> createState() => _UserProfilePageState();
@@ -15,6 +23,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
   String? userName;
   String? branch;
   late Future<void> _refreshFuture;
+  final _erpSection = GlobalKey();
+  bool _scrolledToErp = false;
 
   @override
   void initState() {
@@ -209,15 +219,35 @@ class _UserProfilePageState extends State<UserProfilePage> {
             );
           }
 
-          return Column(
-            children: [
-              const SizedBox(height: 20),
-              ProfileCard(
-                userName: userName ?? "User Name",
-                branch: branch ?? "Branch Name",
-                onEditName: updateUserName,
-              ),
-            ],
+          if (widget.focusErpCredentials && !_scrolledToErp) {
+            _scrolledToErp = true;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              final sectionContext = _erpSection.currentContext;
+              if (mounted && sectionContext != null) {
+                Scrollable.ensureVisible(sectionContext);
+              }
+            });
+          }
+          return SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: EdgeInsets.only(
+              bottom: 24 + MediaQuery.paddingOf(context).bottom,
+            ),
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                ProfileCard(
+                  userName: userName ?? "User Name",
+                  branch: branch ?? "Branch Name",
+                  onEditName: updateUserName,
+                ),
+                const SizedBox(height: 28),
+                ErpCredentialsSection(
+                  key: _erpSection,
+                  repository: widget.erpCredentials,
+                ),
+              ],
+            ),
           );
         },
       ),

@@ -1,0 +1,75 @@
+[
+    {
+        "name": "HDVC",
+        "items": [
+            {
+                "name": "hvdc",
+                "url": "https://drive.google.com/file/d/1e4rz8876a9ZpQe_Gm2T-auIg87xntkMc/view?usp=drive_link"
+            },
+            {
+                "name": "HVDC final",
+                "url": "https://drive.google.com/file/d/1e7yAmLNfkMiAMXpayaHk4Yaw6ANIT4ZH/view?usp=drive_link"
+            }
+        ]
+    },
+    {
+        "name": "HVE",
+        "items": [
+            {
+                "name": "HVE assignment",
+                "url": "https://drive.google.com/file/d/1ewu-AUQGCTSSA0-f2LcetWcrvVAfjEl0/view?usp=drive_link"
+            },
+            {
+                "name": "HVE final",
+                "url": "https://drive.google.com/file/d/1f-6YGGSXrzwXYWEoiBcuHM1c4rtfd82Q/view?usp=drive_link"
+            }
+        ]
+    },
+    {
+        "name": "SGPD",
+        "items": [
+            {
+                "name": "sgpd assgn.",
+                "url": "https://drive.google.com/file/d/1dSVbPHNyOB9t-GNDAf3w6SV4p87RwDTQ/view?usp=drive_link"
+            },
+            {
+                "name": "SGPD final",
+                "url": "https://drive.google.com/file/d/1dTgwOZ4gIeWnzJxDviqUYa2DIt5rsuOg/view?usp=drive_link"
+            },
+            {
+                "name": "SGPD notes",
+                "url": "https://drive.google.com/file/d/1dQ3h86AoPgQW7wnS301cG-jkukzKJC-A/view?usp=drive_link"
+            }
+        ]
+    },
+    {
+        "name": "UEE",
+        "items": [
+            {
+                "name": "UEE 7th sem",
+                "url": "https://drive.google.com/file/d/1dgFWkcWZ2HJ7eccE5tAE5MyhHzdH0iRe/view?usp=drive_link"
+            },
+            {
+                "name": "UEE 7th sem - (full)",
+                "url": "https://drive.google.com/file/d/1XF5CLoAyG59uq_CqF3CCFmQWDqRwqIyR/view?usp=sharing"
+            },
+            {
+                "name": "UEE assignment",
+                "url": "https://drive.google.com/file/d/1e06WENPnzgYsgnnjfyL07RU-cJ9Kc2t2/view?usp=drive_link"
+            },
+            {
+                "name": "UEE final",
+                "url": "https://drive.google.com/file/d/1e2pu9k7lNfvyzdD4djYKibDBz7C3mqOj/view?usp=drive_link"
+            }
+        ]
+    },
+    {
+        "name": "Industrial Management",
+        "items": [
+            {
+                "name": "ESSP Sem",
+                "url": "https://drive.google.com/file/d/1fBNEY2PtsS6aEO2njS_b-cE1-3fvUp_n/view?usp=drive_link"
+            }
+        ]
+    }
+]

@@ -1,6 +1,7 @@
 import 'package:port/app/theme.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'support/load_fonts.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +13,7 @@ import 'package:port/features/expenses/presentation/expense_tracker_page.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUpAll(loadAppFonts);
+  setUp(() => FlutterSecureStorage.setMockInitialValues({}));
   final screens = <String, Widget Function()>{
     'onboarding': () => const OnboardingScreen(),
     'profile': () => const UserProfilePage(),

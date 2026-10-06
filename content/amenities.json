@@ -1,0 +1,186 @@
+[
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=15gtkSILsm_gTyPjnUCbpJ5gbS8Mgud-e"
+    ],
+    "name": "AKASH BHAWAN",
+    "tag": "Hostel",
+    "description": "### Akash Bhawan\n**4 student accommodation**, decent rooms, decent food.\n- A-block is better\n- Has Volleyball court\n- For 1st year boys"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=17n-Aj3eOlegI0urIniYsI5ge7rMS_TIf"
+    ],
+    "name": "ARYABHATTA BHAWAN",
+    "tag": "Hostel",
+    "description": "### Aryabhatta Bhawan\n**4 student accommodation**, rooms are not great, but food is good.\n- East block is better\n- Includes Badminton and Basketball courts\n- For 2nd year boys"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1JqSRaQo8WE1e64ZWYfBImYX6D2j-gLXC"
+    ],
+    "name": "BHASKAR BHAWAN",
+    "tag": "Hostel",
+    "description": "### Bhaskar Bhawan\n**3 student accommodation**, decent rooms, great structure.\n- Good food\n- Has Badminton court\n- For 2nd and 3rd year boys"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1WOLMZRogCYQYJs_OkTfHDwVJ1qvY2yis"
+    ],
+    "name": "BRAHMOS BHAWAN",
+    "tag": "Hostel",
+    "description": "### Brahmos Bhawan\n**2 student accommodation**, great rooms, great structure.\n- Good food\n- Includes 3 blocks\n- Badminton court\n- For 3rd, 4th year, and MCA boys\n- Needs good grades for allotment"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1Pl9G0iJKGZMScYFLe22X4-lWkwdY64E_"
+    ],
+    "name": "SURYA BHAWAN",
+    "tag": "Hostel",
+    "description": "### Surya Bhawan\n**1 student accommodation**\n- For 4th year boys\n- Has Basketball and Badminton courts\n- Needs top grades for allotment"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=18agu5ezTIpv73vyzgPm3BpfdH4UoHut7"
+    ],
+    "name": "ROHINI BHAWAN",
+    "tag": "Hostel",
+    "description": "### Rohini Bhawan\n**6 student accommodation**\n- For 1st, 2nd year, diploma, and MCA girls"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1w6e7hc-oSpqbDfSw5lJcOAYaSDb8VarE"
+    ],
+    "name": "PRITHVI BHAWAN",
+    "tag": "Hostel",
+    "description": "### Prithvi Bhawan\n- For 3rd and 4th year girls"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1coRc961NsLAmgYrBglFR54_oAEVGLTwz"
+    ],
+    "name": "AGNI BHAWAN",
+    "tag": "Hostel",
+    "description": "### Agni Bhawan\n**4 student accommodation**\n- Has outdoor space\n- For Diploma boys"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1dymgJNiU1iDyj2fIJNZ7T-B-_bTaOnBq"
+    ],
+    "name": "Cafeteria",
+    "tag": "Canteen",
+    "description": "### Cafeteria\n- College Cafeteria"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=11nCLeMzr881JnnYMtpicYjsGYU3-oH0r"
+    ],
+    "name": "Old Canteen (OC)",
+    "tag": "Canteen",
+    "description": "### Old Canteen (OC)\n- Located at the old building"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1OpNC9Jv937gDRpVqm0XEAla5AIn7dJbM"
+    ],
+    "name": "BME Lab",
+    "tag": "Lab",
+    "description": "### Basic Mechanical Engineering Lab\n- For 1st year\n- Great learning experience, great teachers\n- Location: Near the new building entrance"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=112NsY10KKHD68_xz_GAp5tH0iw2qZJg2"
+    ],
+    "name": "Workshop",
+    "tag": "Lab",
+    "description": "### Workshop\n- For 1st year\n- Mostly idle time\n- Location: Opposite BME Lab"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1U_Z8oGPpW5mjNh9plzULa7YHLIJHlgSN"
+    ],
+    "name": "BE Lab",
+    "tag": "Lab",
+    "description": "### Basic Electronics Engineering Lab\n- For 1st year\n- Great viva preparation\n- Location: Near the main gate or dome or central library"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=11IsRQegCGts4NUawgYA1YOdkoFk7D_dd"
+    ],
+    "name": "BEE Lab",
+    "tag": "Lab",
+    "description": "### Basic Electrical Engineering Lab\n- For 1st year\n- Make your presence known to teachers\n- Location: Near the park, turn right"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1cadV1d-62Xt2fBAwXrnazXdVWWLDhcAd"
+    ],
+    "name": "Civil Lab",
+    "tag": "Lab",
+    "description": "### Civil Engineering Lab\n- For 1st year\n- Location: Move inward from BEE lab towards the hall, then take the 2nd left"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1R2qthp6hLp4B5Y9NuDSYrSXT_qihXY4u"
+    ],
+    "name": "Chemistry Lab",
+    "tag": "Lab",
+    "description": "### Chemistry Lab\n- For 1st year\n- Group-based experiments (4 members/group)\n- Location: Near room 206, take a straight path towards the stairs"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1tVNlS85IZ3aCN-emLkSLQe0jx6aV2_Lq"
+    ],
+    "name": "Physics Lab",
+    "tag": "Lab",
+    "description": "### Physics Lab\n- For 1st year\n- Marks based on viva and semester exams\n- Location: Opposite Chemistry Lab"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1FwrQfohuEjUE-pav6yRwhE3FjcE0Hu3d"
+    ],
+    "name": "English Lab",
+    "tag": "Lab",
+    "description": "### English Lab\n- AC Lab\n- Minimal classes\n- Records usually not checked"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1V0zPANCcQ5NEZU-kXfJDAOfr1u6DSMLA"
+    ],
+    "name": "Library",
+    "tag": "Library",
+    "description": "### Library\n- Best study environment\n- Air-conditioned and quiet\n- Location: Near the dome/main gate"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1grFwlozBgZVPvP8osYHGFMnp_YHOWXSb"
+    ],
+    "name": "Badminton court",
+    "tag": "Other",
+    "description": "### Badminton Court\n- Location: Old building"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=19Ye3jiuFy07olYaSPStEirGy5QAx9zMJ"
+    ],
+    "name": "Room 206",
+    "tag": "Other",
+    "description": "### Room 206\n- Classroom for many subjects\n- Location: Old building"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=16CZwKnp5ISbioLg_D7ZQ_5v6zwZFHSJV"
+    ],
+    "name": "Academic building",
+    "tag": "Other",
+    "description": "### Academic Building\n- For admissions and academic queries\n- Staff is straightforward"
+  },
+  {
+    "images": [
+      "https://drive.google.com/uc?export=view&id=1rd8EBanwKtbIhoDjs94XrQfBwR8D-KGR"
+    ],
+    "name": "Park",
+    "tag": "Other",
+    "description": "### Park\n- Relaxation spot on campus"
+  }
+]

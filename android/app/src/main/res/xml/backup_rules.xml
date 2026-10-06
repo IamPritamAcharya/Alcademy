@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- ERP credentials and their encryption metadata stay on this device. -->
+    <exclude domain="sharedpref" path="AlcademyErp.xml" />
+    <exclude domain="sharedpref" path="FlutterSecureKeyStorage:AlcademyErp.xml" />
+    <exclude domain="sharedpref" path="FlutterSecureStorageConfiguration:AlcademyErp.xml" />
+</full-backup-content>

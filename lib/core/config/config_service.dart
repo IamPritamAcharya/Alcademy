@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../network/app_http_client.dart';
+import '../network/github_content_client.dart';
+import '../network/github_sources.dart';
 import '../storage/preferences_cache.dart';
 import 'app_config.dart';
 
 class ConfigService {
-  static const settingsUrl =
-      'https://raw.githubusercontent.com/IamPritamAcharya/DATA_hub/main/settings.json';
+  static const settingsUrl = GitHubSources.settings;
   static const fetchIntervalHours = 1;
 
   static Future<void> loadCachedConfig() async {
@@ -28,8 +28,10 @@ class ConfigService {
     }
   }
 
-  static Future<void> fetchAndUpdateConfig(
-      {http.Client? client, DateTime Function()? now}) async {
+  static Future<void> fetchAndUpdateConfig({
+    http.Client? client,
+    DateTime Function()? now,
+  }) async {
     final prefs = await SharedPreferences.getInstance();
     final date = (now ?? DateTime.now)();
     final lastFetch = DateTime.tryParse(prefs.getString('lastFetchDate') ?? '');
@@ -38,15 +40,13 @@ class ConfigService {
       return;
     }
     try {
-      final response = await (client ?? appHttpClient)
-          .get(Uri.parse(settingsUrl))
-          .timeout(requestTimeout);
-      if (response.statusCode != 200) {
-        throw Exception('Settings request failed: ${response.statusCode}');
-      }
+      final text = await GitHubContentClient(
+        client: client,
+      ).getText(settingsUrl);
       // Parse fully before publishing; malformed settings cannot partially update views.
-      final config =
-          AppConfig.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      final config = AppConfig.fromJson(
+        jsonDecode(text) as Map<String, dynamic>,
+      );
       final cache = PreferencesCache(prefs);
       await cache.writeJson('storyUrls', config.stories);
       await cache.writeJson('contributors', config.contributors);

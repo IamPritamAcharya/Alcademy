@@ -1,6 +1,9 @@
 import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:port/features/college_resources/data/erp_credentials_repository.dart';
+import 'package:port/features/college_resources/presentation/erp_auto_login.dart';
+import 'package:port/features/profile/presentation/profile_page.dart';
 
 class AcademicWebViewPage extends StatefulWidget {
   const AcademicWebViewPage({super.key});
@@ -13,6 +16,9 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
   late final WebViewController _webViewController;
   bool isLoading = true;
   bool isDesktopView = false;
+  final _credentialsRepository = const ErpCredentialsRepository();
+  ErpCredentials? _credentials;
+  bool _attemptedAutoLogin = false;
 
   @override
   void initState() {
@@ -31,19 +37,83 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {
+            if (!mounted) return;
             setState(() {
               isLoading = true;
             });
           },
-          onPageFinished: (url) {
-            _injectViewportMetaTag();
+          onPageFinished: (url) async {
+            if (!mounted) return;
+            try {
+              await _injectViewportMetaTag();
+              await _autoLogin(url);
+            } catch (_) {
+              // Keep the website available for manual login if scripting fails.
+            }
+            if (!mounted) return;
             setState(() {
               isLoading = false;
             });
           },
+          onWebResourceError: (error) {
+            if (mounted && error.isForMainFrame == true) {
+              setState(() => isLoading = false);
+            }
+          },
         ),
       );
-    _loadInitialPage();
+    await _readCredentials();
+    if (mounted) await _loadInitialPage();
+  }
+
+  Future<void> _readCredentials() async {
+    try {
+      _credentials = await _credentialsRepository.read();
+    } catch (_) {
+      _credentials = null;
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Couldn’t read saved ERP credentials. You can still sign in manually.',
+            ),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _autoLogin(String url) async {
+    final credentials = _credentials;
+    if (_attemptedAutoLogin ||
+        credentials == null ||
+        !ErpAutoLogin.isLoginPage(url)) {
+      return;
+    }
+    _attemptedAutoLogin = true;
+    await _webViewController.runJavaScript(ErpAutoLogin.script(credentials));
+  }
+
+  Future<void> _openCredentials() async {
+    final previous = _credentials;
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => UserProfilePage(
+          focusErpCredentials: true,
+          erpCredentials: _credentialsRepository,
+        ),
+      ),
+    );
+    if (!mounted) return;
+    await _readCredentials();
+    if (!mounted) return;
+    final current = _credentials;
+    if (current != null &&
+        (current.username != previous?.username ||
+            current.password != previous?.password)) {
+      await WebViewCookieManager().clearCookies();
+      if (mounted) await _relogin();
+    }
   }
 
   Future<void> _loadInitialPage() async {
@@ -61,12 +131,11 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
   }
 
   Future<void> _relogin() async {
+    _attemptedAutoLogin = false;
     setState(() {
       isLoading = true;
     });
-    await _webViewController.loadRequest(
-      Uri.parse('https://igit.icrp.in/academic/'),
-    );
+    await _webViewController.loadRequest(ErpAutoLogin.loginUri);
   }
 
   Future<void> _toggleDesktopView() async {
@@ -158,7 +227,7 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
             },
           ),
           title: Text(
-            isDesktopView ? 'Desktop View' : 'Mobile View',
+            'ERP',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -175,6 +244,12 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
             ),
           ),
           actions: [
+            TextButton.icon(
+              onPressed: _openCredentials,
+              icon: const Icon(Icons.key_rounded, size: 18),
+              label: const Text('Credentials'),
+              style: TextButton.styleFrom(foregroundColor: AppStyle.text),
+            ),
             IconButton(
               icon: Icon(
                 isDesktopView
@@ -185,33 +260,10 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
               tooltip: isDesktopView ? 'Switch to Mobile' : 'Switch to Desktop',
               onPressed: _toggleDesktopView,
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: ElevatedButton(
-                onPressed: _relogin,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppStyle.surface,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                    ),
-                  ),
-                ),
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                    fontFamily: 'ProductSans',
-                    color: AppStyle.onAccent,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+            IconButton(
+              onPressed: _relogin,
+              tooltip: 'Retry ERP login',
+              icon: const Icon(Icons.login_rounded),
             ),
           ],
         ),

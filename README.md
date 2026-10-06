@@ -8,6 +8,7 @@ A Flutter app for academic resources, college notices, and student utilities.
 - College notices, results, academic calendar, holidays, and amenities.
 - SGPA calculator and expense tracker.
 - Local profile with a name and branch stored on the device.
+- Optional ERP automatic login, with credentials managed in Profile and kept in device-encrypted storage.
 - Private files and notes protected with device authentication.
 - Firebase push notifications and notification history.
 
@@ -50,6 +51,14 @@ Online content and notifications require an internet connection.
 
 `lib/main.dart` starts the app. `lib/app/` owns bootstrap, routing, and the theme.
 `lib/core/` contains shared configuration, networking, and cache helpers.
+All GitHub repositories, branches, and content paths are configured in
+`lib/core/network/github_sources.dart`. GitHub listings and downloaded JSON,
+Markdown, and text use `lib/core/network/github_content_client.dart` for requests,
+timeouts, status checks, and optional refresh cache busting. Feature repositories
+retain their parsing and cache policies. All remote content now lives in this
+repository's `content/` directory. Folder listings use the configured content
+branch explicitly. Startup migrates old cached GitHub URLs while preserving the
+selected note year; requests also rebase legacy download links.
 `lib/shared/theme/app_style.dart` owns the app palette; `lib/app/theme.dart`
 styles Material controls with the same always-dark colors.
 `lib/features/` groups each feature's screens (`presentation`), repositories
@@ -75,3 +84,9 @@ profile, notes selection, expenses, and notices using the neutral dark theme and
 fonts at 430 × 932 pixels. Run them with the same Flutter SDK used to generate the
 screenshots; review visual differences before updating golden files. Device rendering and native integrations still need
 verification on the phone.
+
+ERP credentials are used only to submit the college ERP login form over HTTPS.
+They are excluded from Android cloud backup and device transfer. Forgetting them
+disables automatic login without ending an existing web session. After adding
+the secure-storage plugin, stop the app and run it again; hot reload cannot load
+the native plugin. The ERP JavaScript execution test runs when Node.js is available.

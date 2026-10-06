@@ -1,22 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:port/core/network/github_content_client.dart';
+import 'package:port/core/network/github_sources.dart';
 
 class SuccessStoriesRepository {
-  static const String apiUrl =
-      'https://api.github.com/repos/Academia-IGIT/DATA_hub/contents/Success%20stories';
-  static const String rawBaseUrl =
-      'https://raw.githubusercontent.com/Academia-IGIT/DATA_hub/main/Success%20stories';
+  static const String apiUrl = GitHubSources.successStories;
+  static const String rawBaseUrl = GitHubSources.successStoriesRaw;
 
-  static Future<List<Map<String, String>>> fetchStories() async {
+  static Future<List<Map<String, String>>> fetchStories({
+    http.Client? client,
+  }) async {
+    final contentClient = client == null
+        ? GitHubContentClient.instance
+        : GitHubContentClient(client: client);
     try {
-      final response = await http.get(Uri.parse(apiUrl));
-
-      if (response.statusCode != 200) {
-        throw Exception('Failed to fetch files: ${response.body}');
-      }
-
-      final List<dynamic> files = json.decode(response.body);
+      final List<dynamic> files = json.decode(
+        await contentClient.getText(apiUrl),
+      );
       if (files.isEmpty) {
         debugPrint('No files found in the directory.');
         return [];
@@ -28,7 +29,7 @@ class SuccessStoriesRepository {
 
       for (var file in files) {
         if (file['name'].endsWith('.md')) {
-          final content = await _fetchFileContent(file['name']);
+          final content = await _fetchFileContent(file['name'], contentClient);
           if (content != null) {
             stories.add(content);
             debugPrint('Successfully parsed story: ${content['name']}');
@@ -48,17 +49,14 @@ class SuccessStoriesRepository {
     }
   }
 
-  static Future<Map<String, String>?> _fetchFileContent(String filename) async {
+  static Future<Map<String, String>?> _fetchFileContent(
+    String filename,
+    GitHubContentClient contentClient,
+  ) async {
     try {
-      final url = '$rawBaseUrl/$filename';
-      final response = await http.get(Uri.parse(url));
-
-      if (response.statusCode != 200) {
-        debugPrint('Failed to fetch content for $filename: ${response.body}');
-        return null;
-      }
-
-      final content = response.body;
+      final content = await contentClient.getText(
+        GitHubSources.successStory(filename),
+      );
       final metadata = RegExp(r'---(.*?)---', dotAll: true).firstMatch(content);
 
       if (metadata != null) {

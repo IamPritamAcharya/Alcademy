@@ -11,6 +11,7 @@ import 'package:port/features/home/presentation/widgets/home_subject_list.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:port/core/network/refresh_tracker.dart';
+import 'package:port/core/network/github_sources.dart';
 import 'package:port/shared/widgets/custom_snackbar.dart';
 
 import 'package:port/features/notes/data/subject_repository.dart';
@@ -112,8 +113,7 @@ class _FirstPageState extends State<HomeContentPage>
     try {
       final prefs = await SharedPreferences.getInstance();
       final selectedYearUrl =
-          prefs.getString('selectedYearUrl') ??
-          'https://raw.githubusercontent.com/Academia-IGIT/DATA_hub/main/firstyear.json';
+          prefs.getString('selectedYearUrl') ?? GitHubSources.defaultSubjects;
 
       subjectService.url = selectedYearUrl;
       final fetchedSubjects = await subjectService.fetchSubjects();

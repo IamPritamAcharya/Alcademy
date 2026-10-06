@@ -1,5 +1,6 @@
 import 'package:port/app/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:port/features/onboarding/presentation/welcome_page.dart';
 import 'package:port/features/profile/data/profile_repository.dart';
@@ -7,6 +8,7 @@ import 'package:port/features/profile/presentation/profile_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  setUp(() => FlutterSecureStorage.setMockInitialValues({}));
   testWidgets('Welcome page continues when Get Started is tapped', (
     tester,
   ) async {
@@ -47,7 +49,13 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.edit_note_outlined));
     await tester.pumpAndSettle();
-    await tester.enterText(find.byType(TextField), 'New Name');
+    await tester.enterText(
+      find.descendant(
+        of: find.byType(Dialog),
+        matching: find.byType(TextField),
+      ),
+      'New Name',
+    );
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 

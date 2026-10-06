@@ -1,0 +1,337 @@
+[
+  {
+    "name": "PYQs",
+    "items": [
+      {
+        "name": "5th Sem CSE 13",
+        "url": "https://drive.google.com/file/d/19zQJVPjFJPfMUiIUoTcf_7Vg2VgYpGLr/view?usp=drive_link"
+      },
+      {
+        "name": "1st CT 5th Sem CSE 14",
+        "url": "https://drive.google.com/file/d/14fR87ztplNf3deJxZSLtspzIE7Hvqnbc/view?usp=drive_link"
+      },
+      {
+        "name": "2nd CT 5th Sem CSE 14",
+        "url": "https://drive.google.com/file/d/1F8L4w3RJlC9X2l6FKM7vWUEb3XWN0O6F/view?usp=drive_link"
+      },
+      {
+        "name": "5th Sem CSE 14",
+        "url": "https://drive.google.com/file/d/13Y6ODDVMzz_wPK4NgqmUjXvoAD-oZ5sH/view?usp=drive_link"
+      },
+      {
+        "name": "1st CT 5th Sem CSE Questions 2023-24",
+        "url": "https://drive.google.com/file/d/13vgFG0btQiqabHh8C06TzYWJwiYOXmLt/view?usp=drive_link"
+      },
+      {
+        "name": "2nd CT 5th Sem CSE Questions 2023-24",
+        "url": "https://drive.google.com/file/d/1WLvCLOwveV_UgNTis5xZt8rrPpfea4WI/view?usp=drive_link"
+      },
+      {
+        "name": "5th Sem CSE Questions 2022-23",
+        "url": "https://drive.google.com/file/d/1fBMCH6nFi1Fmo28S6y_0nhQwIWvUS3cA/view?usp=drive_link"
+      }
+    ]
+  },
+  {
+    "name": "Class Notes",
+    "items": [
+      {
+        "name": "Cloud Computing Notes (till 10.11.23 - Fri)",
+        "url": "https://drive.google.com/file/d/16HiZWKJhXz9SPa-a4cGEfwczV5lg22GW/view?usp=drive_link"
+      },
+      {
+        "name": "CN Notes (till 10.11.23 -Fri)",
+        "url": "https://drive.google.com/file/d/1FtzD2Ylu1FbjHlOzIjiZtU-WBdEfrpEb/view?usp=drive_link"
+      },
+      {
+        "name": "CSA Notes (till 12.10.23 - Thu)",
+        "url": "https://drive.google.com/file/d/1msBrBzmxYIZM9UAg8Wr1e4C4K9UjbmCF/view?usp=drive_link"
+      },
+      {
+        "name": "DAA Notes (till 10.11.23 - Fri)",
+        "url": "https://drive.google.com/file/d/1RBqpSKG0lP0ZPvBOW3YbEx274b4HJTS-/view?usp=drive_link"
+      },
+      {
+        "name": "MPMC Notes (till 9.11.23 - Thu)",
+        "url": "https://drive.google.com/file/d/1vb43EaqHvCHvJ8LZgVPPM5-eMMu1qNi4/view?usp=drive_link"
+      }
+    ]
+  },
+  {
+    "name": "CN",
+    "items": [
+      {
+        "name": "Forouzan 4th Ed",
+        "url": "https://drive.google.com/file/d/1xY2-ah6rehF4jS_dHHXdSETbD5FaIBFU/view?usp=drive_link"
+      },
+      {
+        "name": "Forouzan 5th Ed",
+        "url": "https://drive.google.com/file/d/1wpSeBDVdjvsEJvN4kjPpAm3WXQV902Nd/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 01 - Introduction to Data Communication & Networking",
+        "url": "https://drive.google.com/file/d/1RNLyrr_AP7EjrsLNi0Gut9dGAPDjPPea/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 02 - Network Models",
+        "url": "https://drive.google.com/file/d/1Vbtlnt1lghc5zBJZVU90oVLgm0hdmQ3I/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 03 - Data _ Signals",
+        "url": "https://drive.google.com/file/d/16_o2xxFGMhNfizswNLCRXrP5zyqvoFxs/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 04 - Data Transmission",
+        "url": "https://drive.google.com/file/d/1VtRxc7rLQzdeFgGbyBe-F3qvCQmTfUpM/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 05 - Multiplexing",
+        "url": "https://drive.google.com/file/d/1vJFKt4EBTpS09AKplOFp6Wext1I27mRw/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 06 - Switching",
+        "url": "https://drive.google.com/file/d/1jLoU9K_JruH7ivXsLx3k3xmAnOgdoewh/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 07 - Transmission Media (Assignment)",
+        "url": "https://drive.google.com/file/d/1i3iSPZu3I3p6pf-gJwcdP4AfgcQUn9j3/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 08 - Error Detection _ Correction",
+        "url": "https://drive.google.com/file/d/12Zi9kOA4uLRlKWOsIEgQ0VfRWeQnjghg/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 09 - Framing, Data Link Control _ Multiple Access",
+        "url": "https://drive.google.com/file/d/1nOJKcUIg6tDiytEvINa-vnTejnGGJkT-/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 10 - Data Link Layer Protocols",
+        "url": "https://drive.google.com/file/d/1cVw91IgNnlprDbw73GzAKs3SYpXHY60E/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 11 - Wired LANs - Ethernet",
+        "url": "https://drive.google.com/file/d/14ql92P_l01lBM3HGMRcUOlPS72HqSgl3/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 12 - Wireless LAN _ Bluetooth",
+        "url": "https://drive.google.com/file/d/1WUfs-Nkb3JZQvCQ41iw7JL6xXTAL3nzT/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 13 - Connecting Devices (Assignment)",
+        "url": "https://drive.google.com/file/d/1VjUjbJCsvGK4glK8ljPRaRo31Nlb-yOE/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 14 - Virtual Circuit Networks - Frame Relay _ ATM (Assignment)",
+        "url": "https://drive.google.com/file/d/1XtI2BI9LsDgCsSbdjbphPIlbjchuCT5M/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 15 - Logical Addressing",
+        "url": "https://drive.google.com/file/d/1_MBaqQ0jlDA2jt1yIvApkJhlMwatRLZN/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 16 - Network Layer Protocols",
+        "url": "https://drive.google.com/file/d/1v5vDwEFvvN4Xy-YhXqdmgcjn7zclNFKH/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 17 - Routing _ Forwarding",
+        "url": "https://drive.google.com/file/d/1tz1m0d2wH_fYW__Y4wZmbL8m7JoqgxTn/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 18 - Port Addressing, UDP _ TCP",
+        "url": "https://drive.google.com/file/d/1nWWhXHpEGmBIfA2DT5BEvBS2VKWQ9xyt/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 19 - Congestion Control _ Quality of Service",
+        "url": "https://drive.google.com/file/d/1JnbPcBng2p5jHNaiZi8NPjnSgkgiBAUM/view?usp=drive_link"
+      },
+      {
+        "name": "Chapter 20 - Application Layer Services _ Protocols",
+        "url": "https://drive.google.com/file/d/1CWjMDitwfpvAu_hra9Fjvw0zosoDYhq9/view?usp=drive_link"
+      },
+      {
+        "name": "Computer Networks Lab Manual (NS-3)",
+        "url": "https://drive.google.com/file/d/14uDGfN81CL00Z3nUo4x8xLeJy-GfwbOC/view?usp=drive_link"
+      },
+      {
+        "name": "Computer Networks Laboratory Syllabus",
+        "url": "https://drive.google.com/file/d/1soj7qBOYu-5VYT5bP_CsaDHUdHGY9utn/view?usp=drive_link"
+      },
+      {
+        "name": "NS-3 Tutorial",
+        "url": "https://drive.google.com/file/d/1YHJXagJZQXi3uyICpGefR_fI6y7JsupX/view?usp=drive_link"
+      }
+    ]
+  },
+  {
+    "name": "CSA",
+    "items": [
+      {
+        "name": "1 - Number Systems",
+        "url": "https://drive.google.com/file/d/1gdgmrz9859wv3t8s0j5jhjW3fj3f9Zxc/view?usp=drive_link"
+      },
+      {
+        "name": "1.1 - Hardware & Software",
+        "url": "https://drive.google.com/file/d/1BCS3U9OXwLmGF4PYAdYsS2IizUAFfitJ/view?usp=drive_link"
+      },
+      {
+        "name": "2 - Arithmetic Calculations",
+        "url": "https://drive.google.com/file/d/1we4z5UrcUhymPK6L2KVf48yFLANSe4DK/view?usp=drive_link"
+      },
+      {
+        "name": "2.1 - Arithmetic Calculations 2",
+        "url": "https://drive.google.com/file/d/1DnYMMCill7u_efTBR0F0qMbvQ5CBuw2A/view?usp=drive_link"
+      },
+      {
+        "name": "3 - Truth Table and Logic Gates",
+        "url": "https://drive.google.com/file/d/1mx8Zm7V-1b6egPCTq2TJM-TDYepN5DAd/view?usp=drive_link"
+      },
+      {
+        "name": "3.1 - Logic Gates Book",
+        "url": "https://drive.google.com/file/d/1BmFPDod_shuqlwkJZKHFS_teMnsTOHX6/view?usp=drive_link"
+      },
+      {
+        "name": "4 - Combinational Circuits",
+        "url": "https://drive.google.com/file/d/1iopFNIa__dmgqR0l6tHLVzWlaZO49HeU/view?usp=drive_link"
+      },
+      {
+        "name": "4.1 - Combinational Circuits Book",
+        "url": "https://drive.google.com/file/d/1xdic-olsf3LzDc3Xe4uf-X77R69bDER4/view?usp=drive_link"
+      },
+      {
+        "name": "5 - Basic Input Output Operations",
+        "url": "https://drive.google.com/file/d/1F5q9U_tSmaS3SwRX7u_uYn41B7o23Quh/view?usp=drive_link"
+      },
+      {
+        "name": "6 - Basic Processing Unit",
+        "url": "https://drive.google.com/file/d/1UbmYjqWvsaela7kGDdte9_lrBl3ju-Ot/view?usp=drive_link"
+      },
+      {
+        "name": "7 - RISC CISC",
+        "url": "https://drive.google.com/file/d/1zjxUDwpzYjO9SfD1gk7ce_xow06AVt2Z/view?usp=drive_link"
+      },
+      {
+        "name": "8 - Pipelining",
+        "url": "https://drive.google.com/file/d/14UPOe1PZzqRKi05m05vwXHdkxp3_NZVy/view?usp=drive_link"
+      },
+      {
+        "name": "9 - Subroutine",
+        "url": "https://drive.google.com/file/d/1c-I1DW0iSr48rHBMlaEjoU8JaPl_fV6U/view?usp=drive_link"
+      },
+      {
+        "name": "10 - Memory Organisation",
+        "url": "https://drive.google.com/file/d/1L8ODmgtsJv07SI2eCwxRLYgV9tbPTNxX/view?usp=drive_link"
+      },
+      {
+        "name": "11 - Endianness White Paper",
+        "url": "https://drive.google.com/file/d/1S0c7jDGpM2y0EXmwYOGVJ9hU73qHKBXF/view?usp=drive_link"
+      },
+      {
+        "name": "12 - Microprocessor Architecture",
+        "url": "https://drive.google.com/file/d/1RDM6X0jfkAa02Dtgz5eAVVoLMJ5i3S9u/view?usp=drive_link"
+      }
+    ]
+  },
+  {
+    "name": "MPMC",
+    "items": [
+      {
+        "name": "8051 microcontroller",
+        "url": "https://drive.google.com/file/d/1n-CFjmCNkwKfgTd6K7uJXvnf9S5U6oQX/view?usp=drive_link"
+      },
+      {
+        "name": "8085-Microprocessor for class",
+        "url": "https://drive.google.com/file/d/1E0R1MPwe6vdxhuxEFh4cjFOVVQsd3fjF/view?usp=drive_link"
+      },
+      {
+        "name": "dma-controller-82571",
+        "url": "https://drive.google.com/file/d/1eALnoDX115I_6uP0W2umsSRyB_AfkE3a/view?usp=drive_link"
+      },
+      {
+        "name": "DMAController",
+        "url": "https://drive.google.com/file/d/1JeF73CY_rcXnU3CE7qD10Uy7iVveGajk/view?usp=drive_link"
+      },
+      {
+        "name": "MALP Digitization",
+        "url": "https://drive.google.com/file/d/1asymIpQQUsBWa1fxW_ZgVMT5fuPfNIRl/view?usp=drive_link"
+      },
+      {
+        "name": "MALP Lab Manual MCA1",
+        "url": "https://drive.google.com/file/d/1wKRlkHQmdUIiyGqT0719xPKPF8JW8bPj/view?usp=drive_link"
+      },
+      {
+        "name": "Microprocessor Unit- Memory interfacing & IO interfacing",
+        "url": "https://drive.google.com/file/d/1v7ZIrY_XQBe_p9ISrKwold7wSYcRHH8m/view?usp=drive_link"
+      },
+      {
+        "name": "MPMC Important Questions (till 4.9.23 - Mon)",
+        "url": "https://drive.google.com/file/d/19iNsRcIPZdLQkxwv0e5x-VBw7Y-VyidK/view?usp=drive_link"
+      },
+      {
+        "name": "USART",
+        "url": "https://drive.google.com/file/d/1VywFvHsPDcn8YDtDrA6eQtPh75tLPplS/view?usp=drive_link"
+      },
+      {
+        "name": "MPMC All Experiments (Senior)",
+        "url": "https://drive.google.com/file/d/1sqKizlJpZ_w2W9Fymfy7mrN50MrpWbFN/view?usp=drive_link"
+      }
+    ]
+  },
+  {
+    "name": "SA(H)",
+    "items": [
+      {
+        "name": "01-component-diagram-example",
+        "url": "https://drive.google.com/file/d/1IGKV-1YciokPdweNVvbDmhJyKpQJsve1/view?usp=drive_link"
+      },
+      {
+        "name": "04-activity-diagram-example-process-order",
+        "url": "https://drive.google.com/file/d/1oQBG-h0xe2zfGjpjld3HRDNmWGtAlq3T/view?usp=drive_link"
+      },
+      {
+        "name": "Architecture Design",
+        "url": "https://drive.google.com/file/d/1Vf9Ho0TAvko_tR0uClcKRrIKxsdzuRje/view?usp=drive_link"
+      },
+      {
+        "name": "deployment-diagram-example-700x412@2x",
+        "url": "https://drive.google.com/file/d/1UljLArZvn-VN0wNueQ3IRNsorGI5qGc0/view?usp=drive_link"
+      },
+      {
+        "name": "interaction overview",
+        "url": "https://drive.google.com/file/d/1V8FGFZSSuVh8fuqbZXNxZnAzpW8v8-hD/view?usp=drive_link"
+      },
+      {
+        "name": "library-domain-uml-class-diagram-example",
+        "url": "https://drive.google.com/file/d/1GeJqnaz2jPr8Pr963UmKDQ1yZiZewCVK/view?usp=drive_link"
+      },
+      {
+        "name": "login-communication-diagram",
+        "url": "https://drive.google.com/file/d/1cdtjQ02AKYVYWLrm35LxYz9zAtRE-PhJ/view?usp=drive_link"
+      },
+      {
+        "name": "sequence diagram",
+        "url": "https://drive.google.com/file/d/1hcncMlK9D5ma27TYqnLni7qabI6bbpMo/view?usp=drive_link"
+      },
+      {
+        "name": "state machine diagram",
+        "url": "https://drive.google.com/file/d/1LqTT15RGM7xZaoHlP13m5xpF7e6mAFrN/view?usp=drive_link"
+      },
+      {
+        "name": "timing diagram",
+        "url": "https://drive.google.com/file/d/1FDDqidAOniETIm7S_trQXwjEb3hCpOan/view?usp=drive_link"
+      },
+      {
+        "name": "UML-Package-Diagram@2x",
+        "url": "https://drive.google.com/file/d/1fR9d_VO-xExnZh6ew69UHWLvp5iOMiVs/view?usp=drive_link"
+      },
+      {
+        "name": "Use-case-diagram-example",
+        "url": "https://drive.google.com/file/d/1_-CoIWSeVDIJg7nYavgRBDI6p00zkwcd/view?usp=drive_link"
+      },
+      {
+        "name": "what-is-object-diagram",
+        "url": "https://drive.google.com/file/d/1PY3efP6Bci4PjRHYd0bXpWyNgRKGUjqW/view?usp=drive_link"
+      }
+    ]
+  }
+  ]
+  
