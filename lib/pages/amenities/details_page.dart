@@ -7,7 +7,7 @@ class DetailsPage extends StatefulWidget {
   const DetailsPage({super.key, required this.item});
 
   @override
-  _DetailsPageState createState() => _DetailsPageState();
+  State<DetailsPage> createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
@@ -38,7 +38,7 @@ class _DetailsPageState extends State<DetailsPage> {
     showDialog(
       context: context,
       builder: (context) => Dialog(
-        backgroundColor: Colors.black.withOpacity(0.9),
+        backgroundColor: Colors.black.withValues(alpha: 0.9),
         insetPadding: const EdgeInsets.all(20),
         child: Container(
           constraints: BoxConstraints(
@@ -90,7 +90,7 @@ class _DetailsPageState extends State<DetailsPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.4),
+            color: Colors.white.withValues(alpha: 0.4),
             height: 1.5,
           ),
         ),
@@ -179,8 +179,7 @@ class _DetailsPageState extends State<DetailsPage> {
               padding: const EdgeInsets.all(16.0),
               color: const Color(0xFF1A1D1E),
               child: Align(
-                alignment:
-                    Alignment.centerLeft, 
+                alignment: Alignment.centerLeft,
                 child: MarkdownBody(
                   data:
                       widget.item['description'] ?? 'No description available.',

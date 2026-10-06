@@ -11,7 +11,7 @@ class NotesSelector extends StatefulWidget {
   const NotesSelector({super.key});
 
   @override
-  _NotesSelectorState createState() => _NotesSelectorState();
+  State<NotesSelector> createState() => _NotesSelectorState();
 }
 
 class _NotesSelectorState extends State<NotesSelector> {
@@ -47,7 +47,7 @@ class _NotesSelectorState extends State<NotesSelector> {
         isDataFetched = true;
         isLoading = false;
       } catch (e) {
-        print('Error parsing cached data: $e');
+        debugPrint('Error parsing cached data: $e');
       }
     } else {
       _fetchYearLinks();
@@ -85,6 +85,7 @@ class _NotesSelectorState extends State<NotesSelector> {
         throw Exception('Failed to fetch year links.');
       }
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar.build(
           message: 'Error fetching data: $e',
@@ -92,15 +93,18 @@ class _NotesSelectorState extends State<NotesSelector> {
         ),
       );
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
   Future<void> _refreshYearLinks() async {
     bool isRefreshAllowed = await RefreshTracker.incrementRefreshCount();
     if (!isRefreshAllowed) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar.build(
           isCooldown: true,
@@ -112,7 +116,7 @@ class _NotesSelectorState extends State<NotesSelector> {
       isDataFetched = false;
       await _fetchYearLinks();
     } catch (e) {
-      print('Error during refresh: $e');
+      debugPrint('Error during refresh: $e');
     }
   }
 
@@ -152,7 +156,7 @@ class _NotesSelectorState extends State<NotesSelector> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -203,16 +207,16 @@ class _NotesSelectorState extends State<NotesSelector> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: isSelected
-                            ? Colors.greenAccent.withOpacity(0.1)
-                            : Colors.white.withOpacity(0.05),
+                            ? Colors.greenAccent.withValues(alpha: 0.1)
+                            : Colors.white.withValues(alpha: 0.05),
                         border: Border.all(
                           color: isSelected
                               ? Colors.greenAccent
-                              : Colors.white.withOpacity(0.1),
+                              : Colors.white.withValues(alpha: 0.1),
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             blurRadius: 6,
                             offset: const Offset(0, 3),
                           ),

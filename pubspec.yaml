@@ -52,8 +52,6 @@ dependencies:
   image_picker: ^1.1.2
   path_provider: ^2.0.11
   file_picker: ^8.1.6
-  supabase_flutter: ^2.8.4
-  google_sign_in: ^6.2.2
   animated_text_kit: ^4.2.2
   dash_chat_2: ^0.0.21
   lottie: ^3.3.0
@@ -65,11 +63,15 @@ dependencies:
   flutter_spinkit: ^5.2.1
   firebase_core: ^3.13.0
   local_auth: ^2.3.0
-  flutter_image_compress: ^2.4.0
 
 
 
 
+  http: ^1.5.0
+  video_player: any
+  cached_network_image: any
+  intl: any
+  path: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -93,7 +95,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - lib/file assets/googleicon.png
     - lib/file assets/codex.jpeg
     - lib/file assets/insta.png
     - lib/file assets/link.png
@@ -119,10 +120,10 @@ flutter:
   fonts:
     - family: ProductSans
       fonts:
-        - asset: lib\file assets\fonts\Product Sans Regular.ttf
-        - asset: lib\file assets\fonts\Product Sans Bold Italic.ttf
+        - asset: lib/file assets/fonts/Product Sans Regular.ttf
+        - asset: lib/file assets/fonts/Product Sans Bold Italic.ttf
           style: italic
-        - asset: lib\file assets\fonts\Product Sans Bold.ttf
+        - asset: lib/file assets/fonts/Product Sans Bold.ttf
           weight: 700
   #   - family: Trajan Pro
   #     fonts:

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -17,11 +18,11 @@ class DataFetchService {
 
       final List<dynamic> files = json.decode(response.body);
       if (files.isEmpty) {
-        print('No files found in the directory.');
+        debugPrint('No files found in the directory.');
         return [];
       }
 
-      print('Fetched ${files.length} files from GitHub.');
+      debugPrint('Fetched ${files.length} files from GitHub.');
 
       final List<Map<String, String>> stories = [];
 
@@ -30,19 +31,19 @@ class DataFetchService {
           final content = await _fetchFileContent(file['name']);
           if (content != null) {
             stories.add(content);
-            print('Successfully parsed story: ${content['name']}');
+            debugPrint('Successfully parsed story: ${content['name']}');
           } else {
-            print('Skipped invalid file: ${file['name']}');
+            debugPrint('Skipped invalid file: ${file['name']}');
           }
         } else {
-          print('Ignored non-MD file: ${file['name']}');
+          debugPrint('Ignored non-MD file: ${file['name']}');
         }
       }
 
-      print('Total valid stories fetched: ${stories.length}');
+      debugPrint('Total valid stories fetched: ${stories.length}');
       return stories;
     } catch (e) {
-      print('Error in fetchStories: $e');
+      debugPrint('Error in fetchStories: $e');
       rethrow;
     }
   }
@@ -53,7 +54,7 @@ class DataFetchService {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode != 200) {
-        print('Failed to fetch content for $filename: ${response.body}');
+        debugPrint('Failed to fetch content for $filename: ${response.body}');
         return null;
       }
 
@@ -75,13 +76,13 @@ class DataFetchService {
             'body': body,
           };
         } else {
-          print('Invalid metadata in file $filename. Details: $details');
+          debugPrint('Invalid metadata in file $filename. Details: $details');
         }
       } else {
-        print('Missing metadata in file $filename');
+        debugPrint('Missing metadata in file $filename');
       }
     } catch (e) {
-      print('Error in _fetchFileContent for $filename: $e');
+      debugPrint('Error in _fetchFileContent for $filename: $e');
     }
 
     return null;

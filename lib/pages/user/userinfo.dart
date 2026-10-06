@@ -3,29 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:port/onboarding/utils/user_data.dart';
-import 'package:port/pages/user/NavigationTile.dart';
-import 'package:port/pages/user/access.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'google_auth_widget.dart';
+import 'package:port/pages/user/navigation_tile.dart';
 import 'profile_card.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({super.key});
 
   @override
-  _UserProfilePageState createState() => _UserProfilePageState();
+  State<UserProfilePage> createState() => _UserProfilePageState();
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
   String? userName;
   String? branch;
   late Future<void> _refreshFuture;
-  bool canUpload = false;
 
   @override
   void initState() {
     super.initState();
-    checkUserAccess();
     _refreshFuture = loadUserData();
   }
 
@@ -33,16 +28,17 @@ class _UserProfilePageState extends State<UserProfilePage> {
     try {
       final name = await UserData.getUserName();
       final userBranch = await UserData.getUserBranch();
+      if (!mounted) return;
 
-      print('Fetched Name: $name');
-      print('Fetched Branch: $userBranch');
+      debugPrint('Fetched Name: $name');
+      debugPrint('Fetched Branch: $userBranch');
 
       setState(() {
         userName = name ?? "User Name";
         branch = userBranch ?? "Branch Name";
       });
     } catch (e) {
-      print('Error loading user data: $e');
+      debugPrint('Error loading user data: $e');
     }
   }
 
@@ -56,22 +52,22 @@ class _UserProfilePageState extends State<UserProfilePage> {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 4, sigmaY: 8),
           child: Dialog(
-            backgroundColor: Colors.black.withOpacity(0.1),
+            backgroundColor: Colors.black.withValues(alpha: 0.1),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.08),
+                color: Colors.white.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Colors.white.withValues(alpha: 0.15),
                   width: 1.5,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
+                    color: Colors.black.withValues(alpha: 0.3),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
                   ),
@@ -100,13 +96,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     decoration: InputDecoration(
                       hintText: "Enter your name",
                       hintStyle: TextStyle(
-                        color: Colors.white.withOpacity(0.5),
+                        color: Colors.white.withValues(alpha: 0.5),
                         fontFamily: 'ProductSans',
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(
-                          color: Colors.white.withOpacity(0.3),
+                          color: Colors.white.withValues(alpha: 0.3),
                           width: 1.5,
                         ),
                       ),
@@ -118,7 +114,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         ),
                       ),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withValues(alpha: 0.1),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -141,6 +137,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           final newName = nameController.text.trim();
                           if (newName.isNotEmpty) {
                             await UserData.saveUserName(newName);
+                            if (!mounted || !context.mounted) return;
                             setState(() {
                               userName = newName;
                             });
@@ -148,7 +145,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.greenAccent.withOpacity(0.8),
+                          backgroundColor:
+                              Colors.greenAccent.withValues(alpha: 0.8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -204,7 +202,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -235,13 +233,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   height: 1,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: SignInWidget(),
               ),
               Expanded(
                 child: ListView(
@@ -253,14 +247,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         context.push('/api');
                       },
                     ),
-                    if (canUpload)
-                      NavigationTile(
-                        icon: LineIcons.upload,
-                        title: "Upload",
-                        onTap: () {
-                          context.push('/upload');
-                        },
-                      ),
                   ],
                 ),
               ),
@@ -269,16 +255,5 @@ class _UserProfilePageState extends State<UserProfilePage> {
         },
       ),
     );
-  }
-
-  Future<void> checkUserAccess() async {
-    final supabase = Supabase.instance.client;
-    final user = supabase.auth.currentUser;
-    if (user == null) return;
-
-    List<UserAccess> allowedUsers = await fetchAllowedUsers();
-    setState(() {
-      canUpload = allowedUsers.any((u) => u.userId == user.id);
-    });
   }
 }

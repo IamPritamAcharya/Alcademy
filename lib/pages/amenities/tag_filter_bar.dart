@@ -5,7 +5,8 @@ class TagFilterBar extends StatelessWidget {
   final String selectedTag;
   final Function(String) onTagSelected;
 
-  const TagFilterBar({super.key, 
+  const TagFilterBar({
+    super.key,
     required this.tags,
     required this.selectedTag,
     required this.onTagSelected,
@@ -48,7 +49,6 @@ class TagFilterBar extends StatelessWidget {
                     selectedColor: Colors.white,
                     backgroundColor: const Color(0xFF1A1D1E),
                     onSelected: (isSelected) => onTagSelected(tag),
-                    
                   ),
                 )),
           ],

@@ -27,7 +27,7 @@ class NotificationDetailPage extends StatelessWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -64,7 +64,7 @@ class NotificationDetailPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.blue.withOpacity(0.4),
+                        color: Colors.blue.withValues(alpha: 0.4),
                         blurRadius: 20,
                         offset: Offset(0, 8),
                       ),
@@ -96,10 +96,10 @@ class NotificationDetailPage extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
+                    color: Colors.white.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.1),
+                      color: Colors.white.withValues(alpha: 0.1),
                     ),
                   ),
                   child: Text(
@@ -121,7 +121,7 @@ class NotificationDetailPage extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       Colors.transparent,
-                      Colors.grey.withOpacity(0.3),
+                      Colors.grey.withValues(alpha: 0.3),
                       Colors.transparent,
                     ],
                   ),
@@ -158,7 +158,7 @@ class NotificationDetailPage extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         Colors.transparent,
-                        Colors.grey.withOpacity(0.3),
+                        Colors.grey.withValues(alpha: 0.3),
                         Colors.transparent,
                       ],
                     ),
@@ -194,14 +194,14 @@ class NotificationDetailPage extends StatelessWidget {
                         width: double.infinity,
                         padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Color(0xFF1A1A1A).withOpacity(0.6),
+                          color: Color(0xFF1A1A1A).withValues(alpha: 0.6),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: Colors.grey.withOpacity(0.15),
+                            color: Colors.grey.withValues(alpha: 0.15),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withValues(alpha: 0.2),
                               blurRadius: 8,
                               offset: Offset(0, 2),
                             ),
@@ -222,7 +222,7 @@ class NotificationDetailPage extends StatelessWidget {
                             gradient: LinearGradient(
                               colors: [
                                 Colors.transparent,
-                                Colors.grey.withOpacity(0.2),
+                                Colors.grey.withValues(alpha: 0.2),
                                 Colors.transparent,
                               ],
                             ),

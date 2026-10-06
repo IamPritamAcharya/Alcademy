@@ -6,7 +6,7 @@ class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
 
   @override
-  _AboutPageState createState() => _AboutPageState();
+  State<AboutPage> createState() => _AboutPageState();
 }
 
 class _AboutPageState extends State<AboutPage> {
@@ -30,7 +30,7 @@ class _AboutPageState extends State<AboutPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -45,7 +45,7 @@ class _AboutPageState extends State<AboutPage> {
               const SizedBox(height: 20),
               _buildMaintainerCard(),
               const SizedBox(height: 20),
-              _buildClubSection(),
+              _buildAcknowledgmentsSection(),
               const SizedBox(height: 20),
               _buildWhatsAppSection(),
               const SizedBox(height: 20),
@@ -181,7 +181,7 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  Widget _buildClubSection() {
+  Widget _buildAcknowledgmentsSection() {
     return _buildGlassBox(
       child: Column(
         children: [
@@ -332,12 +332,12 @@ class _AboutPageState extends State<AboutPage> {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.2)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.4),
+            color: Colors.black.withValues(alpha: 0.4),
             blurRadius: 8,
             offset: Offset(2, 2),
           ),
@@ -355,8 +355,8 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   Future<void> _openUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       throw 'Could not launch $url';
     }

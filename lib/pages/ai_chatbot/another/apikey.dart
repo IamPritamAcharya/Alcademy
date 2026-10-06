@@ -32,6 +32,7 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('api_key', _apiKeyController.text);
 
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Row(
@@ -48,7 +49,6 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
   }
 
   Future<void> _clearApiKey() async {
-
     final shouldClear = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -86,10 +86,11 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('api_key');
 
+      if (!mounted) return;
+
       setState(() {
         _apiKeyController.clear();
       });
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Row(
@@ -112,6 +113,7 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
     if (await canLaunchUrlString(url)) {
       await launchUrlString(url);
     } else {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Could not launch URL')),
       );
@@ -139,7 +141,7 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -218,7 +220,8 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
                                 ? _clearApiKey
                                 : null,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red.withOpacity(0.8),
+                              backgroundColor:
+                                  Colors.red.withValues(alpha: 0.8),
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
                                   vertical: 14, horizontal: 20),
@@ -226,7 +229,7 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               disabledBackgroundColor:
-                                  Colors.grey.withOpacity(0.3),
+                                  Colors.grey.withValues(alpha: 0.3),
                             ),
                             child: const Icon(Icons.clear),
                           ),

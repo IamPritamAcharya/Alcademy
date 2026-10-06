@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +21,7 @@ class ApiService {
                 })
             .toList();
       } catch (e) {
-        print('Error parsing cached data: $e');
+        debugPrint('Error parsing cached data: $e');
       }
     }
 
@@ -36,14 +37,13 @@ class ApiService {
                 })
             .toList();
 
-   
         await prefs.setString('cachedYearLinks', json.encode(notes));
         return notes;
       } else {
         throw Exception('Failed to fetch notes from API.');
       }
     } catch (e) {
-      print('Error fetching notes: $e');
+      debugPrint('Error fetching notes: $e');
       rethrow;
     }
   }
@@ -58,7 +58,6 @@ class ApiService {
     await prefs.setString('userBranch', branch);
     await prefs.setString('selectedYearUrl', noteUrl);
   }
-
 
   static Future<Map<String, String?>> getUserPreferences() async {
     final prefs = await SharedPreferences.getInstance();

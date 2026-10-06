@@ -23,11 +23,11 @@ class BudgetSection extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 31, 34, 35), 
+          color: const Color.fromARGB(255, 31, 34, 35),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05), 
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 6,
               offset: const Offset(0, 2),
             ),
@@ -36,7 +36,6 @@ class BudgetSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -92,7 +91,6 @@ class BudgetSection extends StatelessWidget {
               thickness: 0.5,
               height: 24,
             ),
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

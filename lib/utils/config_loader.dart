@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:port/utils/config.dart';
@@ -6,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ConfigService {
   static const String settingsUrl =
       'https://raw.githubusercontent.com/IamPritamAcharya/DATA_hub/main/settings.json';
-  static const int fetchIntervalHours = 1; 
+  static const int fetchIntervalHours = 1;
 
   static Future<void> fetchAndUpdateConfig() async {
     final prefs = await SharedPreferences.getInstance();
@@ -14,13 +15,12 @@ class ConfigService {
     String? lastFetchDateString = prefs.getString('lastFetchDate');
     DateTime now = DateTime.now();
 
-    
     if (lastFetchDateString != null) {
       DateTime lastFetchDate = DateTime.parse(lastFetchDateString);
       Duration timeSinceLastFetch = now.difference(lastFetchDate);
 
       if (timeSinceLastFetch.inHours < fetchIntervalHours) {
-        print(
+        debugPrint(
             "Using cached configuration. Next fetch in ${fetchIntervalHours - timeSinceLastFetch.inHours} hour(s).");
         _loadFromSharedPreferences(prefs);
         return;
@@ -31,7 +31,7 @@ class ConfigService {
       final response = await http.get(Uri.parse(settingsUrl)).timeout(
         Duration(seconds: 10),
         onTimeout: () {
-          print("Request to $settingsUrl timed out");
+          debugPrint("Request to $settingsUrl timed out");
           throw Exception("Request timeout");
         },
       );
@@ -39,7 +39,7 @@ class ConfigService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> configData = jsonDecode(response.body);
 
-        print("Fetched Config Data: $configData");
+        debugPrint("Fetched Config Data: $configData");
 
         _updateGlobalVariables(configData);
 
@@ -47,13 +47,13 @@ class ConfigService {
 
         await prefs.setString('lastFetchDate', now.toIso8601String());
 
-        print("Configuration fetched, updated, and cached.");
+        debugPrint("Configuration fetched, updated, and cached.");
       } else {
-        print("Failed to fetch configuration: ${response.statusCode}");
+        debugPrint("Failed to fetch configuration: ${response.statusCode}");
         _loadFromSharedPreferences(prefs);
       }
     } catch (e) {
-      print("Error fetching configuration: $e");
+      debugPrint("Error fetching configuration: $e");
       _loadFromSharedPreferences(prefs);
     }
   }
@@ -62,8 +62,6 @@ class ConfigService {
     try {
       String? storyUrlsString = prefs.getString('storyUrls');
       String? contributorsString = prefs.getString('contributors');
-      String? bannedEmailsString = prefs.getString('bannedEmails');
-      String? bannedWordsString = prefs.getString('bannedWords');
 
       if (storyUrlsString != null && storyUrlsString.isNotEmpty) {
         storyUrls = List<Map<String, String>>.from(
@@ -79,20 +77,12 @@ class ConfigService {
         );
       }
 
-      if (bannedEmailsString != null && bannedEmailsString.isNotEmpty) {
-        bannedEmails = List<String>.from(jsonDecode(bannedEmailsString));
-      }
-
-      if (bannedWordsString != null && bannedWordsString.isNotEmpty) {
-        bannedWords = List<String>.from(jsonDecode(bannedWordsString));
-      }
-
-      name_1st_tab = prefs.getString('name_1st_tab') ?? 'Horizon';
-      markdownContent_1st_tab =
+      nameFirstTab = prefs.getString('name_1st_tab') ?? 'Horizon';
+      markdownContentFirstTab =
           prefs.getString('markdownContent_1st_tab') ?? '';
       showFirstTab = prefs.getBool('showFirstTab') ?? true;
     } catch (e) {
-      print("Error loading data from SharedPreferences: $e");
+      debugPrint("Error loading data from SharedPreferences: $e");
     }
   }
 
@@ -106,13 +96,11 @@ class ConfigService {
           .map((item) => Map<String, String>.from(item))
           .toList();
 
-      bannedEmails = List<String>.from(configData['bannedEmails']);
-      bannedWords = List<String>.from(configData['bannedWords']);
-      name_1st_tab = configData['name_1st_tab'] ?? 'Horizon';
-      markdownContent_1st_tab = configData['markdownContent_1st_tab'] ?? "";
+      nameFirstTab = configData['name_1st_tab'] ?? 'Horizon';
+      markdownContentFirstTab = configData['markdownContent_1st_tab'] ?? "";
       showFirstTab = configData['showFirstTab'] ?? true;
     } catch (e) {
-      print("Error updating global variables: $e");
+      debugPrint("Error updating global variables: $e");
     }
   }
 
@@ -120,13 +108,11 @@ class ConfigService {
     try {
       await prefs.setString('storyUrls', jsonEncode(storyUrls));
       await prefs.setString('contributors', jsonEncode(contributors));
-      await prefs.setString('bannedEmails', jsonEncode(bannedEmails));
-      await prefs.setString('bannedWords', jsonEncode(bannedWords));
-      await prefs.setString('name_1st_tab', name_1st_tab);
-      await prefs.setString('markdownContent_1st_tab', markdownContent_1st_tab);
+      await prefs.setString('name_1st_tab', nameFirstTab);
+      await prefs.setString('markdownContent_1st_tab', markdownContentFirstTab);
       await prefs.setBool('showFirstTab', showFirstTab);
     } catch (e) {
-      print("Error saving data to SharedPreferences: $e");
+      debugPrint("Error saving data to SharedPreferences: $e");
     }
   }
 }

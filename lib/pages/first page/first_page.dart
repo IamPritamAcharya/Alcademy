@@ -7,7 +7,7 @@ import 'package:port/pages/first%20page/widgets/tabs_widget.dart';
 import 'package:port/utils/config.dart';
 import 'package:port/pages/stories/stories_widget.dart';
 
-import 'package:port/pages/first%20page/ExpandableHeader.dart';
+import 'package:port/pages/first%20page/expandable_header.dart';
 import 'package:port/pages/first%20page/first_page_background.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/refresh_tracker.dart';
@@ -28,7 +28,7 @@ class FirstPage extends StatefulWidget {
   const FirstPage({super.key, this.scaffoldKey});
 
   @override
-  _FirstPageState createState() => _FirstPageState();
+  State<FirstPage> createState() => _FirstPageState();
 }
 
 class _FirstPageState extends State<FirstPage>
@@ -254,6 +254,7 @@ class _FirstPageState extends State<FirstPage>
               bool isRefreshAllowed =
                   await RefreshTracker.incrementRefreshCount();
               if (!isRefreshAllowed) {
+                if (!context.mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
                   CustomSnackBar.build(
                     isCooldown: true,
@@ -275,7 +276,7 @@ class _FirstPageState extends State<FirstPage>
 
               await Future.wait([
                 _fetchSelectedYearAndSubjects(),
-                _loadUserData(), 
+                _loadUserData(),
               ]);
             },
             child: Stack(
@@ -332,15 +333,13 @@ class _FirstPageState extends State<FirstPage>
 
   Widget _buildQuickAccessSection() {
     return SliverToBoxAdapter(
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TabsWidget(
-              onTabPressed: (tabName) {},
-            ),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TabsWidget(
+            onTabPressed: (tabName) {},
+          ),
+        ],
       ),
     );
   }
@@ -350,9 +349,9 @@ class _FirstPageState extends State<FirstPage>
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
-        color: Colors.red.withOpacity(0.1),
+        color: Colors.red.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.red.withOpacity(0.3)),
+        border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [
@@ -370,7 +369,7 @@ class _FirstPageState extends State<FirstPage>
           Text(
             errorMessage ?? 'Please try again',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 16,
             ),
             textAlign: TextAlign.center,
@@ -407,7 +406,7 @@ class _FirstPageState extends State<FirstPage>
           Icon(
             LineIcons.book,
             size: 64,
-            color: Colors.white.withOpacity(0.5),
+            color: Colors.white.withValues(alpha: 0.5),
           ),
           const SizedBox(height: 20),
           Text(
@@ -422,7 +421,7 @@ class _FirstPageState extends State<FirstPage>
           Text(
             'Check back later for updates',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 16,
             ),
           ),

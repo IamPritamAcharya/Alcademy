@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'details_page.dart'; 
+import 'details_page.dart';
 
 class AmenitiesList extends StatelessWidget {
   final List<dynamic> items;
@@ -59,7 +59,7 @@ class AmenitiesList extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withValues(alpha: 0.5),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
                   ),
@@ -68,7 +68,6 @@ class AmenitiesList extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 
                   Stack(
                     children: [
                       Hero(
@@ -100,7 +99,7 @@ class AmenitiesList extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.6),
+                            color: Colors.black.withValues(alpha: 0.6),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
@@ -116,7 +115,6 @@ class AmenitiesList extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
                   Center(
                     child: Container(
                       padding: const EdgeInsets.all(16),

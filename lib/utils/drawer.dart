@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:port/onboarding/utils/user_data.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UniqueDrawer extends StatefulWidget {
   final Color themeColor;
@@ -10,14 +9,13 @@ class UniqueDrawer extends StatefulWidget {
   const UniqueDrawer({super.key, required this.themeColor});
 
   @override
-  _UniqueDrawerState createState() => _UniqueDrawerState();
+  State<UniqueDrawer> createState() => _UniqueDrawerState();
 }
 
 class _UniqueDrawerState extends State<UniqueDrawer>
     with TickerProviderStateMixin {
   String userName = "Guest User";
-  String userEmail = "guest@alcademy.com";
-  String? userProfileImage;
+  String userBranch = "Alcademy Student";
   bool _isLoading = true;
   ImageProvider? _imageProvider;
 
@@ -28,25 +26,13 @@ class _UniqueDrawerState extends State<UniqueDrawer>
     _loadUserData();
   }
 
-
   Future<void> _loadUserData() async {
-    final supabase = Supabase.instance.client;
-    final user = supabase.auth.currentUser;
-
     final savedUserName = await UserData.getUserName();
-
-    userName =
-        savedUserName ?? user?.userMetadata?['full_name'] ?? "Guest User";
-    userEmail = user?.email ?? "guest@alcademy.com";
-    userProfileImage = user?.userMetadata?['avatar_url'];
-
-    if (userProfileImage != null) {
-      _imageProvider = NetworkImage(userProfileImage!);
-      await precacheImage(_imageProvider!, context);
-    } else {
-      _imageProvider =
-          const AssetImage('lib/file assets/placeholderPerson.png');
-    }
+    final savedBranch = await UserData.getUserBranch();
+    if (!mounted) return;
+    userName = savedUserName ?? "Guest User";
+    userBranch = savedBranch ?? "Alcademy Student";
+    _imageProvider = const AssetImage('lib/file assets/placeholderPerson.png');
 
     if (mounted) {
       setState(() {
@@ -62,14 +48,14 @@ class _UniqueDrawerState extends State<UniqueDrawer>
         icon: LineIcons.user,
         route: '/user',
         label: 'Profile',
-        subtitle: 'Manage your account',
+        subtitle: 'Your name & branch',
         size: BentoSize.large,
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.blue.withOpacity(0.8),
-            Colors.purple.withOpacity(0.6),
+            Colors.blue.withValues(alpha: 0.8),
+            Colors.purple.withValues(alpha: 0.6),
           ],
         ),
       ),
@@ -80,8 +66,8 @@ class _UniqueDrawerState extends State<UniqueDrawer>
         size: BentoSize.medium,
         gradient: LinearGradient(
           colors: [
-            Colors.green.withOpacity(0.7),
-            Colors.teal.withOpacity(0.5),
+            Colors.green.withValues(alpha: 0.7),
+            Colors.teal.withValues(alpha: 0.5),
           ],
         ),
       ),
@@ -92,8 +78,8 @@ class _UniqueDrawerState extends State<UniqueDrawer>
         size: BentoSize.medium,
         gradient: LinearGradient(
           colors: [
-            Colors.orange.withOpacity(0.7),
-            Colors.deepOrange.withOpacity(0.5),
+            Colors.orange.withValues(alpha: 0.7),
+            Colors.deepOrange.withValues(alpha: 0.5),
           ],
         ),
       ),
@@ -107,8 +93,8 @@ class _UniqueDrawerState extends State<UniqueDrawer>
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
           colors: [
-            Colors.indigo.withOpacity(0.8),
-            Colors.blue.withOpacity(0.6),
+            Colors.indigo.withValues(alpha: 0.8),
+            Colors.blue.withValues(alpha: 0.6),
           ],
         ),
       ),
@@ -119,8 +105,8 @@ class _UniqueDrawerState extends State<UniqueDrawer>
         size: BentoSize.small,
         gradient: LinearGradient(
           colors: [
-            Colors.cyan.withOpacity(0.6),
-            Colors.blue.withOpacity(0.4),
+            Colors.cyan.withValues(alpha: 0.6),
+            Colors.blue.withValues(alpha: 0.4),
           ],
         ),
       ),
@@ -131,8 +117,8 @@ class _UniqueDrawerState extends State<UniqueDrawer>
         size: BentoSize.small,
         gradient: LinearGradient(
           colors: [
-            Colors.pink.withOpacity(0.6),
-            Colors.purple.withOpacity(0.4),
+            Colors.pink.withValues(alpha: 0.6),
+            Colors.purple.withValues(alpha: 0.4),
           ],
         ),
       ),
@@ -143,8 +129,8 @@ class _UniqueDrawerState extends State<UniqueDrawer>
         size: BentoSize.small,
         gradient: LinearGradient(
           colors: [
-            Colors.amber.withOpacity(0.6),
-            Colors.orange.withOpacity(0.4),
+            Colors.amber.withValues(alpha: 0.6),
+            Colors.orange.withValues(alpha: 0.4),
           ],
         ),
       ),
@@ -155,8 +141,8 @@ class _UniqueDrawerState extends State<UniqueDrawer>
         size: BentoSize.small,
         gradient: LinearGradient(
           colors: [
-            Colors.grey.withOpacity(0.6),
-            Colors.blueGrey.withOpacity(0.4),
+            Colors.grey.withValues(alpha: 0.6),
+            Colors.blueGrey.withValues(alpha: 0.4),
           ],
         ),
       ),
@@ -168,8 +154,8 @@ class _UniqueDrawerState extends State<UniqueDrawer>
         size: BentoSize.large,
         gradient: LinearGradient(
           colors: [
-            Colors.orangeAccent.withOpacity(0.6),
-            Colors.pinkAccent.withOpacity(0.4),
+            Colors.orangeAccent.withValues(alpha: 0.6),
+            Colors.pinkAccent.withValues(alpha: 0.4),
           ],
         ),
       ),
@@ -177,30 +163,28 @@ class _UniqueDrawerState extends State<UniqueDrawer>
 
     return Drawer(
       backgroundColor: const Color(0xFF0A0A0A),
-      child: Container(
-        child: Column(
-          children: [
-            _buildModernHeader(),
-            Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: _buildBentoGrid(bentoItems),
+      child: Column(
+        children: [
+          _buildModernHeader(),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: _buildBentoGrid(bentoItems),
+                ),
+                SliverToBoxAdapter(
+                  child: Divider(
+                    color: Colors.white12,
+                    height: 0.5,
                   ),
-                  SliverToBoxAdapter(
-                    child: Divider(
-                      color: Colors.white12,
-                      height: 0.5,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: _buildFooter(),
-                  ),
-                ],
-              ),
+                ),
+                SliverToBoxAdapter(
+                  child: _buildFooter(),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -224,8 +208,8 @@ class _UniqueDrawerState extends State<UniqueDrawer>
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0.6),
+                    Colors.black.withValues(alpha: 0.3),
+                    Colors.black.withValues(alpha: 0.6),
                   ],
                 ),
                 borderRadius: const BorderRadius.only(
@@ -258,7 +242,7 @@ class _UniqueDrawerState extends State<UniqueDrawer>
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.3),
+                          color: Colors.white.withValues(alpha: 0.3),
                           width: 3,
                         ),
                       ),
@@ -294,9 +278,9 @@ class _UniqueDrawerState extends State<UniqueDrawer>
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            userEmail,
+                            userBranch,
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.8),
+                              color: Colors.white.withValues(alpha: 0.8),
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
@@ -314,10 +298,10 @@ class _UniqueDrawerState extends State<UniqueDrawer>
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                     ),
                   ),
                   child: Row(
@@ -325,14 +309,14 @@ class _UniqueDrawerState extends State<UniqueDrawer>
                     children: [
                       Icon(
                         Icons.verified_user,
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withValues(alpha: 0.9),
                         size: 16,
                       ),
                       const SizedBox(width: 8),
                       Text(
                         'Alcademy Student Portal',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                         ),
@@ -411,11 +395,11 @@ class _UniqueDrawerState extends State<UniqueDrawer>
           gradient: item.gradient,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
           ),
           boxShadow: [
             BoxShadow(
-              color: (item.gradient.colors.last).withOpacity(0.2),
+              color: (item.gradient.colors.last).withValues(alpha: 0.2),
               blurRadius: 10,
               spreadRadius: 1,
             ),
@@ -439,10 +423,10 @@ class _UniqueDrawerState extends State<UniqueDrawer>
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.3),
+                        color: Colors.white.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Icon(
@@ -468,7 +452,7 @@ class _UniqueDrawerState extends State<UniqueDrawer>
                     Text(
                       item.subtitle!,
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withValues(alpha: 0.8),
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -484,7 +468,7 @@ class _UniqueDrawerState extends State<UniqueDrawer>
               right: 12,
               child: Icon(
                 Icons.arrow_outward,
-                color: Colors.white.withOpacity(0.6),
+                color: Colors.white.withValues(alpha: 0.6),
                 size: 16,
               ),
             ),
@@ -535,7 +519,7 @@ class GeometricPatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.1)
+      ..color = Colors.white.withValues(alpha: 0.1)
       ..strokeWidth = 1.5
       ..style = PaintingStyle.stroke;
 
@@ -561,7 +545,7 @@ class CardPatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.05)
+      ..color = Colors.white.withValues(alpha: 0.05)
       ..strokeWidth = 1
       ..style = PaintingStyle.stroke;
 

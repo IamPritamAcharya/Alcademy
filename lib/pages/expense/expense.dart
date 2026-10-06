@@ -83,7 +83,6 @@ class _ExpenseTrackerPageState extends State<ExpenseTrackerPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,7 +100,7 @@ class _ExpenseTrackerPageState extends State<ExpenseTrackerPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -141,7 +140,7 @@ class _ExpenseTrackerPageState extends State<ExpenseTrackerPage> {
                 setState(() {
                   budget = newBudget;
                 });
-                await _saveData(); 
+                await _saveData();
               },
             ),
             const SizedBox(height: 10),

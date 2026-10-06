@@ -11,7 +11,7 @@ class AmenitiesPage extends StatefulWidget {
   const AmenitiesPage({super.key});
 
   @override
-  _AmenitiesPageState createState() => _AmenitiesPageState();
+  State<AmenitiesPage> createState() => _AmenitiesPageState();
 }
 
 class _AmenitiesPageState extends State<AmenitiesPage> {
@@ -135,7 +135,7 @@ class _AmenitiesPageState extends State<AmenitiesPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),

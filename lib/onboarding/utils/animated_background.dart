@@ -16,7 +16,6 @@ class AnimatedBackground extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-         
           AnimatedContainer(
             duration: const Duration(milliseconds: 600),
             decoration: BoxDecoration(
@@ -27,7 +26,6 @@ class AnimatedBackground extends StatelessWidget {
               ),
             ),
           ),
-        
           child,
         ],
       ),

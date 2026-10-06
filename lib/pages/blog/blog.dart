@@ -9,23 +9,21 @@ class MarkdownListPage extends StatefulWidget {
   const MarkdownListPage({super.key});
 
   @override
-  _MarkdownListPageState createState() => _MarkdownListPageState();
+  State<MarkdownListPage> createState() => _MarkdownListPageState();
 }
 
 class _MarkdownListPageState extends State<MarkdownListPage> {
   final String repoUrl =
       'https://api.github.com/repos/Academia-IGIT/DATA_hub/contents/Blog';
 
-  static List<Map<String, String>>?
-      cachedFiles;
-  static Map<String, String> cachedContent =
-      {}; 
+  static List<Map<String, String>>? cachedFiles;
+  static Map<String, String> cachedContent = {};
   late Future<List<Map<String, String>>> markdownFilesFuture;
 
   @override
   void initState() {
     super.initState();
-    markdownFilesFuture = _fetchMarkdownFiles(); 
+    markdownFilesFuture = _fetchMarkdownFiles();
   }
 
   Future<List<Map<String, String>>> _fetchMarkdownFiles(
@@ -39,7 +37,6 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
     if (response.statusCode == 200) {
       List<dynamic> files = json.decode(response.body);
 
-   
       cachedFiles = files
           .where((file) => file['name'].toString().endsWith('.md'))
           .map((file) => {
@@ -49,8 +46,7 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
           .toList();
 
       for (var file in cachedFiles!) {
-        await _fetchMarkdownContent(
-            file['download_url']!); 
+        await _fetchMarkdownContent(file['download_url']!);
       }
 
       return cachedFiles!;
@@ -76,7 +72,7 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
   Future<void> _handleRefresh() async {
     bool isRefreshAllowed = await RefreshTracker.incrementRefreshCount();
     if (!isRefreshAllowed) {
- 
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar.build(
           isCooldown: true,
@@ -87,12 +83,11 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
     }
 
     setState(() {
-      cachedFiles = null; 
-      cachedContent.clear(); 
-      markdownFilesFuture =
-          _fetchMarkdownFiles(forceRefresh: true);
+      cachedFiles = null;
+      cachedContent.clear();
+      markdownFilesFuture = _fetchMarkdownFiles(forceRefresh: true);
     });
-    await markdownFilesFuture; 
+    await markdownFilesFuture;
   }
 
   @override
@@ -115,7 +110,7 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -177,7 +172,7 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
                         size: 36,
                       ),
                       title: Text(
-                        file['name']!.replaceAll('.md', ''), 
+                        file['name']!.replaceAll('.md', ''),
                         style: const TextStyle(
                           fontFamily: 'ProductSans',
                           fontSize: 16,
@@ -200,7 +195,8 @@ class GlassmorphicCard extends StatelessWidget {
   final Widget child;
   final VoidCallback onTap;
 
-  const GlassmorphicCard({super.key, 
+  const GlassmorphicCard({
+    super.key,
     required this.child,
     required this.onTap,
   });
@@ -211,16 +207,16 @@ class GlassmorphicCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white.withValues(alpha: 0.05),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
         ],
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
         ),
       ),
       child: GestureDetector(

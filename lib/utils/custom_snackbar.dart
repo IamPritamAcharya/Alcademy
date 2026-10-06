@@ -8,7 +8,6 @@ class CustomSnackBar {
     bool isCooldown = false,
     BuildContext? context,
   }) {
-    
     List<String> messageLines = message.split('\n');
 
     return SnackBar(
@@ -19,7 +18,7 @@ class CustomSnackBar {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withValues(alpha: 0.2),
               blurRadius: 8,
               spreadRadius: 4,
               offset: const Offset(0, 2),
@@ -29,12 +28,12 @@ class CustomSnackBar {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0), 
+            filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
             child: Container(
               decoration: BoxDecoration(
                 color: isCooldown
-                    ? Colors.redAccent.withOpacity(0.8)
-                    : Colors.black.withOpacity(0.6), 
+                    ? Colors.redAccent.withValues(alpha: 0.8)
+                    : Colors.black.withValues(alpha: 0.6),
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.all(16),

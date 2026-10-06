@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-
 final Map<String, List<String>> timeBasedGreetings = {
   "earlyMorning": [
     "Rise and shine!",
@@ -76,7 +75,6 @@ final Map<String, List<String>> timeBasedGreetings = {
   ]
 };
 
-
 String getRandomSentence() {
   final hour = DateTime.now().hour;
 
@@ -99,7 +97,6 @@ String getRandomSentence() {
   }
 }
 
-
 String _getRandomGreeting(String timeCategory) {
   final greetings = timeBasedGreetings[timeCategory];
   return greetings![Random().nextInt(greetings.length)];
@@ -109,20 +106,20 @@ IconData getIconForTimeOfDay() {
   final hour = DateTime.now().hour;
 
   if (hour >= 5 && hour < 8) {
-    return Icons.wb_sunny_outlined; 
+    return Icons.wb_sunny_outlined;
   } else if (hour >= 8 && hour < 12) {
-    return Icons.wb_sunny; 
+    return Icons.wb_sunny;
   } else if (hour >= 12 && hour < 15) {
-    return Icons.cloud_queue; 
+    return Icons.cloud_queue;
   } else if (hour >= 15 && hour < 18) {
-    return Icons.cloud; 
+    return Icons.cloud;
   } else if (hour >= 18 && hour < 19) {
-    return Icons.wb_twilight; 
+    return Icons.wb_twilight;
   } else if (hour >= 19 && hour < 21) {
-    return Icons.nights_stay_outlined; 
+    return Icons.nights_stay_outlined;
   } else if (hour >= 21 && hour < 23) {
-    return Icons.nights_stay; 
+    return Icons.nights_stay;
   } else {
-    return Icons.brightness_3; 
+    return Icons.brightness_3;
   }
 }

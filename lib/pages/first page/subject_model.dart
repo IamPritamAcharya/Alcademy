@@ -6,7 +6,8 @@ class Subject {
 
   factory Subject.fromJson(Map<String, dynamic> json) {
     var list = json['items'] as List;
-    List<SubjectItem> itemList = list.map((i) => SubjectItem.fromJson(i)).toList();
+    List<SubjectItem> itemList =
+        list.map((i) => SubjectItem.fromJson(i)).toList();
 
     return Subject(
       name: json['name'],

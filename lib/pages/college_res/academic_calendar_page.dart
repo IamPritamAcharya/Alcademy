@@ -7,7 +7,7 @@ class AcademicCalendarPage extends StatefulWidget {
   const AcademicCalendarPage({super.key});
 
   @override
-  _AcademicCalendarPageState createState() => _AcademicCalendarPageState();
+  State<AcademicCalendarPage> createState() => _AcademicCalendarPageState();
 }
 
 class _AcademicCalendarPageState extends State<AcademicCalendarPage> {
@@ -24,8 +24,9 @@ class _AcademicCalendarPageState extends State<AcademicCalendarPage> {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final DateTime now = DateTime.now();
-      final DateTime today = DateTime(now.year, now.month, now.day); // Today at 00:00:00
-      
+      final DateTime today =
+          DateTime(now.year, now.month, now.day); // Today at 00:00:00
+
       final String? cachedUrl = prefs.getString('academic_calendar_url');
       final String? lastUpdatedStr =
           prefs.getString('academic_calendar_last_updated');
@@ -89,7 +90,7 @@ class _AcademicCalendarPageState extends State<AcademicCalendarPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),

@@ -51,7 +51,7 @@ class SubjectDetailsPage extends StatelessWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -61,10 +61,10 @@ class SubjectDetailsPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              const SizedBox(height: 8), 
+              const SizedBox(height: 8),
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true, 
+                shrinkWrap: true,
                 itemCount: subject.items.length,
                 itemBuilder: (context, index) {
                   final item = subject.items[index];
@@ -77,7 +77,7 @@ class SubjectDetailsPage extends StatelessWidget {
                   );
                 },
               ),
-              const SizedBox(height: 8), 
+              const SizedBox(height: 8),
             ],
           ),
         ),
@@ -90,7 +90,8 @@ class GlassmorphicCard extends StatelessWidget {
   final IconData icon;
   final String title;
 
-  const GlassmorphicCard({super.key, 
+  const GlassmorphicCard({
+    super.key,
     required this.icon,
     required this.title,
   });
@@ -102,16 +103,16 @@ class GlassmorphicCard extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white.withValues(alpha: 0.05),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
         ],
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
         ),
       ),
       child: ClipRRect(

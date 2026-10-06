@@ -3,11 +3,10 @@ import 'package:http/http.dart' as http;
 import 'subject_model.dart';
 
 class SubjectService {
-  String _url; 
+  String _url;
 
   SubjectService(String initialUrl) : _url = initialUrl;
 
-  
   set url(String newUrl) {
     _url = newUrl;
   }
@@ -23,9 +22,9 @@ class SubjectService {
     }
   }
 
-
   Future<List<Subject>> fetchSubjectsWithCacheBust() async {
-    final cacheBustedUrl = '$_url?timestamp=${DateTime.now().millisecondsSinceEpoch}';
+    final cacheBustedUrl =
+        '$_url?timestamp=${DateTime.now().millisecondsSinceEpoch}';
     final response = await http.get(Uri.parse(cacheBustedUrl));
 
     if (response.statusCode == 200) {

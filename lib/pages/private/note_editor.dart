@@ -39,7 +39,7 @@ class NoteEditor extends StatefulWidget {
   });
 
   @override
-  _NoteEditorState createState() => _NoteEditorState();
+  State<NoteEditor> createState() => _NoteEditorState();
 }
 
 class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
@@ -244,6 +244,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
               TextButton(
                 onPressed: () async {
                   await _saveNote();
+                  if (!context.mounted) return;
                   Navigator.pop(context, true);
                 },
                 child: const Text('Save', style: TextStyle(color: Colors.teal)),
@@ -252,6 +253,24 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
           ),
         ) ??
         false;
+  }
+
+  bool _allowPop = false;
+  bool _checkingPop = false;
+
+  Future<void> _handlePop(bool didPop, Object? result) async {
+    if (didPop || _checkingPop) return;
+    _checkingPop = true;
+    try {
+      final shouldPop = await _onWillPop();
+      if (!mounted || !shouldPop) return;
+      setState(() => _allowPop = true);
+      await WidgetsBinding.instance.endOfFrame;
+      if (!mounted) return;
+      Navigator.of(context).pop(result);
+    } finally {
+      _checkingPop = false;
+    }
   }
 
   Future<void> _saveNote() async {
@@ -386,7 +405,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3),
+                  color: Colors.white.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -461,9 +480,9 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withOpacity(0.2)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -475,7 +494,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
             Text(
               label,
               style: TextStyle(
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.white.withValues(alpha: 0.8),
                 fontSize: 12,
               ),
             ),
@@ -535,7 +554,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
         children: [
           Text(
             label,
-            style: TextStyle(color: Colors.white.withOpacity(0.7)),
+            style: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
           ),
           Text(
             value,
@@ -580,8 +599,9 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
       );
     }
 
-    return WillPopScope(
-      onWillPop: _onWillPop,
+    return PopScope<Object?>(
+      canPop: !_hasUnsavedChanges || _allowPop,
+      onPopInvokedWithResult: _handlePop,
       child: Scaffold(
         backgroundColor: Colors.black87,
         appBar: AppBar(
@@ -642,10 +662,10 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
                     margin: const EdgeInsets.all(20),
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.1),
+                      color: Colors.white.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                       ),
                     ),
                     child: TextField(
@@ -662,7 +682,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
                         hintText:
                             _isEditing ? 'Note title...' : 'Untitled Note',
                         hintStyle: TextStyle(
-                          color: Colors.white.withOpacity(0.5),
+                          color: Colors.white.withValues(alpha: 0.5),
                           fontWeight: FontWeight.normal,
                         ),
                         border: InputBorder.none,
@@ -685,7 +705,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
                       margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.05),
+                        color: Colors.white.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: TextField(
@@ -705,7 +725,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
                               ? 'Start writing your note...\n\n• Use bullet points\n• Add checkboxes □\n• Include important details'
                               : 'No content',
                           hintStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.3),
+                            color: Colors.white.withValues(alpha: 0.3),
                             fontSize: _fontSize,
                           ),
                           border: InputBorder.none,
@@ -718,10 +738,10 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
                       duration: const Duration(milliseconds: 300),
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withValues(alpha: 0.1),
                         border: Border(
                           top: BorderSide(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                           ),
                         ),
                       ),
@@ -764,7 +784,7 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
                           Text(
                             '${_contentController.text.length} chars',
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.5),
+                              color: Colors.white.withValues(alpha: 0.5),
                               fontSize: 12,
                             ),
                           ),
@@ -792,15 +812,15 @@ class _NoteEditorState extends State<NoteEditor> with TickerProviderStateMixin {
         margin: const EdgeInsets.only(right: 10),
         decoration: BoxDecoration(
           color: isEnabled
-              ? Colors.white.withOpacity(0.1)
-              : Colors.white.withOpacity(0.05),
+              ? Colors.white.withValues(alpha: 0.1)
+              : Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(6),
         ),
         child: Icon(
           icon,
           color: isEnabled
-              ? Colors.white.withOpacity(0.8)
-              : Colors.white.withOpacity(0.3),
+              ? Colors.white.withValues(alpha: 0.8)
+              : Colors.white.withValues(alpha: 0.3),
           size: 18,
         ),
       ),

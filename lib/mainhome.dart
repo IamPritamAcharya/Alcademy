@@ -1,6 +1,5 @@
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:port/pages/gate/gate_page.dart';
 import 'package:port/utils/drawer.dart';
 import 'package:port/pages/notice/notice_page.dart';
 import 'package:port/pages/first%20page/first_page.dart';
@@ -10,7 +9,7 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -36,8 +35,6 @@ class _HomePageState extends State<HomePage> {
       FirstPage(
         scaffoldKey: _scaffoldKey,
       ),
-      GatePage(),
-      //ClubsPage(),
       NoticePage(),
     ];
 
@@ -64,17 +61,11 @@ class _HomePageState extends State<HomePage> {
             selectedColor: Colors.white,
           ),
           CrystalNavigationBarItem(
-            // icon: Icons.local_fire_department_rounded,
-            // selectedColor: Colors.red,
-            icon: Icons.school_rounded,
-            selectedColor: Colors.red,
-          ),
-          CrystalNavigationBarItem(
             icon: Icons.event_note_outlined,
             selectedColor: Colors.greenAccent,
           ),
         ],
-        backgroundColor: const Color(0xFF191B1A).withOpacity(0.5),
+        backgroundColor: const Color(0xFF191B1A).withValues(alpha: 0.5),
         unselectedItemColor: Colors.grey,
         height: 70,
         borderRadius: 30,

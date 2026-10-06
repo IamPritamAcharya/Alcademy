@@ -154,8 +154,7 @@ class NotificationService {
             debugPrint('Skipping invalid notification: ${notification.title}');
           }
         } catch (e) {
-          debugPrint(
-              'Error processing individual background notification: $e');
+          debugPrint('Error processing individual background notification: $e');
         }
       }
 

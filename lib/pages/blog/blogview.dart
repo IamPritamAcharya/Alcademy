@@ -46,7 +46,7 @@ class _MarkdownViewerPageState extends State<MarkdownViewerPage>
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),

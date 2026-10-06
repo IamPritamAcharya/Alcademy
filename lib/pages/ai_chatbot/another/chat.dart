@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:go_router/go_router.dart';
-import 'EmptyChatPlaceholder.dart';
+import 'empty_chat_placeholder.dart';
 
 class AiChatPage extends StatefulWidget {
   final String initialQuery;
@@ -63,12 +63,13 @@ class _AiChatPageState extends State<AiChatPage> {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                  border:
+                      Border.all(color: Colors.white.withValues(alpha: 0.2)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: Colors.black.withValues(alpha: 0.2),
                       blurRadius: 12,
                       offset: const Offset(0, 6),
                     ),
@@ -111,7 +112,8 @@ class _AiChatPageState extends State<AiChatPage> {
                         const SizedBox(width: 8),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blueAccent.withOpacity(0.8),
+                            backgroundColor:
+                                Colors.blueAccent.withValues(alpha: 0.8),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -119,8 +121,7 @@ class _AiChatPageState extends State<AiChatPage> {
                                 horizontal: 16, vertical: 10),
                           ),
                           onPressed: () async {
-                            Navigator.of(context)
-                                .pop(); 
+                            Navigator.of(context).pop();
 
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
@@ -155,7 +156,6 @@ class _AiChatPageState extends State<AiChatPage> {
   }
 
   Future<void> getdata(ChatMessage message) async {
-
     if (apiKey.isEmpty) {
       _showApiKeyDialog(context);
       return;
@@ -198,7 +198,7 @@ class _AiChatPageState extends State<AiChatPage> {
         throw Exception('API Error: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
       final errorMessage = ChatMessage(
         text: 'Sorry, I encountered an error. Please try again.',
         user: bot,
@@ -247,7 +247,7 @@ class _AiChatPageState extends State<AiChatPage> {
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1),
             child: Container(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               height: 1,
             ),
           )),
@@ -278,7 +278,7 @@ class _AiChatPageState extends State<AiChatPage> {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: Colors.black.withOpacity(0.5),
+                      fillColor: Colors.black.withValues(alpha: 0.5),
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 20.0),
                     ),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class NotificationModel {
@@ -55,8 +56,8 @@ class NotificationModel {
         data: map['data'] as Map<String, dynamic>?,
       );
     } catch (e) {
-      print('Error parsing notification from map: $e');
-      print('Map data: $map');
+      debugPrint('Error parsing notification from map: $e');
+      debugPrint('Map data: $map');
       throw Exception('Failed to parse notification: $e');
     }
   }
@@ -129,7 +130,7 @@ class NotificationModel {
             : null,
       );
     } catch (e) {
-      print('Error creating notification from RemoteMessage: $e');
+      debugPrint('Error creating notification from RemoteMessage: $e');
 
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       return NotificationModel(

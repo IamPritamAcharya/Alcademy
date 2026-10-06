@@ -8,7 +8,7 @@ class BranchSelector extends StatefulWidget {
   const BranchSelector({super.key});
 
   @override
-  _BranchSelectorState createState() => _BranchSelectorState();
+  State<BranchSelector> createState() => _BranchSelectorState();
 }
 
 class _BranchSelectorState extends State<BranchSelector> {
@@ -52,8 +52,8 @@ class _BranchSelectorState extends State<BranchSelector> {
               onPressed: () async {
                 const url =
                     'https://drive.google.com/file/d/1MpOBukzyyM4qUGhZUt0MzV6gmhaA1ppB/view?usp=sharing';
-                if (await canLaunch(url)) {
-                  await launch(url);
+                if (await canLaunchUrl(Uri.parse(url))) {
+                  await launchUrl(Uri.parse(url));
                 } else {
                   throw 'Could not launch $url';
                 }
@@ -139,8 +139,7 @@ class _BranchSelectorState extends State<BranchSelector> {
                 onChanged: (value) {
                   setState(() {
                     selectedBranch = value;
-                    selectedSemester =
-                        null; 
+                    selectedSemester = null;
                   });
                 },
                 validator: (value) {

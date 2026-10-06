@@ -13,7 +13,6 @@ class BarChartSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final now = DateTime.now();
 
-    
     final last7Days = List.generate(7, (index) {
       final day = now.subtract(Duration(days: index));
       final dailyExpenses = expenses.where((e) {
@@ -28,9 +27,8 @@ class BarChartSection extends StatelessWidget {
         'day': day,
         'value': dailyExpenses,
       };
-    }).reversed.toList(); 
+    }).reversed.toList();
 
-    
     final maxY = (last7Days.isNotEmpty
             ? last7Days
                 .map((data) => data['value'] as double)
@@ -42,16 +40,15 @@ class BarChartSection extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Container(
         decoration: BoxDecoration(
-          color:
-              const Color.fromARGB(255, 31, 34, 35), 
-          borderRadius: BorderRadius.circular(16), 
+          color: const Color.fromARGB(255, 31, 34, 35),
+          borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.all(16.0),
         child: SizedBox(
-          height: 300, 
+          height: 300,
           child: BarChart(
             BarChartData(
-              maxY: maxY, 
+              maxY: maxY,
               barGroups: last7Days.map((data) {
                 final index = last7Days.indexOf(data);
                 return BarChartGroupData(
@@ -61,8 +58,7 @@ class BarChartSection extends StatelessWidget {
                       toY: data['value'] as double,
                       color: Colors.white,
                       width: 16,
-                      borderRadius:
-                          BorderRadius.circular(16), 
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ],
                 );
@@ -70,8 +66,7 @@ class BarChartSection extends StatelessWidget {
               borderData: FlBorderData(show: false),
               titlesData: FlTitlesData(
                 leftTitles: AxisTitles(
-                  sideTitles:
-                      SideTitles(showTitles: false), 
+                  sideTitles: SideTitles(showTitles: false),
                 ),
                 topTitles:
                     AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -102,7 +97,7 @@ class BarChartSection extends StatelessWidget {
                 ),
               ),
               gridData: FlGridData(
-                show: false, 
+                show: false,
               ),
             ),
           ),
@@ -112,7 +107,6 @@ class BarChartSection extends StatelessWidget {
   }
 
   String _getDayLetter(DateTime date) {
-    
     const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     return weekdays[date.weekday % 7];
   }

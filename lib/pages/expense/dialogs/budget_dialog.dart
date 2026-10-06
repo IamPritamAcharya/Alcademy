@@ -13,21 +13,20 @@ class BudgetDialog extends StatelessWidget {
         TextEditingController(text: initialBudget.toStringAsFixed(2));
 
     return Dialog(
-      backgroundColor: Colors.transparent, 
+      backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Stack(
         children: [
-          
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade800.withOpacity(0.1), 
+                  color: Colors.grey.shade800.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     width: 1.5,
                   ),
                 ),
@@ -36,7 +35,6 @@ class BudgetDialog extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      
                       Hero(
                         tag: 'currentBudget',
                         child: Material(
@@ -68,7 +66,8 @@ class BudgetDialog extends StatelessWidget {
                             color: Colors.grey.shade400,
                           ),
                           filled: true,
-                          fillColor: Colors.grey.shade700.withOpacity(0.2),
+                          fillColor:
+                              Colors.grey.shade700.withValues(alpha: 0.2),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Colors.grey.shade700),

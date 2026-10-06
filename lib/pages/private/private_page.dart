@@ -14,7 +14,7 @@ class PrivatePage extends StatefulWidget {
   const PrivatePage({super.key});
 
   @override
-  _PrivatePageState createState() => _PrivatePageState();
+  State<PrivatePage> createState() => _PrivatePageState();
 }
 
 class _PrivatePageState extends State<PrivatePage> {
@@ -121,7 +121,7 @@ class _PrivatePageState extends State<PrivatePage> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -183,7 +183,7 @@ class _PrivatePageState extends State<PrivatePage> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -278,14 +278,14 @@ class _PrivatePageState extends State<PrivatePage> {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.08),
+                color: Colors.white.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
+                    color: Colors.black.withValues(alpha: 0.3),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -308,13 +308,13 @@ class _PrivatePageState extends State<PrivatePage> {
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.05),
+                      fillColor: Colors.white.withValues(alpha: 0.05),
                       hintText: 'Note title...',
                       hintStyle:
-                          TextStyle(color: Colors.white.withOpacity(0.5)),
+                          TextStyle(color: Colors.white.withValues(alpha: 0.5)),
                       enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.white.withOpacity(0.3)),
+                        borderSide: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.3)),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -335,13 +335,13 @@ class _PrivatePageState extends State<PrivatePage> {
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Colors.white.withOpacity(0.05),
+                        fillColor: Colors.white.withValues(alpha: 0.05),
                         hintText: 'Enter your private note...',
-                        hintStyle:
-                            TextStyle(color: Colors.white.withOpacity(0.5)),
+                        hintStyle: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.5)),
                         enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.white.withOpacity(0.3)),
+                          borderSide: BorderSide(
+                              color: Colors.white.withValues(alpha: 0.3)),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         focusedBorder: OutlineInputBorder(
@@ -359,7 +359,7 @@ class _PrivatePageState extends State<PrivatePage> {
                       TextButton(
                         onPressed: () => Navigator.pop(context),
                         style: TextButton.styleFrom(
-                          foregroundColor: Colors.white.withOpacity(0.7),
+                          foregroundColor: Colors.white.withValues(alpha: 0.7),
                         ),
                         child: const Text('Cancel'),
                       ),
@@ -369,6 +369,7 @@ class _PrivatePageState extends State<PrivatePage> {
                           if (noteController.text.isNotEmpty) {
                             await _saveNote(
                                 titleController.text, noteController.text);
+                            if (!context.mounted) return;
                             Navigator.pop(context);
                           }
                         },
@@ -424,7 +425,7 @@ class _PrivatePageState extends State<PrivatePage> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -528,7 +529,7 @@ class _PrivatePageState extends State<PrivatePage> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
+                      color: Colors.black.withValues(alpha: 0.3),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -543,7 +544,7 @@ class _PrivatePageState extends State<PrivatePage> {
               Text(
                 'Loading Private Space...',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
+                  color: Colors.white.withValues(alpha: 0.7),
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
@@ -606,17 +607,19 @@ class _PrivatePageState extends State<PrivatePage> {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              const Color(0xFF00D4AA).withOpacity(0.1),
-                              const Color(0xFF00A693).withOpacity(0.05),
+                              const Color(0xFF00D4AA).withValues(alpha: 0.1),
+                              const Color(0xFF00A693).withValues(alpha: 0.05),
                             ],
                           ),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: const Color(0xFF00D4AA).withOpacity(0.2),
+                            color:
+                                const Color(0xFF00D4AA).withValues(alpha: 0.2),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF00D4AA).withOpacity(0.1),
+                              color: const Color(0xFF00D4AA)
+                                  .withValues(alpha: 0.1),
                               blurRadius: 20,
                               offset: const Offset(0, 8),
                             ),
@@ -637,7 +640,7 @@ class _PrivatePageState extends State<PrivatePage> {
                                 boxShadow: [
                                   BoxShadow(
                                     color: const Color(0xFF00D4AA)
-                                        .withOpacity(0.3),
+                                        .withValues(alpha: 0.3),
                                     blurRadius: 12,
                                     offset: const Offset(0, 4),
                                   ),
@@ -667,7 +670,8 @@ class _PrivatePageState extends State<PrivatePage> {
                                   Text(
                                     'Your content is stored privately in a separate secure folder',
                                     style: TextStyle(
-                                      color: Colors.white.withOpacity(0.7),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.7),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       height: 1.4,
@@ -699,13 +703,13 @@ class _PrivatePageState extends State<PrivatePage> {
                               color: const Color(0xFF1A1A1A),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                color: Colors.white.withOpacity(0.1),
+                                color: Colors.white.withValues(alpha: 0.1),
                               ),
                             ),
                             child: Text(
                               '${_privatePhotos.length + _privateVideos.length + _privateDocuments.length + _privateNotes.length} items',
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.7),
+                                color: Colors.white.withValues(alpha: 0.7),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -787,7 +791,7 @@ class _PrivatePageState extends State<PrivatePage> {
                       color: const Color(0xFF1A1A1A),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withValues(alpha: 0.1),
                       ),
                     ),
                     child: Row(
@@ -795,7 +799,7 @@ class _PrivatePageState extends State<PrivatePage> {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.blue.withOpacity(0.1),
+                            color: Colors.blue.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Icon(
@@ -809,7 +813,7 @@ class _PrivatePageState extends State<PrivatePage> {
                           child: Text(
                             'Files are copied and stored independently. Even if deleted from the original location, they remain accessible here.',
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.8),
+                              color: Colors.white.withValues(alpha: 0.8),
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                               height: 1.4,
@@ -844,11 +848,11 @@ class _PrivatePageState extends State<PrivatePage> {
           color: const Color(0xFF1A1A1A),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
           ),
           boxShadow: [
             BoxShadow(
-              color: shadowColor.withOpacity(0.1),
+              color: shadowColor.withValues(alpha: 0.1),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -871,7 +875,7 @@ class _PrivatePageState extends State<PrivatePage> {
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: shadowColor.withOpacity(0.3),
+                            color: shadowColor.withValues(alpha: 0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
@@ -899,7 +903,7 @@ class _PrivatePageState extends State<PrivatePage> {
                     Text(
                       subtitle,
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.6),
+                        color: Colors.white.withValues(alpha: 0.6),
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -924,11 +928,11 @@ class _PrivatePageState extends State<PrivatePage> {
                       bottomRight: Radius.circular(20),
                     ),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: shadowColor.withOpacity(0.3),
+                        color: shadowColor.withValues(alpha: 0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),

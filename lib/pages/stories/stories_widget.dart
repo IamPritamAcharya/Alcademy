@@ -79,9 +79,11 @@ class TextStoryPreview extends StatelessWidget {
         final Color baseColor = Color(int.parse(colorStr));
         return [
           baseColor,
-          baseColor.withOpacity(0.8),
+          baseColor.withValues(alpha: 0.8),
         ];
-      } catch (e) {}
+      } catch (e) {
+        debugPrint('Operation failed: $e');
+      }
     }
 
     final List<List<Color>> gradients = [
@@ -121,7 +123,7 @@ class TextStoryPreview extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: gradientColors[0].withOpacity(0.4),
+            color: gradientColors[0].withValues(alpha: 0.4),
             blurRadius: 12,
             offset: const Offset(0, 6),
             spreadRadius: 2,
@@ -138,7 +140,7 @@ class TextStoryPreview extends StatelessWidget {
               height: 40,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.15),
+                color: Colors.white.withValues(alpha: 0.15),
               ),
             ),
           ),
@@ -150,7 +152,7 @@ class TextStoryPreview extends StatelessWidget {
               height: 25,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
               ),
             ),
           ),
@@ -162,7 +164,7 @@ class TextStoryPreview extends StatelessWidget {
               height: 15,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.08),
+                color: Colors.white.withValues(alpha: 0.08),
               ),
             ),
           ),

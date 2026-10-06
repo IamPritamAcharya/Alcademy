@@ -11,8 +11,8 @@ class OnboardingPage2 extends StatelessWidget {
   const OnboardingPage2({super.key});
 
   Future<void> _openUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       throw 'Could not launch $url';
     }
@@ -29,7 +29,7 @@ class OnboardingPage2 extends StatelessWidget {
             left: -100,
             child: _buildBlurredTriangle(
               size: 250,
-              color: mutedGreen.withOpacity(0.3),
+              color: mutedGreen.withValues(alpha: 0.3),
               angle: 5,
             ),
           ),
@@ -38,7 +38,7 @@ class OnboardingPage2 extends StatelessWidget {
             right: -50,
             child: _buildBlurredTriangle(
               size: 180,
-              color: accentGreen.withOpacity(0.2),
+              color: accentGreen.withValues(alpha: 0.2),
               angle: -10,
             ),
           ),
@@ -47,7 +47,7 @@ class OnboardingPage2 extends StatelessWidget {
             left: -60,
             child: _buildBlurredTriangle(
               size: 200,
-              color: mutedGreen.withOpacity(0.2),
+              color: mutedGreen.withValues(alpha: 0.2),
               angle: 50,
             ),
           ),
@@ -56,7 +56,7 @@ class OnboardingPage2 extends StatelessWidget {
             right: -30,
             child: _buildBlurredTriangle(
               size: 170,
-              color: accentGreen.withOpacity(0.3),
+              color: accentGreen.withValues(alpha: 0.3),
               angle: -40,
             ),
           ),
@@ -88,7 +88,7 @@ class OnboardingPage2 extends StatelessWidget {
                   "Stay connected to receive the latest updates, important announcements, and exclusive feature releases for the app.",
                   style: TextStyle(
                     fontSize: 18,
-                    color: textColor.withOpacity(0.8),
+                    color: textColor.withValues(alpha: 0.8),
                     height: 1.6,
                   ),
                   textAlign: TextAlign.center,
@@ -134,7 +134,7 @@ class OnboardingPage2 extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     elevation: 0,
-                    shadowColor: accentGreen.withOpacity(0.4),
+                    shadowColor: accentGreen.withValues(alpha: 0.4),
                   ),
                 ),
               ],

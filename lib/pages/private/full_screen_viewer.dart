@@ -15,7 +15,7 @@ class FullScreenViewer extends StatefulWidget {
   });
 
   @override
-  _FullScreenViewerState createState() => _FullScreenViewerState();
+  State<FullScreenViewer> createState() => _FullScreenViewerState();
 }
 
 class _FullScreenViewerState extends State<FullScreenViewer>
@@ -71,7 +71,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
       extendBodyBehindAppBar: true,
       appBar: _isAppBarVisible
           ? AppBar(
-              backgroundColor: Colors.black.withOpacity(0.5),
+              backgroundColor: Colors.black.withValues(alpha: 0.5),
               elevation: 0,
               iconTheme: const IconThemeData(color: Colors.white),
               title: Text(
@@ -153,7 +153,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Container(
             padding: const EdgeInsets.all(30),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.1),
+              color: Colors.white.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -175,7 +175,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Text(
             'Tap to play video\n(Video player integration needed)',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 14,
             ),
             textAlign: TextAlign.center,
@@ -193,7 +193,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
             icon: const Icon(Icons.play_arrow),
             label: const Text('Play Video'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white.withOpacity(0.2),
+              backgroundColor: Colors.white.withValues(alpha: 0.2),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
@@ -216,7 +216,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
             Container(
               padding: const EdgeInsets.all(30),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.2),
+                color: Colors.orange.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -239,7 +239,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
             Text(
               _getFileSize(),
               style: TextStyle(
-                color: Colors.white.withOpacity(0.7),
+                color: Colors.white.withValues(alpha: 0.7),
                 fontSize: 14,
               ),
             ),
@@ -317,10 +317,10 @@ class _FullScreenViewerState extends State<FullScreenViewer>
                   padding: const EdgeInsets.all(20),
                   margin: const EdgeInsets.only(bottom: 20),
                   decoration: BoxDecoration(
-                    color: Colors.teal.withOpacity(0.1),
+                    color: Colors.teal.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(15),
                     border: Border.all(
-                      color: Colors.teal.withOpacity(0.3),
+                      color: Colors.teal.withValues(alpha: 0.3),
                     ),
                   ),
                   child: Text(
@@ -336,7 +336,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.05),
+                  color: Colors.white.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: SelectableText(
@@ -354,7 +354,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
                 Container(
                   padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
+                    color: Colors.white.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -384,7 +384,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Text(
             '$label: ',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
@@ -392,7 +392,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Text(
             '${date.day}/${date.month}/${date.year} at ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               fontSize: 12,
             ),
           ),
@@ -411,7 +411,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
       icon: Icon(icon, size: 20),
       label: Text(label),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white.withOpacity(0.2),
+        backgroundColor: Colors.white.withValues(alpha: 0.2),
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         shape: RoundedRectangleBorder(
@@ -429,7 +429,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Container(
             padding: const EdgeInsets.all(30),
             decoration: BoxDecoration(
-              color: Colors.red.withOpacity(0.2),
+              color: Colors.red.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -452,7 +452,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Text(
             'Please try again or check if the file exists',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 14,
             ),
             textAlign: TextAlign.center,
@@ -597,7 +597,7 @@ class _FullScreenViewerState extends State<FullScreenViewer>
           Text(
             label,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),

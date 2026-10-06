@@ -28,14 +28,18 @@ class _LoginFormState extends State<LoginForm> {
     setState(() => _isLoading = true);
     try {
       final notes = await ApiService.fetchAvailableNotes();
+      if (!mounted) return;
       setState(() => _availableNotes = notes);
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Failed to load notes. Please try again later.'),
         backgroundColor: Colors.red,
       ));
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -58,7 +62,9 @@ class _LoginFormState extends State<LoginForm> {
       noteUrl: _selectedNote!,
     );
 
-    setState(() => _isLoading = false);
+    if (mounted) {
+      setState(() => _isLoading = false);
+    }
 
     widget.onNextPressed();
   }
@@ -101,7 +107,7 @@ class _LoginFormState extends State<LoginForm> {
             left: -60,
             child: _buildBlurredShape(
               size: 180,
-              color: Colors.pinkAccent.withOpacity(0.2),
+              color: Colors.pinkAccent.withValues(alpha: 0.2),
               angle: 30,
             ),
           ),
@@ -110,7 +116,7 @@ class _LoginFormState extends State<LoginForm> {
             right: -40,
             child: _buildBlurredShape(
               size: 220,
-              color: Colors.pinkAccent.withOpacity(0.2),
+              color: Colors.pinkAccent.withValues(alpha: 0.2),
               angle: -45,
             ),
           ),
@@ -119,7 +125,7 @@ class _LoginFormState extends State<LoginForm> {
             left: 20,
             child: _buildBlurredShape(
               size: 140,
-              color: Colors.pinkAccent.withOpacity(0.25),
+              color: Colors.pinkAccent.withValues(alpha: 0.25),
               angle: 15,
             ),
           ),
@@ -128,7 +134,7 @@ class _LoginFormState extends State<LoginForm> {
             right: 100,
             child: _buildBlurredShape(
               size: 160,
-              color: Colors.pinkAccent.withOpacity(0.3),
+              color: Colors.pinkAccent.withValues(alpha: 0.3),
               angle: -60,
             ),
           ),
@@ -170,7 +176,7 @@ class _LoginFormState extends State<LoginForm> {
                           labelText: 'Your Name',
                           labelStyle: const TextStyle(color: Colors.black54),
                           filled: true,
-                          fillColor: Colors.white.withOpacity(0.7),
+                          fillColor: Colors.white.withValues(alpha: 0.7),
                           enabledBorder: OutlineInputBorder(
                             borderSide:
                                 const BorderSide(color: Colors.transparent),

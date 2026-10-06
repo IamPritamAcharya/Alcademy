@@ -25,7 +25,7 @@ class OnboardingPage1 extends StatelessWidget {
             left: -50,
             child: _buildDecorativeShape(
               size: 250,
-              color: Colors.blue.withOpacity(0.15),
+              color: Colors.blue.withValues(alpha: 0.15),
               sides: 7,
             ),
           ),
@@ -34,7 +34,7 @@ class OnboardingPage1 extends StatelessWidget {
             right: -70,
             child: _buildDecorativeShape(
               size: 300,
-              color: Colors.blue.withOpacity(0.12),
+              color: Colors.blue.withValues(alpha: 0.12),
               sides: 5,
             ),
           ),
@@ -43,7 +43,7 @@ class OnboardingPage1 extends StatelessWidget {
             right: 30,
             child: _buildDecorativeShape(
               size: 150,
-              color: Colors.blue.withOpacity(0.2),
+              color: Colors.blue.withValues(alpha: 0.2),
               sides: 6,
             ),
           ),
@@ -106,7 +106,7 @@ class OnboardingPage1 extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     elevation: 0,
-                    shadowColor: Colors.blueAccent.withOpacity(0.5),
+                    shadowColor: Colors.blueAccent.withValues(alpha: 0.5),
                   ),
                   child: Text(
                     "Next",
@@ -124,7 +124,6 @@ class OnboardingPage1 extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _buildDecorativeShape({
     required double size,

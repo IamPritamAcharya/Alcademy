@@ -13,7 +13,7 @@ class NoticePage extends StatefulWidget {
   const NoticePage({super.key});
 
   @override
-  _NoticePageState createState() => _NoticePageState();
+  State<NoticePage> createState() => _NoticePageState();
 }
 
 class _NoticePageState extends State<NoticePage> {
@@ -46,8 +46,8 @@ class _NoticePageState extends State<NoticePage> {
 
         final List<Notice> fetchedNotices = noticeElements.map((element) {
           final titleElement = element.children[0];
-          final title = titleElement.text.trim() ?? 'No Title';
-          final date = element.children[1].text.trim() ?? 'No Date';
+          final title = titleElement.text.trim();
+          final date = element.children[1].text.trim();
 
           String downloadLink =
               titleElement.querySelector('a')?.attributes['href'] ?? '';
@@ -92,7 +92,7 @@ class _NoticePageState extends State<NoticePage> {
           await launchUrl(uri);
         }
       } catch (e) {
-        print('Failed to launch URL: $url');
+        debugPrint('Failed to launch URL: $url');
       }
     }
   }
@@ -122,7 +122,7 @@ class _NoticePageState extends State<NoticePage> {
       ),
       body: Column(
         children: [
-          Divider(color: Colors.white.withOpacity(0.2), height: 1),
+          Divider(color: Colors.white.withValues(alpha: 0.2), height: 1),
           Expanded(
             child: RefreshIndicator(
               backgroundColor: const Color(0xFF1A1D1E),
@@ -131,6 +131,7 @@ class _NoticePageState extends State<NoticePage> {
                 bool isRefreshAllowed =
                     await RefreshTracker.incrementRefreshCount();
                 if (!isRefreshAllowed) {
+                  if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
                     CustomSnackBar.build(
                       isCooldown: RefreshTracker.isCooldownActive,
@@ -162,14 +163,14 @@ class _NoticePageState extends State<NoticePage> {
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 7),
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.05),
+                                color: Colors.white.withValues(alpha: 0.05),
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: Colors.white.withOpacity(0.1),
+                                  color: Colors.white.withValues(alpha: 0.1),
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
+                                    color: Colors.black.withValues(alpha: 0.2),
                                     blurRadius: 6,
                                     offset: const Offset(0, 3),
                                   ),

@@ -5,7 +5,7 @@ class AcademicWebViewPage extends StatefulWidget {
   const AcademicWebViewPage({super.key});
 
   @override
-  _AcademicWebViewPageState createState() => _AcademicWebViewPageState();
+  State<AcademicWebViewPage> createState() => _AcademicWebViewPageState();
 }
 
 class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
@@ -121,13 +121,13 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
   Widget build(BuildContext context) {
     return PopScope(
         canPop: false,
-        onPopInvoked: (didPop) async {
+        onPopInvokedWithResult: (didPop, result) async {
           if (didPop) return;
 
           if (await _webViewController.canGoBack()) {
             await _webViewController.goBack();
           } else {
-        
+            if (!context.mounted) return;
             Navigator.of(context).pop();
           }
         },
@@ -142,6 +142,7 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
                 if (await _webViewController.canGoBack()) {
                   await _webViewController.goBack();
                 } else {
+                  if (!context.mounted) return;
                   Navigator.of(context).pop();
                 }
               },
@@ -157,7 +158,7 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1),
               child: Container(
-                color: Colors.white.withOpacity(0.6),
+                color: Colors.white.withValues(alpha: 0.6),
                 height: 1,
               ),
             ),
@@ -206,7 +207,7 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
               WebViewWidget(controller: _webViewController),
               if (isLoading)
                 Container(
-                  color: const Color(0xFF1A1D1E).withOpacity(0.8),
+                  color: const Color(0xFF1A1D1E).withValues(alpha: 0.8),
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

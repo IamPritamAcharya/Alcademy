@@ -7,7 +7,7 @@ class HolidayListPage extends StatefulWidget {
   const HolidayListPage({super.key});
 
   @override
-  _HolidayListPageState createState() => _HolidayListPageState();
+  State<HolidayListPage> createState() => _HolidayListPageState();
 }
 
 class _HolidayListPageState extends State<HolidayListPage> {
@@ -24,10 +24,12 @@ class _HolidayListPageState extends State<HolidayListPage> {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final DateTime now = DateTime.now();
-      final DateTime today = DateTime(now.year, now.month, now.day); // Today at 00:00:00
-      
+      final DateTime today =
+          DateTime(now.year, now.month, now.day); // Today at 00:00:00
+
       final String? cachedUrl = prefs.getString('holiday_list_url');
-      final String? lastUpdatedStr = prefs.getString('holiday_list_last_updated');
+      final String? lastUpdatedStr =
+          prefs.getString('holiday_list_last_updated');
       final DateTime? lastUpdated =
           lastUpdatedStr != null ? DateTime.tryParse(lastUpdatedStr) : null;
 
@@ -86,7 +88,7 @@ class _HolidayListPageState extends State<HolidayListPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),

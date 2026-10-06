@@ -7,19 +7,16 @@ class StoryDetailPage extends StatelessWidget {
   final String name;
   final String body;
 
-  const StoryDetailPage({super.key, 
+  const StoryDetailPage({
+    super.key,
     required this.name,
     required this.body,
   });
 
   Color getRandomVibrantColor() {
-    final hue = Random().nextInt(360); 
-    final saturation = 0.8 +
-        Random().nextDouble() *
-            0.2; 
-    final lightness = 0.45 +
-        Random().nextDouble() *
-            0.15; 
+    final hue = Random().nextInt(360);
+    final saturation = 0.8 + Random().nextDouble() * 0.2;
+    final lightness = 0.45 + Random().nextDouble() * 0.15;
 
     return HSLColor.fromAHSL(1, hue.toDouble(), saturation, lightness)
         .toColor();
@@ -28,22 +25,22 @@ class StoryDetailPage extends StatelessWidget {
   List<Color> generateColorShades(Color color) {
     final hslColor = HSLColor.fromColor(color);
     return [
-      hslColor.withLightness(0.85).toColor(), 
-      hslColor.withLightness(0.75).toColor(), 
-      hslColor.withLightness(0.65).toColor(), 
-      hslColor.withLightness(0.55).toColor(), 
-      hslColor.withLightness(0.45).toColor(), 
-      hslColor.withLightness(0.35).toColor(), 
+      hslColor.withLightness(0.85).toColor(),
+      hslColor.withLightness(0.75).toColor(),
+      hslColor.withLightness(0.65).toColor(),
+      hslColor.withLightness(0.55).toColor(),
+      hslColor.withLightness(0.45).toColor(),
+      hslColor.withLightness(0.35).toColor(),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    final baseColor = getRandomVibrantColor(); 
-    final colorShades = generateColorShades(baseColor); 
+    final baseColor = getRandomVibrantColor();
+    final colorShades = generateColorShades(baseColor);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF121212), 
+      backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
         title: Text(
           name,
@@ -60,7 +57,7 @@ class StoryDetailPage extends StatelessWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2), 
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -70,15 +67,12 @@ class StoryDetailPage extends StatelessWidget {
         child: MarkdownBody(
           data: body,
           styleSheet: MarkdownStyleSheet(
-            
             p: const TextStyle(
               color: Color(0xFFF5F5F5),
               fontSize: 16,
               fontFamily: 'ProductSans',
             ),
             pPadding: const EdgeInsets.symmetric(vertical: 8),
-
-            
             h1: TextStyle(
               color: colorShades[1],
               fontSize: 28,
@@ -115,41 +109,34 @@ class StoryDetailPage extends StatelessWidget {
             ),
             h5Padding: const EdgeInsets.symmetric(vertical: 4),
             h6: TextStyle(
-              color: colorShades[5].withOpacity(0.9),
+              color: colorShades[5].withValues(alpha: 0.9),
               fontSize: 14,
               fontWeight: FontWeight.bold,
               fontFamily: 'ProductSans',
             ),
             h6Padding: const EdgeInsets.symmetric(vertical: 4),
-
             listBullet: TextStyle(
               color: colorShades[0],
               fontSize: 16,
             ),
             listBulletPadding:
                 const EdgeInsets.only(left: 12, top: 4, bottom: 4),
-
-            
             a: TextStyle(
               color: colorShades[0],
               decoration: TextDecoration.underline,
               fontWeight: FontWeight.w600,
             ),
-
-            
             em: TextStyle(
-              color: colorShades[0].withOpacity(0.8),
+              color: colorShades[0].withValues(alpha: 0.8),
               fontStyle: FontStyle.italic,
             ),
             strong: const TextStyle(
               color: Color(0xFFF5F5F5),
               fontWeight: FontWeight.bold,
             ),
-
-            
             blockquotePadding: const EdgeInsets.all(12),
             blockquoteDecoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.05),
+              color: Colors.white.withValues(alpha: 0.05),
               border: Border(
                 left: BorderSide(
                   color: colorShades[3],
@@ -157,24 +144,18 @@ class StoryDetailPage extends StatelessWidget {
                 ),
               ),
             ),
-
-            
             codeblockPadding: const EdgeInsets.all(12),
             codeblockDecoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(4),
               border: Border.all(
                 color: colorShades[4],
                 width: 1,
               ),
             ),
-
-            
             horizontalRuleDecoration: BoxDecoration(
               color: colorShades[5],
             ),
-
-            
             tableHead: TextStyle(
               color: colorShades[1],
               fontWeight: FontWeight.bold,
@@ -188,19 +169,19 @@ class StoryDetailPage extends StatelessWidget {
             ),
             tablePadding: const EdgeInsets.symmetric(vertical: 6),
             tableBorder: TableBorder.all(
-              color: Colors.white.withOpacity(0.1),
+              color: Colors.white.withValues(alpha: 0.1),
               width: 1,
             ),
             tableCellsPadding: const EdgeInsets.all(8),
             tableCellsDecoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
             ),
           ),
           onTapLink: (text, url, title) {
             if (url != null) {
               launchUrl(Uri.parse(url));
             } else {
-              print('Invalid URL: $url');
+              debugPrint('Invalid URL: $url');
             }
           },
         ),

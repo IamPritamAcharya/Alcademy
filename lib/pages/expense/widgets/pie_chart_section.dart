@@ -53,13 +53,12 @@ class _PieChartSectionState extends State<PieChartSection>
       padding: const EdgeInsets.all(16.0),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(
-              255, 31, 34, 35), 
-          borderRadius: BorderRadius.circular(16), 
+          color: const Color.fromARGB(255, 31, 34, 35),
+          borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.all(16.0),
         child: SizedBox(
-          height: 300, 
+          height: 300,
           child: AnimatedBuilder(
             animation: _animation,
             builder: (context, child) {

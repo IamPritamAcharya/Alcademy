@@ -6,7 +6,7 @@
         },
         {
             "type": "text",
-            "text": "🎉 Welcome to the Alcademy App!\n\nYour hub for clubs, posts, and collaboration at IGIT."
+            "text": "🎉 Welcome to the Alcademy App!\n\nYour hub for academic resources and notices at IGIT."
         },
         {
             "type": "text",
@@ -14,7 +14,7 @@
         },
         {
             "type": "text",
-            "text": "🚀 Stay connected with your clubs,\nshare posts, and explore events!"
+            "text": "🚀 Explore your notes, syllabus,\nand college notices!"
         },
         {
             "type": "text",
@@ -103,17 +103,6 @@
             "name": "Subhalaxmi Sahoo",
             "url": "https://socialmedia.com/diana"
         }
-    ],
-    "bannedEmails": [
-        "pritamacharya1922@gmail.com",
-        "anotherbanned@example.com"
-    ],
-    "bannedWords": [
-        "nigga",
-        "paki",
-        "chutiya",
-        "bhosdike",
-        "gandu"
     ],
     "name_1st_tab": "Horizon!",
     "markdownContent_1st_tab": "",

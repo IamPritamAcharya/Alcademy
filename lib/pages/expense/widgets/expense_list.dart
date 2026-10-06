@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart'; 
+import 'package:intl/intl.dart';
 
 class ExpenseListSection extends StatelessWidget {
   final List<Map<String, dynamic>> expenses;
@@ -21,8 +21,7 @@ class ExpenseListSection extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => Dialog(
-        backgroundColor:
-            Colors.transparent, 
+        backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
@@ -30,11 +29,10 @@ class ExpenseListSection extends StatelessWidget {
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey.shade800
-                    .withOpacity(0.1), 
+                color: Colors.grey.shade800.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   width: 1.5,
                 ),
               ),
@@ -134,11 +132,11 @@ class ExpenseListSection extends StatelessWidget {
               ),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.035),
+                  color: Colors.white.withValues(alpha: 0.035),
                   borderRadius: BorderRadius.circular(16.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1), 
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 2,
                       offset: const Offset(0, 2),
                     ),
@@ -152,7 +150,6 @@ class ExpenseListSection extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,13 +162,10 @@ class ExpenseListSection extends StatelessWidget {
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
-                              maxLines: 1, 
-                              overflow: TextOverflow
-                                  .ellipsis, 
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(
-                                height:
-                                    8), 
+                            const SizedBox(height: 8),
                             Row(
                               children: [
                                 const Icon(
@@ -194,7 +188,6 @@ class ExpenseListSection extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      
                       Text(
                         '₹${expense['value'].toStringAsFixed(2)}',
                         style: const TextStyle(

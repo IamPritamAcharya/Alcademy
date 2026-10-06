@@ -19,7 +19,7 @@ class SmoothWavesPainter extends CustomPainter {
 
       final baseOpacity = 0.15 - (i * 0.02);
       paint.color = Colors.white
-          .withOpacity(baseOpacity * (0.7 + random.nextDouble() * 0.6));
+          .withValues(alpha: baseOpacity * (0.7 + random.nextDouble() * 0.6));
 
       final path = Path();
       final baseY = size.height * (0.25 + random.nextDouble() * 0.5);
@@ -67,8 +67,8 @@ class RippleWavesPainter extends CustomPainter {
 
       for (int i = 0; i < 4; i++) {
         paint.strokeWidth = 1.0 + random.nextDouble() * 0.8;
-        paint.color = Colors.white
-            .withOpacity((random.nextDouble() * 0.06 + 0.03) * (1 - i * 0.15));
+        paint.color = Colors.white.withValues(
+            alpha: (random.nextDouble() * 0.06 + 0.03) * (1 - i * 0.15));
 
         final baseRadius = 80 + i * 50 + random.nextDouble() * 30;
         final waveFrequency = 3 + random.nextDouble() * 3;
@@ -114,7 +114,8 @@ class FlowingWavesPainter extends CustomPainter {
 
     for (int i = 0; i < 3; i++) {
       paint.strokeWidth = 1.8 + random.nextDouble() * 1.2;
-      paint.color = Colors.white.withOpacity(random.nextDouble() * 0.12 + 0.04);
+      paint.color =
+          Colors.white.withValues(alpha: random.nextDouble() * 0.12 + 0.04);
 
       final path = Path();
       final startX = size.width * (0.1 + random.nextDouble() * 0.2);
@@ -164,7 +165,8 @@ class DoubleWavesPainter extends CustomPainter {
 
     for (int i = 0; i < 3; i++) {
       paint.strokeWidth = 1.6 + random.nextDouble() * 0.8;
-      paint.color = Colors.white.withOpacity(random.nextDouble() * 0.09 + 0.04);
+      paint.color =
+          Colors.white.withValues(alpha: random.nextDouble() * 0.09 + 0.04);
 
       final baseY = size.height * (0.25 + random.nextDouble() * 0.5);
       final amplitude = 20 + random.nextDouble() * 30;
@@ -209,7 +211,8 @@ class DiagonalWavesPainter extends CustomPainter {
 
     for (int i = 0; i < 3; i++) {
       paint.strokeWidth = 1.3 + random.nextDouble() * 1.2;
-      paint.color = Colors.white.withOpacity(random.nextDouble() * 0.1 + 0.03);
+      paint.color =
+          Colors.white.withValues(alpha: random.nextDouble() * 0.1 + 0.03);
 
       final path = Path();
       final angle = math.pi / 6 + random.nextDouble() * math.pi / 3;
@@ -253,7 +256,8 @@ class MultiFrequencyWavesPainter extends CustomPainter {
 
     for (int i = 0; i < 3; i++) {
       paint.strokeWidth = 1.5 + random.nextDouble() * 0.8;
-      paint.color = Colors.white.withOpacity(random.nextDouble() * 0.1 + 0.04);
+      paint.color =
+          Colors.white.withValues(alpha: random.nextDouble() * 0.1 + 0.04);
 
       final path = Path();
       final baseY = size.height * (0.3 + random.nextDouble() * 0.4);
@@ -292,7 +296,8 @@ class PulseWavesPainter extends CustomPainter {
 
     for (int i = 0; i < 4; i++) {
       paint.strokeWidth = 1.2 + random.nextDouble() * 1.0;
-      paint.color = Colors.white.withOpacity(random.nextDouble() * 0.08 + 0.03);
+      paint.color =
+          Colors.white.withValues(alpha: random.nextDouble() * 0.08 + 0.03);
 
       final path = Path();
       final baseY = size.height * (0.25 + random.nextDouble() * 0.5);

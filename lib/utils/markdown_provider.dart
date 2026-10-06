@@ -23,7 +23,7 @@ class SharedMarkdownViewer extends StatelessWidget {
         if (url != null) {
           launchUrl(Uri.parse(url));
         } else {
-          print('Invalid URL: $url');
+          debugPrint('Invalid URL: $url');
         }
       },
     );
@@ -91,7 +91,7 @@ class SharedMarkdownViewer extends StatelessWidget {
         listBulletPadding: const EdgeInsets.only(left: 8, top: 2, bottom: 2),
         blockquotePadding: const EdgeInsets.all(8),
         blockquoteDecoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
+          color: Colors.white.withValues(alpha: 0.05),
           border: const Border(
             left: BorderSide(
               color: Color(0xFFAAAAAA),
@@ -115,12 +115,12 @@ class SharedMarkdownViewer extends StatelessWidget {
         ),
         tablePadding: const EdgeInsets.symmetric(vertical: 3),
         tableBorder: TableBorder.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
         tableCellsPadding: const EdgeInsets.all(6),
         tableCellsDecoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.1),
+          color: Colors.black.withValues(alpha: 0.1),
         ),
         a: const TextStyle(
           color: Color(0xFFADD8E6),
@@ -129,7 +129,7 @@ class SharedMarkdownViewer extends StatelessWidget {
         ),
         codeblockPadding: const EdgeInsets.all(8),
         codeblockDecoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.1),
+          color: Colors.black.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
             color: const Color(0xFFCCCCCC),
@@ -202,7 +202,7 @@ class SharedMarkdownViewer extends StatelessWidget {
         listBulletPadding: const EdgeInsets.only(left: 12, top: 4, bottom: 4),
         blockquotePadding: const EdgeInsets.all(12),
         blockquoteDecoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
+          color: Colors.white.withValues(alpha: 0.05),
           border: const Border(
             left: BorderSide(
               color: Color(0xFFAAAAAA),
@@ -226,12 +226,12 @@ class SharedMarkdownViewer extends StatelessWidget {
         ),
         tablePadding: const EdgeInsets.symmetric(vertical: 6),
         tableBorder: TableBorder.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           width: 1,
         ),
         tableCellsPadding: const EdgeInsets.all(8),
         tableCellsDecoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.1),
+          color: Colors.black.withValues(alpha: 0.1),
         ),
         a: const TextStyle(
           color: Color(0xFFADD8E6),
@@ -240,7 +240,7 @@ class SharedMarkdownViewer extends StatelessWidget {
         ),
         codeblockPadding: const EdgeInsets.all(12),
         codeblockDecoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.1),
+          color: Colors.black.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
             color: const Color(0xFFCCCCCC),

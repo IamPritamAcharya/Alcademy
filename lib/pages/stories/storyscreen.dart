@@ -190,7 +190,7 @@ class _StoryScreenState extends State<StoryScreen>
   }
 
   void _initializeVideoPlayer(String url) {
-    _videoController = VideoPlayerController.network(url)
+    _videoController = VideoPlayerController.networkUrl(Uri.parse(url))
       ..initialize().then((_) {
         _videoController!.play();
         _startVideoProgress();
@@ -394,10 +394,12 @@ class _StoryScreenState extends State<StoryScreen>
         final Color baseColor = Color(int.parse(colorStr));
         return [
           baseColor,
-          baseColor.withOpacity(0.8),
-          baseColor.withOpacity(0.6),
+          baseColor.withValues(alpha: 0.8),
+          baseColor.withValues(alpha: 0.6),
         ];
-      } catch (e) {}
+      } catch (e) {
+        debugPrint('Operation failed: $e');
+      }
     }
 
     final List<List<Color>> gradients = [
@@ -418,7 +420,7 @@ class _StoryScreenState extends State<StoryScreen>
     return [
       selectedGradient[0],
       selectedGradient[1],
-      selectedGradient[0].withOpacity(0.8),
+      selectedGradient[0].withValues(alpha: 0.8),
     ];
   }
 
@@ -523,7 +525,7 @@ class _StoryScreenState extends State<StoryScreen>
                                     center: Alignment.topRight,
                                     radius: 1.2,
                                     colors: [
-                                      Colors.white.withOpacity(0.1),
+                                      Colors.white.withValues(alpha: 0.1),
                                       Colors.transparent,
                                     ],
                                   ),
@@ -661,7 +663,8 @@ class _StoryScreenState extends State<StoryScreen>
                                       : index == _currentIndex
                                           ? _progress
                                           : 0.0,
-                                  backgroundColor: Colors.grey.withOpacity(0.5),
+                                  backgroundColor:
+                                      Colors.grey.withValues(alpha: 0.5),
                                   color: Colors.white,
                                   minHeight: 3.0,
                                 ),

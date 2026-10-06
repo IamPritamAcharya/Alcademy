@@ -27,7 +27,7 @@ class DropdownWidget extends StatelessWidget {
             labelText: label,
             labelStyle: const TextStyle(color: Colors.black54),
             filled: true,
-            fillColor: Colors.white.withOpacity(0.7),
+            fillColor: Colors.white.withValues(alpha: 0.7),
             enabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.white70, width: 1),
               borderRadius: BorderRadius.circular(30),
@@ -50,11 +50,10 @@ class DropdownWidget extends StatelessWidget {
             ),
           ),
           dropdownStyleData: DropdownStyleData(
-            maxHeight:
-                MediaQuery.of(context).size.height * 0.3, 
+            maxHeight: MediaQuery.of(context).size.height * 0.3,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.8),
             ),
           ),
           iconStyleData: const IconStyleData(

@@ -41,17 +41,18 @@ class _EditItemDialogState extends State<EditItemDialog> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.dark(
-              primary: const Color.fromRGBO(0, 255, 127, 1), 
-              onPrimary: Colors.black, 
-              surface: const Color(0xFF1A1D1E), 
-              onSurface: Colors.white, 
-            ), 
+              primary: const Color.fromRGBO(0, 255, 127, 1),
+              onPrimary: Colors.black,
+              surface: const Color(0xFF1A1D1E),
+              onSurface: Colors.white,
+            ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor:
-                    const Color.fromRGBO(0, 255, 127, 1), 
+                foregroundColor: const Color.fromRGBO(0, 255, 127, 1),
               ),
-            ), dialogTheme: DialogThemeData(backgroundColor: const Color(0xFF1A1D1E)),
+            ),
+            dialogTheme:
+                DialogThemeData(backgroundColor: const Color(0xFF1A1D1E)),
           ),
           child: child!,
         );
@@ -68,21 +69,20 @@ class _EditItemDialogState extends State<EditItemDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent, 
+      backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Stack(
         children: [
-          
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade800.withOpacity(0.1),
+                  color: Colors.grey.shade800.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     width: 1.5,
                   ),
                 ),
@@ -115,7 +115,8 @@ class _EditItemDialogState extends State<EditItemDialog> {
                             color: Colors.grey.shade400,
                           ),
                           filled: true,
-                          fillColor: Colors.grey.shade700.withOpacity(0.2),
+                          fillColor:
+                              Colors.grey.shade700.withValues(alpha: 0.2),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Colors.grey.shade700),
@@ -142,7 +143,8 @@ class _EditItemDialogState extends State<EditItemDialog> {
                             color: Colors.grey.shade400,
                           ),
                           filled: true,
-                          fillColor: Colors.grey.shade700.withOpacity(0.2),
+                          fillColor:
+                              Colors.grey.shade700.withValues(alpha: 0.2),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Colors.grey.shade700),

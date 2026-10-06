@@ -10,7 +10,7 @@ class NotificationHistoryPage extends StatefulWidget {
   const NotificationHistoryPage({super.key});
 
   @override
-  _NotificationHistoryPageState createState() =>
+  State<NotificationHistoryPage> createState() =>
       _NotificationHistoryPageState();
 }
 
@@ -59,9 +59,9 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
       setState(() {
         readNotifications = readList.toSet();
       });
-      print('Loaded ${readNotifications.length} read notifications');
+      debugPrint('Loaded ${readNotifications.length} read notifications');
     } catch (e) {
-      print('Error loading read status: $e');
+      debugPrint('Error loading read status: $e');
     }
   }
 
@@ -70,9 +70,10 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
       final prefs = await SharedPreferences.getInstance();
       await prefs.setStringList(
           'read_notifications', readNotifications.toList());
-      print('Saved read status for ${readNotifications.length} notifications');
+      debugPrint(
+          'Saved read status for ${readNotifications.length} notifications');
     } catch (e) {
-      print('Error saving read status: $e');
+      debugPrint('Error saving read status: $e');
     }
   }
 
@@ -93,7 +94,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
     }
 
     try {
-      print('Initializing notifications...');
+      debugPrint('Initializing notifications...');
 
       await _loadReadStatus();
 
@@ -111,7 +112,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
         _checkForSelectedNotification();
       });
     } catch (e) {
-      print('Error initializing notifications: $e');
+      debugPrint('Error initializing notifications: $e');
       setState(() {
         isLoading = false;
       });
@@ -122,7 +123,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed && hasInitialized) {
-      print('App resumed in NotificationHistoryPage - silent sync');
+      debugPrint('App resumed in NotificationHistoryPage - silent sync');
       _silentSync();
     }
   }
@@ -143,14 +144,14 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
         _loadMoreNotifications();
       }
     } catch (e) {
-      print('Error during silent sync: $e');
+      debugPrint('Error during silent sync: $e');
     }
   }
 
   void _checkForSelectedNotification() {
     final selectedId = NotificationService.getSelectedNotificationId();
     if (selectedId != null && selectedId.isNotEmpty) {
-      print("Found selected notification ID: $selectedId");
+      debugPrint("Found selected notification ID: $selectedId");
 
       Future.delayed(Duration(milliseconds: 300), () {
         if (mounted) {
@@ -162,7 +163,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
 
   Future<void> _loadNotifications() async {
     try {
-      print("Loading notifications...");
+      debugPrint("Loading notifications...");
       final loadedNotifications =
           await NotificationService().getAllNotifications();
 
@@ -173,16 +174,16 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
             isLoading = false;
           }
         });
-        print(" Loaded ${notifications.length} notifications");
+        debugPrint(" Loaded ${notifications.length} notifications");
 
         for (int i = 0; i < notifications.length && i < 3; i++) {
           final n = notifications[i];
-          print(
+          debugPrint(
               "  ${i + 1}. ${n.title} - ${n.body.substring(0, n.body.length.clamp(0, 50))}...");
         }
       }
     } catch (e) {
-      print("Error loading notifications: $e");
+      debugPrint("Error loading notifications: $e");
       if (mounted) {
         setState(() {
           isLoading = false;
@@ -193,7 +194,8 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
   }
 
   void _loadMoreNotifications() {
-    if (isLoadingMore || displayedNotifications.length >= notifications.length) {
+    if (isLoadingMore ||
+        displayedNotifications.length >= notifications.length) {
       return;
     }
 
@@ -213,7 +215,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
           isLoadingMore = false;
         });
 
-        print(
+        debugPrint(
             'Loaded page $currentPage: ${displayedNotifications.length}/${notifications.length}');
       }
     });
@@ -244,7 +246,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
         : null;
 
     if (notification != null && notification.id != 'default') {
-      print("Showing notification detail for: ${notification.title}");
+      debugPrint("Showing notification detail for: ${notification.title}");
 
       await _markAsRead(notificationId);
 
@@ -281,9 +283,9 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
 
       _showSuccessSnackBar('Notification deleted');
 
-      print('Deleted notification: $notificationId');
+      debugPrint('Deleted notification: $notificationId');
     } catch (e) {
-      print('Error deleting notification: $e');
+      debugPrint('Error deleting notification: $e');
       _showErrorSnackBar('Failed to delete notification');
     }
   }
@@ -296,11 +298,11 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
             return BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: AlertDialog(
-                backgroundColor: Colors.white.withOpacity(0.08),
+                backgroundColor: Colors.white.withValues(alpha: 0.08),
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(color: Colors.white.withOpacity(0.2)),
+                  side: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
                 ),
                 title: Text(
                   'Delete Notification',
@@ -312,7 +314,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
                       Shadow(
                         offset: Offset(0, 1),
                         blurRadius: 4,
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha: 0.5),
                       ),
                     ],
                   ),
@@ -334,7 +336,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      backgroundColor: Colors.white.withOpacity(0.05),
+                      backgroundColor: Colors.white.withValues(alpha: 0.05),
                     ),
                     child: Text('Cancel'),
                   ),
@@ -345,7 +347,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      backgroundColor: Colors.redAccent.withOpacity(0.15),
+                      backgroundColor: Colors.redAccent.withValues(alpha: 0.15),
                     ),
                     child: Text('Delete'),
                   ),
@@ -365,7 +367,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
     });
 
     try {
-      print(" Manual refresh triggered");
+      debugPrint(" Manual refresh triggered");
 
       await NotificationService().debugBackgroundQueue();
 
@@ -385,7 +387,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
         _showSuccessSnackBar('Notifications refreshed');
       }
     } catch (e) {
-      print("Error during refresh: $e");
+      debugPrint("Error during refresh: $e");
       if (mounted) {
         _showErrorSnackBar('Failed to refresh: ${e.toString()}');
       }
@@ -444,7 +446,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -537,7 +539,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
               width: 100,
               height: 100,
               decoration: BoxDecoration(
-                color: Color(0xFF2A2A2A).withOpacity(0.5),
+                color: Color(0xFF2A2A2A).withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Icon(
@@ -579,12 +581,12 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
                   : Icon(Icons.refresh_rounded),
               label: Text(isRefreshing ? 'Refreshing...' : 'Refresh'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue.withOpacity(0.2),
+                backgroundColor: Colors.blue.withValues(alpha: 0.2),
                 foregroundColor: Colors.blue,
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
-                  side: BorderSide(color: Colors.blue.withOpacity(0.3)),
+                  side: BorderSide(color: Colors.blue.withValues(alpha: 0.3)),
                 ),
               ),
             ),
@@ -598,17 +600,17 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: Color(0xFF1A1A1A).withOpacity(0.6),
+        color: Color(0xFF1A1A1A).withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: isRead
-              ? Colors.white.withOpacity(0.08)
-              : Colors.blue.withOpacity(0.4),
+              ? Colors.white.withValues(alpha: 0.08)
+              : Colors.blue.withValues(alpha: 0.4),
           width: 0.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 12,
             offset: Offset(0, 4),
           ),
@@ -629,8 +631,8 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Colors.white.withOpacity(0.01),
-                  Colors.white.withOpacity(0.02),
+                  Colors.white.withValues(alpha: 0.01),
+                  Colors.white.withValues(alpha: 0.02),
                 ],
               ),
             ),
@@ -644,18 +646,18 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Colors.blue.withOpacity(0.8),
-                        Colors.blue.shade600.withOpacity(0.9),
+                        Colors.blue.withValues(alpha: 0.8),
+                        Colors.blue.shade600.withValues(alpha: 0.9),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: Colors.blue.withOpacity(0.3),
+                      color: Colors.blue.withValues(alpha: 0.3),
                       width: 0.5,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.blue.withOpacity(0.3),
+                        color: Colors.blue.withValues(alpha: 0.3),
                         blurRadius: 8,
                         offset: Offset(0, 2),
                       ),
@@ -677,7 +679,7 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 15,
-                          color: Colors.white.withOpacity(0.95),
+                          color: Colors.white.withValues(alpha: 0.95),
                           height: 1.2,
                           letterSpacing: 0.2,
                         ),
@@ -715,15 +717,15 @@ class _NotificationHistoryPageState extends State<NotificationHistoryPage>
                   child: Container(
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.15),
+                      color: Colors.red.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: Colors.red.withOpacity(0.3),
+                        color: Colors.red.withValues(alpha: 0.3),
                         width: 0.5,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.red.withOpacity(0.1),
+                          color: Colors.red.withValues(alpha: 0.1),
                           blurRadius: 4,
                           offset: Offset(0, 2),
                         ),

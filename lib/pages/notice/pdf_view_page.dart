@@ -9,12 +9,13 @@ class PDFViewPage extends StatelessWidget {
 
   void _downloadPDF(BuildContext context) async {
     try {
-      if (await canLaunch(pdfUrl)) {
-        await launch(pdfUrl);
+      if (await canLaunchUrl(Uri.parse(pdfUrl))) {
+        await launchUrl(Uri.parse(pdfUrl));
       } else {
         throw 'Could not launch $pdfUrl';
       }
     } catch (e) {
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to download file: $e')),
       );

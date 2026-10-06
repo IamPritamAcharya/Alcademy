@@ -8,7 +8,7 @@ class ResultWebView extends StatefulWidget {
   const ResultWebView({super.key});
 
   @override
-  _ResultWebViewState createState() => _ResultWebViewState();
+  State<ResultWebView> createState() => _ResultWebViewState();
 }
 
 class _ResultWebViewState extends State<ResultWebView> {
@@ -21,7 +21,7 @@ class _ResultWebViewState extends State<ResultWebView> {
   @override
   void initState() {
     super.initState();
-  
+
     Future.microtask(() {
       if (mounted) {
         _initializeWebView();
@@ -70,11 +70,9 @@ class _ResultWebViewState extends State<ResultWebView> {
             },
           ),
         )
-        
         ..setUserAgent(
             "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1");
 
-      
       _controller?.clearCache().then((_) {
         if (mounted) {
           Future.delayed(const Duration(milliseconds: 1000), () {
@@ -119,7 +117,6 @@ class _ResultWebViewState extends State<ResultWebView> {
     if (_controller == null || !mounted) return;
 
     try {
-  
       await _controller?.runJavaScript('''
         try {
           // Base styling
@@ -143,7 +140,6 @@ class _ResultWebViewState extends State<ResultWebView> {
         }
       ''');
 
-    
       await _controller?.runJavaScript('''
         try {
           let style = document.createElement('style');
@@ -261,7 +257,6 @@ class _ResultWebViewState extends State<ResultWebView> {
         }
       ''');
 
-     
       await _controller?.runJavaScript('''
         try {
           // Add mobile-specific styles
@@ -405,7 +400,7 @@ class _ResultWebViewState extends State<ResultWebView> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),

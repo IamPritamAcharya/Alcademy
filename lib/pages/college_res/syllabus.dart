@@ -9,7 +9,7 @@ class SyllabusPage extends StatefulWidget {
   const SyllabusPage({super.key});
 
   @override
-  _SyllabusPageState createState() => _SyllabusPageState();
+  State<SyllabusPage> createState() => _SyllabusPageState();
 }
 
 class _SyllabusPageState extends State<SyllabusPage> {
@@ -39,7 +39,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
         });
       });
     } catch (e) {
-      print('Error loading syllabus data: $e');
+      debugPrint('Error loading syllabus data: $e');
     }
   }
 
@@ -70,7 +70,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
           color: const Color(0xFF2C2F30),
           borderRadius: BorderRadius.circular(12),
         ),
-        maxHeight: 200, 
+        maxHeight: 200,
       ),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -106,7 +106,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
       buttonStyleData: ButtonStyleData(
         overlayColor: WidgetStateProperty.all(Colors.transparent),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12), 
+          borderRadius: BorderRadius.circular(12),
         ),
       ),
     );
@@ -260,7 +260,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),

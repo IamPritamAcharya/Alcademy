@@ -55,15 +55,6 @@
                 <data android:scheme="https"
                     android:host="aca-web-c0e77.web.app" />
 
-                <!-- Posts -->
-                <data android:scheme="https"
-                    android:host="aca-web-c0e77.web.app"
-                    android:pathPrefix="/post" />
-
-                <!-- Clubs -->
-                <data android:scheme="https"
-                    android:host="aca-web-c0e77.web.app"
-                    android:pathPrefix="/club" />
             </intent-filter>
 
 

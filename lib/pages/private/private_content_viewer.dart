@@ -20,7 +20,7 @@ class PrivateContentViewer extends StatefulWidget {
   });
 
   @override
-  _PrivateContentViewerState createState() => _PrivateContentViewerState();
+  State<PrivateContentViewer> createState() => _PrivateContentViewerState();
 }
 
 class _PrivateContentViewerState extends State<PrivateContentViewer> {
@@ -84,7 +84,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(25),
               ),
               child: Row(
@@ -126,13 +126,13 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 _getEmptyStateIcon(),
                 size: 60,
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white.withValues(alpha: 0.5),
               ),
             ),
             const SizedBox(height: 20),
@@ -148,7 +148,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
             Text(
               'Tap the + button to add your first ${widget.contentType.toLowerCase().substring(0, widget.contentType.length - 1)}',
               style: TextStyle(
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.withValues(alpha: 0.3),
                 fontSize: 14,
               ),
               textAlign: TextAlign.center,
@@ -228,9 +228,9 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
       onLongPress: () => _showOptionsBottomSheet(index),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withOpacity(0.2)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
@@ -243,7 +243,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Icon(
@@ -265,9 +265,9 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.2)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
       ),
       child: ListTile(
         onTap: () => _openFullScreenViewer(item),
@@ -277,7 +277,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
           width: 50,
           height: 50,
           decoration: BoxDecoration(
-            color: _getContentColor().withOpacity(0.2),
+            color: _getContentColor().withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(8),
           ),
           child: widget.contentType == 'Photos'
@@ -310,13 +310,13 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
         subtitle: Text(
           _getItemSubtitle(item),
           style: TextStyle(
-            color: Colors.white.withOpacity(0.6),
+            color: Colors.white.withValues(alpha: 0.6),
             fontSize: 12,
           ),
         ),
         trailing: Icon(
           Icons.arrow_forward_ios,
-          color: Colors.white.withOpacity(0.3),
+          color: Colors.white.withValues(alpha: 0.3),
           size: 16,
         ),
       ),
@@ -407,7 +407,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
                       child: Text(
                         noteData['content'] ?? '',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.white.withValues(alpha: 0.8),
                           fontSize: 10,
                         ),
                         maxLines: 4,
@@ -498,7 +498,9 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
           final data = jsonDecode(content) as Map<String, dynamic>;
           return data['title'] ?? 'Untitled Note';
         }
-      } catch (e) {}
+      } catch (e) {
+        debugPrint('Operation failed: $e');
+      }
     }
     return path.basenameWithoutExtension(item);
   }
@@ -597,7 +599,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -640,7 +642,7 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -670,13 +672,13 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
         title: const Text('Delete Item', style: TextStyle(color: Colors.white)),
         content: Text(
           'Are you sure you want to delete this item permanently? This action cannot be undone.',
-          style: TextStyle(color: Colors.white.withOpacity(0.8)),
+          style: TextStyle(color: Colors.white.withValues(alpha: 0.8)),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text('Cancel',
-                style: TextStyle(color: Colors.white.withOpacity(0.7))),
+                style: TextStyle(color: Colors.white.withValues(alpha: 0.7))),
           ),
           TextButton(
             onPressed: () {
@@ -710,9 +712,10 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
             onChanged: (value) => searchText = value,
             decoration: InputDecoration(
               hintText: 'Search ${widget.contentType.toLowerCase()}...',
-              hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+              hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+                borderSide:
+                    BorderSide(color: Colors.white.withValues(alpha: 0.3)),
                 borderRadius: BorderRadius.circular(8),
               ),
               focusedBorder: const OutlineInputBorder(

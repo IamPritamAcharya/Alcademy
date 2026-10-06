@@ -1,9 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:port/pages/notes_selector_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,39 +11,34 @@ import 'dart:convert';
 import 'package:port/pages/ai_chatbot/another/chat.dart';
 import 'package:port/utils/config_loader.dart';
 import 'package:port/firebase_options.dart';
-import 'package:port/pages/forums/forum_page.dart';
 import 'package:port/notification/notification_history_page.dart';
 import 'package:port/notification/notification_service.dart';
 import 'package:port/onboarding/pages/onboarding.dart';
 import 'package:port/pages/about/aboutpage.dart';
 import 'package:port/pages/amenities/amenities_page.dart.dart';
-import 'package:port/pages/club/club_detail_page.dart';
-import 'package:port/pages/club/club_post_detail.dart';
-import 'package:port/pages/club/upload/CreateClubPostPage.dart';
-import 'package:port/pages/college_res/Academic_calender_page.dart';
+import 'package:port/pages/college_res/academic_calendar_page.dart';
 import 'package:port/pages/college_res/holiday_list_page.dart';
 import 'package:port/pages/notice/notice_page.dart';
 import 'package:port/pages/college_res/results_page.dart';
 import 'package:port/pages/user/userinfo.dart';
 
 import 'package:port/sgpa/branch_selector.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'pages/ai_chatbot/another/apikey.dart';
 import 'mainhome.dart';
 import 'pages/college_res/syllabus.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
-  print('Background message received: ${message.messageId}');
-  print('Message data: ${message.data}');
-  print(
+  debugPrint('Background message received: ${message.messageId}');
+  debugPrint('Message data: ${message.data}');
+  debugPrint(
       'Message notification: ${message.notification?.title} - ${message.notification?.body}');
 
   try {
     String title = message.notification?.title?.trim() ?? '';
     String body = message.notification?.body?.trim() ?? '';
 
-    print('Extracted - Title: "$title", Body: "$body"');
+    debugPrint('Extracted - Title: "$title", Body: "$body"');
 
     if (title.isEmpty && message.data.containsKey('title')) {
       title = message.data['title']?.toString().trim() ?? '';
@@ -57,7 +52,7 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
     }
 
     if (title.isEmpty && body.isEmpty) {
-      print('Background message has no valid title or body, rejecting');
+      debugPrint('Background message has no valid title or body, rejecting');
       return;
     }
 
@@ -81,13 +76,13 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
           : <String, dynamic>{},
     };
 
-    print('Saving notification data: $notificationData');
+    debugPrint('Saving notification data: $notificationData');
 
     final prefs = await SharedPreferences.getInstance();
 
     List<String> backgroundQueue =
         prefs.getStringList('background_notification_queue') ?? [];
-    print('Current queue size: ${backgroundQueue.length}');
+    debugPrint('Current queue size: ${backgroundQueue.length}');
 
     bool alreadyQueued = false;
     for (String queuedJson in backgroundQueue) {
@@ -95,18 +90,19 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
         final queuedData = jsonDecode(queuedJson);
         if (queuedData['id'] == id) {
           alreadyQueued = true;
-          print('Notification already in queue: $id');
+          debugPrint('Notification already in queue: $id');
           break;
         }
       } catch (e) {
-        print('Error checking queue item: $e');
+        debugPrint('Error checking queue item: $e');
       }
     }
 
     if (!alreadyQueued) {
       if (backgroundQueue.length >= 50) {
         backgroundQueue = backgroundQueue.sublist(backgroundQueue.length - 40);
-        print('Cleaned background queue to ${backgroundQueue.length} items');
+        debugPrint(
+            'Cleaned background queue to ${backgroundQueue.length} items');
       }
 
       backgroundQueue.add(jsonEncode(notificationData));
@@ -117,17 +113,17 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
           DateTime.now().millisecondsSinceEpoch);
       await prefs.setBool('has_new_notification', true);
 
-      print(
+      debugPrint(
           "Background notification queued successfully: $title (Queue size: ${backgroundQueue.length})");
 
       final savedQueue =
           prefs.getStringList('background_notification_queue') ?? [];
-      print("Queue verification - Saved ${savedQueue.length} items");
+      debugPrint("Queue verification - Saved ${savedQueue.length} items");
     } else {
-      print("Background notification already queued: $title");
+      debugPrint("Background notification already queued: $title");
     }
   } catch (e) {
-    print("Critical error in background handler: $e");
+    debugPrint("Critical error in background handler: $e");
 
     try {
       final title =
@@ -153,9 +149,9 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
           'background_notification_queue', backgroundQueue);
       await prefs.setBool('has_new_notification', true);
 
-      print("Emergency notification saved: $title");
+      debugPrint("Emergency notification saved: $title");
     } catch (emergencyError) {
-      print("Emergency save also failed: $emergencyError");
+      debugPrint("Emergency save also failed: $emergencyError");
     }
   }
 }
@@ -164,30 +160,23 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (!kIsWeb && defaultTargetPlatform == TargetPlatform.linux) {
-    print('Skipping Firebase initialization on Linux');
+    debugPrint('Skipping Firebase initialization on Linux');
   } else {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
     FirebaseMessaging.onBackgroundMessage(firebaseBackgroundHandler);
-    print('Background message handler registered');
+    debugPrint('Background message handler registered');
   }
-
-  await dotenv.load(fileName: ".env");
-
-  await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL']!,
-    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
-  );
 
   if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux) {
     try {
       final notificationService = NotificationService();
       await notificationService.initialize();
-      print('Notification service initialized successfully');
+      debugPrint('Notification service initialized successfully');
     } catch (e) {
-      print('Failed to initialize notification service: $e');
+      debugPrint('Failed to initialize notification service: $e');
     }
   }
 
@@ -205,7 +194,7 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key, required this.isOnboardingComplete});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
@@ -227,21 +216,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           builder: (context, state) => _buildHomePage(),
         ),
         GoRoute(path: "/home", builder: (context, state) => HomePage()),
-        GoRoute(
-          path: "/club/:id",
-          builder: (context, state) {
-            final clubId = state.pathParameters['id']!;
-            return ClubDetailPageFromLink(clubId: clubId);
-          },
-        ),
-        GoRoute(
-          path: "/post/:id",
-          builder: (context, state) {
-            final postId = state.pathParameters['id']!;
-            return ClubPostDetailPage(postId: postId);
-          },
-        ),
-        GoRoute(path: "/club", builder: (context, state) => HomePage()),
         GoRoute(path: "/notice", builder: (context, state) => NoticePage()),
         GoRoute(
             path: "/amenities", builder: (context, state) => AmenitiesPage()),
@@ -252,7 +226,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             path: "/user",
             builder: (context, state) => const UserProfilePage()),
         GoRoute(path: "/year", builder: (context, state) => NotesSelector()),
-        GoRoute(path: "/forum", builder: (context, state) => const ForumPage()),
         GoRoute(path: "/about", builder: (context, state) => AboutPage()),
         GoRoute(
             path: "/chatbot", builder: (context, state) => const AiChatPage()),
@@ -262,8 +235,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         GoRoute(
             path: "/calendar",
             builder: (context, state) => AcademicCalendarPage()),
-        GoRoute(
-            path: "/upload", builder: (context, state) => CreateClubPostPage()),
         GoRoute(path: "/result", builder: (context, state) => ResultWebView()),
         GoRoute(
             path: "/notifications",
@@ -277,7 +248,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       final selectedNotificationId =
           NotificationService.getSelectedNotificationId();
       if (selectedNotificationId != null && selectedNotificationId.isNotEmpty) {
-        print("App opened via notification, navigating to notifications page");
+        debugPrint(
+            "App opened via notification, navigating to notifications page");
         return "/notifications";
       }
     }
@@ -291,7 +263,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           NotificationService.getSelectedNotificationId();
       if (selectedNotificationId != null && selectedNotificationId.isNotEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          print("Navigating to notifications from home page");
+          debugPrint("Navigating to notifications from home page");
           _router.go("/notifications");
         });
       }
@@ -310,7 +282,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    print('App lifecycle state changed to: $state');
+    debugPrint('App lifecycle state changed to: $state');
 
     if (state == AppLifecycleState.resumed) {
       _handleAppResumed();
@@ -320,7 +292,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> _handleAppResumed() async {
-    print('App resumed - syncing notifications globally');
+    debugPrint('App resumed - syncing notifications globally');
 
     if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux) {
       try {
@@ -333,7 +305,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             NotificationService.getSelectedNotificationId();
         if (selectedNotificationId != null &&
             selectedNotificationId.isNotEmpty) {
-          print("App resumed via notification, navigating to notifications");
+          debugPrint(
+              "App resumed via notification, navigating to notifications");
 
           final currentLocation =
               _router.routerDelegate.currentConfiguration.fullPath;
@@ -342,13 +315,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           }
         }
       } catch (e) {
-        print('Error handling app resume: $e');
+        debugPrint('Error handling app resume: $e');
       }
     }
   }
 
   void _handleAppPaused() {
-    print('App paused - saving state');
+    debugPrint('App paused - saving state');
   }
 
   @override

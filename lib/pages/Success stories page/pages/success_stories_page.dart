@@ -8,18 +8,17 @@ class SuccessStoriesPage extends StatefulWidget {
   const SuccessStoriesPage({super.key});
 
   @override
-  _SuccessStoriesPageState createState() => _SuccessStoriesPageState();
+  State<SuccessStoriesPage> createState() => _SuccessStoriesPageState();
 }
 
 class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
-  static List<Map<String, String>>?
-      cachedStories; 
+  static List<Map<String, String>>? cachedStories;
   late Future<List<Map<String, String>>> storiesFuture;
 
   @override
   void initState() {
     super.initState();
-    storiesFuture = _fetchStories(); 
+    storiesFuture = _fetchStories();
   }
 
   Future<List<Map<String, String>>> _fetchStories(
@@ -32,9 +31,9 @@ class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
   }
 
   Future<void> _handleRefresh() async {
-  bool isRefreshAllowed = await RefreshTracker.incrementRefreshCount();
-  if (!isRefreshAllowed) {
-      
+    bool isRefreshAllowed = await RefreshTracker.incrementRefreshCount();
+    if (!isRefreshAllowed) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar.build(
           isCooldown: true,
@@ -44,11 +43,10 @@ class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
       return;
     }
 
-    
     setState(() {
-      storiesFuture = _fetchStories(forceRefresh: true); 
+      storiesFuture = _fetchStories(forceRefresh: true);
     });
-    await storiesFuture; 
+    await storiesFuture;
   }
 
   @override
@@ -72,7 +70,7 @@ class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -118,16 +116,15 @@ class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
                     final name = story['name'];
                     final body = story['body'];
 
-                    
                     if (name == null || body == null) {
-                      print(
+                      debugPrint(
                           'Error: Missing story details. Name: $name, Body: $body');
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Failed to load story details.'),
                         ),
                       );
-                      return; 
+                      return;
                     }
 
                     Navigator.push(
@@ -181,7 +178,8 @@ class GlassmorphicCard extends StatelessWidget {
   final Widget child;
   final VoidCallback onTap;
 
-  const GlassmorphicCard({super.key, 
+  const GlassmorphicCard({
+    super.key,
     required this.child,
     required this.onTap,
   });
@@ -192,16 +190,16 @@ class GlassmorphicCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white.withValues(alpha: 0.05),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
         ],
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
         ),
       ),
       child: GestureDetector(

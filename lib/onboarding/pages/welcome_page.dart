@@ -13,17 +13,20 @@ class WelcomePage extends StatelessWidget {
           Positioned(
             top: -100,
             left: -100,
-            child: _buildBlurredCircle(200, Colors.white.withOpacity(0.3)),
+            child:
+                _buildBlurredCircle(200, Colors.white.withValues(alpha: 0.3)),
           ),
           Positioned(
             bottom: -150,
             right: -100,
-            child: _buildBlurredCircle(300, Colors.white.withOpacity(0.15)),
+            child:
+                _buildBlurredCircle(300, Colors.white.withValues(alpha: 0.15)),
           ),
           Positioned(
             top: 150,
             right: 50,
-            child: _buildBlurredCircle(100, Colors.white.withOpacity(0.2)),
+            child:
+                _buildBlurredCircle(100, Colors.white.withValues(alpha: 0.2)),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -33,7 +36,7 @@ class WelcomePage extends StatelessWidget {
                 Icon(
                   Icons.school_rounded,
                   size: 80,
-                  color: Color(0xFF5D4037).withOpacity(0.8),
+                  color: Color(0xFF5D4037).withValues(alpha: 0.8),
                 ),
                 SizedBox(height: 30),
                 Text(
@@ -51,21 +54,20 @@ class WelcomePage extends StatelessWidget {
                   "Your academic journey starts here.\nSimplified. Organized. Accessible.",
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.black.withOpacity(0.8),
+                    color: Colors.black.withValues(alpha: 0.8),
                     height: 1.6,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 25),
-                
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 10,
                         offset: Offset(0, 2),
                       ),
@@ -114,7 +116,7 @@ class WelcomePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     elevation: 0,
-                    shadowColor: Colors.brown.withOpacity(0.5),
+                    shadowColor: Colors.brown.withValues(alpha: 0.5),
                   ),
                   child: Text(
                     "Get Started",
