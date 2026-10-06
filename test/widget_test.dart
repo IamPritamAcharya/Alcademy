@@ -24,7 +24,7 @@ void main() {
       ),
     );
 
-    expect(find.text('Welcome to Alcademy!'), findsOneWidget);
+    expect(find.text('Your campus.\nWithin reach.'), findsOneWidget);
     expect(continued, isFalse);
     await tester.tap(find.text('Get Started'));
     await tester.pump();

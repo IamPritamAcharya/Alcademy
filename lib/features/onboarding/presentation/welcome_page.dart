@@ -8,11 +8,10 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => OnboardingIntro(
-    title: 'Welcome to Alcademy!',
+    title: 'Your campus.\nWithin reach.',
     description:
-        'Your academic journey starts here.\nSimplified. Organized. Accessible.',
+        'Notes, campus updates and everyday essentials. A little less searching. A lot more living.',
     buttonLabel: 'Get Started',
-    icon: Icons.auto_stories_outlined,
     accent: AppStyle.accent,
     onNext: onNext,
   );

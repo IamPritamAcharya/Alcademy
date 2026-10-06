@@ -8,11 +8,12 @@ class OnboardingPage1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => OnboardingIntro(
-    title: 'Stay Informed, Always',
+    title: 'In the loop.\nAhead of the day.',
+    spread: 1,
+    kicker: 'THE DETAILS THAT MATTER',
     description:
-        'Get all your college updates, events, and notices in one place.',
-    buttonLabel: 'Next',
-    icon: Icons.notifications_active_outlined,
+        'Catch the latest notices, check your syllabus and find your way around campus. All from one place.',
+    buttonLabel: 'Keep going',
     accent: AppStyle.blue,
     onNext: onNext,
   );

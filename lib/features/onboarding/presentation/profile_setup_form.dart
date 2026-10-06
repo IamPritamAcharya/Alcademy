@@ -1,23 +1,26 @@
-import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
+import 'package:port/shared/theme/app_style.dart';
 import 'package:port/features/onboarding/data/onboarding_repository.dart';
-import 'package:port/features/onboarding/presentation/widgets/dropdown_widget.dart';
+import 'widgets/dropdown_widget.dart';
+import 'widgets/onboarding_intro.dart';
 
 class ProfileSetupForm extends StatefulWidget {
   final VoidCallback onNextPressed;
-
   const ProfileSetupForm({required this.onNextPressed, super.key});
 
   @override
-  State<ProfileSetupForm> createState() => _LoginFormState();
+  State<ProfileSetupForm> createState() => _ProfileSetupFormState();
 }
 
-class _LoginFormState extends State<ProfileSetupForm> {
+class _ProfileSetupFormState extends State<ProfileSetupForm> {
   final TextEditingController _nameController = TextEditingController();
   String? _selectedBranch;
   String? _selectedNote;
   List<Map<String, String>> _availableNotes = [];
   bool _isLoading = true;
+  bool _isSaving = false;
+  bool _loadFailed = false;
+  String? _error;
 
   @override
   void initState() {
@@ -26,58 +29,50 @@ class _LoginFormState extends State<ProfileSetupForm> {
   }
 
   Future<void> _loadNotes() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _loadFailed = false;
+    });
     try {
       final notes = await OnboardingRepository.fetchAvailableNotes();
       if (!mounted) return;
-      if (mounted) {
-        setState(() => _availableNotes = notes);
-      }
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to load notes. Please try again later.'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      setState(() {
+        _availableNotes = notes;
+        _loadFailed = notes.isEmpty;
+      });
+    } catch (_) {
+      if (mounted) setState(() => _loadFailed = true);
     } finally {
-      if (mounted) {
-        if (mounted) {
-          setState(() => _isLoading = false);
-        }
-      }
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
   Future<void> _saveData() async {
-    if (_nameController.text.isEmpty ||
+    if (_isSaving) return;
+    if (_nameController.text.trim().isEmpty ||
         _selectedBranch == null ||
         _selectedNote == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill in all fields.'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      setState(() => _error = 'Add your name, branch and notes to continue.');
       return;
     }
-
-    setState(() => _isLoading = true);
-
-    await OnboardingRepository.saveUserPreferences(
-      name: _nameController.text,
-      branch: _selectedBranch!,
-      noteUrl: _selectedNote!,
-    );
-
-    if (mounted) {
+    setState(() {
+      _isSaving = true;
+      _error = null;
+    });
+    try {
+      await OnboardingRepository.saveUserPreferences(
+        name: _nameController.text.trim(),
+        branch: _selectedBranch!,
+        noteUrl: _selectedNote!,
+      );
+      if (mounted) widget.onNextPressed();
+    } catch (_) {
       if (mounted) {
-        setState(() => _isLoading = false);
+        setState(() => _error = 'Couldn’t save your setup. Please try again.');
       }
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
     }
-
-    if (mounted) widget.onNextPressed();
   }
 
   @override
@@ -86,130 +81,204 @@ class _LoginFormState extends State<ProfileSetupForm> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(
-              24,
-              80,
-              24,
-              MediaQuery.viewInsetsOf(context).bottom + 40,
+  Widget _label(String number, String title) => Padding(
+    padding: const EdgeInsets.only(bottom: 10),
+    child: Row(
+      children: [
+        Text(number, style: AppStyle.eyebrow.copyWith(color: AppStyle.accent)),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: AppStyle.text,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
             ),
-            child: _isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(color: AppStyle.accent),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Let’s Get Started!',
-                        style: const TextStyle(
-                          color: AppStyle.text,
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'ProductSans',
+          ),
+        ),
+      ],
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
+    child: Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: const EdgeInsets.fromLTRB(26, 30, 26, 14),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        const Expanded(
+                          child: Text(
+                            'THE FINAL TOUCH',
+                            style: AppStyle.eyebrow,
+                          ),
                         ),
-                        textAlign: TextAlign.center,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: AppStyle.rule),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Text(
+                            'Just you.',
+                            style: TextStyle(
+                              color: AppStyle.paper,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 22),
+                    const Text(
+                      'A little more\nyou.',
+                      style: TextStyle(
+                        fontSize: 46,
+                        height: 1.05,
+                        letterSpacing: -1.8,
+                        fontWeight: FontWeight.bold,
+                        color: AppStyle.text,
                       ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Fill in your details to begin your journey.',
-                        style: TextStyle(
+                    ),
+                    const SizedBox(height: 14),
+                    const Text(
+                      'Make room for your name, your branch and what you’re learning.',
+                      style: TextStyle(
+                        color: AppStyle.muted,
+                        height: 1.5,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    _label('01', 'What should we call you?'),
+                    TextField(
+                      controller: _nameController,
+                      textCapitalization: TextCapitalization.words,
+                      textInputAction: TextInputAction.done,
+                      style: const TextStyle(color: AppStyle.text),
+                      decoration: InputDecoration(
+                        hintText: 'Your name',
+                        prefixIcon: const Icon(
+                          Icons.person_outline_rounded,
+                          size: 21,
                           color: AppStyle.muted,
-                          fontSize: 16,
-                          fontFamily: 'ProductSans',
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 30),
-                      TextField(
-                        controller: _nameController,
-                        style: const TextStyle(color: AppStyle.text),
-                        decoration: InputDecoration(
-                          labelText: 'Your Name',
-                          labelStyle: const TextStyle(color: AppStyle.muted),
-                          filled: true,
-                          fillColor: AppStyle.surface,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.transparent,
-                            ),
-                            borderRadius: AppStyle.radius,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: AppStyle.accent,
-                            ),
-                            borderRadius: AppStyle.radius,
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 16,
-                            horizontal: 20,
-                          ),
+                        filled: true,
+                        fillColor: AppStyle.surface,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: AppStyle.rule),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: AppStyle.paper),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 18,
+                          horizontal: 18,
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      DropdownWidget(
-                        label: 'Select Your Branch',
-                        items: const [
-                          'Computer Science',
-                          'Electronics & TC',
-                          'Electrical',
-                          'Mechanical',
-                          'Civil',
-                          'Chemical',
-                          'Metallurgical',
-                          'Production',
+                    ),
+                    const SizedBox(height: 24),
+                    _label('02', 'Your branch'),
+                    DropdownWidget(
+                      label: 'Choose your branch',
+                      value: _selectedBranch,
+                      items: const [
+                        'Computer Science',
+                        'Electronics & TC',
+                        'Electrical',
+                        'Mechanical',
+                        'Civil',
+                        'Chemical',
+                        'Metallurgical',
+                        'Production',
+                      ],
+                      onChanged: (value) =>
+                          setState(() => _selectedBranch = value),
+                    ),
+                    const SizedBox(height: 24),
+                    _label('03', 'Your study shelf'),
+                    if (_isLoading)
+                      const Padding(
+                        padding: EdgeInsets.all(18),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: AppStyle.paper,
+                              ),
+                            ),
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                'Finding your notes…',
+                                style: TextStyle(color: AppStyle.muted),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    else if (_loadFailed)
+                      Row(
+                        children: [
+                          const Expanded(
+                            child: Text(
+                              'Your notes couldn’t load.',
+                              style: TextStyle(color: AppStyle.muted),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: _loadNotes,
+                            child: const Text('Retry'),
+                          ),
                         ],
-                        onChanged: (value) =>
-                            setState(() => _selectedBranch = value),
-                      ),
-                      const SizedBox(height: 20),
+                      )
+                    else
                       DropdownWidget(
-                        label: 'Select Notes',
+                        label: 'Choose your notes',
+                        value: _availableNotes
+                            .where((note) => note['url'] == _selectedNote)
+                            .firstOrNull?['name'],
                         items: _availableNotes
                             .map((note) => note['name']!)
                             .toList(),
-                        onChanged: (value) {
-                          final selectedNote = _availableNotes.firstWhere(
+                        onChanged: (value) => setState(
+                          () => _selectedNote = _availableNotes.firstWhere(
                             (note) => note['name'] == value,
-                            orElse: () => {},
-                          );
-                          setState(() => _selectedNote = selectedNote['url']);
-                        },
-                      ),
-                      const SizedBox(height: 40),
-                      ElevatedButton(
-                        onPressed: _saveData,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppStyle.accent,
-                          padding: const EdgeInsets.symmetric(vertical: 18),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: AppStyle.radius,
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const Text(
-                          'Next',
-                          style: TextStyle(
-                            color: AppStyle.onAccent,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          )['url'],
                         ),
                       ),
-                    ],
-                  ),
+                    const SizedBox(height: 30),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+        OnboardingFooter(
+          label: _isSaving ? 'Setting things up…' : 'Enter Alcademy',
+          onPressed: _isSaving || _isLoading || _loadFailed ? null : _saveData,
+          helper: _error ?? 'You can change these anytime in your profile.',
+          helperColor: _error == null ? AppStyle.muted : AppStyle.danger,
+        ),
+      ],
+    ),
+  );
 }
