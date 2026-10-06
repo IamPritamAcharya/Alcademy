@@ -1,12 +1,12 @@
 ---
 name: Nilachala Sahoo
-image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Nilachala%20Sahoo.jpg
+image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/nilachala-sahoo.jpg
 company: NI
 ---
 
 # Nilachala Sahoo's Journey  
 
-![Nilachala Sahoo](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Nilachala%20Sahoo.jpg)  
+![Nilachala Sahoo](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/nilachala-sahoo.jpg)  
 
 ---
 

@@ -9,8 +9,6 @@ import 'package:port/features/home/presentation/widgets/home_header.dart';
 import 'package:port/features/home/presentation/widgets/home_subject_list.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:port/features/home/presentation/widgets/tabs_widget.dart';
-import 'package:port/features/home/presentation/widgets/first_tab_page.dart';
-import 'package:port/core/config/app_config.dart';
 import 'package:port/features/notes/models/subject.dart';
 import 'package:port/features/stories/presentation/stories_widget.dart';
 import 'package:port/features/stories/presentation/story_screen.dart';
@@ -175,19 +173,6 @@ void main() {
     expect(selected, same(subject));
   });
 
-  testWidgets('configurable campus tool retains its route', (tester) async {
-    final original = AppConfiguration.current.value;
-    addTearDown(() => AppConfiguration.current.value = original);
-    AppConfiguration.current.value = AppConfig(firstTabName: 'Campus updates');
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(body: TabsWidget(onTabPressed: (_) {})),
-      ),
-    );
-    await tester.tap(find.text('Campus updates'));
-    await tester.pumpAndSettle();
-    expect(find.byType(FirstTabPage), findsOneWidget);
-  });
   testWidgets(
     'book motion stops in reduced-motion mode and shows resource count',
     (tester) async {

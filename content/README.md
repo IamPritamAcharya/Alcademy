@@ -1,27 +1,31 @@
 # Alcademy content
 
-This directory contains all 59 files imported from the `main` branches of
-`Academia-IGIT/DATA_hub` and `IamPritamAcharya/DATA_hub`.
+All app content is served from this directory in `IamPritamAcharya/Alcademy`.
 
-- `Notes/`: current notes and subject lists from Academia-IGIT.
-- `Blog/`, `Success stories/`, `img/`: articles, stories, and their images.
-- `settings.json`: the app settings previously stored in the personal DATA_hub.
-- `amenities.json`, `academic_calender.txt`, `holiday_list.txt`: campus resources.
-- `legacy/iam-pritam-acharya/Notes/`: both older personal note lists, preserved
-  without adding duplicate choices to the current notes directory.
-- Other original JSON and image files are preserved, including data for retired
-  features. Importing these files does not restore those app features.
+- `Notes/`: the original 27 notes/subject JSON files. Their names and contents
+  are unchanged. Each file remains a separate branch/semester selection.
+- `blogs/`: blog articles in Markdown; filenames provide their display titles.
+- `success-stories/`: Markdown with `name`, `image_url`, and `company` metadata.
+- `images/success-stories/`: portraits with lowercase names separated by hyphens.
+- `images/stories/`: images used in the home story strip.
+- `settings.json`: story content and contributor credits.
+- `amenities.json`: campus facilities and descriptions.
+- `documents.json`: academic-calendar and holiday PDF links.
 
-`migration_manifest.json` records every imported path, its source commit, and
-source/destination SHA-256 checksums. Destination checksums describe the import
-snapshot; update the content normally afterward. Embedded source-repository image
-links were rewritten to this repository. External Drive, YouTube, and social links
-remain unchanged.
+Notes, amenities, and settings remain separate because they have different data
+formats and update independently. Calendar and holiday links share one document
+index. Retired feature data, archived note copies, unused images, placeholder
+contributor links, and the one-time import manifest have been removed. The import
+snapshot is preserved in commit `78b208d`.
 
-Edit content here, then commit and push it to `IamPritamAcharya/Alcademy` on `main`
-to make it available to the app. These files are served through GitHub, rather
-than bundled in the APK. Configure repository paths in
-`lib/core/network/github_sources.dart`.
+Keep portrait filenames lowercase with words separated by hyphens. Update both
+`image_url` and Markdown image references when changing a portrait. A contributor
+can have only a `name` if no real profile link is available.
 
-The original data repositories have not been deleted. Keep them available until
-the consolidated content is published and existing app installations are updated.
+Edit content here, then commit and push to `main` to make it available to the app.
+These files are not bundled in the APK. Configure source locations in
+`lib/core/network/github_sources.dart`; existing cached URLs are migrated on
+startup. Links to older personal note files now resolve to the corresponding
+current first-year or CSE semester-3 file.
+
+The source DATA_hub repositories remain available for older app versions.

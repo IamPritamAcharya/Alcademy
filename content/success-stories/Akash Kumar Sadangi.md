@@ -1,12 +1,12 @@
 ---
 name: Akash Kumar Sadangi
-image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Akash%20Kumar%20Sadangi.jpg
+image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/akash-kumar-sadangi.jpg
 company: KPMG
 ---
 
 # Akash Kumar Sadangi's Journey  
 
-![Akash Kumar Sadangi](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Akash%20Kumar%20Sadangi.jpg)  
+![Akash Kumar Sadangi](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/akash-kumar-sadangi.jpg)  
 
 ## Education  
 **Indira Gandhi Institute of Technology (IGIT), Sarang**  

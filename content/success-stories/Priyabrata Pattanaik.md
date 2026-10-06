@@ -1,12 +1,12 @@
 ---
 name: Priyabrata Pattanaik
-image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Priyabrata%20Pattanaik.jpg
+image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/priyabrata-pattanaik.jpg
 company: IBM
 ---
 
 # Priyabrata Pattanaik's Journey  
 
-![Priyabrata Pattanaik](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Priyabrata%20Pattanaik.jpg)  
+![Priyabrata Pattanaik](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/priyabrata-pattanaik.jpg)  
 
 ---
 

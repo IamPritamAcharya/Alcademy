@@ -1,6 +1,6 @@
 ---
 name: Abhishek Kumar Sahu
-image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Abhishek%20Kumar%20Sahu.jpg
+image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/abhishek-kumar-sahu.jpg
 company: Amazon
 ---
 
@@ -9,7 +9,7 @@ company: Amazon
 
 # Abhishek Kumar Sahu's Journey
 
-![Abhishek Kumar Sahu](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Abhishek%20Kumar%20Sahu.jpg)
+![Abhishek Kumar Sahu](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/abhishek-kumar-sahu.jpg)
 
 ## Education  
 **Indira Gandhi Institute of Technology (IGIT), Sarang**  

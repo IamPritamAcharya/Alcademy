@@ -20,13 +20,13 @@ void main() {
       GitHubSources.migrateLegacyLinks(
         'https://raw.githubusercontent.com/IamPritamAcharya/DATA_hub/main/Notes/firstyear.json',
       ),
-      'https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/legacy/iam-pritam-acharya/Notes/firstyear.json',
+      GitHubSources.defaultSubjects,
     );
     expect(
       GitHubSources.migrateLegacyLinks(
         'https://github.com/IamPritamAcharya/DATA_hub/raw/main/Untitled%20design.png',
       ),
-      'https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/Untitled%20design.png',
+      'https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/stories/welcome.png',
     );
     const external = 'https://drive.google.com/file/d/document/view';
     expect(GitHubSources.migrateLegacyLinks(external), external);
@@ -77,45 +77,77 @@ void main() {
   );
 
   test(
-    'all imported files exist and current notes/settings match app parsers',
-    () {
-      final manifest =
-          jsonDecode(File('content/migration_manifest.json').readAsStringSync())
-              as Map<String, dynamic>;
-      final entries = manifest['files'] as List;
-      expect(entries.map((e) => e['repository']).toSet(), {
-        'Academia-IGIT/DATA_hub',
-        'IamPritamAcharya/DATA_hub',
+    'cached images and archived note links migrate after the first import',
+    () async {
+      SharedPreferences.setMockInitialValues({
+        'github_content_migrated_to_alcademy_v1': true,
+        'selectedYearUrl':
+            'https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/legacy/iam-pritam-acharya/Notes/2nd_CSE_3rdsem.json',
+        'storyUrls':
+            '[{"type":"image","url":"https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Subham%20Nayak.jpg"}]',
       });
-      for (final entry in entries) {
-        expect(
-          File(entry['destination'] as String).existsSync(),
-          isTrue,
-          reason: entry['destination'] as String,
-        );
-      }
-      for (final file in Directory(
-        'content/Notes',
-      ).listSync().whereType<File>()) {
-        final subjects = (jsonDecode(file.readAsStringSync()) as List)
-            .map((item) => Subject.fromJson(item as Map<String, dynamic>))
-            .toList();
-        expect(subjects, isNotEmpty, reason: file.path);
-      }
-      final config = AppConfig.fromJson(
-        jsonDecode(File('content/settings.json').readAsStringSync())
-            as Map<String, dynamic>,
-      );
-      expect(config.stories, isNotEmpty);
-      expect(config.contributors, isNotEmpty);
+      final prefs = await SharedPreferences.getInstance();
+      await migrateGitHubContentCache(prefs);
       expect(
-        File(
-          Uri.decodeComponent(
-            Uri.parse(GitHubSources.defaultSubjects).path.split('/main/').last,
-          ),
-        ).existsSync(),
-        isTrue,
+        prefs.getString('selectedYearUrl'),
+        endsWith('/Notes/CSE%20Sem%203.json'),
+      );
+      expect(
+        jsonDecode(prefs.getString('storyUrls')!).single['url'],
+        endsWith('/images/success-stories/subham-nayak.jpg'),
       );
     },
   );
+
+  test('internal content images resolve and no image is orphaned', () {
+    final references = <String>{};
+    for (final file in Directory(
+      'content',
+    ).listSync(recursive: true).whereType<File>()) {
+      if (!file.path.endsWith('.json') && !file.path.endsWith('.md')) continue;
+      for (final match in RegExp(
+        r'https://raw\.githubusercontent\.com/IamPritamAcharya/Alcademy/main/content/[^\s)"<>]+',
+      ).allMatches(file.readAsStringSync())) {
+        final path = Uri.decodeComponent(
+          Uri.parse(match.group(0)!).path.split('/main/').last,
+        );
+        expect(File(path).existsSync(), isTrue, reason: '${file.path}: $path');
+        references.add(path);
+      }
+    }
+    for (final file in Directory(
+      'content/images',
+    ).listSync(recursive: true).whereType<File>()) {
+      expect(
+        references,
+        contains(file.path),
+        reason: 'Unused image: ${file.path}',
+      );
+    }
+  });
+
+  test('current notes and settings match app parsers', () {
+    for (final file in Directory(
+      'content/Notes',
+    ).listSync().whereType<File>()) {
+      final subjects = (jsonDecode(file.readAsStringSync()) as List)
+          .map((item) => Subject.fromJson(item as Map<String, dynamic>))
+          .toList();
+      expect(subjects, isNotEmpty, reason: file.path);
+    }
+    final config = AppConfig.fromJson(
+      jsonDecode(File('content/settings.json').readAsStringSync())
+          as Map<String, dynamic>,
+    );
+    expect(config.stories, isNotEmpty);
+    expect(config.contributors, isNotEmpty);
+    expect(
+      File(
+        Uri.decodeComponent(
+          Uri.parse(GitHubSources.defaultSubjects).path.split('/main/').last,
+        ),
+      ).existsSync(),
+      isTrue,
+    );
+  });
 }

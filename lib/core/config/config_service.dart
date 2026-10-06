@@ -13,15 +13,19 @@ class ConfigService {
 
   static Future<void> loadCachedConfig() async {
     final prefs = await SharedPreferences.getInstance();
+    // Remove settings left by the retired configurable home tool.
+    for (final key in [
+      'name_1st_tab',
+      'markdownContent_1st_tab',
+      'showFirstTab',
+    ]) {
+      if (prefs.containsKey(key)) await prefs.remove(key);
+    }
     final cache = PreferencesCache(prefs);
     try {
       AppConfiguration.current.value = AppConfig.fromJson({
         'storyUrls': cache.readJson('storyUrls') ?? [],
         'contributors': cache.readJson('contributors') ?? [],
-        'name_1st_tab': prefs.getString('name_1st_tab') ?? 'Horizon',
-        'markdownContent_1st_tab':
-            prefs.getString('markdownContent_1st_tab') ?? '',
-        'showFirstTab': prefs.getBool('showFirstTab') ?? true,
       });
     } catch (error) {
       debugPrint('Error loading cached configuration: $error');
@@ -50,9 +54,6 @@ class ConfigService {
       final cache = PreferencesCache(prefs);
       await cache.writeJson('storyUrls', config.stories);
       await cache.writeJson('contributors', config.contributors);
-      await prefs.setString('name_1st_tab', config.firstTabName);
-      await prefs.setString('markdownContent_1st_tab', config.firstTabMarkdown);
-      await prefs.setBool('showFirstTab', config.showFirstTab);
       await prefs.setString('lastFetchDate', date.toIso8601String());
       AppConfiguration.current.value = config;
     } catch (error) {

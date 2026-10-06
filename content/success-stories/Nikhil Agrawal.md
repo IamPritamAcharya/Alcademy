@@ -1,12 +1,12 @@
 ---
 name: Nikhil Agrawal
-image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Nikhil%20Agrawal.jpg
+image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/nikhil-agrawal.jpg
 company: Amazon
 ---
 
 # Nikhil Agarwal's Journey
 
-![Nikhil Agarwal](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Nikhil%20Agrawal.jpg)
+![Nikhil Agarwal](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/nikhil-agrawal.jpg)
 
 ## Education
 **Indira Gandhi Institute of Technology (IGIT), Sarang**  

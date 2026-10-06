@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:port/core/network/github_content_client.dart';
@@ -9,22 +10,26 @@ class DocumentDefinition {
   final String sourceUrl;
   final String cacheKey;
   final String updatedKey;
+  final String jsonKey;
   const DocumentDefinition({
     required this.title,
     required this.sourceUrl,
     required this.cacheKey,
     required this.updatedKey,
+    required this.jsonKey,
   });
 
   static const calendar = DocumentDefinition(
     title: 'Academic Calendar',
-    sourceUrl: GitHubSources.academicCalendar,
+    sourceUrl: GitHubSources.documents,
+    jsonKey: 'academicCalendar',
     cacheKey: 'academic_calendar_url',
     updatedKey: 'academic_calendar_last_updated',
   );
   static const holidays = DocumentDefinition(
-    title: 'Holiday List: 2025',
-    sourceUrl: GitHubSources.holidays,
+    title: 'Holiday List: 2026',
+    sourceUrl: GitHubSources.documents,
+    jsonKey: 'holidays',
     cacheKey: 'holiday_list_url',
     updatedKey: 'holiday_list_last_updated',
   );
@@ -52,8 +57,16 @@ class DocumentRepository {
       today,
     );
     if (cached != null) return cached;
-    final url = (await _content.getText(document.sourceUrl)).trim();
-    if (url.isEmpty) throw const FormatException('The fetched URL is empty.');
+    final data =
+        jsonDecode(await _content.getText(document.sourceUrl))
+            as Map<String, dynamic>;
+    final url = (data[document.jsonKey] as String).trim();
+    final uri = Uri.tryParse(url);
+    if (uri == null ||
+        !['https', 'http'].contains(uri.scheme) ||
+        uri.host.isEmpty) {
+      throw const FormatException('The document URL is invalid.');
+    }
     await cache.writeString(document.cacheKey, url, document.updatedKey, now);
     return url;
   }

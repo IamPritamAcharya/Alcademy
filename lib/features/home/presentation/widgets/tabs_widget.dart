@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:port/core/config/app_config.dart';
 import 'package:port/features/blog/presentation/blog_page.dart';
 import 'package:port/features/success_stories/presentation/success_stories_page.dart';
 import 'package:port/features/expenses/presentation/expense_tracker_page.dart';
 import 'package:port/features/college_resources/presentation/erp_page.dart';
-import 'package:port/features/home/presentation/widgets/first_tab_page.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:port/features/home/presentation/widgets/home_pressable.dart';
 
@@ -16,13 +14,6 @@ class TabsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final tabs =
         <({String name, IconData icon, Color accent, Widget Function() page})>[
-          if (showFirstTab)
-            (
-              name: nameFirstTab,
-              icon: Icons.auto_stories_outlined,
-              accent: AppStyle.lilac,
-              page: () => const FirstTabPage(),
-            ),
           (
             name: 'Expenses',
             icon: Icons.account_balance_wallet_outlined,

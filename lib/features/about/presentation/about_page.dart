@@ -300,12 +300,16 @@ class AboutPage extends StatelessWidget {
                   people[i]['name'] ?? 'Contributor',
                   style: const TextStyle(fontSize: 16, height: 1.4),
                 ),
-                trailing: const Icon(
-                  Icons.north_east_rounded,
-                  size: 18,
-                  color: AppStyle.muted,
-                ),
-                onTap: () => _openUrl(context, people[i]['url'] ?? ''),
+                trailing: (people[i]['url'] ?? '').isEmpty
+                    ? null
+                    : const Icon(
+                        Icons.north_east_rounded,
+                        size: 18,
+                        color: AppStyle.muted,
+                      ),
+                onTap: (people[i]['url'] ?? '').isEmpty
+                    ? null
+                    : () => _openUrl(context, people[i]['url']!),
               ),
           ],
   );

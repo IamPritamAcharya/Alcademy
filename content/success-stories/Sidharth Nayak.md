@@ -1,12 +1,12 @@
 ---
 name: Sidharth Nayak
-image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Sidharth%20Nayak.jpg
+image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/sidharth-nayak.jpg
 company: NVIDIA
 ---
 
 # Sidharth Nayak's Journey
 
-![Sidharth Nayak](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Sidharth%20Nayak.jpg)
+![Sidharth Nayak](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/sidharth-nayak.jpg)
 
 ## Education
 1. **Indira Gandhi Institute of Technology (IGIT), Sarang**  

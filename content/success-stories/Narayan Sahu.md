@@ -1,13 +1,13 @@
 ---
 name: Narayan Sahu
-image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Narayan%20Sahu.jpg
+image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/narayan-sahu.jpg
 company: Oracle
 
 ---
 
 # Narayan Sahu's Journey
 
-![Narayan Sahu](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Narayan%20Sahu.jpg)
+![Narayan Sahu](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/narayan-sahu.jpg)
 
 ## Education
 **Indira Gandhi Institute of Technology (IGIT), Sarang**  

@@ -1,12 +1,12 @@
 ---
 name: Subham Nayak
-image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Subham%20Nayak.jpg
+image_url: https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/subham-nayak.jpg
 company: Qualcomm
 ---
 
 # Subham Nayak's Journey
 
-![Subham Nayak](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/img/Subham%20Nayak.jpg)
+![Subham Nayak](https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/success-stories/subham-nayak.jpg)
 
 ## Education  
 **International Institute of Information Technology Bangalore**  
