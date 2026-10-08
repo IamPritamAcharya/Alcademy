@@ -102,7 +102,7 @@ void main() {
         'https://www.linkedin.com/in/pritamacharya/',
       );
       await tester.scrollUntilVisible(
-        find.text('Contributors').hitTestable(),
+        find.text('Notes contributors').hitTestable(),
         160,
         scrollable: find
             .descendant(
@@ -111,7 +111,7 @@ void main() {
             )
             .first,
       );
-      await tester.tap(find.text('Contributors'));
+      await tester.tap(find.text('Notes contributors'));
       await tester.pumpAndSettle();
       await tester.ensureVisible(find.text('Campus notes contributor'));
       await tester.tap(find.text('Campus notes contributor'));

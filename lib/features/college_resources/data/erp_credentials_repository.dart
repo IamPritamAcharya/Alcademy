@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'erp_session_manager.dart';
 
 class ErpCredentials {
   final String username;
@@ -32,11 +33,21 @@ class ErpCredentialsRepository {
     return ErpCredentials(username: username, password: password);
   }
 
-  Future<void> save(ErpCredentials credentials) {
+  Future<void> save(ErpCredentials credentials) async {
     if (credentials.username.trim().isEmpty || credentials.password.isEmpty) {
       throw ArgumentError('Both ERP fields are required.');
     }
-    return storage.write(
+    ErpCredentials? previous;
+    try {
+      previous = await read();
+    } catch (_) {
+      // Replacing an unreadable record must also invalidate its old session.
+    }
+    if (previous?.username != credentials.username.trim() ||
+        previous?.password != credentials.password) {
+      await ErpSessionManager.invalidate();
+    }
+    await storage.write(
       key: storageKey,
       value: jsonEncode({
         'username': credentials.username.trim(),
@@ -45,5 +56,8 @@ class ErpCredentialsRepository {
     );
   }
 
-  Future<void> delete() => storage.delete(key: storageKey);
+  Future<void> delete() async {
+    await ErpSessionManager.invalidate();
+    await storage.delete(key: storageKey);
+  }
 }

@@ -271,7 +271,7 @@ class AboutPage extends StatelessWidget {
     iconColor: AppStyle.paper,
     collapsedIconColor: AppStyle.muted,
     title: const Text(
-      'Contributors',
+      'Notes contributors',
       style: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w600,
@@ -283,7 +283,7 @@ class AboutPage extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                'No contributors listed yet.',
+                'No notes contributors listed yet.',
                 style: TextStyle(color: AppStyle.muted),
               ),
             ),
@@ -297,7 +297,7 @@ class AboutPage extends StatelessWidget {
                   style: const TextStyle(fontSize: 12, color: AppStyle.muted),
                 ),
                 title: Text(
-                  people[i]['name'] ?? 'Contributor',
+                  people[i]['name'] ?? 'Notes contributor',
                   style: const TextStyle(fontSize: 16, height: 1.4),
                 ),
                 trailing: (people[i]['url'] ?? '').isEmpty

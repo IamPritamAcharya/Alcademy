@@ -142,6 +142,45 @@ class _UniqueDrawerState extends State<UniqueDrawer> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 12),
+                    _tile(
+                      label: 'Timetable',
+                      route: '/timetable',
+                      icon: Icons.view_week_outlined,
+                      height: 74 + scale.scale(24) * 2.4,
+                      accent: AppStyle.lilac,
+                      order: 4,
+                      wide: true,
+                      caption: 'YOUR WEEK, IN ONE PLACE',
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: _tile(
+                            label: 'Attendance',
+                            route: '/attendance',
+                            icon: Icons.fact_check_outlined,
+                            height: compactHeight,
+                            accent: AppStyle.blue,
+                            order: 5,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          flex: 5,
+                          child: _tile(
+                            label: 'Fees',
+                            route: '/fees',
+                            icon: Icons.receipt_long_outlined,
+                            height: compactHeight,
+                            accent: AppStyle.gold,
+                            order: 6,
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 24),
                     Row(
                       children: [

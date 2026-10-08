@@ -8,12 +8,15 @@ import 'package:port/features/amenities/presentation/amenities_page.dart';
 import 'package:port/features/college_resources/presentation/academic_calendar_page.dart';
 import 'package:port/features/college_resources/presentation/holiday_list_page.dart';
 import 'package:port/features/notices/presentation/notice_page.dart';
-import 'package:port/features/college_resources/presentation/results_page.dart';
+import 'package:port/features/results/presentation/results_page.dart';
 import 'package:port/features/profile/presentation/profile_page.dart';
 
 import 'package:port/features/sgpa/presentation/branch_selector.dart';
 import 'package:port/features/home/presentation/home_page.dart';
 import 'package:port/features/college_resources/presentation/syllabus_page.dart';
+import 'package:port/features/timetable/presentation/timetable_page.dart';
+import 'package:port/features/attendance/presentation/attendance_page.dart';
+import 'package:port/features/fees/presentation/fees_page.dart';
 
 GoRouter createAppRouter({
   required String initialLocation,
@@ -26,7 +29,16 @@ GoRouter createAppRouter({
     GoRoute(path: "/notice", builder: (context, state) => NoticePage()),
     GoRoute(path: "/amenities", builder: (context, state) => AmenitiesPage()),
     GoRoute(path: "/syllabus", builder: (context, state) => SyllabusPage()),
+    GoRoute(
+      path: "/timetable",
+      builder: (context, state) => const TimetablePage(),
+    ),
     GoRoute(path: "/sgpa", builder: (context, state) => const BranchSelector()),
+    GoRoute(path: '/fees', builder: (context, state) => const FeesPage()),
+    GoRoute(
+      path: '/attendance',
+      builder: (context, state) => const AttendancePage(),
+    ),
     GoRoute(
       path: "/user",
       builder: (context, state) => const UserProfilePage(),
@@ -38,7 +50,7 @@ GoRouter createAppRouter({
       path: "/calendar",
       builder: (context, state) => AcademicCalendarPage(),
     ),
-    GoRoute(path: "/result", builder: (context, state) => ResultWebView()),
+    GoRoute(path: "/result", builder: (context, state) => const ResultsPage()),
     GoRoute(
       path: "/notifications",
       builder: (context, state) => NotificationHistoryPage(),

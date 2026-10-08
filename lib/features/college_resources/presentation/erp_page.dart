@@ -2,6 +2,7 @@ import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:port/features/college_resources/data/erp_credentials_repository.dart';
+import 'package:port/features/college_resources/data/erp_session_manager.dart';
 import 'package:port/features/college_resources/presentation/erp_auto_login.dart';
 import 'package:port/features/profile/presentation/profile_page.dart';
 
@@ -62,6 +63,7 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
           },
         ),
       );
+    await ErpSessionManager.prepare();
     await _readCredentials();
     if (mounted) await _loadInitialPage();
   }
@@ -111,7 +113,7 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
     if (current != null &&
         (current.username != previous?.username ||
             current.password != previous?.password)) {
-      await WebViewCookieManager().clearCookies();
+      await ErpSessionManager.prepare();
       if (mounted) await _relogin();
     }
   }

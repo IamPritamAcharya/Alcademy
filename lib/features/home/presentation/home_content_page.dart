@@ -259,6 +259,7 @@ class _FirstPageState extends State<HomeContentPage>
                     label: const Text('Change year'),
                     style: TextButton.styleFrom(
                       foregroundColor: AppStyle.accent,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       textStyle: const TextStyle(
                         fontFamily: 'ProductSans',
                         fontSize: 12,
@@ -379,12 +380,9 @@ class _SectionHeading extends StatelessWidget {
       children: [
         Text(eyebrow, style: AppStyle.eyebrow),
         const SizedBox(height: 5),
-        Wrap(
-          alignment: WrapAlignment.spaceBetween,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          spacing: 16,
-          children: [
-            Text(
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final heading = Text(
               title,
               style: const TextStyle(
                 color: AppStyle.text,
@@ -392,9 +390,33 @@ class _SectionHeading extends StatelessWidget {
                 letterSpacing: -.6,
                 fontWeight: FontWeight.bold,
               ),
-            ),
-            if (action != null) action!,
-          ],
+            );
+            if (action == null) return heading;
+            return Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: heading,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  flex: 2,
+                  child: SizedBox(
+                    height: 48,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerRight,
+                      child: action!,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ],
     ),
