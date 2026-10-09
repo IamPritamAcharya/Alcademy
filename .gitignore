@@ -2,6 +2,8 @@
 *.class
 *.log
 *.pyc
+__pycache__/
+/test/features/failures/
 *.swp
 .DS_Store
 .env

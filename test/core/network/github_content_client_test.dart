@@ -8,16 +8,14 @@ import 'package:port/core/network/github_content_client.dart';
 import 'package:port/core/network/github_sources.dart';
 import 'package:port/features/notes/data/subject_repository.dart';
 import 'package:port/features/success_stories/data/success_stories_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  setUp(() => SharedPreferences.setMockInitialValues({}));
   test(
     'folder listings and settings use this repository and its content directory',
     () {
-      for (final url in [
-        GitHubSources.noteYears,
-        GitHubSources.blogs,
-        GitHubSources.successStories,
-      ]) {
+      for (final url in [GitHubSources.noteYears]) {
         final uri = Uri.parse(url);
         expect(uri.host, 'api.github.com');
         expect(
@@ -26,6 +24,8 @@ void main() {
         );
         expect(uri.queryParameters['ref'], GitHubSources.contentBranch);
       }
+      expect(GitHubSources.blogs, endsWith('/content/blogs.json'));
+      expect(Uri.parse(GitHubSources.blogs).host, 'raw.githubusercontent.com');
       expect(
         GitHubSources.settings,
         contains(
@@ -132,36 +132,35 @@ void main() {
     },
   );
 
-  test(
-    'success stories safely download filenames with spaces and reserved characters',
-    () async {
-      const filename = 'A story #1 & résumé.md';
-      final requests = <Uri>[];
-      final stories = await SuccessStoriesRepository.fetchStories(
-        client: MockClient((request) async {
-          requests.add(request.url);
-          if (request.url.toString() == GitHubSources.successStories) {
-            return http.Response(
-              jsonEncode([
-                {'name': filename},
-                {'name': 'README.txt'},
-              ]),
-              200,
-            );
-          }
-          expect(request.url.pathSegments.last, filename);
-          expect(request.url.fragment, isEmpty);
-          expect(request.url.query, isEmpty);
-          return http.Response(
-            '---\nname: Student\nimage_url: https://example.com/photo.jpg\ncompany: Campus\n---\nStory body',
-            200,
-          );
-        }),
-      );
-      expect(requests, hasLength(2));
-      expect(stories.single['name'], 'Student');
-      expect(stories.single['body'], 'Story body');
-      expect(stories.single['image_url'], 'https://example.com/photo.jpg');
-    },
-  );
+  test('success stories download one JSON file and preserve Markdown', () async {
+    const body =
+        '\n# Résumé\n\n**Bold**  \nNext line\n\n[Link](https://example.com/a:b)\n';
+    final requests = <Uri>[];
+    final stories = await SuccessStoriesRepository.fetchStories(
+      client: MockClient((request) async {
+        requests.add(request.url);
+        expect(request.url.host, 'raw.githubusercontent.com');
+        expect(request.url.path, Uri.parse(GitHubSources.successStories).path);
+        return http.Response(
+          jsonEncode({
+            'version': 1,
+            'stories': [
+              {
+                'id': 'student',
+                'name': 'Student',
+                'image_url': 'https://example.com/photo.jpg',
+                'company': 'Campus',
+                'body': body,
+              },
+            ],
+          }),
+          200,
+        );
+      }),
+    );
+    expect(requests, hasLength(1));
+    expect(stories.single['name'], 'Student');
+    expect(stories.single['body'], body);
+    expect(stories.single['image_url'], 'https://example.com/photo.jpg');
+  });
 }

@@ -27,7 +27,7 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
 
   Future<List<Map<String, String>>> _fetchMarkdownFiles({
     bool forceRefresh = false,
-  }) => _repository.getFiles(forceRefresh: forceRefresh);
+  }) => _repository.fetchBlogs(forceRefresh: forceRefresh);
 
   Future<void> _handleRefresh() async {
     bool isRefreshAllowed = await RefreshTracker.incrementRefreshCount();
@@ -92,7 +92,7 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Center(
                 child: Text(
-                  'No markdown files found.',
+                  'No articles found.',
                   style: TextStyle(color: AppStyle.text),
                 ),
               );
@@ -114,16 +114,13 @@ class _MarkdownListPageState extends State<MarkdownListPage> {
                 final file = files[index - 1];
                 return EditorialListRow(
                   number: index,
-                  title: file['name']!
-                      .replaceAll('.md', '')
-                      .replaceAll('_', ' '),
+                  title: file['title']!,
                   category: 'Article',
                   accent: AppStyle.accent,
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) =>
-                          MarkdownViewerPage(url: file['download_url']!),
+                      builder: (_) => MarkdownViewerPage(body: file['body']!),
                     ),
                   ),
                 );

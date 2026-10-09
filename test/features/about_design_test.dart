@@ -51,7 +51,6 @@ void main() {
         'assets/images/codex.jpeg',
         'assets/images/insta.png',
         'assets/images/link.png',
-        'assets/images/yt.png',
       ]) {
         await precacheImage(AssetImage(asset), context);
       }
@@ -100,6 +99,14 @@ void main() {
       expect(
         opened.single.toString(),
         'https://www.linkedin.com/in/pritamacharya/',
+      );
+      expect(find.text('YouTube'), findsNothing);
+      await tester.ensureVisible(find.text('Discord'));
+      await tester.tap(find.text('Discord'));
+      await tester.pumpAndSettle();
+      expect(
+        opened.last.toString(),
+        'https://discord.com/users/696411743894896650',
       );
       await tester.scrollUntilVisible(
         find.text('Notes contributors').hitTestable(),

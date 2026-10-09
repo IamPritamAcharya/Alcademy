@@ -16,7 +16,6 @@ class SuccessStoriesPage extends StatefulWidget {
 }
 
 class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
-  static List<Map<String, String>>? cachedStories;
   late Future<List<Map<String, String>>> storiesFuture;
 
   @override
@@ -28,11 +27,7 @@ class _SuccessStoriesPageState extends State<SuccessStoriesPage> {
   Future<List<Map<String, String>>> _fetchStories({
     bool forceRefresh = false,
   }) async {
-    if (cachedStories != null && !forceRefresh) {
-      return cachedStories!;
-    }
-    cachedStories = await SuccessStoriesRepository.fetchStories();
-    return cachedStories!;
+    return SuccessStoriesRepository.fetchStories(forceRefresh: forceRefresh);
   }
 
   Future<void> _handleRefresh() async {

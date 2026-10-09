@@ -15,15 +15,11 @@ abstract final class GitHubSources {
   static const festivals =
       'https://raw.githubusercontent.com/$contentRepository/festivals/festivals.json';
   static const noteYears = '$_api/Notes?ref=$contentBranch';
-  static const blogs = '$_api/blogs?ref=$contentBranch';
-  static const successStories = '$_api/success-stories?ref=$contentBranch';
-  static const successStoriesRaw = '$_raw/success-stories';
+  static const blogs = '$_raw/blogs.json';
+  static const successStories = '$_raw/success-stories.json';
   static const defaultSubjects = '$_raw/Notes/All%20First%20Years.json';
   static const amenities = '$_raw/amenities.json';
   static const documents = '$_raw/documents.json';
-
-  static String successStory(String filename) =>
-      '$successStoriesRaw/${Uri.encodeComponent(filename)}';
 
   /// Rebase old downloaded and cached URLs without losing a selected note year.
   static String migrateLegacyLinks(String text) {

@@ -91,6 +91,7 @@ class StoryTextContent extends StatelessWidget {
 
   Widget _markdown(BuildContext context) => MarkdownBody(
     data: _bodyText,
+    fitContent: false,
     softLineBreak: true,
     onTapLink: onTapLink,
     sizedImageBuilder: (image) => Text(

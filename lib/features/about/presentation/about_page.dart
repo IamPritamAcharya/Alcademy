@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:port/core/config/app_config.dart';
@@ -113,20 +114,20 @@ class AboutPage extends StatelessWidget {
             _social(
               context,
               'Instagram',
-              'assets/images/insta.png',
+              Image.asset('assets/images/insta.png', width: 16, height: 16),
               'https://www.instagram.com/pritam.ach/',
             ),
             _social(
               context,
               'LinkedIn',
-              'assets/images/link.png',
+              Image.asset('assets/images/link.png', width: 16, height: 16),
               'https://www.linkedin.com/in/pritamacharya/',
             ),
             _social(
               context,
-              'YouTube',
-              'assets/images/yt.png',
-              'https://www.youtube.com/@Pritam-Ach',
+              'Discord',
+              const Icon(LineIcons.discord, size: 16),
+              'https://discord.com/users/696411743894896650',
             ),
           ],
         ),
@@ -204,11 +205,11 @@ class AboutPage extends StatelessWidget {
   Widget _social(
     BuildContext context,
     String label,
-    String asset,
+    Widget icon,
     String url,
   ) => OutlinedButton.icon(
     onPressed: () => _openUrl(context, url),
-    icon: Image.asset(asset, width: 16, height: 16),
+    icon: icon,
     label: Text(label, style: const TextStyle(fontSize: 12)),
     style: OutlinedButton.styleFrom(
       foregroundColor: AppStyle.text,

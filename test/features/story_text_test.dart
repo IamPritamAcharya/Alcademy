@@ -132,6 +132,7 @@ void main() {
         find.text('A short campus update.', findRichText: true),
       );
       expect(bodyPosition.top - position.bottom, inInclusiveRange(0, 18));
+      expect(bodyPosition.center.dx, closeTo(position.center.dx, .1));
       expect(
         find.text('A little less last-minute.', findRichText: true),
         findsNothing,
