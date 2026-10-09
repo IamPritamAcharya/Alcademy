@@ -1,0 +1,43 @@
+name: Refresh festival calendar
+
+on:
+  schedule:
+    # First day of each calendar month, 05:47 IST.
+    - cron: '17 0 1 * *'
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish current and next-year holidays (otherwise preview only)
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: festival-calendar
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Test festival calendar
+        run: python -m unittest discover -s backend/festivals -p 'test_*.py'
+      - name: Fetch festival calendar
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PUBLISH: ${{ github.event_name == 'schedule' || inputs.publish }}
+        run: |
+          if [ "$PUBLISH" = "true" ]; then
+            python backend/festivals/fetch.py --publish
+          else
+            python backend/festivals/fetch.py
+          fi

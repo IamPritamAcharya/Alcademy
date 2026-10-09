@@ -1,7 +1,7 @@
 # Daily illustrated news
 
 **8 tech + 8 India stories**, shuffled once per successful daily run, after the
-three custom stories in `content/settings.json`. No API key, pip dependency,
+two custom stories in `content/settings.json`. No API key, pip dependency,
 or Firebase notification is used.
 
 Sources are centralized in `sources.json`:

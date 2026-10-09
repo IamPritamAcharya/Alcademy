@@ -1,0 +1,282 @@
+{
+  "diwali/deepavali": {
+    "wish": "Happy Diwali!",
+    "priority": 100
+  },
+  "ramzan id": {
+    "wish": "Eid Mubarak!",
+    "priority": 100
+  },
+  "bakrid": {
+    "wish": "Eid Mubarak!",
+    "priority": 100
+  },
+  "bhai duj": {
+    "wish": "Happy Bhai Duj!",
+    "priority": 90
+  },
+  "holi": {
+    "wish": "Happy Holi!",
+    "priority": 100
+  },
+  "dussehra": {
+    "wish": "Happy Dussehra!",
+    "priority": 95
+  },
+  "christmas": {
+    "wish": "Merry Christmas!",
+    "priority": 100
+  },
+  "new year's day": {
+    "wish": "Happy New Year!",
+    "priority": 100
+  },
+  "rath yatra": {
+    "wish": "Happy Rath Yatra!",
+    "priority": 95
+  },
+  "janmashtami": {
+    "wish": "Happy Janmashtami!",
+    "priority": 90
+  },
+  "janmashtami (smarta)": {
+    "wish": "Happy Janmashtami!",
+    "priority": 80
+  },
+  "raksha bandhan": {
+    "wish": "Happy Raksha Bandhan!",
+    "priority": 90
+  },
+  "ganesh chaturthi": {
+    "wish": "Happy Ganesh Chaturthi!",
+    "priority": 90
+  },
+  "maha shivaratri": {
+    "wish": "Happy Maha Shivaratri!",
+    "priority": 90
+  },
+  "vasant panchami": {
+    "wish": "Happy Saraswati Puja!",
+    "priority": 90
+  },
+  "makar sankranti": {
+    "wish": "Happy Makar Sankranti!",
+    "priority": 90
+  },
+  "pongal": {
+    "wish": "Happy Pongal!",
+    "priority": 80
+  },
+  "onam": {
+    "wish": "Happy Onam!",
+    "priority": 90
+  },
+  "ugadi": {
+    "wish": "Happy Ugadi!",
+    "priority": 80
+  },
+  "gudi padwa": {
+    "wish": "Happy Gudi Padwa!",
+    "priority": 80
+  },
+  "rama navami": {
+    "wish": "Happy Ram Navami!",
+    "priority": 90
+  },
+  "guru nanak jayanti": {
+    "wish": "Happy Gurpurab!",
+    "priority": 90
+  },
+  "mahavir jayanti": {
+    "wish": "Happy Mahavir Jayanti!",
+    "priority": 90
+  },
+  "buddha purnima": {
+    "wish": "Happy Buddha Purnima!",
+    "priority": 90
+  },
+  "vaisakhi": {
+    "wish": "Happy Baisakhi!",
+    "priority": 85
+  },
+  "vishu": {
+    "wish": "Happy Vishu!",
+    "priority": 80
+  },
+  "govardhan puja": {
+    "wish": "Happy Govardhan Puja!",
+    "priority": 80
+  },
+  "chhat puja (pratihar sashthi/surya sashthi)": {
+    "wish": "Happy Chhath Puja!",
+    "priority": 90
+  },
+  "first day of sharad navratri": {
+    "wish": "Happy Navratri!",
+    "priority": 85
+  },
+  "first day of durga puja festivities": {
+    "wish": "Happy Durga Puja!",
+    "priority": 85
+  },
+  "maha saptami": {
+    "wish": "Happy Durga Puja!",
+    "priority": 85
+  },
+  "maha ashtami": {
+    "wish": "Happy Durga Puja!",
+    "priority": 85
+  },
+  "maha navami": {
+    "wish": "Happy Durga Puja!",
+    "priority": 85
+  },
+  "independence day": {
+    "wish": "Happy Independence Day!",
+    "priority": 95
+  },
+  "republic day": {
+    "wish": "Happy Republic Day!",
+    "priority": 95
+  },
+  "ambedkar jayanti": {
+    "wish": "Honouring Dr. B. R. Ambedkar.",
+    "priority": 85
+  },
+  "bahag bihu (assam)": {
+    "wish": "Happy Bohag Bihu!",
+    "priority": 85
+  },
+  "birthday of rabindranath": {
+    "wish": "Celebrating Rabindranath Tagore.",
+    "priority": 75
+  },
+  "chaitra sukhladi": {
+    "wish": "Happy Hindu New Year!",
+    "priority": 80
+  },
+  "cheti chand": {
+    "wish": "Happy Cheti Chand!",
+    "priority": 85
+  },
+  "christmas eve": {
+    "wish": "Merry Christmas Eve!",
+    "priority": 85
+  },
+  "dolyatra": {
+    "wish": "Happy Dol Yatra!",
+    "priority": 85
+  },
+  "guru govind singh jayanti": {
+    "wish": "Warm wishes on Guru Gobind Singh Jayanti!",
+    "priority": 85
+  },
+  "guru ravidas jayanti": {
+    "wish": "Warm wishes on Guru Ravidas Jayanti!",
+    "priority": 85
+  },
+  "hazarat ali's birthday": {
+    "wish": "Warm wishes on Hazrat Ali Jayanti!",
+    "priority": 75
+  },
+  "holika dahana": {
+    "wish": "Happy Holika Dahan!",
+    "priority": 85
+  },
+  "jamat ul-vida": {
+    "wish": "Wishing you peace this Jamat Ul-Vida.",
+    "priority": 75
+  },
+  "karaka chaturthi": {
+    "wish": "Happy Karwa Chauth!",
+    "priority": 85
+  },
+  "maharishi dayanand saraswati jayanti": {
+    "wish": "Honouring Maharishi Dayanand Saraswati.",
+    "priority": 75
+  },
+  "maharishi valmiki jayanti": {
+    "wish": "Warm wishes on Valmiki Jayanti!",
+    "priority": 80
+  },
+  "mahatma gandhi jayanti": {
+    "wish": "Honouring Gandhi's message of peace.",
+    "priority": 85
+  },
+  "mesadi": {
+    "wish": "Happy Tamil New Year!",
+    "priority": 80
+  },
+  "milad un-nabi": {
+    "wish": "Eid Milad-un-Nabi Mubarak!",
+    "priority": 90
+  },
+  "naraka chaturdasi": {
+    "wish": "Happy Naraka Chaturdashi!",
+    "priority": 85
+  },
+  "parsi new year": {
+    "wish": "Happy Parsi New Year!",
+    "priority": 85
+  },
+  "ramadan start": {
+    "wish": "Ramadan Mubarak!",
+    "priority": 90
+  },
+  "shivaji jayanti": {
+    "wish": "Honouring Chhatrapati Shivaji Maharaj.",
+    "priority": 80
+  },
+  "vaisakhadi (bengal)": {
+    "wish": "Shubho Noboborsho!",
+    "priority": 85
+  },
+  "diwali": {
+    "wish": "Happy Diwali!",
+    "priority": 100
+  },
+  "deepavali": {
+    "wish": "Happy Diwali!",
+    "priority": 100
+  },
+  "eid al-fitr": {
+    "wish": "Eid Mubarak!",
+    "priority": 100
+  },
+  "eid ul-fitr": {
+    "wish": "Eid Mubarak!",
+    "priority": 100
+  },
+  "id-ul-fitr": {
+    "wish": "Eid Mubarak!",
+    "priority": 100
+  },
+  "eid al-adha": {
+    "wish": "Eid Mubarak!",
+    "priority": 100
+  },
+  "id-ul-zuha": {
+    "wish": "Eid Mubarak!",
+    "priority": 100
+  },
+  "bhai dooj": {
+    "wish": "Happy Bhai Duj!",
+    "priority": 90
+  },
+  "bohag bihu": {
+    "wish": "Happy Bohag Bihu!",
+    "priority": 85
+  },
+  "karwa chauth": {
+    "wish": "Happy Karwa Chauth!",
+    "priority": 85
+  },
+  "valmiki jayanti": {
+    "wish": "Warm wishes on Valmiki Jayanti!",
+    "priority": 80
+  },
+  "gandhi jayanti": {
+    "wish": "Honouring Gandhi's message of peace.",
+    "priority": 85
+  }
+}

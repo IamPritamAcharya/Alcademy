@@ -120,6 +120,7 @@ flutter:
     - assets/images/swayanshu.png
     - assets/data/syllabus.json
     - assets/data/stories-preview.json
+    - assets/data/festivals.json
     - content/settings.json
     - assets/images/collegeBack.png
     - assets/images/placeholderPerson.png

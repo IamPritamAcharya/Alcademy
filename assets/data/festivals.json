@@ -1,0 +1,951 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-09T07:36:29.038149+00:00",
+  "years": [
+    2026,
+    2027
+  ],
+  "sourceUrl": "https://calendar.google.com/calendar/ical/en.indian%23holiday%40group.v.calendar.google.com/public/basic.ics",
+  "events": [
+    {
+      "id": "338c7a7f94e2fd532e2a",
+      "date": "2026-01-01",
+      "name": "New Year's Day",
+      "tentative": false,
+      "wish": "Happy New Year!",
+      "priority": 100
+    },
+    {
+      "id": "5b903ca72db770849b5b",
+      "date": "2026-01-03",
+      "name": "Hazarat Ali's Birthday",
+      "tentative": false,
+      "wish": "Warm wishes on Hazrat Ali Jayanti!",
+      "priority": 75
+    },
+    {
+      "id": "9f62feb8f9ecbb5ae4f0",
+      "date": "2026-01-14",
+      "name": "Makar Sankranti",
+      "tentative": false,
+      "wish": "Happy Makar Sankranti!",
+      "priority": 90
+    },
+    {
+      "id": "74872b3e1b22e69448bc",
+      "date": "2026-01-14",
+      "name": "Pongal",
+      "tentative": false,
+      "wish": "Happy Pongal!",
+      "priority": 80
+    },
+    {
+      "id": "de36677e778d7c515ee5",
+      "date": "2026-01-23",
+      "name": "Vasant Panchami",
+      "tentative": false,
+      "wish": "Happy Saraswati Puja!",
+      "priority": 90
+    },
+    {
+      "id": "89a7d90cdaf387f12596",
+      "date": "2026-01-26",
+      "name": "Republic Day",
+      "tentative": false,
+      "wish": "Happy Republic Day!",
+      "priority": 95
+    },
+    {
+      "id": "e887e0e87ebc1aca6d6c",
+      "date": "2026-02-01",
+      "name": "Guru Ravidas Jayanti",
+      "tentative": false,
+      "wish": "Warm wishes on Guru Ravidas Jayanti!",
+      "priority": 85
+    },
+    {
+      "id": "29f11c9f0c3aa7b6dfa4",
+      "date": "2026-02-12",
+      "name": "Maharishi Dayanand Saraswati Jayanti",
+      "tentative": false,
+      "wish": "Honouring Maharishi Dayanand Saraswati.",
+      "priority": 75
+    },
+    {
+      "id": "91ce7139f42c1f3e8658",
+      "date": "2026-02-15",
+      "name": "Maha Shivaratri",
+      "tentative": false,
+      "wish": "Happy Maha Shivaratri!",
+      "priority": 90
+    },
+    {
+      "id": "a164dc7db9a2f7999367",
+      "date": "2026-02-19",
+      "name": "Ramadan Start",
+      "tentative": false,
+      "wish": "Ramadan Mubarak!",
+      "priority": 90
+    },
+    {
+      "id": "a477d2b26598da736a2d",
+      "date": "2026-02-19",
+      "name": "Shivaji Jayanti",
+      "tentative": false,
+      "wish": "Honouring Chhatrapati Shivaji Maharaj.",
+      "priority": 80
+    },
+    {
+      "id": "e26c939c403a7de9ed03",
+      "date": "2026-03-03",
+      "name": "Holika Dahana",
+      "tentative": false,
+      "wish": "Happy Holika Dahan!",
+      "priority": 85
+    },
+    {
+      "id": "385c114acb19f858ef31",
+      "date": "2026-03-04",
+      "name": "Holi",
+      "tentative": false,
+      "wish": "Happy Holi!",
+      "priority": 100
+    },
+    {
+      "id": "29f8bd0d2deaac87a034",
+      "date": "2026-03-19",
+      "name": "Cheti Chand",
+      "tentative": false,
+      "wish": "Happy Cheti Chand!",
+      "priority": 85
+    },
+    {
+      "id": "52892551e0e730352e15",
+      "date": "2026-03-19",
+      "name": "Gudi Padwa",
+      "tentative": false,
+      "wish": "Happy Gudi Padwa!",
+      "priority": 80
+    },
+    {
+      "id": "b13237cd8fef5ee49ff7",
+      "date": "2026-03-19",
+      "name": "Ugadi",
+      "tentative": false,
+      "wish": "Happy Ugadi!",
+      "priority": 80
+    },
+    {
+      "id": "cf9519d8fe4d1615db2f",
+      "date": "2026-03-20",
+      "name": "Jamat Ul-Vida",
+      "tentative": false,
+      "wish": "Wishing you peace this Jamat Ul-Vida.",
+      "priority": 75
+    },
+    {
+      "id": "715573e0f24fe28a1c7a",
+      "date": "2026-03-21",
+      "name": "Ramzan Id",
+      "tentative": false,
+      "wish": "Eid Mubarak!",
+      "priority": 100
+    },
+    {
+      "id": "a597aa657d584fc1bbe9",
+      "date": "2026-03-26",
+      "name": "Rama Navami",
+      "tentative": false,
+      "wish": "Happy Ram Navami!",
+      "priority": 90
+    },
+    {
+      "id": "8d2d1865e45613a935bd",
+      "date": "2026-03-31",
+      "name": "Mahavir Jayanti",
+      "tentative": false,
+      "wish": "Happy Mahavir Jayanti!",
+      "priority": 90
+    },
+    {
+      "id": "b9e0f9195d3d8eb18a9a",
+      "date": "2026-04-03",
+      "name": "Good Friday",
+      "tentative": false
+    },
+    {
+      "id": "871d913ddd5cd5215f96",
+      "date": "2026-04-14",
+      "name": "Ambedkar Jayanti",
+      "tentative": false,
+      "wish": "Honouring Dr. B. R. Ambedkar.",
+      "priority": 85
+    },
+    {
+      "id": "ff2c1593b6181ae71477",
+      "date": "2026-04-14",
+      "name": "Mesadi",
+      "tentative": false,
+      "wish": "Happy Tamil New Year!",
+      "priority": 80
+    },
+    {
+      "id": "2b45774d53660d86339e",
+      "date": "2026-04-14",
+      "name": "Vaisakhi",
+      "tentative": false,
+      "wish": "Happy Baisakhi!",
+      "priority": 85
+    },
+    {
+      "id": "718c22e210cac9d93dff",
+      "date": "2026-04-14",
+      "name": "Vishu",
+      "tentative": false,
+      "wish": "Happy Vishu!",
+      "priority": 80
+    },
+    {
+      "id": "f735c706f0827e3fefe2",
+      "date": "2026-04-15",
+      "name": "Bahag Bihu (Assam)",
+      "tentative": false,
+      "wish": "Happy Bohag Bihu!",
+      "priority": 85
+    },
+    {
+      "id": "a2e172d2f120873e043b",
+      "date": "2026-04-15",
+      "name": "Vaisakhadi (Bengal)",
+      "tentative": false,
+      "wish": "Shubho Noboborsho!",
+      "priority": 85
+    },
+    {
+      "id": "7b6f3b1dd572ff2e8366",
+      "date": "2026-05-01",
+      "name": "Buddha Purnima",
+      "tentative": false,
+      "wish": "Happy Buddha Purnima!",
+      "priority": 90
+    },
+    {
+      "id": "21a7a42d4c7d7b591397",
+      "date": "2026-05-09",
+      "name": "Birthday of Rabindranath",
+      "tentative": false,
+      "wish": "Celebrating Rabindranath Tagore.",
+      "priority": 75
+    },
+    {
+      "id": "e91e111b19eb4277f798",
+      "date": "2026-05-28",
+      "name": "Bakrid",
+      "tentative": false,
+      "wish": "Eid Mubarak!",
+      "priority": 100
+    },
+    {
+      "id": "f773d190a7f0aeb28aa3",
+      "date": "2026-06-26",
+      "name": "Muharram/Ashura",
+      "tentative": false
+    },
+    {
+      "id": "03e47a8ce00fab7d56b7",
+      "date": "2026-07-16",
+      "name": "Rath Yatra",
+      "tentative": false,
+      "wish": "Happy Rath Yatra!",
+      "priority": 95
+    },
+    {
+      "id": "b0b1823af8eb8a88ea49",
+      "date": "2026-08-15",
+      "name": "Independence Day",
+      "tentative": false,
+      "wish": "Happy Independence Day!",
+      "priority": 95
+    },
+    {
+      "id": "c81c729c99ea0f3f1938",
+      "date": "2026-08-15",
+      "name": "Parsi New Year",
+      "tentative": false,
+      "wish": "Happy Parsi New Year!",
+      "priority": 85
+    },
+    {
+      "id": "149f1a0c508cf9eb27c1",
+      "date": "2026-08-26",
+      "name": "Milad un-Nabi",
+      "tentative": false,
+      "wish": "Eid Milad-un-Nabi Mubarak!",
+      "priority": 90
+    },
+    {
+      "id": "ca5de3acdfa9d1bf822e",
+      "date": "2026-08-26",
+      "name": "Onam",
+      "tentative": false,
+      "wish": "Happy Onam!",
+      "priority": 90
+    },
+    {
+      "id": "8f14ecd6d8c67362a134",
+      "date": "2026-08-28",
+      "name": "Raksha Bandhan",
+      "tentative": false,
+      "wish": "Happy Raksha Bandhan!",
+      "priority": 90
+    },
+    {
+      "id": "b20c24520251ed3e6592",
+      "date": "2026-09-04",
+      "name": "Janmashtami",
+      "tentative": false,
+      "wish": "Happy Janmashtami!",
+      "priority": 90
+    },
+    {
+      "id": "1c6ab8e4dc128c9c23a7",
+      "date": "2026-09-04",
+      "name": "Janmashtami (Smarta)",
+      "tentative": false,
+      "wish": "Happy Janmashtami!",
+      "priority": 80
+    },
+    {
+      "id": "90261a168402fd37a158",
+      "date": "2026-09-14",
+      "name": "Ganesh Chaturthi",
+      "tentative": false,
+      "wish": "Happy Ganesh Chaturthi!",
+      "priority": 90
+    },
+    {
+      "id": "fb3031e492ae80e4e08d",
+      "date": "2026-10-02",
+      "name": "Mahatma Gandhi Jayanti",
+      "tentative": false,
+      "wish": "Honouring Gandhi's message of peace.",
+      "priority": 85
+    },
+    {
+      "id": "b99010e486bb272dbc24",
+      "date": "2026-10-11",
+      "name": "First Day of Sharad Navratri",
+      "tentative": false,
+      "wish": "Happy Navratri!",
+      "priority": 85
+    },
+    {
+      "id": "3c68dd6b15f046785b43",
+      "date": "2026-10-17",
+      "name": "First Day of Durga Puja Festivities",
+      "tentative": false,
+      "wish": "Happy Durga Puja!",
+      "priority": 85
+    },
+    {
+      "id": "78be13a87021180b2ac5",
+      "date": "2026-10-18",
+      "name": "Maha Saptami",
+      "tentative": false,
+      "wish": "Happy Durga Puja!",
+      "priority": 85
+    },
+    {
+      "id": "d32937357eb2b25dbcee",
+      "date": "2026-10-19",
+      "name": "Maha Ashtami",
+      "tentative": false,
+      "wish": "Happy Durga Puja!",
+      "priority": 85
+    },
+    {
+      "id": "3e335b4e51f889a62909",
+      "date": "2026-10-20",
+      "name": "Dussehra",
+      "tentative": false,
+      "wish": "Happy Dussehra!",
+      "priority": 95
+    },
+    {
+      "id": "ba9e19e86a727270953b",
+      "date": "2026-10-26",
+      "name": "Maharishi Valmiki Jayanti",
+      "tentative": false,
+      "wish": "Warm wishes on Valmiki Jayanti!",
+      "priority": 80
+    },
+    {
+      "id": "11e3ac74ce537e524a58",
+      "date": "2026-10-29",
+      "name": "Karaka Chaturthi",
+      "tentative": false,
+      "wish": "Happy Karwa Chauth!",
+      "priority": 85
+    },
+    {
+      "id": "29e520257bc26d693dc5",
+      "date": "2026-11-08",
+      "name": "Diwali/Deepavali",
+      "tentative": false,
+      "wish": "Happy Diwali!",
+      "priority": 100
+    },
+    {
+      "id": "564c602b11e97a884f33",
+      "date": "2026-11-08",
+      "name": "Naraka Chaturdasi",
+      "tentative": false,
+      "wish": "Happy Naraka Chaturdashi!",
+      "priority": 85
+    },
+    {
+      "id": "f00857bbda36c8d49cc6",
+      "date": "2026-11-09",
+      "name": "Govardhan Puja",
+      "tentative": false,
+      "wish": "Happy Govardhan Puja!",
+      "priority": 80
+    },
+    {
+      "id": "0c768f5c9cb321fd40c3",
+      "date": "2026-11-11",
+      "name": "Bhai Duj",
+      "tentative": false,
+      "wish": "Happy Bhai Duj!",
+      "priority": 90
+    },
+    {
+      "id": "fefd44a5a73c95deb9d1",
+      "date": "2026-11-15",
+      "name": "Chhat Puja (Pratihar Sashthi/Surya Sashthi)",
+      "tentative": false,
+      "wish": "Happy Chhath Puja!",
+      "priority": 90
+    },
+    {
+      "id": "231176478628e79ab0fb",
+      "date": "2026-11-24",
+      "name": "Guru Nanak Jayanti",
+      "tentative": false,
+      "wish": "Happy Gurpurab!",
+      "priority": 90
+    },
+    {
+      "id": "781a2f5a4f9fee59591c",
+      "date": "2026-11-24",
+      "name": "Guru Tegh Bahadur's Martyrdom Day",
+      "tentative": false
+    },
+    {
+      "id": "f728c01f0c9a26aa6017",
+      "date": "2026-12-23",
+      "name": "Hazarat Ali's Birthday",
+      "tentative": false,
+      "wish": "Warm wishes on Hazrat Ali Jayanti!",
+      "priority": 75
+    },
+    {
+      "id": "67bd2825e08bfcc98662",
+      "date": "2026-12-24",
+      "name": "Christmas Eve",
+      "tentative": false,
+      "wish": "Merry Christmas Eve!",
+      "priority": 85
+    },
+    {
+      "id": "46dd046f9ddecfd01457",
+      "date": "2026-12-25",
+      "name": "Christmas",
+      "tentative": false,
+      "wish": "Merry Christmas!",
+      "priority": 100
+    },
+    {
+      "id": "52b73aeefd690c700f5d",
+      "date": "2027-01-01",
+      "name": "New Year's Day",
+      "tentative": false,
+      "wish": "Happy New Year!",
+      "priority": 100
+    },
+    {
+      "id": "86a466ba66d3efe374d0",
+      "date": "2027-01-14",
+      "name": "Makar Sankranti",
+      "tentative": false,
+      "wish": "Happy Makar Sankranti!",
+      "priority": 90
+    },
+    {
+      "id": "27fccc01b45dad0a302f",
+      "date": "2027-01-15",
+      "name": "Guru Govind Singh Jayanti",
+      "tentative": false,
+      "wish": "Warm wishes on Guru Gobind Singh Jayanti!",
+      "priority": 85
+    },
+    {
+      "id": "41aee1608bb575caf2ac",
+      "date": "2027-01-15",
+      "name": "Pongal",
+      "tentative": false,
+      "wish": "Happy Pongal!",
+      "priority": 80
+    },
+    {
+      "id": "b993502ec648a972367a",
+      "date": "2027-01-26",
+      "name": "Republic Day",
+      "tentative": false,
+      "wish": "Happy Republic Day!",
+      "priority": 95
+    },
+    {
+      "id": "1a390f8c1342b6c48973",
+      "date": "2027-02-09",
+      "name": "Ramadan Start (tentative)",
+      "tentative": true,
+      "wish": "Ramadan Mubarak!",
+      "priority": 90
+    },
+    {
+      "id": "6520d6905f1b078cb2df",
+      "date": "2027-02-11",
+      "name": "Vasant Panchami",
+      "tentative": false,
+      "wish": "Happy Saraswati Puja!",
+      "priority": 90
+    },
+    {
+      "id": "b5093af73fcbc9159426",
+      "date": "2027-02-19",
+      "name": "Shivaji Jayanti",
+      "tentative": false,
+      "wish": "Honouring Chhatrapati Shivaji Maharaj.",
+      "priority": 80
+    },
+    {
+      "id": "14288c495458763b9fa3",
+      "date": "2027-02-20",
+      "name": "Guru Ravidas Jayanti",
+      "tentative": false,
+      "wish": "Warm wishes on Guru Ravidas Jayanti!",
+      "priority": 85
+    },
+    {
+      "id": "8ba9791a36f513b7b4d6",
+      "date": "2027-03-02",
+      "name": "Maharishi Dayanand Saraswati Jayanti",
+      "tentative": false,
+      "wish": "Honouring Maharishi Dayanand Saraswati.",
+      "priority": 75
+    },
+    {
+      "id": "1b1224d3caeff6eaa54e",
+      "date": "2027-03-05",
+      "name": "Jamat Ul-Vida",
+      "tentative": false,
+      "wish": "Wishing you peace this Jamat Ul-Vida.",
+      "priority": 75
+    },
+    {
+      "id": "b560fa86c247e9771fd6",
+      "date": "2027-03-06",
+      "name": "Maha Shivaratri",
+      "tentative": false,
+      "wish": "Happy Maha Shivaratri!",
+      "priority": 90
+    },
+    {
+      "id": "f24400e725366959418f",
+      "date": "2027-03-10",
+      "name": "Ramzan Id (tentative)",
+      "tentative": true,
+      "wish": "Eid Mubarak!",
+      "priority": 100
+    },
+    {
+      "id": "96376804e7073a15c44b",
+      "date": "2027-03-22",
+      "name": "Dolyatra",
+      "tentative": false,
+      "wish": "Happy Dol Yatra!",
+      "priority": 85
+    },
+    {
+      "id": "3081e496016d1cd8fe37",
+      "date": "2027-03-22",
+      "name": "Holi",
+      "tentative": false,
+      "wish": "Happy Holi!",
+      "priority": 100
+    },
+    {
+      "id": "eabd7c5e58803e4b4468",
+      "date": "2027-03-22",
+      "name": "Holika Dahana",
+      "tentative": false,
+      "wish": "Happy Holika Dahan!",
+      "priority": 85
+    },
+    {
+      "id": "c0118d10996a2c1653e8",
+      "date": "2027-03-26",
+      "name": "Good Friday",
+      "tentative": false
+    },
+    {
+      "id": "519088af67c3156302ef",
+      "date": "2027-04-07",
+      "name": "Chaitra Sukhladi",
+      "tentative": false,
+      "wish": "Happy Hindu New Year!",
+      "priority": 80
+    },
+    {
+      "id": "cc43d118a7707e3faa32",
+      "date": "2027-04-07",
+      "name": "Cheti Chand",
+      "tentative": false,
+      "wish": "Happy Cheti Chand!",
+      "priority": 85
+    },
+    {
+      "id": "7797866459982ee488fc",
+      "date": "2027-04-07",
+      "name": "Gudi Padwa",
+      "tentative": false,
+      "wish": "Happy Gudi Padwa!",
+      "priority": 80
+    },
+    {
+      "id": "9ed0e669c0e3aa956b8f",
+      "date": "2027-04-07",
+      "name": "Ugadi",
+      "tentative": false,
+      "wish": "Happy Ugadi!",
+      "priority": 80
+    },
+    {
+      "id": "ff7206082f2d5aaad156",
+      "date": "2027-04-14",
+      "name": "Ambedkar Jayanti",
+      "tentative": false,
+      "wish": "Honouring Dr. B. R. Ambedkar.",
+      "priority": 85
+    },
+    {
+      "id": "cdb5faf3e6adc47ee9e8",
+      "date": "2027-04-14",
+      "name": "Mesadi",
+      "tentative": false,
+      "wish": "Happy Tamil New Year!",
+      "priority": 80
+    },
+    {
+      "id": "9d83ba3e86d1a5a8786e",
+      "date": "2027-04-14",
+      "name": "Vaisakhi",
+      "tentative": false,
+      "wish": "Happy Baisakhi!",
+      "priority": 85
+    },
+    {
+      "id": "f11e9b3226ae603935b4",
+      "date": "2027-04-14",
+      "name": "Vishu",
+      "tentative": false,
+      "wish": "Happy Vishu!",
+      "priority": 80
+    },
+    {
+      "id": "e69b66b91256b580e3b5",
+      "date": "2027-04-15",
+      "name": "Bahag Bihu (Assam)",
+      "tentative": false,
+      "wish": "Happy Bohag Bihu!",
+      "priority": 85
+    },
+    {
+      "id": "91a5c308ae0ff817820e",
+      "date": "2027-04-15",
+      "name": "Rama Navami",
+      "tentative": false,
+      "wish": "Happy Ram Navami!",
+      "priority": 90
+    },
+    {
+      "id": "5db1f1b8b49f17340401",
+      "date": "2027-04-15",
+      "name": "Vaisakhadi (Bengal)",
+      "tentative": false,
+      "wish": "Shubho Noboborsho!",
+      "priority": 85
+    },
+    {
+      "id": "236aac3a421f7021a468",
+      "date": "2027-04-19",
+      "name": "Mahavir Jayanti",
+      "tentative": false,
+      "wish": "Happy Mahavir Jayanti!",
+      "priority": 90
+    },
+    {
+      "id": "7a7de973d21a95e3241e",
+      "date": "2027-05-09",
+      "name": "Birthday of Rabindranath",
+      "tentative": false,
+      "wish": "Celebrating Rabindranath Tagore.",
+      "priority": 75
+    },
+    {
+      "id": "c7bbdeb9192511b596ac",
+      "date": "2027-05-17",
+      "name": "Bakrid (tentative)",
+      "tentative": true,
+      "wish": "Eid Mubarak!",
+      "priority": 100
+    },
+    {
+      "id": "928468d712b2925c49d7",
+      "date": "2027-05-20",
+      "name": "Buddha Purnima",
+      "tentative": false,
+      "wish": "Happy Buddha Purnima!",
+      "priority": 90
+    },
+    {
+      "id": "68b15dbed3681b3822fd",
+      "date": "2027-06-16",
+      "name": "Muharram/Ashura (tentative)",
+      "tentative": true
+    },
+    {
+      "id": "83b3d9e85110306562cd",
+      "date": "2027-07-05",
+      "name": "Rath Yatra",
+      "tentative": false,
+      "wish": "Happy Rath Yatra!",
+      "priority": 95
+    },
+    {
+      "id": "fd7a72f9e88de3dabca2",
+      "date": "2027-08-15",
+      "name": "Independence Day",
+      "tentative": false,
+      "wish": "Happy Independence Day!",
+      "priority": 95
+    },
+    {
+      "id": "df4978e14d4b6d0ea9ee",
+      "date": "2027-08-15",
+      "name": "Milad un-Nabi (tentative)",
+      "tentative": true,
+      "wish": "Eid Milad-un-Nabi Mubarak!",
+      "priority": 90
+    },
+    {
+      "id": "5f0cb5dea8ef51230322",
+      "date": "2027-08-15",
+      "name": "Parsi New Year",
+      "tentative": false,
+      "wish": "Happy Parsi New Year!",
+      "priority": 85
+    },
+    {
+      "id": "226ff8b96e63e3d9ec8b",
+      "date": "2027-08-17",
+      "name": "Raksha Bandhan",
+      "tentative": false,
+      "wish": "Happy Raksha Bandhan!",
+      "priority": 90
+    },
+    {
+      "id": "7be3a118e3dbc8fc3240",
+      "date": "2027-08-25",
+      "name": "Janmashtami",
+      "tentative": false,
+      "wish": "Happy Janmashtami!",
+      "priority": 90
+    },
+    {
+      "id": "25d5e927271cb07f6c02",
+      "date": "2027-08-25",
+      "name": "Janmashtami (Smarta)",
+      "tentative": false,
+      "wish": "Happy Janmashtami!",
+      "priority": 80
+    },
+    {
+      "id": "8a7b9d8642a98b1637c2",
+      "date": "2027-09-04",
+      "name": "Ganesh Chaturthi",
+      "tentative": false,
+      "wish": "Happy Ganesh Chaturthi!",
+      "priority": 90
+    },
+    {
+      "id": "a4a66d4f7b3c97a987c9",
+      "date": "2027-09-12",
+      "name": "Onam",
+      "tentative": false,
+      "wish": "Happy Onam!",
+      "priority": 90
+    },
+    {
+      "id": "33c5fd529244dc54b964",
+      "date": "2027-09-30",
+      "name": "First Day of Sharad Navratri",
+      "tentative": false,
+      "wish": "Happy Navratri!",
+      "priority": 85
+    },
+    {
+      "id": "62e085b3d7786ac2beb4",
+      "date": "2027-10-02",
+      "name": "Mahatma Gandhi Jayanti",
+      "tentative": false,
+      "wish": "Honouring Gandhi's message of peace.",
+      "priority": 85
+    },
+    {
+      "id": "27ef731caa113325eb0e",
+      "date": "2027-10-05",
+      "name": "First Day of Durga Puja Festivities",
+      "tentative": false,
+      "wish": "Happy Durga Puja!",
+      "priority": 85
+    },
+    {
+      "id": "9ff90dc52ff95ddbdb3b",
+      "date": "2027-10-06",
+      "name": "Maha Saptami",
+      "tentative": false,
+      "wish": "Happy Durga Puja!",
+      "priority": 85
+    },
+    {
+      "id": "9b9191109d7010c5a05c",
+      "date": "2027-10-07",
+      "name": "Maha Ashtami",
+      "tentative": false,
+      "wish": "Happy Durga Puja!",
+      "priority": 85
+    },
+    {
+      "id": "e30df86b61e1f6a2978e",
+      "date": "2027-10-08",
+      "name": "Maha Navami",
+      "tentative": false,
+      "wish": "Happy Durga Puja!",
+      "priority": 85
+    },
+    {
+      "id": "d4ac58a7cde572011d0d",
+      "date": "2027-10-09",
+      "name": "Dussehra",
+      "tentative": false,
+      "wish": "Happy Dussehra!",
+      "priority": 95
+    },
+    {
+      "id": "7dc5995d24cac3dfcfc3",
+      "date": "2027-10-15",
+      "name": "Maharishi Valmiki Jayanti",
+      "tentative": false,
+      "wish": "Warm wishes on Valmiki Jayanti!",
+      "priority": 80
+    },
+    {
+      "id": "fe046205696a3b04b96c",
+      "date": "2027-10-18",
+      "name": "Karaka Chaturthi",
+      "tentative": false,
+      "wish": "Happy Karwa Chauth!",
+      "priority": 85
+    },
+    {
+      "id": "4097532c716e3a76df13",
+      "date": "2027-10-28",
+      "name": "Naraka Chaturdasi",
+      "tentative": false,
+      "wish": "Happy Naraka Chaturdashi!",
+      "priority": 85
+    },
+    {
+      "id": "99fe1c11963793ff9936",
+      "date": "2027-10-29",
+      "name": "Diwali/Deepavali",
+      "tentative": false,
+      "wish": "Happy Diwali!",
+      "priority": 100
+    },
+    {
+      "id": "4143f9685f28eb4f83b2",
+      "date": "2027-10-30",
+      "name": "Govardhan Puja",
+      "tentative": false,
+      "wish": "Happy Govardhan Puja!",
+      "priority": 80
+    },
+    {
+      "id": "5e39684fd6393143c69a",
+      "date": "2027-10-31",
+      "name": "Bhai Duj",
+      "tentative": false,
+      "wish": "Happy Bhai Duj!",
+      "priority": 90
+    },
+    {
+      "id": "6a6ba5f11aabd02326b9",
+      "date": "2027-11-04",
+      "name": "Chhat Puja (Pratihar Sashthi/Surya Sashthi)",
+      "tentative": false,
+      "wish": "Happy Chhath Puja!",
+      "priority": 90
+    },
+    {
+      "id": "46ad931e4bba9312834e",
+      "date": "2027-11-14",
+      "name": "Guru Nanak Jayanti",
+      "tentative": false,
+      "wish": "Happy Gurpurab!",
+      "priority": 90
+    },
+    {
+      "id": "79be20c044847a24aff3",
+      "date": "2027-11-24",
+      "name": "Guru Tegh Bahadur's Martyrdom Day",
+      "tentative": false
+    },
+    {
+      "id": "44316cc94bdee0de0de2",
+      "date": "2027-12-12",
+      "name": "Hazarat Ali's Birthday",
+      "tentative": false,
+      "wish": "Warm wishes on Hazrat Ali Jayanti!",
+      "priority": 75
+    },
+    {
+      "id": "060c0226759d15227efe",
+      "date": "2027-12-24",
+      "name": "Christmas Eve",
+      "tentative": false,
+      "wish": "Merry Christmas Eve!",
+      "priority": 85
+    },
+    {
+      "id": "88ef1609f8c94c911417",
+      "date": "2027-12-25",
+      "name": "Christmas",
+      "tentative": false,
+      "wish": "Merry Christmas!",
+      "priority": 100
+    }
+  ]
+}

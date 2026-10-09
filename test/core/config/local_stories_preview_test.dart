@@ -6,23 +6,29 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   test(
-    'Local preview loads three custom stories before real fetched news',
+    'Local preview loads two custom stories before real fetched news',
     () async {
       SharedPreferences.setMockInitialValues({
         'storyUrls': 'saved production data',
       });
       final preview = await LocalStoriesPreview.load();
-      expect(preview.customStories.length, 3);
+      expect(preview.customStories.length, 2);
       expect(preview.customStories.first['type'], 'image');
-      expect(preview.customStories.first['url'], endsWith('/welcome.png'));
-      expect(preview.customStories[1]['title'], 'A little less last-minute');
-      expect(preview.customStories[2]['title'], 'Built together');
+      expect(
+        preview.customStories.first['url'],
+        endsWith('/assets/applogo.png'),
+      );
+      expect(preview.customStories[1]['title'], 'Thank you!');
+      expect(
+        preview.customStories[1]['text'],
+        contains('Thanks for using Alcademy.'),
+      );
       expect(preview.dailyStories.length, 16);
       expect(
         preview.dailyStories.every((story) => story['kind'] == 'news'),
         isTrue,
       );
-      expect(preview.stories.length, 19);
+      expect(preview.stories.length, 18);
       expect(
         preview.dailyStories.every(
           (story) =>

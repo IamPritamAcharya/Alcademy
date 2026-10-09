@@ -12,6 +12,8 @@ abstract final class GitHubSources {
   static const settings = '$_raw/settings.json';
   static const dailyStories =
       'https://raw.githubusercontent.com/$contentRepository/daily-stories/stories.json';
+  static const festivals =
+      'https://raw.githubusercontent.com/$contentRepository/festivals/festivals.json';
   static const noteYears = '$_api/Notes?ref=$contentBranch';
   static const blogs = '$_api/blogs?ref=$contentBranch';
   static const successStories = '$_api/success-stories?ref=$contentBranch';

@@ -2,17 +2,13 @@
   "storyUrls": [
     {
       "type": "image",
-      "url": "https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/content/images/stories/welcome.png"
+      "title": "Alcademy",
+      "url": "https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/assets/applogo.png"
     },
     {
       "type": "text",
-      "title": "A little less last-minute",
-      "text": "**A little less last-minute.**\n\nCheck your next class. Save the notes you need. Catch that notice before the deadline.\n\nSmall things. A much easier college day."
-    },
-    {
-      "type": "text",
-      "title": "Built together",
-      "text": "**Someone shared those notes.**\n\nThat chapter you finally understood? A fellow student helped make it easier.\n\nTo everyone who contributes: thank you for passing it on."
+      "title": "Thank you!",
+      "text": "Thanks for using Alcademy.\n\nWe’re glad to be a small part of your college journey."
     }
   ],
   "contributors": [

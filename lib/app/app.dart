@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:port/core/config/daily_stories_service.dart';
 import 'package:port/core/config/local_stories_preview.dart';
+import 'package:port/core/config/festival_service.dart';
 import 'package:flutter/material.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:go_router/go_router.dart';
@@ -29,6 +30,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _initializeRouter();
+    unawaited(FestivalService.startUpdates());
     if (!LocalStoriesPreview.enabled) {
       unawaited(DailyStoriesService.startUpdates());
     }
@@ -83,6 +85,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       _handleNotificationNavigation,
     );
     DailyStoriesService.stopUpdates();
+    FestivalService.stopUpdates();
     _router.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -105,12 +108,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     debugPrint('App lifecycle state changed to: $state');
 
     if (state == AppLifecycleState.resumed) {
+      unawaited(FestivalService.startUpdates());
       if (!LocalStoriesPreview.enabled) {
         unawaited(DailyStoriesService.startUpdates());
       }
       _handleAppResumed();
     } else if (state == AppLifecycleState.paused) {
       DailyStoriesService.stopUpdates();
+      FestivalService.stopUpdates();
       _handleAppPaused();
     }
   }

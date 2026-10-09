@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:port/features/profile/data/profile_repository.dart';
 import 'package:port/features/home/presentation/widgets/tabs_widget.dart';
 import 'package:port/core/config/app_config.dart';
+import 'package:port/core/config/festival_service.dart';
 import 'package:port/features/stories/presentation/stories_widget.dart';
 
 import 'package:port/features/home/presentation/widgets/home_header.dart';
@@ -50,6 +51,7 @@ class _FirstPageState extends State<HomeContentPage>
   void initState() {
     super.initState();
     AppConfiguration.current.addListener(_onConfigChanged);
+    FestivalService.wish.addListener(_onConfigChanged);
     WidgetsBinding.instance.addObserver(this);
     currentSentence = getRandomSentence();
 
@@ -63,6 +65,7 @@ class _FirstPageState extends State<HomeContentPage>
   @override
   void dispose() {
     AppConfiguration.current.removeListener(_onConfigChanged);
+    FestivalService.wish.removeListener(_onConfigChanged);
     WidgetsBinding.instance.removeObserver(this);
     _isOnlineNotifier.dispose();
     _connectivitySubscription?.cancel();
@@ -226,7 +229,8 @@ class _FirstPageState extends State<HomeContentPage>
                           0,
                           (total, subject) => total + subject.items.length,
                         ),
-                  currentSentence: currentSentence,
+                  currentSentence:
+                      FestivalService.wish.value ?? currentSentence,
                   onMenu: () => widget.scaffoldKey?.currentState?.openDrawer(),
                 ),
               ),
