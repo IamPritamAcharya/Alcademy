@@ -1,8 +1,8 @@
 # Daily illustrated news
 
 **8 tech + 8 India stories**, shuffled once per successful daily run, after the
-three custom stories in `content/settings.json`. Memes and Reddit requests are
-not part of this feed. No API key, pip dependency, or Firebase notification is used.
+three custom stories in `content/settings.json`. No API key, pip dependency,
+or Firebase notification is used.
 
 Sources are centralized in `sources.json`:
 - Hacker News official API: recent ranked tech links (article metadata supplies images).

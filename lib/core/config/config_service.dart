@@ -19,11 +19,14 @@ class ConfigService {
       return;
     }
     final prefs = await SharedPreferences.getInstance();
-    // Remove settings left by the retired configurable home tool.
+    // Remove obsolete configuration and experimental story caches.
     for (final key in [
       'name_1st_tab',
       'markdownContent_1st_tab',
       'showFirstTab',
+      'redditMemes',
+      'redditMemesFetchedAt',
+      'redditMemesAttemptAt',
     ]) {
       if (prefs.containsKey(key)) await prefs.remove(key);
     }

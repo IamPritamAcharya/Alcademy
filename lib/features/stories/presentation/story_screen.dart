@@ -534,9 +534,7 @@ class _StoryScreenState extends State<StoryScreen>
                             );
                           } else if (story['type'] == 'image') {
                             return Padding(
-                              padding: story['kind'] == 'meme'
-                                  ? const EdgeInsets.fromLTRB(12, 60, 12, 220)
-                                  : EdgeInsets.zero,
+                              padding: EdgeInsets.zero,
                               child: CachedNetworkImage(
                                 imageUrl: story['url'] ?? '',
                                 fit: BoxFit.contain,
@@ -611,63 +609,6 @@ class _StoryScreenState extends State<StoryScreen>
                         },
                       ),
                     ),
-                    if (widget.stories[_currentIndex]['kind'] == 'meme')
-                      Positioned(
-                        bottom: 76,
-                        left: 20,
-                        right: 20,
-                        child: SafeArea(
-                          top: false,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: const Color(0xE6181818),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(12),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    widget.stories[_currentIndex]['title'] ??
-                                        '',
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: () => _openStoryLink(
-                                      widget
-                                          .stories[_currentIndex]['sourceUrl'],
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 8,
-                                      ),
-                                      child: Text(
-                                        '${widget.stories[_currentIndex]['source']} · '
-                                        '${widget.stories[_currentIndex]['author']} · View post ↗',
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          color: Color(0xFF9CCAF1),
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                     Positioned(
                       bottom: 50,
                       left: 16,

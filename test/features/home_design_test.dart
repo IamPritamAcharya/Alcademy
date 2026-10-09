@@ -1,6 +1,5 @@
 import 'package:port/app/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/services.dart';
 import 'package:port/features/home/presentation/home_page.dart';
@@ -100,7 +99,7 @@ void main() {
           68,
         );
         final richFinder = find.descendant(
-          of: find.byType(AutoSizeText),
+          of: find.byKey(const ValueKey('hero-headline-slot')),
           matching: find.byType(RichText),
         );
         final rich = tester.widget<RichText>(richFinder);
@@ -215,48 +214,51 @@ void main() {
     }
   });
 
-  testWidgets(
-    'new greeting control updates the headline and preserves resource count',
-    (tester) async {
-      final online = ValueNotifier(true);
-      addTearDown(online.dispose);
-      var sentence = 'Another day, another chance!';
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MediaQuery(
-            data: const MediaQueryData(
-              size: Size(430, 932),
-              disableAnimations: true,
-            ),
-            child: Scaffold(
-              body: StatefulBuilder(
-                builder: (_, setState) => HomeHeader(
+  testWidgets('automatic greeting updates preserve resource count', (
+    tester,
+  ) async {
+    final online = ValueNotifier(true);
+    addTearDown(online.dispose);
+    var sentence = 'Another day, another chance!';
+    late VoidCallback updateGreeting;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MediaQuery(
+          data: const MediaQueryData(
+            size: Size(430, 932),
+            disableAnimations: true,
+          ),
+          child: Scaffold(
+            body: StatefulBuilder(
+              builder: (_, setState) {
+                updateGreeting = () => setState(
+                  () => sentence = getRandomSentence(previous: sentence),
+                );
+                return HomeHeader(
                   isOnlineNotifier: online,
                   userName: 'Student',
                   currentSentence: sentence,
                   resourceCount: 7,
                   onMenu: () {},
-                  onNewGreeting: () => setState(
-                    () => sentence = getRandomSentence(previous: sentence),
-                  ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ),
-      );
-      await tester.pumpAndSettle();
-      final previous = sentence;
-      expect(find.text(previous), findsOneWidget);
-      await tester.tap(find.byTooltip('New greeting'));
-      await tester.pumpAndSettle();
-      expect(sentence, isNot(previous));
-      expect(find.text(previous), findsNothing);
-      expect(find.text(sentence), findsOneWidget);
-      expect(find.text('7 resources. All within reach.'), findsOneWidget);
-      expect(tester.takeException(), isNull);
-    },
-  );
+      ),
+    );
+    await tester.pumpAndSettle();
+    final previous = sentence;
+    expect(find.text(previous), findsOneWidget);
+    expect(find.byTooltip('New greeting'), findsNothing);
+    updateGreeting();
+    await tester.pumpAndSettle();
+    expect(sentence, isNot(previous));
+    expect(find.text(previous), findsNothing);
+    expect(find.text(sentence), findsOneWidget);
+    expect(find.text('7 resources. All within reach.'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
   testWidgets(
     'greeting changes keep the hero height stable without layout errors',
     (tester) async {
@@ -267,24 +269,27 @@ void main() {
       final online = ValueNotifier(true);
       addTearDown(online.dispose);
       var sentence = 'You’ve got this.';
+      late VoidCallback updateGreeting;
       await tester.pumpWidget(
         MaterialApp(
           home: MediaQuery(
             data: const MediaQueryData(size: Size(430, 932)),
             child: Scaffold(
               body: StatefulBuilder(
-                builder: (_, setState) => HomeHeader(
-                  isOnlineNotifier: online,
-                  userName: 'Student',
-                  currentSentence: sentence,
-                  resourceCount: 7,
-                  onMenu: () {},
-                  onNewGreeting: () => setState(() {
+                builder: (_, setState) {
+                  updateGreeting = () => setState(() {
                     sentence = sentence.length < 30
                         ? 'One small step today can change your whole semester.'
                         : 'You’ve got this.';
-                  }),
-                ),
+                  });
+                  return HomeHeader(
+                    isOnlineNotifier: online,
+                    userName: 'Student',
+                    currentSentence: sentence,
+                    resourceCount: 7,
+                    onMenu: () {},
+                  );
+                },
               ),
             ),
           ),
@@ -295,7 +300,8 @@ void main() {
           .getSize(find.byKey(const ValueKey('home-hero')))
           .height;
       for (var i = 0; i < 3; i++) {
-        await tester.tap(find.byTooltip('New greeting'));
+        expect(find.byTooltip('New greeting'), findsNothing);
+        updateGreeting();
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 500));
         await tester.pump(const Duration(milliseconds: 500));

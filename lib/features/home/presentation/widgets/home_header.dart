@@ -14,7 +14,6 @@ class HomeHeader extends StatelessWidget {
   final String currentSentence;
   final VoidCallback onMenu;
   final int? resourceCount;
-  final VoidCallback? onNewGreeting;
 
   const HomeHeader({
     super.key,
@@ -23,7 +22,6 @@ class HomeHeader extends StatelessWidget {
     required this.currentSentence,
     required this.onMenu,
     this.resourceCount,
-    this.onNewGreeting,
   });
 
   String get _greeting {
@@ -121,23 +119,6 @@ class HomeHeader extends StatelessWidget {
                           ),
                           const SizedBox(width: 12),
                           _DateStamp(),
-                          if (onNewGreeting != null) ...[
-                            const SizedBox(width: 6),
-                            IconButton(
-                              onPressed: onNewGreeting,
-                              tooltip: 'New greeting',
-                              constraints: const BoxConstraints(
-                                minWidth: 32,
-                                minHeight: 32,
-                              ),
-                              padding: EdgeInsets.zero,
-                              icon: const Icon(
-                                Icons.refresh_rounded,
-                                size: 17,
-                                color: AppStyle.paper,
-                              ),
-                            ),
-                          ],
                         ],
                       ),
                       const SizedBox(height: 10),
@@ -167,18 +148,7 @@ class HomeHeader extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-                            child: Text(
-                              resourceCount == null
-                                  ? 'A space for everything you’re learning.'
-                                  : '$resourceCount resources. All within reach.',
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: AppStyle.paper,
-                                fontSize: 12,
-                                height: 1.5,
-                              ),
-                            ),
+                            child: _ResourceSummary(count: resourceCount),
                           ),
                           const SizedBox(width: 8),
                           TextButton.icon(
@@ -276,6 +246,39 @@ class HomeHeader extends StatelessWidget {
         ),
       );
     }
+  }
+}
+
+class _ResourceSummary extends StatelessWidget {
+  final int? count;
+  const _ResourceSummary({required this.count});
+
+  @override
+  Widget build(BuildContext context) {
+    final label = count == null
+        ? 'A space for everything you’re learning.'
+        : '$count resources. All within reach.';
+    final text = AutoSizeText(
+      label,
+      key: ValueKey(label),
+      maxLines: 1,
+      minFontSize: 10,
+      maxFontSize: 12,
+      stepGranularity: .5,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(color: AppStyle.paper, fontSize: 12, height: 1.5),
+    );
+    if (MediaQuery.disableAnimationsOf(context)) return text;
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 450),
+      switchInCurve: Curves.easeInOut,
+      switchOutCurve: Curves.easeInOut,
+      layoutBuilder: (current, previous) => Stack(
+        alignment: Alignment.centerLeft,
+        children: [...previous, if (current != null) current],
+      ),
+      child: text,
+    );
   }
 }
 

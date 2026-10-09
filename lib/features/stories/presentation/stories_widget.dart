@@ -24,8 +24,6 @@ class StoriesWidget extends StatelessWidget {
         final tint = AppStyle.highlights[index % AppStyle.highlights.length];
         final label = story['kind'] == 'news'
             ? 'News'
-            : story['kind'] == 'meme'
-            ? 'Meme'
             : isText
             ? 'A quick read'
             : isImage

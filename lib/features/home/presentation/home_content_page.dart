@@ -227,7 +227,6 @@ class _FirstPageState extends State<HomeContentPage>
                           (total, subject) => total + subject.items.length,
                         ),
                   currentSentence: currentSentence,
-                  onNewGreeting: _refreshGreeting,
                   onMenu: () => widget.scaffoldKey?.currentState?.openDrawer(),
                 ),
               ),
