@@ -6,12 +6,18 @@ import '../network/github_content_client.dart';
 import '../network/github_sources.dart';
 import '../storage/preferences_cache.dart';
 import 'app_config.dart';
+import 'daily_stories_service.dart';
+import 'local_stories_preview.dart';
 
 class ConfigService {
   static const settingsUrl = GitHubSources.settings;
   static const fetchIntervalHours = 1;
 
   static Future<void> loadCachedConfig() async {
+    if (LocalStoriesPreview.enabled) {
+      AppConfiguration.current.value = await LocalStoriesPreview.load();
+      return;
+    }
     final prefs = await SharedPreferences.getInstance();
     // Remove settings left by the retired configurable home tool.
     for (final key in [
@@ -25,6 +31,7 @@ class ConfigService {
     try {
       AppConfiguration.current.value = AppConfig.fromJson({
         'storyUrls': cache.readJson('storyUrls') ?? [],
+        'dailyStories': DailyStoriesService.readCached(prefs),
         'contributors': cache.readJson('contributors') ?? [],
       });
     } catch (error) {
@@ -33,6 +40,20 @@ class ConfigService {
   }
 
   static Future<void> fetchAndUpdateConfig({
+    http.Client? client,
+    DateTime Function()? now,
+  }) async {
+    if (LocalStoriesPreview.enabled) {
+      AppConfiguration.current.value = await LocalStoriesPreview.load();
+      return;
+    }
+    await Future.wait([
+      _fetchSettings(client: client, now: now),
+      DailyStoriesService.refresh(client: client, now: now),
+    ]);
+  }
+
+  static Future<void> _fetchSettings({
     http.Client? client,
     DateTime Function()? now,
   }) async {
@@ -52,10 +73,14 @@ class ConfigService {
         jsonDecode(text) as Map<String, dynamic>,
       );
       final cache = PreferencesCache(prefs);
-      await cache.writeJson('storyUrls', config.stories);
+      await cache.writeJson('storyUrls', config.customStories);
       await cache.writeJson('contributors', config.contributors);
       await prefs.setString('lastFetchDate', date.toIso8601String());
-      AppConfiguration.current.value = config;
+      AppConfiguration.current.value = AppConfig(
+        stories: config.customStories,
+        contributors: config.contributors,
+        dailyStories: AppConfiguration.current.value.dailyStories,
+      );
     } catch (error) {
       debugPrint('Error fetching configuration: $error');
     }

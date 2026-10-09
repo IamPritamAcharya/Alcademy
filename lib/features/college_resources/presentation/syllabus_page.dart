@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:port/shared/pdf/pdf_document_page.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:port/shared/widgets/collection_intro.dart';
@@ -276,10 +276,6 @@ class SyllabusViewer extends StatelessWidget {
     this.title = 'Syllabus Viewer',
   });
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
-    ),
-    body: SfPdfViewer.network(url),
-  );
+  Widget build(BuildContext context) =>
+      PdfDocumentPage(title: title, source: PdfDocumentSource.network(url));
 }

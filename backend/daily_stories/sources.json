@@ -1,0 +1,25 @@
+{
+  "tech_count": 8,
+  "india_count": 8,
+  "hacker_news": {
+    "enabled": true,
+    "candidate_limit": 60
+  },
+  "news_feeds": [
+    {
+      "name": "Hindustan Times",
+      "category": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml"
+    },
+    {
+      "name": "NDTV.com",
+      "category": "india",
+      "url": "https://feeds.feedburner.com/ndtvnews-india-news"
+    },
+    {
+      "name": "NDTV.com · Trending",
+      "category": "india",
+      "url": "https://feeds.feedburner.com/ndtvnews-trending-news"
+    }
+  ]
+}

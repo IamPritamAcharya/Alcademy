@@ -5,6 +5,11 @@
 *.swp
 .DS_Store
 .env
+
+# Private backend credentials (never commit service-account keys)
+/backend/.secrets/
+**/*firebase-adminsdk*.json
+**/*service-account*.json
 .atom/
 .buildlog/
 .history
@@ -32,6 +37,10 @@ migrate_working_dir/
 .pub/
 /build/
 /android/build/
+
+# Generated artifacts in vendored plugins
+/third_party/**/.gradle/
+/third_party/**/build/
 
 # Symbolication related
 app.*.symbols

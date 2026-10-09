@@ -1,0 +1,191 @@
+{
+  "version": 2,
+  "generatedAt": "2026-10-09T05:52:54.137928+00:00",
+  "expiresAt": "2026-10-12T05:52:54.137928+00:00",
+  "stories": [
+    {
+      "id": "hn-49984923",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Sharing AI progress in mathematics",
+      "source": "openai.com",
+      "sourceUrl": "https://openai.com/index/sharing-ai-progress-in-mathematics/",
+      "description": "OpenAI publishes new results on open problems in mathematics from an internal frontier model and shares Lean proof formalizations and research details on GitHub.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=49984923",
+      "imageUrl": "https://images.ctfassets.net/kftzwdyauwt9/3430T8Aum4BAOFwLEnHQmC/bbc034e46bc5766dc6569183e87fa6df/ai-progress-in-mathematics-social.png?w=1600&h=900&fit=fill"
+    },
+    {
+      "id": "hn-49988516",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Show HN: Rgpu – a PyTorch device whose tensors live on a remote GPU",
+      "source": "github.com",
+      "sourceUrl": "https://github.com/ymcrcat/rgpu",
+      "description": "Keep Python on your laptop. Run PyTorch operations and hold tensors on a remote GPU, including from a Mac with no CUDA installation. - ymcrcat/rgpu",
+      "discussionUrl": "https://news.ycombinator.com/item?id=49988516",
+      "imageUrl": "https://opengraph.githubassets.com/e63ea9010f7de891b09a9aa4b7be3235be421c312352179bb578ef7c6575d641/ymcrcat/rgpu"
+    },
+    {
+      "id": "hn-50009634",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Show HN: Pocketty – iPhone SSH terminal that pings you when an agent is blocked",
+      "source": "pocketty.app",
+      "sourceUrl": "https://pocketty.app/",
+      "description": "An SSH terminal for iPhone and iPad, made for herdr. Sealed agent notifications, keys in the Secure Enclave, and a terminal that feels native. Free for 14 days, then $129 once.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50009634",
+      "imageUrl": "https://pocketty.app/og.png"
+    },
+    {
+      "id": "hn-50011999",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "AI-ready biological data: $1.8B global commitment",
+      "source": "biohub.org",
+      "sourceUrl": "https://biohub.org/news/virtual-biology-initiative-expansion/",
+      "description": "Biohub, DOE, NIH, Google, Isomorphic Labs, and Meta commit $1.8 billion to expand the Virtual Biology Initiative's open, AI-ready biological data.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50011999",
+      "imageUrl": "https://biohub.org/wp-content/uploads/sites/32/2026/10/VBI-wordmark-Jade-on-dark_Social-Share_1200x630@1x.png"
+    },
+    {
+      "id": "hn-49995495",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Man discovers his parents' coffee machine used 1TB of data in 10 days",
+      "source": "dexerto.com",
+      "sourceUrl": "https://www.dexerto.com/entertainment/man-discovers-his-parents-coffee-machine-used-1tb-of-data-in-10-days-3416399/",
+      "description": "The man said they discovered that their parents’ coffee maker had generated far more traffic than they expected.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=49995495",
+      "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/10/07/coffee-maker-stock-photo.jpg"
+    },
+    {
+      "id": "50575ad4161da136a6ad",
+      "kind": "news",
+      "type": "news",
+      "title": "Record all schemes' benefits for Scheduled Caste: Centre to bankers committees",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/record-all-schemes-benefits-for-scheduled-caste-centre-to-bankers-committees-101791516895729.html",
+      "description": "The letter is aimed at collating data to buttress the government’s claims of empowering the marginalised castes.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/09/1600x900/logo/PTI12-05-2024-000198B-0_1734155068998_1791518002692_rmJ0_e70c4e03-60ee-4df7-8a77-80ad4f1da981_uNsK.jpg"
+    },
+    {
+      "id": "63044dc6ac00f43ee7fe",
+      "kind": "news",
+      "type": "news",
+      "title": "‘Govt of, for and by the people’: BJP veteran Murli Manohar Joshi on protests against CEC Gyanesh Kumar",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/govt-of-for-and-by-the-people-ex-bjp-president-murli-manohar-joshi-on-protests-against-cec-gyanesh-kumar-101791508303379.html",
+      "description": "The ex-BJP national president declined to take sides but said constitutional principles should be adhered to.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/09/1600x900/logo/ANI-20260615372-0_1784813197618_1784813232343_7613c9da-a837-4c83-874f-872bdefe2a26_1791509632121_nYmA_0d47aec4-073d-4aca-8971-1e6e08ab9c16_6Xxi.jpg"
+    },
+    {
+      "id": "hn-50013765",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Bitmaps in the Linux Kernel",
+      "source": "0xax.dev",
+      "sourceUrl": "https://0xax.dev/books/linux-inside/linux-datastructures-2",
+      "description": "In the previous part of this chapter, we looked at the first and probably one of the most common data structures used in the Linux kernel - linked list. In this part, we will continue looking at common data structures and algorithms and how they are implemented in the Linux ke...",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50013765",
+      "imageUrl": "https://0xax.dev/assets/og/linux-inside/linux-datastructures-2.png"
+    },
+    {
+      "id": "34fed05e86f6c5918814",
+      "kind": "news",
+      "type": "news",
+      "title": "West Bengal by-elections result LIVE: BJP leads in Nandiram and Rejinagar in early trends",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/west-bengal-byelection-bypolls-counting-result-live-updates-rejinagar-nandiram-bjp-tmc-mamata-banerjee-101791519539113.html",
+      "description": "West Bengal by-elections result LIVE updates: According to early trends, the BJP is leading in both Nandigram and Rejinagar Assembly constituencies of Bengal, with bypoll results expected to provide insights into state’s political mood following the party’s ouster of the TMC…",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/09/1600x900/logo/nandigram_byelection_results_1791521202045_xli2_1791521202329_AV79_c024f347-de84-4eb9-994a-c8a2b9bd2a56_UWBK.jpg"
+    },
+    {
+      "id": "c4d9bf8d2a819a357ff7",
+      "kind": "news",
+      "type": "news",
+      "title": "Man 'appointed' Goa excise commissioner, takes charge; order turns out fake",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/man-appointed-goa-excise-commissioner-takes-charge-order-turns-out-fake-101791507136392.html",
+      "description": "According to the police, Manoj Talekar claimed he had handed over ₹27 lakh to one Ajit Shankhwalkar, who had been promising him a government job.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/09/1600x900/logo/Goa_police_1741481698364_1791507405436_mWkz_f3b85ea1-172b-4d33-a1c5-edf9383e9719_eEQv.jpg"
+    },
+    {
+      "id": "cc6eb2d255de3a402ff7",
+      "kind": "news",
+      "type": "news",
+      "title": "Meghalaya HC sends contempt notices to bar association leaders over abstinence from judicial work",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/meghalaya-hc-sends-contempt-notices-to-bar-association-leaders-over-abstinence-from-judicial-work-101791524047526.html",
+      "description": "Meghalaya HC sends contempt notices to bar association leaders over abstinence from judicial work",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/06/30/1600x900/logo/ht-generic_india3_1751287297962_1751287304722.jpg"
+    },
+    {
+      "id": "639c2a50919fc35685bc",
+      "kind": "news",
+      "type": "news",
+      "title": "Delhi Customs busts gold smuggling syndicate at IGI airport, seizes 6.5kg gold worth ₹9.9 crore",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/delhi-customs-busts-gold-smuggling-syndicate-at-igi-airport-seizes-6-5kg-gold-worth-9-9-crore-101791514437934.html",
+      "description": "The bust prompted staff transfers, one suspension and a vigilance inquiry into possible collusion and supervisory lapses.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/09/1600x900/logo/ADITYA-BIRLA-CAP-GOLD-LOAN--0_17875506731_1791514850812_XooX_1791514851011_nPyb_fa02a311-c7f8-47df-80d1-90836c6f7905_sz6E.JPG"
+    },
+    {
+      "id": "6b593418f898a04c057c",
+      "kind": "news",
+      "type": "news",
+      "title": "Election results Tamil Nadu LIVE: Vijay's TVK snatches lead from AIADMK in Dharapuram, also ahead in Madurantakam",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/election-results-tamil-nadu-live-updates-dharapuram-election-result-2026-tvk-cm-vijay-madurantakam-bypoll-result-101791513805090.html",
+      "description": "Election results Tamil Nadu LIVE: Chief minister Vijay-led TVK's candidate snatched the lead spot from AIADMK nominee Banumathi in Dharapuram (SC) after five rounds of counting for bypolls, according to ECI website. Vijay's party is also leading in Madurantakam (SC) Assembly…",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/09/1600x900/tn_election_results_1791521865033_0Jra_1791521865151_QU3h_1e5c78f6-b161-459f-94b7-946c91ffe29e_L3Vl.jpg"
+    },
+    {
+      "id": "hn-50005608",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Sub-1-Bit LLM Compression via Latent Factorization",
+      "source": "github.com",
+      "sourceUrl": "https://github.com/SamsungLabs/LittleBit",
+      "description": "Official implementation of LittleBit (NeurIPS 2025) and its follow-up LittleBit-2 (ICML 2026) - SamsungLabs/LittleBit",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50005608",
+      "imageUrl": "https://opengraph.githubassets.com/5dc8cff0ef041476950bf118d136104cd1551a4762e5608829ee7272db6f5061/SamsungLabs/LittleBit"
+    },
+    {
+      "id": "hn-50005527",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Beauty in DVD Menus",
+      "source": "vale.rocks",
+      "sourceUrl": "https://vale.rocks/posts/dvd-menus",
+      "description": "Understanding of DVD video menus for films and series. The technical details of how menus were implemented and what functions were available for creating menus, a look at the influence of aspect ratios and how menu designs changed and became more ambitious before returning to bor",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50005527",
+      "imageUrl": "https://vale.rocks/assets/og/post.webp"
+    },
+    {
+      "id": "1101f5d5e6ba40e0a695",
+      "kind": "news",
+      "type": "news",
+      "title": "Elon Musk asks why Starlink still lacks India licence, gets a reply from Rahul Gandhi",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/elon-musk-asks-why-starlink-still-lacks-india-licence-gets-a-reply-from-rahul-gandhi-101791478668264.html",
+      "description": "SpaceX CEO Musk noted that while Starlink is licensed in 165 countries, it has spent five years complying with Indian laws and government requirements.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/08/1600x900/logo/TESLA-INTEL-TERAFAB-0_1791479226009_3gJD_1791479237127_83ij_9fb27617-233d-483c-82f6-aefdbc67f6cb_4kAJ.JPG"
+    }
+  ]
+}

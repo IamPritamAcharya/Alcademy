@@ -3,6 +3,7 @@ import 'package:port/shared/widgets/collection_intro.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:flutter/material.dart';
+import 'package:port/shared/pdf/pdf_document_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:port/features/notes/models/subject.dart';
 
@@ -11,7 +12,22 @@ class SubjectDetailsPage extends StatelessWidget {
 
   const SubjectDetailsPage({super.key, required this.subject});
 
-  Future<void> _launchURL(String url) async {
+  Future<void> _launchURL(
+    BuildContext context,
+    String url,
+    String title,
+  ) async {
+    if (PdfDocumentSource.isPdfLink(url)) {
+      await Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => PdfDocumentPage(
+            source: PdfDocumentSource.network(url),
+            title: title,
+          ),
+        ),
+      );
+      return;
+    }
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -71,7 +87,7 @@ class SubjectDetailsPage extends StatelessWidget {
             category: _resourceKind(item.url),
             accent: AppStyle.blue,
             subtitle: Uri.tryParse(item.url)?.host,
-            onTap: () => _launchURL(item.url),
+            onTap: () => _launchURL(context, item.url, item.name),
           );
         },
       ),

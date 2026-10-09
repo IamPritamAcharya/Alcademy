@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:port/core/config/daily_stories_service.dart';
+import 'package:port/core/config/local_stories_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +29,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _initializeRouter();
+    if (!LocalStoriesPreview.enabled) {
+      unawaited(DailyStoriesService.startUpdates());
+    }
+    NotificationService.navigationRequests.addListener(
+      _handleNotificationNavigation,
+    );
   }
 
   void _initializeRouter() {
@@ -37,13 +46,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   String _getInitialLocation() {
     if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux) {
+      final selectedRoute = NotificationService.takeSelectedNotificationRoute();
       final selectedNotificationId =
           NotificationService.getSelectedNotificationId();
       if (selectedNotificationId != null && selectedNotificationId.isNotEmpty) {
         debugPrint(
           "App opened via notification, navigating to notifications page",
         );
-        return "/notifications";
+        return selectedRoute ?? "/notifications";
       }
     }
 
@@ -52,12 +62,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   Widget _buildHomePage() {
     if (!kIsWeb && defaultTargetPlatform != TargetPlatform.linux) {
+      final selectedRoute = NotificationService.takeSelectedNotificationRoute();
       final selectedNotificationId =
           NotificationService.getSelectedNotificationId();
       if (selectedNotificationId != null && selectedNotificationId.isNotEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
           debugPrint("Navigating to notifications from home page");
-          _router.go("/notifications");
+          _router.go(selectedRoute ?? "/notifications");
         });
       }
     }
@@ -67,9 +79,23 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    NotificationService.navigationRequests.removeListener(
+      _handleNotificationNavigation,
+    );
+    DailyStoriesService.stopUpdates();
     _router.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  void _handleNotificationNavigation() {
+    final route = NotificationService.takeSelectedNotificationRoute();
+    final id = NotificationService.getSelectedNotificationId();
+    if (id == null || id.isEmpty) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _router.go(route ?? '/notifications');
+    });
+    WidgetsBinding.instance.ensureVisualUpdate();
   }
 
   @override
@@ -79,8 +105,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     debugPrint('App lifecycle state changed to: $state');
 
     if (state == AppLifecycleState.resumed) {
+      if (!LocalStoriesPreview.enabled) {
+        unawaited(DailyStoriesService.startUpdates());
+      }
       _handleAppResumed();
     } else if (state == AppLifecycleState.paused) {
+      DailyStoriesService.stopUpdates();
       _handleAppPaused();
     }
   }
@@ -94,7 +124,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         await notificationService.syncNotifications();
 
         await Future.delayed(Duration(milliseconds: 200));
+        if (!mounted) return;
 
+        final selectedRoute =
+            NotificationService.takeSelectedNotificationRoute();
         final selectedNotificationId =
             NotificationService.getSelectedNotificationId();
         if (selectedNotificationId != null &&
@@ -105,8 +138,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
           final currentLocation =
               _router.routerDelegate.currentConfiguration.fullPath;
-          if (currentLocation != "/notifications") {
-            _router.go("/notifications");
+          final destination = selectedRoute ?? "/notifications";
+          if (currentLocation != destination) {
+            _router.go(destination);
           }
         }
       } catch (e) {

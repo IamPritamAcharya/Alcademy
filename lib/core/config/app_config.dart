@@ -2,12 +2,24 @@ import 'package:flutter/foundation.dart';
 
 class AppConfig {
   final List<Map<String, String>> stories;
+  final List<Map<String, String>> customStories;
+  final List<Map<String, String>> dailyStories;
   final List<Map<String, String>> contributors;
   AppConfig({
     List<Map<String, String>> stories = const [],
+    List<Map<String, String>> dailyStories = const [],
     List<Map<String, String>> contributors = const [],
-  }) : stories = List.unmodifiable(
+  }) : customStories = List.unmodifiable(
          stories.map((item) => Map<String, String>.unmodifiable(item)),
+       ),
+       dailyStories = List.unmodifiable(
+         dailyStories.map((item) => Map<String, String>.unmodifiable(item)),
+       ),
+       stories = List.unmodifiable(
+         [
+           ...stories,
+           ...dailyStories,
+         ].map((item) => Map<String, String>.unmodifiable(item)),
        ),
        contributors = List.unmodifiable(
          contributors.map((item) => Map<String, String>.unmodifiable(item)),
@@ -19,6 +31,7 @@ class AppConfig {
         .toList();
     return AppConfig(
       stories: readList('storyUrls'),
+      dailyStories: readList('dailyStories'),
       contributors: readList('contributors'),
     );
   }

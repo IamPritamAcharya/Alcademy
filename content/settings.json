@@ -6,24 +6,13 @@
     },
     {
       "type": "text",
-      "text": "🎉 Welcome to Alcademy!\n\nNotes, notices, and campus resources—all in one place."
+      "title": "A little less last-minute",
+      "text": "**A little less last-minute.**\n\nCheck your next class. Save the notes you need. Catch that notice before the deadline.\n\nSmall things. A much easier college day."
     },
     {
       "type": "text",
-      "text": "🌐 Visit our website:\nhttps://aca-web-c0e77.web.app/"
-    },
-    {
-      "type": "text",
-      "text": "📚 Find study materials, explore campus, and keep track of your semester."
-    },
-    {
-      "type": "text",
-      "text": "📱 Follow us for updates & announcements!",
-      "backgroundColor": "#4ECDC4"
-    },
-    {
-      "type": "text",
-      "text": "👥 Join our WhatsApp community:\nhttps://chat.whatsapp.com/DDuQv0UAkKpBmXB29fBjLw"
+      "title": "Built together",
+      "text": "**Someone shared those notes.**\n\nThat chapter you finally understood? A fellow student helped make it easier.\n\nTo everyone who contributes: thank you for passing it on."
     }
   ],
   "contributors": [

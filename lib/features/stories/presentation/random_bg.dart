@@ -1,334 +1,227 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:port/shared/theme/app_style.dart';
 
-class SmoothWavesPainter extends CustomPainter {
+/// Each style has its own geometry and arrangement, rather than just swapping
+/// a symbol on one grid. The seeded detail stays still while reading.
+class StoryPatternPainter extends CustomPainter {
+  static const variantCount = 10;
   final int seed;
-
-  SmoothWavesPainter(this.seed);
+  final int? variant;
+  const StoryPatternPainter(this.seed, {this.variant});
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (size.isEmpty) return;
     final random = math.Random(seed);
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    for (int i = 0; i < 5; i++) {
-      final thickness = 0.8 + i * 0.4 + random.nextDouble() * 0.6;
-      paint.strokeWidth = thickness;
-
-      final baseOpacity = 0.15 - (i * 0.02);
-      paint.color = Colors.white
-          .withValues(alpha: baseOpacity * (0.7 + random.nextDouble() * 0.6));
-
-      final path = Path();
-      final baseY = size.height * (0.25 + random.nextDouble() * 0.5);
-      final amplitude = 20 + random.nextDouble() * 45;
-      final frequency = 0.006 + random.nextDouble() * 0.014;
-      final phase = random.nextDouble() * math.pi * 2;
-      final secondaryFreq = frequency * (2.5 + random.nextDouble() * 2);
-      final secondaryAmp = amplitude * (0.2 + random.nextDouble() * 0.3);
-
-      path.moveTo(-60, baseY);
-      for (double x = -60; x <= size.width + 60; x += 2.5) {
-        final primaryWave = math.sin(x * frequency + phase) * amplitude;
-        final secondaryWave =
-            math.sin(x * secondaryFreq + phase * 1.7) * secondaryAmp;
-        final y = baseY + primaryWave + secondaryWave;
-        path.lineTo(x, y);
-      }
-      canvas.drawPath(path, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class RippleWavesPainter extends CustomPainter {
-  final int seed;
-
-  RippleWavesPainter(this.seed);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final random = math.Random(seed);
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    final centers = [
-      Offset(size.width * (0.3 + random.nextDouble() * 0.4),
-          size.height * (0.3 + random.nextDouble() * 0.4)),
-    ];
-
-    for (int centerIndex = 0; centerIndex < centers.length; centerIndex++) {
-      final center = centers[centerIndex];
-
-      for (int i = 0; i < 4; i++) {
-        paint.strokeWidth = 1.0 + random.nextDouble() * 0.8;
-        paint.color = Colors.white.withValues(
-            alpha: (random.nextDouble() * 0.06 + 0.03) * (1 - i * 0.15));
-
-        final baseRadius = 80 + i * 50 + random.nextDouble() * 30;
-        final waveFrequency = 3 + random.nextDouble() * 3;
-        final waveAmplitude = 6 + random.nextDouble() * 8;
-
-        final path = Path();
-        bool started = false;
-
-        for (double angle = 0; angle < math.pi * 2; angle += 0.12) {
-          final waveOffset = math.sin(angle * waveFrequency) * waveAmplitude;
-          final radius = baseRadius + waveOffset;
-          final x = center.dx + radius * math.cos(angle);
-          final y = center.dy + radius * math.sin(angle);
-
-          if (!started) {
-            path.moveTo(x, y);
-            started = true;
-          } else {
-            path.lineTo(x, y);
-          }
-        }
-        path.close();
-        canvas.drawPath(path, paint);
+    final style = (variant ?? seed).abs() % variantCount;
+    final spacing = switch (style) {
+      3 => 17.0,
+      4 => 18.0,
+      5 => 14.0,
+      6 => 16.0,
+      8 => 18.0,
+      _ => 22.0,
+    };
+    final stepY = switch (style) {
+      3 => spacing * .866,
+      4 => spacing * .65,
+      8 => spacing * 1.3,
+      _ => spacing,
+    };
+    final offset = random.nextDouble() * spacing;
+    final paint = Paint()..isAntiAlias = true;
+    final glint = Path()
+      ..moveTo(0, -3)
+      ..quadraticBezierTo(.65, -.65, 3, 0)
+      ..quadraticBezierTo(.65, .65, 0, 3)
+      ..quadraticBezierTo(-.65, .65, -3, 0)
+      ..quadraticBezierTo(-.65, -.65, 0, -3)
+      ..close();
+    final leaf = Path()
+      ..moveTo(-3, 0)
+      ..quadraticBezierTo(0, -3.5, 3, 0)
+      ..quadraticBezierTo(0, 3.5, -3, 0)
+      ..close();
+    final hexagon = Path();
+    for (var i = 0; i < 6; i++) {
+      final angle = math.pi / 3 * i;
+      final point = Offset(math.cos(angle) * 7, math.sin(angle) * 7);
+      if (i == 0) {
+        hexagon.moveTo(point.dx, point.dy);
+      } else {
+        hexagon.lineTo(point.dx, point.dy);
       }
     }
-  }
+    hexagon.close();
 
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class FlowingWavesPainter extends CustomPainter {
-  final int seed;
-
-  FlowingWavesPainter(this.seed);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final random = math.Random(seed);
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    for (int i = 0; i < 3; i++) {
-      paint.strokeWidth = 1.8 + random.nextDouble() * 1.2;
-      paint.color =
-          Colors.white.withValues(alpha: random.nextDouble() * 0.12 + 0.04);
-
-      final path = Path();
-      final startX = size.width * (0.1 + random.nextDouble() * 0.2);
-      final startY = size.height * (0.3 + random.nextDouble() * 0.4);
-      final endX = size.width * (0.7 + random.nextDouble() * 0.2);
-      final endY = size.height * (0.3 + random.nextDouble() * 0.4);
-
-      path.moveTo(startX, startY);
-
-      final segments = 50;
-      for (int j = 0; j <= segments; j++) {
-        final t = j / segments;
-        final baseX = startX + (endX - startX) * t;
-        final baseY = startY + (endY - startY) * t;
-
-        final waveAmplitude =
-            (25 + random.nextDouble() * 35) * math.sin(math.pi * t);
-        final waveFreq = 4 + random.nextDouble() * 6;
-        final perpOffset = math.sin(t * math.pi * waveFreq) * waveAmplitude;
-
-        final angle = math.atan2(endY - startY, endX - startX) + math.pi / 2;
-        final waveX = baseX + math.cos(angle) * perpOffset;
-        final waveY = baseY + math.sin(angle) * perpOffset;
-
-        path.lineTo(waveX, waveY);
-      }
-
-      canvas.drawPath(path, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class DoubleWavesPainter extends CustomPainter {
-  final int seed;
-
-  DoubleWavesPainter(this.seed);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final random = math.Random(seed);
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    for (int i = 0; i < 3; i++) {
-      paint.strokeWidth = 1.6 + random.nextDouble() * 0.8;
-      paint.color =
-          Colors.white.withValues(alpha: random.nextDouble() * 0.09 + 0.04);
-
-      final baseY = size.height * (0.25 + random.nextDouble() * 0.5);
-      final amplitude = 20 + random.nextDouble() * 30;
-      final frequency = 0.01 + random.nextDouble() * 0.012;
-      final offset = 15 + random.nextDouble() * 20;
-
-      final path1 = Path();
-      path1.moveTo(-30, baseY);
-      for (double x = -30; x <= size.width + 30; x += 3) {
-        final y = baseY + math.sin(x * frequency) * amplitude;
-        path1.lineTo(x, y);
-      }
-
-      final path2 = Path();
-      path2.moveTo(-30, baseY + offset);
-      for (double x = -30; x <= size.width + 30; x += 3) {
+    canvas.save();
+    canvas.clipRect(Offset.zero & size);
+    for (var row = -1; row * stepY < size.height + spacing; row++) {
+      for (var column = -1; column * spacing < size.width + spacing; column++) {
+        final variation = random.nextDouble();
+        final scatter = style == 0 || style == 6;
+        final stagger = style == 3 || style == 4 || style == 8 || style == 9;
+        final x =
+            column * spacing +
+            (stagger && row.isOdd ? spacing / 2 : 0) +
+            offset +
+            (scatter ? (variation - .5) * spacing * .8 : 0);
         final y =
-            baseY + offset + math.sin(x * frequency + math.pi) * amplitude;
-        path2.lineTo(x, y);
+            row * stepY +
+            offset +
+            (scatter ? (random.nextDouble() - .5) * stepY * .8 : 0);
+        final nx = (x - size.width / 2) / (size.width / 2);
+        final ny = (y - size.height / 2) / (size.height / 2);
+        final edge = (math.sqrt(nx * nx + ny * ny) / 1.2).clamp(0.0, 1.0);
+        paint
+          ..style = PaintingStyle.fill
+          ..strokeWidth = .65
+          ..strokeCap = StrokeCap.round
+          ..color = Colors.white.withValues(
+            alpha: (.028 + .065 * edge) * (.8 + variation * .2),
+          );
+        canvas.save();
+        canvas.translate(x, y);
+        switch (style) {
+          case 0:
+            // Star dust: irregular glints and single specks.
+            if (variation > .48) {
+              canvas.scale(.65 + variation * .4);
+              canvas.drawPath(glint, paint);
+            } else {
+              canvas.drawCircle(Offset.zero, .8, paint);
+            }
+          case 1:
+            // Halftone: rolling bands of changing dot sizes.
+            final radius = .65 + (math.sin(column * .45 + row * .3) + 1) * .7;
+            canvas.drawCircle(Offset.zero, radius, paint);
+          case 2:
+            // Herringbone: pairs of alternating little woven stitches.
+            canvas.rotate((column + row).isEven ? math.pi / 4 : -math.pi / 4);
+            canvas.drawRRect(
+              RRect.fromRectAndRadius(
+                const Rect.fromLTWH(-4, -1, 8, 2),
+                const Radius.circular(1),
+              ),
+              paint,
+            );
+            canvas.drawRRect(
+              RRect.fromRectAndRadius(
+                const Rect.fromLTWH(-4, 3, 8, 2),
+                const Radius.circular(1),
+              ),
+              paint,
+            );
+          case 3:
+            // Honeycomb: close-packed, fine hexagonal cells.
+            paint.style = PaintingStyle.stroke;
+            canvas.drawPath(hexagon, paint);
+          case 4:
+            // Scales: overlapping rows of miniature shells.
+            paint.style = PaintingStyle.stroke;
+            canvas.drawArc(
+              const Rect.fromLTWH(-9, -9, 18, 18),
+              0,
+              math.pi,
+              false,
+              paint,
+            );
+            canvas.drawArc(
+              const Rect.fromLTWH(-5, -5, 10, 10),
+              0,
+              math.pi,
+              false,
+              paint,
+            );
+          case 5:
+            // Mosaic: a diagonal checker of small rounded tiles.
+            if ((row + column).isEven) {
+              canvas.drawRRect(
+                RRect.fromRectAndRadius(
+                  const Rect.fromLTWH(-3, -3, 6, 6),
+                  const Radius.circular(1.2),
+                ),
+                paint,
+              );
+            } else {
+              canvas.drawCircle(Offset.zero, .75, paint);
+            }
+          case 6:
+            // Seed paper: organically scattered grains at varied angles.
+            canvas.rotate(variation * math.pi);
+            canvas.drawOval(const Rect.fromLTWH(-.8, -2.5, 1.6, 5), paint);
+          case 7:
+            // Deco fans: three nested quarter circles in alternating corners.
+            canvas.rotate(((row + column) % 4) * math.pi / 2);
+            paint.style = PaintingStyle.stroke;
+            for (final radius in [2.5, 5.0, 7.5]) {
+              canvas.drawArc(
+                Rect.fromCircle(center: Offset.zero, radius: radius),
+                0,
+                math.pi / 2,
+                false,
+                paint,
+              );
+            }
+          case 8:
+            // Chain mail: interlocking, paired miniature rings.
+            paint.style = PaintingStyle.stroke;
+            canvas.drawCircle(const Offset(-3, 0), 4.5, paint);
+            canvas.drawCircle(const Offset(3, 0), 4.5, paint);
+          case 9:
+            // Botanical quilt: four small leaves around an empty centre.
+            for (var i = 0; i < 4; i++) {
+              canvas.save();
+              canvas.rotate(i * math.pi / 2);
+              canvas.translate(4, 0);
+              canvas.drawPath(leaf, paint);
+              canvas.restore();
+            }
+        }
+        canvas.restore();
       }
-
-      canvas.drawPath(path1, paint);
-      canvas.drawPath(path2, paint);
     }
+    canvas.restore();
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant StoryPatternPainter oldDelegate) =>
+      oldDelegate.seed != seed || oldDelegate.variant != variant;
 }
 
-class DiagonalWavesPainter extends CustomPainter {
+/// Stable variation avoids changing the colors whenever story progress rebuilds.
+int storyPatternSeed(String value) =>
+    value.codeUnits.fold(17, (seed, unit) => (seed * 31 + unit) & 0x7fffffff);
+
+class StoryBackdrop extends StatelessWidget {
   final int seed;
-
-  DiagonalWavesPainter(this.seed);
+  final Widget child;
+  const StoryBackdrop({super.key, required this.seed, required this.child});
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final random = math.Random(seed);
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    for (int i = 0; i < 3; i++) {
-      paint.strokeWidth = 1.3 + random.nextDouble() * 1.2;
-      paint.color =
-          Colors.white.withValues(alpha: random.nextDouble() * 0.1 + 0.03);
-
-      final path = Path();
-      final angle = math.pi / 6 + random.nextDouble() * math.pi / 3;
-      final amplitude = 25 + random.nextDouble() * 35;
-      final frequency = 0.015 + random.nextDouble() * 0.01;
-
-      final startX = random.nextDouble() * size.width * 0.3;
-      final startY = random.nextDouble() * size.height * 0.3;
-
-      path.moveTo(startX, startY);
-
-      for (double t = 0; t <= 300; t += 3) {
-        final baseX = startX + t * math.cos(angle);
-        final baseY = startY + t * math.sin(angle);
-        final waveX = baseX +
-            math.sin(t * frequency) * amplitude * math.cos(angle + math.pi / 2);
-        final waveY = baseY +
-            math.sin(t * frequency) * amplitude * math.sin(angle + math.pi / 2);
-        path.lineTo(waveX, waveY);
-      }
-
-      canvas.drawPath(path, paint);
-    }
+  Widget build(BuildContext context) {
+    final tint = AppStyle.highlights[seed % AppStyle.highlights.length];
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color.alphaBlend(tint.withValues(alpha: .24), AppStyle.background),
+            Color.alphaBlend(tint.withValues(alpha: .06), AppStyle.background),
+          ],
+        ),
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          RepaintBoundary(
+            child: CustomPaint(painter: StoryPatternPainter(seed)),
+          ),
+          child,
+        ],
+      ),
+    );
   }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class MultiFrequencyWavesPainter extends CustomPainter {
-  final int seed;
-
-  MultiFrequencyWavesPainter(this.seed);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final random = math.Random(seed);
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    for (int i = 0; i < 3; i++) {
-      paint.strokeWidth = 1.5 + random.nextDouble() * 0.8;
-      paint.color =
-          Colors.white.withValues(alpha: random.nextDouble() * 0.1 + 0.04);
-
-      final path = Path();
-      final baseY = size.height * (0.3 + random.nextDouble() * 0.4);
-      final amp1 = 15 + random.nextDouble() * 20;
-      final amp2 = 8 + random.nextDouble() * 15;
-      final freq1 = 0.008 + random.nextDouble() * 0.01;
-      final freq2 = 0.02 + random.nextDouble() * 0.015;
-      final phase = random.nextDouble() * math.pi * 2;
-
-      path.moveTo(-40, baseY);
-      for (double x = -40; x <= size.width + 40; x += 2) {
-        final wave1 = math.sin(x * freq1 + phase) * amp1;
-        final wave2 = math.sin(x * freq2 + phase * 0.7) * amp2;
-        final y = baseY + wave1 + wave2;
-        path.lineTo(x, y);
-      }
-      canvas.drawPath(path, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class PulseWavesPainter extends CustomPainter {
-  final int seed;
-
-  PulseWavesPainter(this.seed);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final random = math.Random(seed);
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    for (int i = 0; i < 4; i++) {
-      paint.strokeWidth = 1.2 + random.nextDouble() * 1.0;
-      paint.color =
-          Colors.white.withValues(alpha: random.nextDouble() * 0.08 + 0.03);
-
-      final path = Path();
-      final baseY = size.height * (0.25 + random.nextDouble() * 0.5);
-      final maxAmplitude = 30 + random.nextDouble() * 25;
-      final frequency = 0.012 + random.nextDouble() * 0.008;
-      final pulseFreq = 0.003 + random.nextDouble() * 0.002;
-
-      path.moveTo(-30, baseY);
-      for (double x = -30; x <= size.width + 30; x += 3) {
-        final pulse = (math.sin(x * pulseFreq) + 1) * 0.5;
-        final amplitude = maxAmplitude * pulse;
-        final y = baseY + math.sin(x * frequency) * amplitude;
-        path.lineTo(x, y);
-      }
-      canvas.drawPath(path, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-CustomPainter getRandomPainter(int storyIndex) {
-  final patterns = [
-    RippleWavesPainter(storyIndex),
-    FlowingWavesPainter(storyIndex),
-    DoubleWavesPainter(storyIndex),
-    DiagonalWavesPainter(storyIndex),
-    MultiFrequencyWavesPainter(storyIndex),
-    PulseWavesPainter(storyIndex),
-  ];
-
-  return patterns[storyIndex % patterns.length];
 }

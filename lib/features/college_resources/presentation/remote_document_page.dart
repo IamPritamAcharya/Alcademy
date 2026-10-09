@@ -2,7 +2,7 @@ import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:port/features/college_resources/data/document_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:port/shared/pdf/pdf_document_page.dart';
 
 class RemoteDocumentPage extends StatefulWidget {
   final DocumentDefinition document;
@@ -28,27 +28,30 @@ class _RemoteDocumentPageState extends State<RemoteDocumentPage> {
   }
 
   Future<void> _loadDocument() async {
+    setState(() => isLoading = true);
     try {
       final url = await (widget.repository ?? DocumentRepository()).getUrl(
         widget.document,
       );
       if (!mounted) return;
-      if (mounted) {
-        setState(() {
-          pdfUrl = url;
-          isLoading = false;
-        });
-      }
+      setState(() {
+        pdfUrl = url;
+        isLoading = false;
+      });
     } catch (e) {
       if (!mounted) return;
-      if (mounted) {
-        setState(() => isLoading = false);
-      }
+      setState(() => isLoading = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (pdfUrl != null) {
+      return PdfDocumentPage(
+        title: widget.document.title,
+        source: PdfDocumentSource.network(pdfUrl!),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppStyle.background,
@@ -75,12 +78,16 @@ class _RemoteDocumentPageState extends State<RemoteDocumentPage> {
                 valueColor: AlwaysStoppedAnimation<Color>(AppStyle.accent),
               ),
             )
-          : pdfUrl != null
-          ? SfPdfViewer.network(pdfUrl!)
           : Center(
-              child: Text(
-                'Failed to load data.',
-                style: const TextStyle(fontSize: 16, color: AppStyle.text),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('Couldn’t load this document.'),
+                  TextButton(
+                    onPressed: _loadDocument,
+                    child: const Text('Retry'),
+                  ),
+                ],
               ),
             ),
     );

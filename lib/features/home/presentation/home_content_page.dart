@@ -234,8 +234,8 @@ class _FirstPageState extends State<HomeContentPage>
               if (storyUrls.isNotEmpty) ...[
                 const SliverToBoxAdapter(
                   child: _SectionHeading(
-                    title: 'Around campus',
-                    eyebrow: 'THE NOTICEBOARD',
+                    title: 'Beyond campus',
+                    eyebrow: 'STORIES & UPDATES',
                   ),
                 ),
                 SliverToBoxAdapter(child: StoriesWidget(stories: storyUrls)),

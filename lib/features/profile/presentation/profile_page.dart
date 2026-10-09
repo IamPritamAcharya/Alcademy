@@ -5,6 +5,7 @@ import 'package:port/features/profile/data/profile_repository.dart';
 import 'package:port/features/profile/presentation/profile_card.dart';
 import 'package:port/features/college_resources/data/erp_credentials_repository.dart';
 import 'package:port/features/profile/presentation/erp_credentials_section.dart';
+import 'notification_preferences_section.dart';
 
 class UserProfilePage extends StatefulWidget {
   final bool focusErpCredentials;
@@ -241,6 +242,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   branch: branch ?? "Branch Name",
                   onEditName: updateUserName,
                 ),
+                const SizedBox(height: 28),
+                const NotificationPreferencesSection(),
                 const SizedBox(height: 28),
                 ErpCredentialsSection(
                   key: _erpSection,

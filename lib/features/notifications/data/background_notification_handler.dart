@@ -2,15 +2,20 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'notification_destination.dart';
+import 'notification_preferences.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
   debugPrint('Background message received: ${message.messageId}');
   debugPrint('Message data: ${message.data}');
   debugPrint(
-      'Message notification: ${message.notification?.title} - ${message.notification?.body}');
+    'Message notification: ${message.notification?.title} - ${message.notification?.body}',
+  );
 
   try {
+    final preferences = await const NotificationPreferencesRepository().read();
+    if (!preferences.allows(message.data)) return;
     String title = message.notification?.title?.trim() ?? '';
     String body = message.notification?.body?.trim() ?? '';
 
@@ -39,7 +44,9 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
       body = 'You have a new notification';
     }
 
-    String id = message.messageId?.trim() ??
+    String id =
+        noticeBatchNotificationId(message.data) ??
+        message.messageId?.trim() ??
         'bg_${DateTime.now().millisecondsSinceEpoch}';
 
     final notificationData = {
@@ -55,6 +62,7 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
     debugPrint('Saving notification data: $notificationData');
 
     final prefs = await SharedPreferences.getInstance();
+    await prefs.reload();
 
     List<String> backgroundQueue =
         prefs.getStringList('background_notification_queue') ?? [];
@@ -78,19 +86,25 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
       if (backgroundQueue.length >= 50) {
         backgroundQueue = backgroundQueue.sublist(backgroundQueue.length - 40);
         debugPrint(
-            'Cleaned background queue to ${backgroundQueue.length} items');
+          'Cleaned background queue to ${backgroundQueue.length} items',
+        );
       }
 
       backgroundQueue.add(jsonEncode(notificationData));
 
       await prefs.setStringList(
-          'background_notification_queue', backgroundQueue);
-      await prefs.setInt('last_background_notification',
-          DateTime.now().millisecondsSinceEpoch);
+        'background_notification_queue',
+        backgroundQueue,
+      );
+      await prefs.setInt(
+        'last_background_notification',
+        DateTime.now().millisecondsSinceEpoch,
+      );
       await prefs.setBool('has_new_notification', true);
 
       debugPrint(
-          "Background notification queued successfully: $title (Queue size: ${backgroundQueue.length})");
+        "Background notification queued successfully: $title (Queue size: ${backgroundQueue.length})",
+      );
 
       final savedQueue =
           prefs.getStringList('background_notification_queue') ?? [];
@@ -122,7 +136,9 @@ Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
           prefs.getStringList('background_notification_queue') ?? [];
       backgroundQueue.add(jsonEncode(emergencyNotification));
       await prefs.setStringList(
-          'background_notification_queue', backgroundQueue);
+        'background_notification_queue',
+        backgroundQueue,
+      );
       await prefs.setBool('has_new_notification', true);
 
       debugPrint("Emergency notification saved: $title");

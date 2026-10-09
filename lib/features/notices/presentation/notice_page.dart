@@ -8,7 +8,7 @@ import 'package:port/shared/widgets/custom_snackbar.dart';
 import 'package:port/core/network/refresh_tracker.dart';
 import '../data/notice_repository.dart';
 import '../models/notice.dart';
-import 'pdf_view_page.dart';
+import 'package:port/shared/pdf/pdf_document_page.dart';
 import 'widgets/notice_entry.dart';
 
 class NoticePage extends StatefulWidget {
@@ -68,10 +68,15 @@ class _NoticePageState extends State<NoticePage> {
 
   void _openNotice(String url) async {
     if (url.isEmpty || url == '#') return;
-    if (url.toLowerCase().endsWith('.pdf')) {
+    if (PdfDocumentSource.isPdfLink(url)) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => PDFViewPage(pdfUrl: url)),
+        MaterialPageRoute(
+          builder: (_) => PdfDocumentPage(
+            source: PdfDocumentSource.network(url),
+            title: 'College notice',
+          ),
+        ),
       );
     } else {
       try {

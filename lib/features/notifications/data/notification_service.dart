@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:port/features/notifications/models/notification_model.dart';
+import 'notification_destination.dart';
+import 'notice_push_policy.dart';
+import 'notification_preferences.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -14,6 +18,20 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
   static String? _selectedNotificationId;
+  static String? _selectedNotificationRoute;
+  static final navigationRequests = ValueNotifier<int>(0);
+
+  static const _testNoticesEnabled = bool.fromEnvironment(
+    'NOTICE_PUSH_TEST',
+    defaultValue: false,
+  );
+  static const _productionNoticesEnabled = bool.fromEnvironment(
+    'NOTICE_PUSH_PRODUCTION',
+    defaultValue: false,
+  );
+  final _noticeTopicState = <String, bool>{};
+  Future<bool>? _noticeTopicSync;
+  bool _forceNoticeTopicSync = false;
 
   Future<void> initialize() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
@@ -28,9 +46,6 @@ class NotificationService {
 
     debugPrint('User granted permission: ${settings.authorizationStatus}');
 
-    String? token = await _firebaseMessaging.getToken();
-    debugPrint("FCM Token: $token");
-
     await _initializeLocalNotifications();
 
     await _createNotificationChannel();
@@ -39,8 +54,8 @@ class NotificationService {
 
     FirebaseMessaging.onMessageOpenedApp.listen(_handleNotificationTap);
 
-    RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
+    RemoteMessage? initialMessage = await FirebaseMessaging.instance
+        .getInitialMessage();
     if (initialMessage != null) {
       debugPrint('App opened from terminated state via notification');
       await _handleNotificationTap(initialMessage);
@@ -48,9 +63,85 @@ class NotificationService {
 
     await syncNotifications();
 
-    _firebaseMessaging.onTokenRefresh.listen((newToken) {
-      debugPrint("FCM Token refreshed: $newToken");
+    _firebaseMessaging.onTokenRefresh.listen((_) {
+      debugPrint('FCM registration refreshed; updating notice subscriptions.');
+      unawaited(syncNoticeSubscriptions(force: true));
     });
+  }
+
+  /// Retry unsuccessful subscriptions on resume and after token refresh,
+  /// without holding up app startup or repeatedly registering confirmed topics.
+  Future<bool> syncNoticeSubscriptions({bool force = false}) async {
+    _forceNoticeTopicSync |= force;
+    if (_noticeTopicSync != null) return _noticeTopicSync!;
+    final operation = _syncNoticeTopics();
+    _noticeTopicSync = operation;
+    try {
+      return await operation;
+    } finally {
+      _noticeTopicSync = null;
+    }
+  }
+
+  Future<bool> notificationPermissionGranted({bool request = false}) async {
+    var settings = await _firebaseMessaging.getNotificationSettings().timeout(
+      const Duration(seconds: 8),
+    );
+    if (request &&
+        settings.authorizationStatus != AuthorizationStatus.authorized &&
+        settings.authorizationStatus != AuthorizationStatus.provisional) {
+      settings = await _firebaseMessaging.requestPermission();
+    }
+    return settings.authorizationStatus == AuthorizationStatus.authorized ||
+        settings.authorizationStatus == AuthorizationStatus.provisional;
+  }
+
+  Future<bool> _syncNoticeTopics() async {
+    var synced = true;
+    do {
+      final force = _forceNoticeTopicSync;
+      _forceNoticeTopicSync = false;
+      synced = true;
+      try {
+        final permission = await notificationPermissionGranted();
+        final preferences = await const NotificationPreferencesRepository()
+            .read();
+        final desired = notificationTopicSubscriptions(
+          debugBuild: kDebugMode,
+          testEnabled: _testNoticesEnabled,
+          productionEnabled: _productionNoticesEnabled,
+          permissionGranted: permission,
+          noticesEnabled: preferences.notices,
+          generalEnabled: preferences.general,
+        );
+        for (final topic in desired.entries) {
+          if (!force && _noticeTopicState[topic.key] == topic.value) continue;
+          try {
+            await (topic.value
+                    ? _firebaseMessaging.subscribeToTopic(topic.key)
+                    : _firebaseMessaging.unsubscribeFromTopic(topic.key))
+                .timeout(const Duration(seconds: 8));
+            _noticeTopicState[topic.key] = topic.value;
+            if (topic.key == testNoticeTopic && topic.value) {
+              debugPrint(
+                'Subscribed this debug installation to test notice alerts.',
+              );
+            }
+          } catch (error) {
+            synced = false;
+            debugPrint(
+              'Notice subscription will retry on resume (${error.runtimeType}).',
+            );
+          }
+        }
+      } catch (error) {
+        synced = false;
+        debugPrint(
+          'Could not read notification permission (${error.runtimeType}).',
+        );
+      }
+    } while (_forceNoticeTopicSync);
+    return synced;
   }
 
   Future<void> _initializeLocalNotifications() async {
@@ -59,21 +150,26 @@ class NotificationService {
 
     const DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
-      requestSoundPermission: true,
-      requestBadgePermission: true,
-      requestAlertPermission: true,
-    );
+          requestSoundPermission: true,
+          requestBadgePermission: true,
+          requestAlertPermission: true,
+        );
 
     const InitializationSettings initializationSettings =
         InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsDarwin,
-    );
+          android: initializationSettingsAndroid,
+          iOS: initializationSettingsDarwin,
+        );
 
     await _localNotifications.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: _onNotificationTapped,
     );
+    final launch = await _localNotifications.getNotificationAppLaunchDetails();
+    final response = launch?.notificationResponse;
+    if (launch?.didNotificationLaunchApp == true && response != null) {
+      await _onNotificationTapped(response);
+    }
   }
 
   Future<void> _createNotificationChannel() async {
@@ -88,14 +184,17 @@ class NotificationService {
 
     await _localNotifications
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.createNotificationChannel(channel);
   }
 
   Future<void> syncNotifications() async {
+    unawaited(syncNoticeSubscriptions());
     try {
       debugPrint(' Starting notification sync...');
       final prefs = await SharedPreferences.getInstance();
+      await prefs.reload();
 
       bool hasNewNotifications = await _processBackgroundNotifications(prefs);
 
@@ -118,7 +217,8 @@ class NotificationService {
       }
 
       debugPrint(
-          ' Processing ${backgroundQueue.length} background notifications');
+        ' Processing ${backgroundQueue.length} background notifications',
+      );
 
       List<NotificationModel> existingNotifications =
           await getAllNotifications();
@@ -127,8 +227,9 @@ class NotificationService {
 
       for (String notificationJson in backgroundQueue) {
         try {
-          final Map<String, dynamic> notificationData =
-              jsonDecode(notificationJson);
+          final Map<String, dynamic> notificationData = jsonDecode(
+            notificationJson,
+          );
 
           if (!_isValidNotificationData(notificationData)) {
             debugPrint(' Skipping invalid background notification data');
@@ -138,17 +239,20 @@ class NotificationService {
           final notification = NotificationModel.fromMap(notificationData);
 
           if (_isValidNotification(notification)) {
-            final exists =
-                existingNotifications.any((n) => n.id == notification.id);
+            final exists = existingNotifications.any(
+              (n) => n.id == notification.id,
+            );
             if (!exists) {
               existingNotifications.insert(0, notification);
               processedIds.add(notification.id);
               hasNewNotifications = true;
               debugPrint(
-                  'Added background notification: ${notification.title}');
+                'Added background notification: ${notification.title}',
+              );
             } else {
               debugPrint(
-                  'Background notification already exists: ${notification.title}');
+                'Background notification already exists: ${notification.title}',
+              );
             }
           } else {
             debugPrint('Skipping invalid notification: ${notification.title}');
@@ -161,7 +265,8 @@ class NotificationService {
       if (hasNewNotifications) {
         await _saveAllNotifications(existingNotifications);
         debugPrint(
-            'Processed ${processedIds.length} new background notifications');
+          'Processed ${processedIds.length} new background notifications',
+        );
       }
 
       await prefs.remove('background_notification_queue');
@@ -200,7 +305,8 @@ class NotificationService {
         notifications = notifications.take(100).toList();
         await _saveAllNotifications(notifications);
         debugPrint(
-            'Cleaned up old notifications, kept ${notifications.length}');
+          'Cleaned up old notifications, kept ${notifications.length}',
+        );
       }
 
       final prefs = await SharedPreferences.getInstance();
@@ -228,6 +334,9 @@ class NotificationService {
       return;
     }
 
+    final preferences = await const NotificationPreferencesRepository().read();
+    if (!preferences.allows(message.data)) return;
+
     final notification = NotificationModel.fromRemoteMessage(message);
 
     if (!_isValidNotification(notification)) {
@@ -235,7 +344,8 @@ class NotificationService {
       return;
     }
 
-    await _saveNotification(notification);
+    final isNew = await _saveNotification(notification);
+    if (!isNew) return;
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('has_new_notification', true);
@@ -245,9 +355,6 @@ class NotificationService {
 
   Future<void> _handleNotificationTap(RemoteMessage message) async {
     debugPrint('Notification tapped: ${message.messageId}');
-    _selectedNotificationId =
-        message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString();
-
     if (!_isValidRemoteMessage(message)) {
       debugPrint('Invalid tapped message, using fallback');
       return;
@@ -257,19 +364,29 @@ class NotificationService {
     if (_isValidNotification(notification)) {
       await _saveNotification(notification);
     }
+    // Publish ID and destination together after persistence. Resume callbacks
+    // must not consume the ID while the destination is still being prepared.
+    _selectedNotificationId = notification.id;
+    _selectedNotificationRoute = notificationDestination(message.data);
+    navigationRequests.value++;
   }
 
   bool _isValidRemoteMessage(RemoteMessage message) {
-    bool hasNotificationTitle = message.notification?.title != null &&
+    bool hasNotificationTitle =
+        message.notification?.title != null &&
         message.notification!.title!.trim().isNotEmpty;
-    bool hasNotificationBody = message.notification?.body != null &&
+    bool hasNotificationBody =
+        message.notification?.body != null &&
         message.notification!.body!.trim().isNotEmpty;
 
-    bool hasDataTitle = message.data.containsKey('title') &&
+    bool hasDataTitle =
+        message.data.containsKey('title') &&
         message.data['title']?.toString().trim().isNotEmpty == true;
-    bool hasDataBody = message.data.containsKey('body') &&
+    bool hasDataBody =
+        message.data.containsKey('body') &&
         message.data['body']?.toString().trim().isNotEmpty == true;
-    bool hasDataMessage = message.data.containsKey('message') &&
+    bool hasDataMessage =
+        message.data.containsKey('message') &&
         message.data['message']?.toString().trim().isNotEmpty == true;
 
     return hasNotificationTitle ||
@@ -282,31 +399,35 @@ class NotificationService {
   Future<void> _onNotificationTapped(NotificationResponse response) async {
     debugPrint(' Local notification tapped: ${response.payload}');
     if (response.payload != null && response.payload!.isNotEmpty) {
-      _selectedNotificationId = response.payload;
+      final payload = decodeNotificationTap(response.payload!);
+      _selectedNotificationId = payload.id;
+      _selectedNotificationRoute = payload.route;
+      navigationRequests.value++;
     }
   }
 
   Future<void> _showLocalNotification(NotificationModel notification) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'high_importance_channel',
-      'High Importance Notifications',
-      channelDescription: 'This channel is used for important notifications.',
-      importance: Importance.high,
-      priority: Priority.high,
-      enableVibration: true,
-      playSound: true,
-      autoCancel: false,
-      ongoing: false,
-      showWhen: true,
-    );
+          'high_importance_channel',
+          'High Importance Notifications',
+          channelDescription:
+              'This channel is used for important notifications.',
+          importance: Importance.high,
+          priority: Priority.high,
+          enableVibration: true,
+          playSound: true,
+          autoCancel: false,
+          ongoing: false,
+          showWhen: true,
+        );
 
     const DarwinNotificationDetails iOSPlatformChannelSpecifics =
         DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        );
 
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
@@ -318,16 +439,20 @@ class NotificationService {
       notification.title,
       notification.body,
       platformChannelSpecifics,
-      payload: notification.id,
+      payload: jsonEncode({
+        'id': notification.id,
+        'route': notificationDestination(notification.data),
+      }),
     );
   }
 
-  Future<void> _saveNotification(NotificationModel notification) async {
+  Future<bool> _saveNotification(NotificationModel notification) async {
     try {
       if (!_isValidNotification(notification)) {
         debugPrint(
-            " Attempted to save invalid notification: ${notification.title} - ${notification.body}");
-        return;
+          " Attempted to save invalid notification: ${notification.title} - ${notification.body}",
+        );
+        return false;
       }
 
       final notifications = await getAllNotifications();
@@ -337,35 +462,45 @@ class NotificationService {
         notifications.insert(0, notification);
         await _saveAllNotifications(notifications);
         debugPrint(
-            "Notification saved: ${notification.title} (ID: ${notification.id})");
+          "Notification saved: ${notification.title} (ID: ${notification.id})",
+        );
+        return true;
       } else {
         debugPrint("Notification already exists: ${notification.title}");
+        return false;
       }
     } catch (e) {
       debugPrint("Error saving notification: $e");
+      // A storage failure should not hide an otherwise valid incoming alert.
+      return true;
     }
   }
 
   Future<void> _saveAllNotifications(
-      List<NotificationModel> notifications) async {
+    List<NotificationModel> notifications,
+  ) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
-      final validNotifications =
-          notifications.where((n) => _isValidNotification(n)).toList();
+      final validNotifications = notifications
+          .where((n) => _isValidNotification(n))
+          .toList();
 
       if (validNotifications.length > 100) {
         validNotifications.removeRange(100, validNotifications.length);
       }
 
-      final notificationMaps =
-          validNotifications.map((n) => n.toMap()).toList();
+      final notificationMaps = validNotifications
+          .map((n) => n.toMap())
+          .toList();
       await prefs.setString('notifications', jsonEncode(notificationMaps));
 
       for (int i = 0; i < validNotifications.length && i < 10; i++) {
         final notification = validNotifications[i];
-        await prefs.setString('notification_backup_${notification.id}',
-            jsonEncode(notification.toMap()));
+        await prefs.setString(
+          'notification_backup_${notification.id}',
+          jsonEncode(notification.toMap()),
+        );
       }
 
       debugPrint("Saved ${validNotifications.length} valid notifications");
@@ -396,7 +531,8 @@ class NotificationService {
               notifications.add(notification);
             } else {
               debugPrint(
-                  "Skipping invalid notification during load: ${notification.title}");
+                "Skipping invalid notification during load: ${notification.title}",
+              );
             }
           }
         } catch (e) {
@@ -446,7 +582,8 @@ class NotificationService {
 
       if (notifications.isNotEmpty) {
         debugPrint(
-            "Recovered ${notifications.length} valid notifications from backup");
+          "Recovered ${notifications.length} valid notifications from backup",
+        );
 
         await _saveAllNotifications(notifications);
       }
@@ -466,6 +603,12 @@ class NotificationService {
 
   static void clearSelectedNotificationId() {
     _selectedNotificationId = null;
+  }
+
+  static String? takeSelectedNotificationRoute() {
+    final route = _selectedNotificationRoute;
+    _selectedNotificationRoute = null;
+    return route;
   }
 
   Future<void> forceRefreshNotifications() async {
@@ -502,7 +645,8 @@ class NotificationService {
         try {
           final item = jsonDecode(backgroundQueue[i]);
           debugPrint(
-              '    ${i + 1}. ID: ${item['id']} | Title: ${item['title']} | Body: ${item['body']}');
+            '    ${i + 1}. ID: ${item['id']} | Title: ${item['title']} | Body: ${item['body']}',
+          );
         } catch (e) {
           debugPrint('    ${i + 1}. [CORRUPTED ITEM]: $e');
         }
@@ -521,8 +665,9 @@ class NotificationService {
       List<NotificationModel> notifications = await getAllNotifications();
 
       final originalLength = notifications.length;
-      notifications
-          .removeWhere((notification) => notification.id == notificationId);
+      notifications.removeWhere(
+        (notification) => notification.id == notificationId,
+      );
 
       if (notifications.length < originalLength) {
         await _saveAllNotifications(notifications);
@@ -531,7 +676,8 @@ class NotificationService {
 
         debugPrint('Successfully deleted notification: $notificationId');
         debugPrint(
-            'Notifications count: $originalLength → ${notifications.length}');
+          'Notifications count: $originalLength → ${notifications.length}',
+        );
       } else {
         debugPrint('Notification not found for deletion: $notificationId');
         throw Exception('Notification not found');

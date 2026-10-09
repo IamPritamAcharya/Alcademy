@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:port/features/stories/presentation/story_screen.dart';
+import 'random_bg.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:port/features/home/presentation/widgets/home_pressable.dart';
 
@@ -19,9 +20,13 @@ class StoriesWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         final story = stories[index];
         final isText = story['type'] == 'text';
-        final isImage = story['type'] == 'image';
+        final isImage = story['type'] == 'image' || story['type'] == 'news';
         final tint = AppStyle.highlights[index % AppStyle.highlights.length];
-        final label = isText
+        final label = story['kind'] == 'news'
+            ? 'News'
+            : story['kind'] == 'meme'
+            ? 'Meme'
+            : isText
             ? 'A quick read'
             : isImage
             ? 'In pictures'
@@ -54,8 +59,13 @@ class StoriesWidget extends StatelessWidget {
                           end: Alignment.bottomRight,
                           colors: [
                             Color.alphaBlend(
-                              tint.withValues(alpha: .26),
-                              AppStyle.surface,
+                              AppStyle
+                                  .highlights[storyPatternSeed(
+                                        story['title'] ?? story['text'] ?? '',
+                                      ) %
+                                      AppStyle.highlights.length]
+                                  .withValues(alpha: .24),
+                              AppStyle.background,
                             ),
                             AppStyle.background,
                           ],
@@ -64,7 +74,7 @@ class StoriesWidget extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(12, 34, 12, 34),
                         child: Text(
-                          story['text'] ?? '',
+                          story['title'] ?? story['text'] ?? '',
                           maxLines: 4,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -77,7 +87,13 @@ class StoriesWidget extends StatelessWidget {
                       ),
                     )
                   else if (isImage)
-                    OptimizedImage(url: story['url'] ?? '')
+                    OptimizedImage(
+                      url:
+                          story['imageUrl'] ??
+                          story['thumbnail'] ??
+                          story['url'] ??
+                          '',
+                    )
                   else
                     YouTubeThumbnail(url: story['url'] ?? ''),
                   if (!isText)
@@ -102,23 +118,15 @@ class StoriesWidget extends StatelessWidget {
                     child: Row(
                       children: [
                         Icon(
-                          isText
+                          story['type'] == 'news'
+                              ? Icons.newspaper_rounded
+                              : isText
                               ? Icons.format_quote_rounded
                               : isImage
                               ? Icons.photo_outlined
                               : Icons.play_circle_outline_rounded,
                           color: isText ? tint : Colors.white,
                           size: 17,
-                        ),
-                        const Spacer(),
-                        Text(
-                          '${index + 1}'.padLeft(2, '0'),
-                          style: TextStyle(
-                            color: isText ? tint : Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1,
-                          ),
                         ),
                       ],
                     ),
@@ -156,6 +164,8 @@ class OptimizedImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: url,
+      memCacheWidth: 348,
+      maxWidthDiskCache: 348,
       fit: BoxFit.cover,
       width: 70,
       height: 70,

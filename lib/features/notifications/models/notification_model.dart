@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import '../data/notification_destination.dart';
 
 class NotificationModel {
   final String id;
@@ -110,7 +111,11 @@ class NotificationModel {
       }
 
       String id;
-      if (message.messageId != null && message.messageId!.trim().isNotEmpty) {
+      final noticeId = noticeBatchNotificationId(message.data);
+      if (noticeId != null) {
+        id = noticeId;
+      } else if (message.messageId != null &&
+          message.messageId!.trim().isNotEmpty) {
         id = message.messageId!.trim();
       } else {
         final timestamp = DateTime.now().millisecondsSinceEpoch;

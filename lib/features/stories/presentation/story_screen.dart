@@ -2,8 +2,8 @@ import 'package:port/shared/theme/app_style.dart';
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'package:port/features/stories/presentation/random_bg.dart';
+import 'package:port/features/stories/presentation/story_text_content.dart';
+import 'news_story_content.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -24,13 +24,15 @@ class StoryScreen extends StatefulWidget {
 }
 
 class _StoryScreenState extends State<StoryScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   late PageController _pageController;
   int _currentIndex = 0;
   VideoPlayerController? _videoController;
   YoutubePlayerController? _youtubeController;
   double _progress = 0.0;
   Timer? _progressTimer;
+  bool _appActive = true;
+  bool _openingLink = false;
 
   late AnimationController _progressAnimationController;
   late Animation<double> _progressAnimation;
@@ -45,6 +47,7 @@ class _StoryScreenState extends State<StoryScreen>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _currentIndex = widget.initialIndex;
     _pageController = PageController(initialPage: _currentIndex);
 
@@ -109,6 +112,19 @@ class _StoryScreenState extends State<StoryScreen>
     final story = widget.stories[_currentIndex];
     _disposeVideoControllers();
     _resetProgress();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _currentIndex + 1 >= widget.stories.length) return;
+      final next = widget.stories[_currentIndex + 1];
+      final imageUrl = next['type'] == 'news' ? next['imageUrl'] : next['url'];
+      if ((next['type'] == 'image' || next['type'] == 'news') &&
+          (imageUrl ?? '').isNotEmpty) {
+        precacheImage(
+          ResizeImage(CachedNetworkImageProvider(imageUrl!), width: 1080),
+          context,
+          onError: (error, stack) {},
+        );
+      }
+    });
 
     if (story['type'] == 'video') {
       if (_isYouTubeUrl(story['url'] ?? '')) {
@@ -254,6 +270,7 @@ class _StoryScreenState extends State<StoryScreen>
   }
 
   void _resumeProgress() {
+    if (!_appActive || _openingLink) return;
     final story = widget.stories[_currentIndex];
     if (story['type'] == 'video') {
       if (_isYouTubeUrl(story['url'] ?? '')) {
@@ -315,75 +332,45 @@ class _StoryScreenState extends State<StoryScreen>
     _progressTimer?.cancel();
   }
 
-  List<TextSpan> _parseTextWithLinks(String text) {
-    final List<TextSpan> spans = [];
-    final RegExp urlRegex = RegExp(
-      r'https?://[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,}[^\s]*',
-      caseSensitive: false,
-    );
-
-    int lastIndex = 0;
-    for (final Match match in urlRegex.allMatches(text)) {
-      if (match.start > lastIndex) {
-        spans.add(
-          TextSpan(
-            text: text.substring(lastIndex, match.start),
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
+  Future<void> _openStoryLink(String? url) async {
+    final uri = Uri.tryParse(url ?? '');
+    if (uri == null ||
+        !['http', 'https', 'mailto', 'tel'].contains(uri.scheme)) {
+      return;
+    }
+    _openingLink = true;
+    _pauseProgress();
+    try {
+      if (!await launchUrl(uri, mode: LaunchMode.externalApplication) &&
+          mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Couldn’t open this link.')),
         );
       }
-
-      String url = match.group(0)!;
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = 'https://$url';
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Couldn’t open this link.')),
+        );
       }
-
-      spans.add(
-        TextSpan(
-          text: match.group(0)!,
-          style: const TextStyle(
-            color: AppStyle.blue,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            decoration: TextDecoration.underline,
-            decorationColor: AppStyle.blue,
-            decorationThickness: 2,
-          ),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () async {
-              try {
-                final Uri uri = Uri.parse(url);
-                if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri, mode: LaunchMode.externalApplication);
-                }
-              } catch (e) {
-                debugPrint('Error launching URL: $e');
-              }
-            },
-        ),
-      );
-
-      lastIndex = match.end;
+    } finally {
+      _openingLink = false;
+      if (mounted) _resumeProgress();
     }
+  }
 
-    if (lastIndex < text.length) {
-      spans.add(
-        TextSpan(
-          text: text.substring(lastIndex),
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      );
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _appActive = state == AppLifecycleState.resumed;
+    if (_appActive) {
+      _videoController?.play();
+      _youtubeController?.play();
+      _resumeProgress();
+    } else {
+      _videoController?.pause();
+      _youtubeController?.pause();
+      _pauseProgress();
     }
-
-    return spans;
   }
 
   List<Color> _getTextStoryGradient(Map<String, String> story) {
@@ -396,9 +383,15 @@ class _StoryScreenState extends State<StoryScreen>
         }
         final Color baseColor = Color(int.parse(colorStr));
         return [
-          baseColor,
-          baseColor.withValues(alpha: 0.8),
-          baseColor.withValues(alpha: 0.6),
+          Color.alphaBlend(
+            baseColor.withValues(alpha: .26),
+            AppStyle.background,
+          ),
+          Color.alphaBlend(
+            baseColor.withValues(alpha: .12),
+            AppStyle.background,
+          ),
+          AppStyle.background,
         ];
       } catch (e) {
         debugPrint('Operation failed: $e');
@@ -416,6 +409,7 @@ class _StoryScreenState extends State<StoryScreen>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _disposeVideoControllers();
     _progressAnimationController.dispose();
     _blurAnimationController.dispose();
@@ -495,7 +489,13 @@ class _StoryScreenState extends State<StoryScreen>
                         itemBuilder: (context, index) {
                           final story = widget.stories[index];
 
-                          if (story['type'] == 'text') {
+                          if (story['type'] == 'news') {
+                            return NewsStoryContent(
+                              story: story,
+                              onOpenSource: () =>
+                                  _openStoryLink(story['sourceUrl']),
+                            );
+                          } else if (story['type'] == 'text') {
                             final List<Color> gradientColors =
                                 _getTextStoryGradient(story);
                             final String text = story['text'] ?? '';
@@ -521,81 +521,53 @@ class _StoryScreenState extends State<StoryScreen>
                                   ),
                                 ),
                                 child: SafeArea(
-                                  child: Stack(
-                                    children: [
-                                      Positioned.fill(
-                                        child: CustomPaint(
-                                          painter: getRandomPainter(index),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 32.0,
-                                          vertical: 40.0,
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.all(
-                                                24.0,
-                                              ),
-                                              child: Center(
-                                                child: RichText(
-                                                  textAlign: TextAlign.center,
-                                                  text: TextSpan(
-                                                    children:
-                                                        _parseTextWithLinks(
-                                                          text,
-                                                        ),
-                                                    style: const TextStyle(
-                                                      fontFamily: 'ProductSans',
-                                                      height: 1.4,
-                                                      letterSpacing: 0.5,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 20),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                  child: StoryTextContent(
+                                    text: text,
+                                    title: story['title'] ?? '',
+                                    seed: text.hashCode ^ index,
+                                    patternVariant: index,
+                                    onTapLink: (_, url, _) =>
+                                        _openStoryLink(url),
                                   ),
                                 ),
                               ),
                             );
                           } else if (story['type'] == 'image') {
-                            return CachedNetworkImage(
-                              imageUrl: story['url'] ?? '',
-                              fit: BoxFit.contain,
-                              width: double.infinity,
-                              height: double.infinity,
-                              placeholder: (context, url) => Container(
-                                color: Colors.black,
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white,
+                            return Padding(
+                              padding: story['kind'] == 'meme'
+                                  ? const EdgeInsets.fromLTRB(12, 60, 12, 220)
+                                  : EdgeInsets.zero,
+                              child: CachedNetworkImage(
+                                imageUrl: story['url'] ?? '',
+                                fit: BoxFit.contain,
+                                width: double.infinity,
+                                height: double.infinity,
+                                placeholder: (context, url) => Container(
+                                  color: Colors.black,
+                                  child: const Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              errorWidget: (context, url, error) => Container(
-                                color: Colors.black,
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.error,
-                                    color: Colors.white,
-                                    size: 50,
+                                errorWidget: (context, url, error) => Container(
+                                  color: Colors.black,
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.error,
+                                      color: Colors.white,
+                                      size: 50,
+                                    ),
                                   ),
                                 ),
+                                memCacheWidth: 1080,
+                                memCacheHeight: null,
+                                fadeInDuration: const Duration(
+                                  milliseconds: 100,
+                                ),
                               ),
-                              memCacheWidth: null,
-                              memCacheHeight: null,
-                              fadeInDuration: const Duration(milliseconds: 100),
                             );
                           } else if (_isYouTubeUrl(story['url'] ?? '')) {
                             return _youtubeController != null
@@ -639,6 +611,63 @@ class _StoryScreenState extends State<StoryScreen>
                         },
                       ),
                     ),
+                    if (widget.stories[_currentIndex]['kind'] == 'meme')
+                      Positioned(
+                        bottom: 76,
+                        left: 20,
+                        right: 20,
+                        child: SafeArea(
+                          top: false,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: const Color(0xE6181818),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    widget.stories[_currentIndex]['title'] ??
+                                        '',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () => _openStoryLink(
+                                      widget
+                                          .stories[_currentIndex]['sourceUrl'],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 8,
+                                      ),
+                                      child: Text(
+                                        '${widget.stories[_currentIndex]['source']} · '
+                                        '${widget.stories[_currentIndex]['author']} · View post ↗',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          color: Color(0xFF9CCAF1),
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     Positioned(
                       bottom: 50,
                       left: 16,

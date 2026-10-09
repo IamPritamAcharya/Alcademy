@@ -4,6 +4,7 @@ import 'package:port/shared/widgets/search_results_page.dart';
 import 'package:port/shared/widgets/editorial_list_row.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:flutter/material.dart';
+import 'package:port/shared/pdf/pdf_document_page.dart';
 import 'dart:io';
 import '../data/note_repository.dart';
 import '../data/file_metadata_repository.dart';
@@ -601,6 +602,17 @@ class _PrivateContentViewerState extends State<PrivateContentViewer> {
                 }
               }
             },
+          ),
+        ),
+      );
+    } else if (widget.contentType == 'Documents' &&
+        path.extension(item).toLowerCase() == '.pdf') {
+      Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (_) => PdfDocumentPage(
+            source: PdfDocumentSource.file(item),
+            title: path.basename(item),
           ),
         ),
       );

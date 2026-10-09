@@ -2,7 +2,6 @@ import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:port/features/notifications/models/notification_model.dart';
-import 'package:port/shared/widgets/markdown_viewer.dart';
 
 class NotificationDetailPage extends StatelessWidget {
   final NotificationModel notification;
@@ -134,85 +133,6 @@ class NotificationDetailPage extends StatelessWidget {
                   letterSpacing: 0.3,
                 ),
               ),
-              if (notification.data != null &&
-                  notification.data!.isNotEmpty) ...[
-                SizedBox(height: 40),
-                Container(
-                  height: 1,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.transparent,
-                        AppStyle.muted.withValues(alpha: 0.3),
-                        Colors.transparent,
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 32),
-                Text(
-                  'Additional Data',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                    color: AppStyle.blue,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                SizedBox(height: 20),
-                ...notification.data!.entries.map((entry) {
-                  final isLast = entry == notification.data!.entries.last;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        entry.key,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                          color: AppStyle.gold,
-                          letterSpacing: 0.3,
-                        ),
-                      ),
-                      SizedBox(height: 12),
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: AppStyle.surface.withValues(alpha: 0.6),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: AppStyle.muted.withValues(alpha: 0.15),
-                          ),
-                        ),
-                        child: SharedMarkdownViewer(
-                          markdownData: entry.value?.toString() ?? 'No value',
-                          compact: true,
-                        ),
-                      ),
-                      if (!isLast) ...[
-                        SizedBox(height: 24),
-                        Container(
-                          height: 1,
-                          width: double.infinity,
-                          margin: EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.transparent,
-                                AppStyle.muted.withValues(alpha: 0.2),
-                                Colors.transparent,
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 24),
-                      ],
-                    ],
-                  );
-                }),
-              ],
               SizedBox(height: 40),
             ],
           ),
