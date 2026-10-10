@@ -54,3 +54,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Generated iOS dependencies and local Xcode settings
+/ios/Pods/
+/ios/.symlinks/
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/flutter_export_environment.sh
+/ios/Flutter/ephemeral/
+**/xcuserdata/
+/ios/Runner/GeneratedPluginRegistrant.*

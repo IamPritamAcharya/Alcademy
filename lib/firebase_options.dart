@@ -15,13 +15,17 @@ import 'package:flutter/foundation.dart'
 /// );
 /// ```
 class DefaultFirebaseOptions {
-  static FirebaseOptions get currentPlatform {
+  static FirebaseOptions? get currentPlatform {
     if (kIsWeb) {
       return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
+      case TargetPlatform.iOS:
+        // The native SDK loads the registered iOS app configuration from the
+        // GoogleService-Info.plist bundled by the Runner target.
+        return null;
       case TargetPlatform.windows:
         return windows;
       default:
@@ -55,11 +59,12 @@ class DefaultFirebaseOptions {
 
   // Firebase configuration for Windows
   static const FirebaseOptions windows = FirebaseOptions(
-      apiKey: "AIzaSyAAQZNlxV9Rtjzj6ImdIQ0rSKARCjb6U3g",
-      authDomain: "igit-aca-f8d86.firebaseapp.com",
-      projectId: "igit-aca-f8d86",
-      storageBucket: "igit-aca-f8d86.firebasestorage.app",
-      messagingSenderId: "722495505334",
-      appId: "1:722495505334:web:853fb064a7a6e1a656f717",
-      measurementId: "G-3X9D6Z9HYG");
+    apiKey: "AIzaSyAAQZNlxV9Rtjzj6ImdIQ0rSKARCjb6U3g",
+    authDomain: "igit-aca-f8d86.firebaseapp.com",
+    projectId: "igit-aca-f8d86",
+    storageBucket: "igit-aca-f8d86.firebasestorage.app",
+    messagingSenderId: "722495505334",
+    appId: "1:722495505334:web:853fb064a7a6e1a656f717",
+    measurementId: "G-3X9D6Z9HYG",
+  );
 }

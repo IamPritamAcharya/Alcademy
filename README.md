@@ -1,313 +1,158 @@
-<h1 align="center">
-  <img src="assets/applogo.png" width="32" 
-       style="border-radius:50%; vertical-align:middle; margin-right:8px;" />
-  Alcademy – Academic Platform for IGIT
-</h1>
+<p align="center">
+  <img src="assets/readme/app-logo.png" width="72" alt="Alcademy app logo" />
+</p>
+
+<h1 align="center">Alcademy</h1>
+
+<p align="center">Academic resources and campus information for students at IGIT Sarang.</p>
 
 <p align="center">
-  <a href="https://play.google.com/store/apps/details?id=com.alcademy.app">
-    <img src="https://img.shields.io/badge/Download-Play%20Store-green?style=for-the-badge&logo=google-play" />
-  </a>
-  <a href="https://aca-web-c0e77.web.app/">
-    <img src="https://img.shields.io/badge/Website-Live-blue?style=for-the-badge&logo=google-chrome" />
-  </a>
+  <a href="https://play.google.com/store/apps/details?id=com.alcademy.app">Download on Google Play</a>
+  &nbsp;·&nbsp;
+  <a href="https://aca-web-c0e77.web.app/">Website</a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Users-2000+-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Engagement-41%20min-orange?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/D30%20Retention-9.4%25-success?style=for-the-badge" />
+  <img src="assets/banner.png" width="100%" alt="Alcademy overview" />
 </p>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Flutter-Framework-02569B?style=for-the-badge&logo=flutter" />
-  <img src="https://img.shields.io/badge/Supabase-Backend-3ECF8E?style=for-the-badge&logo=supabase" />
-  <img src="https://img.shields.io/badge/Firebase-FCM-orange?style=for-the-badge&logo=firebase" />
-  <img src="https://img.shields.io/badge/GitHub-Content%20API-black?style=for-the-badge&logo=github" />
-</p>
+Alcademy brings notes, college notices, ERP records, and everyday student tools into one Flutter app. Used by more than 2,000 students, it combines a dark interface with cached content and direct access to the college's existing systems.
 
-<p align="center">
-  <b>A production-scale academic platform used daily by 2000+ students, built under real-world constraints.</b>
-</p>
+## Inside the app
 
-<p align="center">
-  <img src="assets/banner.png" width="100%" />
-</p>
-
-
----
-
-## 🧭 What This Project Actually Is
-
-Alcademy is a **client-orchestrated academic ecosystem** designed for:
-
-* Fragmented institutional systems
-* Unreliable data sources
-* Strict API rate limits
-
-> Instead of centralizing everything, responsibilities are **distributed across systems**, with the **Flutter client acting as the orchestration layer**.
-
----
-
-## 🧠 Why This Project Stands Out
-
-| Area                | What Makes It Different                       |
-| ------------------- | --------------------------------------------- |
-| Architecture     | Client-driven orchestration (non-traditional) |
-| Reliability      | Works even when some sources fail             |
-| Performance      | Heavy use of caching + isolates               |
-| Scalability      | No single system bottleneck                   |
-| Real-world usage | 2000+ active users                            |
-
----
-
+| Area | Features |
+| --- | --- |
+| Academics | Branch and semester notes, syllabus, SGPA calculator, and a shared PDF viewer |
+| Student records | ERP-backed results, timetable, attendance, fees, and holidays |
+| Campus | College notices, amenities, academic documents, and notification history |
+| Reading | Blogs, alumni success stories, and Beyond campus stories with daily news |
+| Personal tools | Expense tracking and a local Private Space for notes and media |
+| Profile | Saved ERP credentials and separate notice/general notification preferences |
 
 <p align="center">
   <a href="https://youtu.be/0wLjJ-lTiVA?si=AFd6rg-Yp7NX1h9b">
-    <img src="assets/alcademy.gif" width="900" />
+    <img src="assets/alcademy.gif" width="900" alt="Alcademy app walkthrough" />
   </a>
 </p>
 
----
-
-
 <p align="center">
-  <img src="assets/1.png" width="180" />
-  <img src="assets/2.png" width="180" />
-  <img src="assets/3.png" width="180" />
-  <img src="assets/4.png" width="180" />
+  <img src="assets/1.png" width="180" alt="Alcademy screenshot 1" />
+  <img src="assets/2.png" width="180" alt="Alcademy screenshot 2" />
+  <img src="assets/3.png" width="180" alt="Alcademy screenshot 3" />
+  <img src="assets/4.png" width="180" alt="Alcademy screenshot 4" />
 </p>
 
----
+## System architecture
 
-## 🧱 Architecture Diagram
+![Alcademy system architecture: the Flutter app reads ERP records and college notices directly, consumes GitHub content, receives Firebase notifications, and stores caches and credentials locally. Scheduled Python jobs publish shared feeds and send notice notifications.](assets/readme/system-architecture.png)
 
-```
-                         ┌──────────────────────────┐
-                         │     External Systems     │
-                         │──────────────────────────│
-                         │  • Google Gemini API     │
-                         │  • GitHub API (Notes)    │
-                         │  • College Websites      │
-                         │    (Scraped Data)        │
-                         └──────────┬───────────────┘
-                                    │
-                                    ▼
-                        ┌──────────────────────────┐
-                        │     Flutter Client       │
-                        │──────────────────────────│
-                        │ • Feature Modules        │
-                        │ • API Orchestration      │
-                        │ • Caching Layer          │
-                        │ • Rate Limiting          │
-                        │ • Deep Linking           │
-                        │ • Isolates (Parsing)     │
-                        └───────┬────────┬─────────┘
-                                │        │
-               ┌────────────────┘        └────────────────┐
-               ▼                                         ▼
-   ┌──────────────────────┐               ┌────────────────────────┐
-   │     Supabase         │               │       Firebase         │
-   │──────────────────────│               │────────────────────────│
-   │ • Users              │               │ • Push Notifications   │
-   │ • Posts (Threads)    │               │   (FCM only)           │
-   │ • Clubs Data         │               └────────────────────────┘
-   │ • Storage (Buckets)  │
-   └──────────────────────┘
+The app uses three distinct data paths:
 
-               ▼
-   ┌──────────────────────────────┐
-   │   Local Device Layer 🔐      │
-   │──────────────────────────────│
-   │ • Secure Vault (Biometric)   │
-   │ • Cached API Responses       │
-   │ • Offline Utilities          │
-   └──────────────────────────────┘
-```
+- **Student records:** a WebView shares the ERP cookie session, signs in with locally saved credentials when needed, and extracts records for native Flutter screens. Scheduled jobs do not access student credentials.
+- **Shared content:** repositories read notes and JSON feeds from GitHub. Source locations are centralized in [`GitHubSources`](lib/core/network/github_sources.dart), while each feature handles its own parsing and cache policy.
+- **Notifications and generated feeds:** Python jobs run through GitHub Actions. They monitor notices, publish daily news and festival data, and use Firebase Cloud Messaging for notice delivery.
 
----
+Feature code lives in `lib/features/`, with presentation, data, and model layers where needed. Shared networking, configuration, and storage live in `lib/core/`; reusable UI, theme, and PDF components live in `lib/shared/`.
 
-## ⚙️ System Design Philosophy
+## Refresh and storage
 
-### Why this architecture works
+Caches reduce repeated requests; they are not a replacement for the underlying college services. An uncached ERP record still requires a working connection and valid credentials.
 
-* **Decoupled systems** → failure in one source doesn’t break the app
-* **Client-side intelligence** → reduces backend complexity
-* **GitHub as CDN** → predictable scaling
-* **Local-first design** → fast UX + offline support
+| Data | Refresh policy |
+| --- | --- |
+| ERP attendance | Expires at the next 9:00 AM boundary in device local time |
+| ERP timetable, results, fees, and holidays | Calendar-month cache; pull to refresh requests an update |
+| Blogs and success stories | Calendar-month cache with a valid stale snapshot available offline |
+| Daily news | Expires at the next 10:00 AM IST boundary |
+| Festival calendar | Calendar-month cache; today's greeting is evaluated separately |
+| PDF documents | Disk cache configured for 20 documents and a seven-day stale period |
 
-> 🧠 “Move complexity to where it scales best — in this case, the client.”
+ERP credentials use secure platform storage. Private Space files stay on the device and can be protected by biometric access; they are **not an encrypted vault**. Network images use the app's image caching components rather than being embedded in the news feed JSON.
 
----
+## Scheduled jobs
 
-## 🔄 Data Flow Pipeline
+| Workflow | Schedule | Purpose |
+| --- | --- | --- |
+| [`notice-checker.yml`](.github/workflows/notice-checker.yml) | Every ten minutes, offset from the hour | Detect new college notices and send a grouped notification |
+| [`daily-stories.yml`](.github/workflows/daily-stories.yml) | Daily at 7:43 AM IST | Publish the daily news feed to the `daily-stories` branch |
+| [`festivals.yml`](.github/workflows/festivals.yml) | First day of each month at 5:47 AM IST | Publish current- and next-year festival records to the `festivals` branch |
 
-```
-Google Drive → Python Script → GitHub → Flutter App
+GitHub may delay scheduled runs. The notice checker keeps its state on the `notification-state` branch, has separate test and production audiences, and requires explicit repository configuration before scheduled production delivery. Firebase service-account credentials belong in repository secrets, never in app assets.
+
+Setup and operational details: [notice checker](backend/notice_checker/README.md), [daily stories](backend/daily_stories/README.md), and [festival calendar](backend/festivals/README.md).
+
+## Repository layout
+
+```text
+lib/
+  app/          App setup and routing
+  core/         Configuration, networking, and cache infrastructure
+  features/     Screens, repositories, parsers, and models
+  shared/       Theme, reusable widgets, and PDF viewer
+content/        Notes, article feeds, settings, and content images
+backend/        Scheduled Python jobs and their tests
+assets/         Bundled images, fonts, and fallback data
+test/          Dart unit, widget, and golden tests
+third_party/    Vendored plugin compatibility patches
 ```
 
-### Pipeline Breakdown
+Blogs and success stories are single JSON feeds whose bodies retain Markdown formatting. To change content sources, edit `lib/core/network/github_sources.dart`. The `content/Notes/` directory retains its existing branch and semester files.
 
-| Step             | Purpose                   |
-| ---------------- | ------------------------- |
-| Google Drive  | Easy content management   |
-| Python Script | Structured transformation |
-| GitHub        | CDN layer                 |
-| Flutter       | Smart consumption         |
+## Development
 
----
-
-## 🧩 Core Systems
-
-### 📚 Academic Resource Engine
-
-* GitHub-backed structured content
-* Locally cached
-* High-read optimized
-
----
-
-### 🧵 IGIT Threads
-
-* Supabase-powered discussions
-* Deep linking enabled
-* Club-managed communities
-
----
-
-### 🔔 Notification System
-
-* Firebase FCM (delivery only)
-* Event-triggered
-
----
-
-### 🧠 AI Assistant
-
-* Gemini API integration
-* Stateless architecture
-* Low latency
-
----
-
-### 📰 Notices Engine
-
-* Web scraping pipeline
-* Parsed via isolates
-* Fault-tolerant
-
----
-
-### 🛡 Secure Vault
-
-* Biometric-protected
-* Local-only storage
-* No backend dependency
-
----
-
-## ⚡ Performance Engineering
-
-### Key Optimizations
-
-* Smart API caching
-* Rate limiting (**60/hr + controlled refresh**)
-* Background parsing (isolates)
-* Lazy loading
-
-### Result
-
-* **41 min avg engagement**
-* Smooth UI under heavy load
-* Reduced API failures
-
----
-
-## 🌐 Scalability Strategy
-
-| Layer       | Strategy           |
-| ----------- | ------------------ |
-| 🌐 GitHub   | Static scaling     |
-| 🧩 Supabase | Relational scaling |
-| 🧠 Client   | Orchestration      |
-
-> No single system becomes a bottleneck.
-
----
-
-## 💠 Key Engineering Wins
-
-* Resilient multi-source system
-* Reduced backend dependency
-* Designed for unreliable environments
-* High engagement via performance tuning
-
----
-
-## 🔰 What You Can Learn
-
-* Client-side system design
-* API orchestration
-* Flutter performance patterns
-* Caching + rate limiting
-* Building under constraints
-
----
-
-## 🛠 Tech Stack
-
-| Layer            | Tech                           |
-| ---------------- | ------------------------------ |
-| Mobile        | Flutter (Dart)                 |
-| Backend       | Supabase                       |
-| Notifications | Firebase FCM                   |
-| Content       | GitHub API                     |
-| AI            | Google Gemini API              |
-| Local         | SharedPreferences + Biometrics |
-
----
-
-## ☢️ Trade-offs 
-
-| Decision              | Reason                     |
-| --------------------- | -------------------------- |
-| Client-heavy logic | Reduced backend complexity |
-| GitHub as CDN      | Free + scalable            |
-| Stateless AI        | Faster responses           |
-| Scraping notices   | No official APIs           |
-
----
-
-## 🌀 Highlights
-
-* Fast (offline-first + caching)
-* Smart (AI + orchestration)
-* Secure (biometric vault)
-* Resilient (multi-source fallback)
-
----
-
-## 🛠 Run Locally
+The project requires **Flutter 3.47 or newer** and **Dart 3.12 or newer**, as declared in `pubspec.yaml`. Android development also requires the Android SDK and a compatible JDK. iOS development requires macOS, Xcode, and CocoaPods.
 
 ```bash
-git clone https://github.com/your-repo
-cd your-repo
+git clone https://github.com/IamPritamAcharya/Alcademy.git
+cd Alcademy
 flutter pub get
 flutter run
 ```
 
----
+For a device subscribed to the test notice audience:
 
-## 🤝 Contributing
+```bash
+flutter run --dart-define=NOTICE_PUSH_TEST=true
+```
 
-Currently not open for external contributions.
+Run static analysis and tests:
 
----
+```bash
+flutter analyze
+flutter test
+```
 
-## 📌 Closing
+### Release builds
 
-Alcademy is a **system design project disguised as a mobile app**.
+Android APK:
 
-Built with one goal:
+```bash
+flutter build apk --release --dart-define=NOTICE_PUSH_PRODUCTION=true
+```
 
-> 🪐 Deliver fast, reliable academic access even in imperfect environments.
+Google Play bundle:
+
+```bash
+flutter build appbundle --release --dart-define=NOTICE_PUSH_PRODUCTION=true
+```
+
+For iOS, install pods and open the Xcode workspace:
+
+```bash
+cd ios
+pod install --repo-update
+cd ..
+open ios/Runner.xcworkspace
+```
+
+Select your Apple Developer team in Runner's signing settings. The Firebase iOS configuration must match `com.alcademy.app`; push delivery also requires an APNs key configured in Firebase. After signing and testing on an iPhone:
+
+```bash
+flutter build ipa --release --dart-define=NOTICE_PUSH_PRODUCTION=true
+```
+
+The production flag selects the notice topic subscription. It does not send notifications. Android is the established release target; the iOS configuration is prepared but still needs native build and device verification.
+
+## Contributions
+
+Only resource contributions are currently open, including notes and study materials. Code contributions are not open. Notes contributor credits are maintained in the app's content settings.

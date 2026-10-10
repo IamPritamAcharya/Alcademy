@@ -1,0 +1,15 @@
+Use case: infographic-diagram
+Asset type: landscape architecture diagram for the Alcademy GitHub README.
+Create a polished, readable software architecture diagram, wide 3:2 or 16:10 landscape, restrained editorial technical design. Neutral charcoal background, crisp off-white labels, subtle violet and cyan accents, generous spacing, flat boxes and precise directed arrows. No mascots, no emojis, no decorative 3D objects, no fabricated logos. Large readable text.
+Title exactly "Alcademy · System architecture".
+Layout: left column three source boxes:
+"IGIT ERP" subtitle "Student-specific academic records";
+"College website" subtitle "Notices";
+"News feeds + holiday calendar" subtitle "Public sources".
+Middle-top box "GitHub Actions" subtitle "Scheduled Python jobs".
+Middle-center box "GitHub" subtitle "Static content + generated feeds".
+Middle-bottom box "Firebase Cloud Messaging" subtitle "Notice and general notifications".
+Right-center largest box "Flutter app" containing three labels "Feature screens", "Repositories + parsers", "Shared PDF viewer".
+Below Flutter app box "Device storage" with labels "Response caches", "Secure ERP credentials", "Private Space files".
+Exact directed connections only: IGIT ERP -> Flutter app; College website -> Flutter app; College website -> GitHub Actions; News feeds + holiday calendar -> GitHub Actions; GitHub Actions -> GitHub; GitHub -> Flutter app; GitHub Actions -> Firebase Cloud Messaging; Firebase Cloud Messaging -> Flutter app; Flutter app <-> Device storage.
+Use orthogonal connectors with clear arrowheads and sensible lanes so arrows do not obscure any labels. ERP connects directly to app, never to GitHub Actions or GitHub. Small bottom caption exactly "ERP credentials stay on the device. Scheduled jobs publish shared content and notice notifications." Make caption readable. Spell every label exactly as specified. Professional restrained documentation, not a marketing poster.

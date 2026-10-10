@@ -61,12 +61,12 @@ class NotificationService {
       await _handleNotificationTap(initialMessage);
     }
 
-    await syncNotifications();
-
     _firebaseMessaging.onTokenRefresh.listen((_) {
       debugPrint('FCM registration refreshed; updating notice subscriptions.');
       unawaited(syncNoticeSubscriptions(force: true));
     });
+
+    await syncNotifications();
   }
 
   /// Retry unsuccessful subscriptions on resume and after token refresh,
@@ -104,6 +104,17 @@ class NotificationService {
       synced = true;
       try {
         final permission = await notificationPermissionGranted();
+        if (!kIsWeb &&
+            (defaultTargetPlatform == TargetPlatform.iOS ||
+                defaultTargetPlatform == TargetPlatform.macOS) &&
+            await _firebaseMessaging.getAPNSToken().timeout(
+                  const Duration(seconds: 8),
+                ) ==
+                null) {
+          // Apple registration can complete after initialization. Retry on
+          // FCM token refresh or app resume before attempting topic APIs.
+          return false;
+        }
         final preferences = await const NotificationPreferencesRepository()
             .read();
         final desired = notificationTopicSubscriptions(
