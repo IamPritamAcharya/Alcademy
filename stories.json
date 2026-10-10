@@ -1,0 +1,191 @@
+{
+  "version": 2,
+  "generatedAt": "2026-10-10T04:14:34.681323+00:00",
+  "expiresAt": "2026-10-13T04:14:34.681323+00:00",
+  "stories": [
+    {
+      "id": "ac5e91796d02545d98f1",
+      "kind": "news",
+      "type": "news",
+      "title": "BJP’s Dinesh Arya elected unopposed to Rajya Sabha from Uttarakhand",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/bjps-dinesh-arya-elected-unopposed-to-rajya-sabha-from-uttarakhand-101791571195113.html",
+      "description": "Bharatiya Janata Party’s (BJP) candidate Dinesh Arya was elected unopposed to the Rajya Sabha from Uttarakhand, officials said on Friday",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/08/06/1600x900/Untitled_design_1754465014585_1754465103581.png"
+    },
+    {
+      "id": "hn-50027359",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "GPGPU-SIM – Cycle-Level Simulator for Nvidia GPUs with CUDA or OpenCL Workloads",
+      "source": "github.com",
+      "sourceUrl": "https://github.com/gpgpu-sim/gpgpu-sim_distribution",
+      "description": "GPGPU-Sim provides a detailed simulation model of contemporary NVIDIA GPUs running CUDA and/or OpenCL workloads. It includes support for features such as TensorCores and CUDA Dynamic Parallelism as well as a performance visualization tool, AerialVisoin, and an integrated energy m",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50027359",
+      "imageUrl": "https://opengraph.githubassets.com/c260a3196603a96525bdfdeb44e24c3581ef55dc64952eff38c485b373b880bc/gpgpu-sim/gpgpu-sim_distribution"
+    },
+    {
+      "id": "90520e9a730b68535d60",
+      "kind": "news",
+      "type": "news",
+      "title": "6 special trains arranged to bring 10k CAPF personnel for Delhi protest",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/6-special-trains-arranged-to-bring-10k-capf-personnel-for-delhi-protest-101791570995850.html",
+      "description": "Together with forces already deployed, more than 26K personnel are expected to help manage security, with restrictions on gatherings and movement around Delhi.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/10/1600x900/logo/ANI-20260323525-0_1774494623706_1774494653107_1791598600029_FlI9_7536eb3a-dda9-48fc-904a-994a23961dd0_rLJG.jpg"
+    },
+    {
+      "id": "5081db82852ab86415ad",
+      "kind": "news",
+      "type": "news",
+      "title": "Trump says Iran war will be ‘over soon’, claims US stopped Tehran from getting nuclear weapon",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/trump-says-iran-war-will-be-over-soon-claims-us-stopped-tehran-from-getting-nuclear-weapon-101791565341718.html",
+      "description": "Speaking at a White House event, Trump also predicted that gas prices would fall, saying the conflict would end “one way or the other”.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/09/1600x900/logo/U0_1791566323599_kG2m_1791566323744_4e68_6fcf4eee-c46b-419e-8988-761e843fc587_uZwG.jpg"
+    },
+    {
+      "id": "hn-50023450",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Typesafe AI raises $870M at $7.5B",
+      "source": "typesafe.ai",
+      "sourceUrl": "https://typesafe.ai/blog/series-ai",
+      "description": "TypeSafe AI is an AI lab building machine-native intelligence infrastructure for automation, designed to make decisions within software. Try our first System One Model, Jev, in early access.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50023450",
+      "imageUrl": "https://framerusercontent.com/images/RtIGTDwO43jR4ZDilesXiR5znc.jpg"
+    },
+    {
+      "id": "hn-50024090",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "What mathematicians should know about the Lean Theorem Prover: reliability & AI",
+      "source": "terrytao.wordpress.com",
+      "sourceUrl": "https://terrytao.wordpress.com/2026/10/09/what-mathematicians-should-know-about-the-lean-theorem-proverquestions-of-reliability-and-ai/",
+      "description": "[This is a guest post by Thomas Hales. This blog post was initially written in a different file format and converted using AI. — T.] Mathematicians have been weighing in on what they value ab…",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50024090",
+      "imageUrl": "https://secure.gravatar.com/blavatar/bd4bda4207561b6998f10dec44b570f04ff4072b20f89162d525b186dfca3e49?s=200&ts=1791605307"
+    },
+    {
+      "id": "hn-50027118",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Anthropic AI model submits false tip on unsolved Philly murder",
+      "source": "nbcphiladelphia.com",
+      "sourceUrl": "https://www.nbcphiladelphia.com/news/local/anthropic-ai-model-submits-false-tip-on-unsolved-philly-murder-police-say/4477051/",
+      "description": "An investigation is underway after an AI model from the company Anthropic submitted a false tip for an unsolved Philadelphia murder, police said.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50027118",
+      "imageUrl": "https://media.nbcphiladelphia.com/2022/01/CrimeTape-1.jpg?quality=85&strip=all&resize=1200%2C675"
+    },
+    {
+      "id": "hn-50020947",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Why are coding agents so dumb?",
+      "source": "mtlynch.io",
+      "sourceUrl": "https://mtlynch.io/why-are-coding-agents-so-dumb/",
+      "description": "Updates about my life and what I learn about creating software",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50020947",
+      "imageUrl": "https://mtlynch.io/why-are-coding-agents-so-dumb/cover.webp"
+    },
+    {
+      "id": "hn-50019056",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Pointing AI at archives found a forgotten meteorite, lost rhinos, and more",
+      "source": "jessewaites.com",
+      "sourceUrl": "https://jessewaites.com/blog/post/i-pointed-ai-at-400-years-of-archives/",
+      "description": "How I used AI to investigate millions of historical records and surfaced a forgotten meteorite report, three lost rhinos, and unrecorded volcano eruptions.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50019056",
+      "imageUrl": "https://jessewaites.com/meteorite.jpg"
+    },
+    {
+      "id": "3733daa4a14d0e0d9dd1",
+      "kind": "news",
+      "type": "news",
+      "title": "3 stadiums to be used as temporary detention centres in Delhi during Jantar Mantar protest",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/3-stadiums-to-be-used-as-temporary-detention-centres-in-delhi-during-jantar-mantar-protest-cjp-eci-cec-gyanesh-kumar-delhi-police-101791571210747.html",
+      "description": "Rajiv Gandhi Stadium, Chhatrasal Stadium and Major Dhyan Chand National Stadium have been identified to accommodate detainees if required.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/09/1600x900/logo/The-proposed-use-of-the-three-stadiums-as-detentio_1791571201032_fxzc.jpg"
+    },
+    {
+      "id": "4a2870bfd5f8d72c32c4",
+      "kind": "news",
+      "type": "news",
+      "title": "Indian IT giants radically reduced green card applications even before US crackdown, data shows",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/indian-it-giants-radically-reduced-green-card-applications-even-before-us-crackdown-data-shows-101791597810344.html",
+      "description": "An HT analysis finds that the four Indian IT giants that were suspended have radically reduced PERM labour certification applications since FY 2024.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/10/1600x900/logo/greencard_1760566595704_1760566613817_1791598857030_W02A_b0dda56d-86cb-457a-8f35-ec3b252b2951_Zo7L.jpg"
+    },
+    {
+      "id": "hn-50027694",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Rewriting Prime Agent in Rust",
+      "source": "primeintellect.ai",
+      "sourceUrl": "https://www.primeintellect.ai/blog/prime-agent-rust",
+      "description": "Today, we're excited to ship a faster, cleaner and more reliable Prime Agent, rewritten from the ground up in Rust.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50027694",
+      "imageUrl": "https://www.primeintellect.ai/blog/porting-prime-agent-to-rust/cover-swarm.png?v=f7c567a4763b"
+    },
+    {
+      "id": "hn-49995495",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Man discovers his parents' coffee machine used 1TB of data in 10 days",
+      "source": "dexerto.com",
+      "sourceUrl": "https://www.dexerto.com/entertainment/man-discovers-his-parents-coffee-machine-used-1tb-of-data-in-10-days-3416399/",
+      "description": "The man said they discovered that their parents’ coffee maker had generated far more traffic than they expected.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=49995495",
+      "imageUrl": "https://www.dexerto.com/cdn-image/wp-content/uploads/2026/10/07/coffee-maker-stock-photo.jpg"
+    },
+    {
+      "id": "cc51242039e414e28b84",
+      "kind": "news",
+      "type": "news",
+      "title": "UP cabinet nod to rename Jewar airport after Modi",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/up-cabinet-nod-to-rename-jewar-airport-after-modi-101791570756187.html",
+      "description": "The Uttar Pradesh cabinet on Friday passed a resolution to rename the Noida International Airport in Jewar as Narendra Modi International Airport, Noida-Jewar,chief minister Yogi Adityanath announced after chairing the cabinet meeting",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/06/30/1600x900/ht-generic_india1_1751287243850_1751287256749.jpg"
+    },
+    {
+      "id": "944c897e1ad8b27aae99",
+      "kind": "news",
+      "type": "news",
+      "title": "Bihar likely to present over ₹10,000 cr demand to Centre to compensate flood damages",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/bihar-likely-to-present-over-10-000-cr-demand-to-centre-to-compensate-flood-damages-101791603830164.html",
+      "description": "The first wave of flooding struck in the opening week of September, affecting over 50 lakh people across more than 2,000 villages in 15 districts of Bihar.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/10/1600x900/logo/20261006-PAT-SK-MN-Sasaram-01-0_1791604671136_G1iL_1791604685479_vwws_a5fad390-3b0e-48b9-aee4-91abdd4672a6_QPvB.JPG"
+    },
+    {
+      "id": "941d7d85c22c5a081073",
+      "kind": "news",
+      "type": "news",
+      "title": "Seven killed, 22 injured in Khavda renewable park crash",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/seven-killed-22-injured-in-khavda-renewable-park-crash-101791570531605.html",
+      "description": "A total of seven workers were killed and 20-22 others injured when a trailer and a truck collided head-on in Gujarat’s Kutch district on Friday morning, police said",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/08/06/1600x900/Untitled_design_1754465014585_1754465103581.png"
+    }
+  ]
+}
