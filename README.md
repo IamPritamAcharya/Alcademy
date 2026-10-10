@@ -1,24 +1,41 @@
-<p align="center">
-  <img src="assets/readme/app-logo.png" width="72" alt="Alcademy app logo" />
-</p>
-
-<h1 align="center">Alcademy</h1>
-
-<p align="center">Academic resources and campus information for students at IGIT Sarang.</p>
+<h1 align="center">
+  <img src="assets/readme/app-logo-transparent.png" width="32"
+       style="border-radius:50%; vertical-align:middle; margin-right:8px;" />
+  Alcademy – Academic Platform for IGIT
+</h1>
 
 <p align="center">
-  <a href="https://play.google.com/store/apps/details?id=com.alcademy.app">Download on Google Play</a>
-  &nbsp;·&nbsp;
-  <a href="https://aca-web-c0e77.web.app/">Website</a>
+  <a href="https://play.google.com/store/apps/details?id=com.alcademy.app">
+    <img src="https://img.shields.io/badge/Download-Play%20Store-green?style=for-the-badge&logo=google-play" />
+  </a>
+  <a href="https://aca-web-c0e77.web.app/">
+    <img src="https://img.shields.io/badge/Website-Live-blue?style=for-the-badge&logo=google-chrome" />
+  </a>
 </p>
 
 <p align="center">
-  <img src="assets/banner.png" width="100%" alt="Alcademy overview" />
+  <img src="https://img.shields.io/badge/Users-2000+-blue?style=for-the-badge" />
 </p>
 
-Alcademy brings notes, college notices, ERP records, and everyday student tools into one Flutter app. Used by more than 2,000 students, it combines a dark interface with cached content and direct access to the college's existing systems.
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-Framework-02569B?style=for-the-badge&logo=flutter" />
+  <img src="https://img.shields.io/badge/Firebase-FCM-orange?style=for-the-badge&logo=firebase" />
+  <img src="https://img.shields.io/badge/GitHub-Content%20API-black?style=for-the-badge&logo=github" />
+</p>
+
+<p align="center">
+  <b>Notes, notices, and student records for more than 2,000 students at IGIT Sarang.</b>
+</p>
+
+<p align="center">
+  <img src="assets/banner.png" width="100%" />
+</p>
+
+---
 
 ## Inside the app
+
+Built with Flutter and used by more than 2,000 students, Alcademy brings college resources and everyday tools into a single dark interface.
 
 | Area | Features |
 | --- | --- |
