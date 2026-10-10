@@ -3,6 +3,8 @@
   "topic": "alcademy_college_notices_v1",
   "years": {
     "2026": [
+      "a023ed0f10e9b0f831b2d6fd",
+      "f05578310f465c615f6cb75a",
       "b14803f5394c50bdbc2e3725",
       "b677e130210b0cc741efbaec",
       "be346155797dde8bbad63268",
@@ -100,11 +102,9 @@
       "02f6731502ba62796d540bc2",
       "fb6031c9453ad334e8c71eb4",
       "934f95d78a3f4fa1cacdd683",
-      "15e55182f38df257bdd598b3",
-      "75f2254b988f7ad4d892861d",
-      "76e47fee43f99838f36d4ea5"
+      "15e55182f38df257bdd598b3"
     ]
   },
   "pending": null,
-  "baseline_at": "2026-10-08T10:51:24.826968+05:30"
+  "baseline_at": "2026-10-10T09:45:58.103544+05:30"
 }
