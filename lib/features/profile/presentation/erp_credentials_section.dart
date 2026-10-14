@@ -4,7 +4,12 @@ import 'package:port/shared/theme/app_style.dart';
 
 class ErpCredentialsSection extends StatefulWidget {
   final ErpCredentialsRepository repository;
-  const ErpCredentialsSection({super.key, required this.repository});
+  final ValueChanged<bool>? onSavedChanged;
+  const ErpCredentialsSection({
+    super.key,
+    required this.repository,
+    this.onSavedChanged,
+  });
 
   @override
   State<ErpCredentialsSection> createState() => _ErpCredentialsSectionState();
@@ -33,6 +38,7 @@ class _ErpCredentialsSectionState extends State<ErpCredentialsSection> {
       _saved = saved;
       _username.text = saved?.username ?? '';
       _error = null;
+      widget.onSavedChanged?.call(saved != null);
     } catch (_) {
       if (!mounted) return;
       _error = 'Couldn’t read secure storage. Please try again.';
@@ -56,6 +62,7 @@ class _ErpCredentialsSectionState extends State<ErpCredentialsSection> {
         _obscure = true;
         _error = null;
       });
+      widget.onSavedChanged?.call(true);
       FocusScope.of(context).unfocus();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -82,6 +89,7 @@ class _ErpCredentialsSectionState extends State<ErpCredentialsSection> {
         _password.clear();
         _error = null;
       });
+      widget.onSavedChanged?.call(false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -137,9 +145,49 @@ class _ErpCredentialsSectionState extends State<ErpCredentialsSection> {
             const Center(child: CircularProgressIndicator())
           else ...[
             if (_saved != null) ...[
-              const Text(
-                'Automatic login is enabled',
-                style: TextStyle(color: AppStyle.success, fontSize: 13),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppStyle.success.withValues(alpha: .08),
+                  border: Border.all(
+                    color: AppStyle.success.withValues(alpha: .25),
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.verified_user_outlined,
+                      color: AppStyle.success,
+                      size: 22,
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Credentials saved',
+                            style: TextStyle(
+                              color: AppStyle.text,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Automatic login is enabled',
+                            style: TextStyle(
+                              color: AppStyle.success,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 16),
             ],
@@ -166,9 +214,15 @@ class _ErpCredentialsSectionState extends State<ErpCredentialsSection> {
                 if (!_busy) _save();
               },
               decoration: InputDecoration(
-                labelText: 'ERP password',
+                labelText: _saved != null
+                    ? 'ERP password · saved'
+                    : 'ERP password',
+                floatingLabelBehavior: _saved != null
+                    ? FloatingLabelBehavior.always
+                    : FloatingLabelBehavior.auto,
+                hintText: _saved != null ? '••••••••' : null,
                 helperText: _saved != null
-                    ? 'Leave empty to keep your saved password.'
+                    ? 'Password saved securely. Enter a new one to replace it.'
                     : null,
                 helperMaxLines: 2,
                 suffixIcon: IconButton(

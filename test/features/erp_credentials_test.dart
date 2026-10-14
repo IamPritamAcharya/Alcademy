@@ -153,6 +153,7 @@ void main() {
     await tester.pumpAndSettle();
     expect((await repository.read())!.password, 'secret');
     expect(find.text('Automatic login is enabled'), findsOneWidget);
+    expect(find.text('ERP auto-login enabled'), findsOneWidget);
     expect(
       tester
           .widget<TextFormField>(find.byType(TextFormField).at(1))
@@ -171,6 +172,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(await repository.read(), isNull);
     expect(find.text('Automatic login is enabled'), findsNothing);
+    expect(find.text('ERP auto-login enabled'), findsNothing);
+    expect(find.text('Set up ERP auto-login'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

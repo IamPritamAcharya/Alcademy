@@ -26,6 +26,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
   late Future<void> _refreshFuture;
   final _erpSection = GlobalKey();
   bool _scrolledToErp = false;
+  bool? _erpSaved;
+
+  void _showErpCredentials() {
+    final sectionContext = _erpSection.currentContext;
+    if (sectionContext != null) {
+      Scrollable.ensureVisible(
+        sectionContext,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutCubic,
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -242,12 +254,62 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   branch: branch ?? "Branch Name",
                   onEditName: updateUserName,
                 ),
+                if (_erpSaved != null) ...[
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Material(
+                      color: AppStyle.surface,
+                      borderRadius: BorderRadius.circular(12),
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        onTap: _showErpCredentials,
+                        leading: Icon(
+                          _erpSaved!
+                              ? Icons.verified_user_outlined
+                              : Icons.lock_outline_rounded,
+                          color: _erpSaved! ? AppStyle.success : AppStyle.muted,
+                        ),
+                        title: Text(
+                          _erpSaved!
+                              ? 'ERP auto-login enabled'
+                              : 'Set up ERP auto-login',
+                          style: const TextStyle(
+                            color: AppStyle.text,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        subtitle: Text(
+                          _erpSaved!
+                              ? 'Credentials saved on this device'
+                              : 'Save your credentials to get started',
+                          style: const TextStyle(
+                            color: AppStyle.muted,
+                            fontSize: 12,
+                          ),
+                        ),
+                        trailing: const Icon(
+                          Icons.chevron_right_rounded,
+                          color: AppStyle.muted,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 28),
                 const NotificationPreferencesSection(),
                 const SizedBox(height: 28),
                 ErpCredentialsSection(
                   key: _erpSection,
                   repository: widget.erpCredentials,
+                  onSavedChanged: (saved) {
+                    if (mounted && _erpSaved != saved) {
+                      setState(() => _erpSaved = saved);
+                    }
+                  },
                 ),
               ],
             ),

@@ -8,19 +8,81 @@ import 'package:port/shared/theme/app_style.dart';
 import 'package:port/features/home/presentation/widgets/journal_cover.dart';
 import 'package:port/features/home/presentation/widgets/home_entrance.dart';
 
-class HomeHeader extends StatelessWidget {
+class HomeAppBar extends StatelessWidget {
   final ValueNotifier<bool> isOnlineNotifier;
+  final VoidCallback onMenu;
+
+  const HomeAppBar({
+    super.key,
+    required this.isOnlineNotifier,
+    required this.onMenu,
+  });
+
+  @override
+  Widget build(BuildContext context) => ColoredBox(
+    color: AppStyle.background,
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 14),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              'alcademy.',
+              style: TextStyle(
+                color: AppStyle.text,
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                letterSpacing: -1.2,
+              ),
+            ),
+          ),
+          ValueListenableBuilder<bool>(
+            valueListenable: isOnlineNotifier,
+            builder: (context, online, _) => Semantics(
+              label: online ? 'Online' : 'Offline',
+              child: Row(
+                children: [
+                  Container(
+                    width: 5,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: online ? AppStyle.blue : AppStyle.accent,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    online ? 'ONLINE' : 'OFFLINE',
+                    style: AppStyle.eyebrow.copyWith(
+                      fontSize: 9,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          IconButton(
+            tooltip: 'Open menu',
+            onPressed: onMenu,
+            icon: const Icon(Icons.menu_rounded, color: AppStyle.text),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class HomeHeader extends StatelessWidget {
   final String? userName;
   final String currentSentence;
-  final VoidCallback onMenu;
   final int? resourceCount;
 
   const HomeHeader({
     super.key,
-    required this.isOnlineNotifier,
     this.userName,
     required this.currentSentence,
-    required this.onMenu,
     this.resourceCount,
   });
 
@@ -38,54 +100,6 @@ class HomeHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'alcademy.',
-                  style: TextStyle(
-                    color: AppStyle.text,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -1.2,
-                  ),
-                ),
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: isOnlineNotifier,
-                builder: (context, online, _) => Semantics(
-                  label: online ? 'Online' : 'Offline',
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 5,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: online ? AppStyle.blue : AppStyle.accent,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        online ? 'ONLINE' : 'OFFLINE',
-                        style: AppStyle.eyebrow.copyWith(
-                          fontSize: 9,
-                          letterSpacing: 1,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              IconButton(
-                tooltip: 'Open menu',
-                onPressed: onMenu,
-                icon: const Icon(Icons.menu_rounded, color: AppStyle.text),
-              ),
-            ],
-          ),
-          const SizedBox(height: 22),
           Text(
             '$_greeting, ${userName ?? 'Explorer'}.',
             style: const TextStyle(color: AppStyle.text, fontSize: 20),

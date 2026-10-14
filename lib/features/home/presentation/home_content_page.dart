@@ -210,111 +210,124 @@ class _FirstPageState extends State<HomeContentPage>
       backgroundColor: AppStyle.background,
       body: SafeArea(
         bottom: false,
-        child: RefreshIndicator(
-          color: AppStyle.text,
-          backgroundColor: AppStyle.background,
-          onRefresh: _refresh,
-          child: CustomScrollView(
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            HomeAppBar(
+              isOnlineNotifier: _isOnlineNotifier,
+              onMenu: () => widget.scaffoldKey?.currentState?.openDrawer(),
             ),
-            slivers: [
-              SliverToBoxAdapter(
-                child: HomeHeader(
-                  isOnlineNotifier: _isOnlineNotifier,
-                  userName: _cachedUserName,
-                  resourceCount: isLoading
-                      ? null
-                      : subjects.fold<int>(
-                          0,
-                          (total, subject) => total + subject.items.length,
+            Expanded(
+              child: RefreshIndicator(
+                color: AppStyle.text,
+                backgroundColor: AppStyle.background,
+                onRefresh: _refresh,
+                child: CustomScrollView(
+                  physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
+                  ),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: HomeHeader(
+                        userName: _cachedUserName,
+                        resourceCount: isLoading
+                            ? null
+                            : subjects.fold<int>(
+                                0,
+                                (total, subject) =>
+                                    total + subject.items.length,
+                              ),
+                        currentSentence:
+                            FestivalService.wish.value ?? currentSentence,
+                      ),
+                    ),
+                    if (storyUrls.isNotEmpty) ...[
+                      const SliverToBoxAdapter(
+                        child: _SectionHeading(
+                          title: 'Beyond campus',
+                          eyebrow: 'STORIES & UPDATES',
                         ),
-                  currentSentence:
-                      FestivalService.wish.value ?? currentSentence,
-                  onMenu: () => widget.scaffoldKey?.currentState?.openDrawer(),
-                ),
-              ),
-              if (storyUrls.isNotEmpty) ...[
-                const SliverToBoxAdapter(
-                  child: _SectionHeading(
-                    title: 'Beyond campus',
-                    eyebrow: 'STORIES & UPDATES',
-                  ),
-                ),
-                SliverToBoxAdapter(child: StoriesWidget(stories: storyUrls)),
-              ],
-              const SliverToBoxAdapter(
-                child: _SectionHeading(
-                  title: 'The essentials',
-                  eyebrow: 'YOUR CAMPUS TOOLKIT',
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: TabsWidget(onTabPressed: (_) => _refreshGreeting()),
-              ),
-              SliverToBoxAdapter(
-                child: _SectionHeading(
-                  title: 'Your subjects',
-                  eyebrow: 'THE STUDY SHELF',
-                  action: TextButton.icon(
-                    onPressed: _chooseYear,
-                    icon: const Icon(Icons.tune_rounded, size: 16),
-                    label: const Text('Change year'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: AppStyle.accent,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      textStyle: const TextStyle(
-                        fontFamily: 'ProductSans',
-                        fontSize: 12,
+                      ),
+                      SliverToBoxAdapter(
+                        child: StoriesWidget(stories: storyUrls),
+                      ),
+                    ],
+                    const SliverToBoxAdapter(
+                      child: _SectionHeading(
+                        title: 'The essentials',
+                        eyebrow: 'YOUR CAMPUS TOOLKIT',
                       ),
                     ),
-                  ),
-                ),
-              ),
-              if (isLoading)
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(32),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppStyle.text,
-                        strokeWidth: 2,
+                    SliverToBoxAdapter(
+                      child: TabsWidget(
+                        onTabPressed: (_) => _refreshGreeting(),
                       ),
                     ),
-                  ),
-                )
-              else if (errorMessage != null)
-                SliverToBoxAdapter(
-                  child: _buildState(
-                    title: 'The shelf couldn’t load.',
-                    message: errorMessage!,
-                    retry: true,
-                  ),
-                )
-              else if (subjects.isNotEmpty)
-                HomeSubjectList(
-                  subjects: subjects,
-                  onSubjectTap: _navigateToSubjectDetails,
-                )
-              else
-                SliverToBoxAdapter(
-                  child: _buildState(
-                    title: 'A fresh shelf.',
-                    message:
-                        'No subjects available yet. Try another year or check back later.',
-                  ),
-                ),
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(24, 28, 24, 32),
-                  child: Text(
-                    'ONE CHAPTER AT A TIME.',
-                    style: AppStyle.eyebrow,
-                  ),
+                    SliverToBoxAdapter(
+                      child: _SectionHeading(
+                        title: 'Your subjects',
+                        eyebrow: 'THE STUDY SHELF',
+                        action: TextButton.icon(
+                          onPressed: _chooseYear,
+                          icon: const Icon(Icons.tune_rounded, size: 16),
+                          label: const Text('Change year'),
+                          style: TextButton.styleFrom(
+                            foregroundColor: AppStyle.accent,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            textStyle: const TextStyle(
+                              fontFamily: 'ProductSans',
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (isLoading)
+                      const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.all(32),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: AppStyle.text,
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        ),
+                      )
+                    else if (errorMessage != null)
+                      SliverToBoxAdapter(
+                        child: _buildState(
+                          title: 'The shelf couldn’t load.',
+                          message: errorMessage!,
+                          retry: true,
+                        ),
+                      )
+                    else if (subjects.isNotEmpty)
+                      HomeSubjectList(
+                        subjects: subjects,
+                        onSubjectTap: _navigateToSubjectDetails,
+                      )
+                    else
+                      SliverToBoxAdapter(
+                        child: _buildState(
+                          title: 'A fresh shelf.',
+                          message:
+                              'No subjects available yet. Try another year or check back later.',
+                        ),
+                      ),
+                    const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(24, 28, 24, 32),
+                        child: Text(
+                          'ONE CHAPTER AT A TIME.',
+                          style: AppStyle.eyebrow,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

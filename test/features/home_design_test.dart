@@ -51,39 +51,52 @@ void main() {
                   selectedIndex: 0,
                   onSelected: (index) => selected = index,
                 ),
-                body: CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: HomeHeader(
-                        isOnlineNotifier: online,
-                        userName: 'Alexandrapriyadarshini',
-                        currentSentence:
-                            'One small step today can change your whole semester.',
-                        onMenu: () => menuOpened = true,
-                      ),
+                body: Column(
+                  children: [
+                    HomeAppBar(
+                      isOnlineNotifier: online,
+                      onMenu: () => menuOpened = true,
                     ),
-                    const SliverToBoxAdapter(
-                      child: StoriesWidget(
-                        stories: [
-                          {
-                            'type': 'text',
-                            'text':
-                                'A fresh update from campus, with everything you need to know this week.',
-                          },
-                          {'type': 'text', 'text': 'Something worth sharing.'},
+                    Expanded(
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: HomeHeader(
+                              userName: 'Alexandrapriyadarshini',
+                              currentSentence:
+                                  'One small step today can change your whole semester.',
+                            ),
+                          ),
+                          const SliverToBoxAdapter(
+                            child: StoriesWidget(
+                              stories: [
+                                {
+                                  'type': 'text',
+                                  'text':
+                                      'A fresh update from campus, with everything you need to know this week.',
+                                },
+                                {
+                                  'type': 'text',
+                                  'text': 'Something worth sharing.',
+                                },
+                              ],
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: TabsWidget(onTabPressed: (_) {}),
+                          ),
+                          HomeSubjectList(
+                            subjects: [
+                              Subject(
+                                name:
+                                    'Introduction to Electrical and Electronics Engineering',
+                                items: [],
+                              ),
+                            ],
+                            onSubjectTap: (_, __) {},
+                          ),
                         ],
                       ),
-                    ),
-                    SliverToBoxAdapter(child: TabsWidget(onTabPressed: (_) {})),
-                    HomeSubjectList(
-                      subjects: [
-                        Subject(
-                          name:
-                              'Introduction to Electrical and Electronics Engineering',
-                          items: [],
-                        ),
-                      ],
-                      onSubjectTap: (_, __) {},
                     ),
                   ],
                 ),
@@ -113,6 +126,10 @@ void main() {
         expect(painter.computeLineMetrics().length, lessThanOrEqualTo(2));
         painter.dispose();
         expect(tester.takeException(), isNull);
+        final menuPosition = tester.getTopLeft(find.byTooltip('Open menu'));
+        await tester.drag(find.byType(CustomScrollView), const Offset(0, -400));
+        await tester.pumpAndSettle();
+        expect(tester.getTopLeft(find.byTooltip('Open menu')), menuPosition);
         await tester.tap(find.byTooltip('Open menu'));
         expect(menuOpened, isTrue);
         online.value = false;
@@ -185,11 +202,9 @@ void main() {
           ),
           child: Scaffold(
             body: HomeHeader(
-              isOnlineNotifier: online,
               userName: 'Student',
               currentSentence: 'Another day, another chance!',
               resourceCount: 7,
-              onMenu: () {},
             ),
           ),
         ),
@@ -235,11 +250,9 @@ void main() {
                   () => sentence = getRandomSentence(previous: sentence),
                 );
                 return HomeHeader(
-                  isOnlineNotifier: online,
                   userName: 'Student',
                   currentSentence: sentence,
                   resourceCount: 7,
-                  onMenu: () {},
                 );
               },
             ),
@@ -283,11 +296,9 @@ void main() {
                         : 'You’ve got this.';
                   });
                   return HomeHeader(
-                    isOnlineNotifier: online,
                     userName: 'Student',
                     currentSentence: sentence,
                     resourceCount: 7,
-                    onMenu: () {},
                   );
                 },
               ),
