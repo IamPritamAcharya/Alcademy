@@ -14,7 +14,8 @@ class ErpDataException implements Exception {
   const ErpDataException(this.reason, this.message);
 }
 
-/// The browser owns cookies: every load tries the timetable before any login.
+/// Enter through the same profile page as ERP to establish the student session.
+/// Existing cookies are reused; credentials are read only after a login redirect.
 class ErpDataFlow<T> {
   final Uri target;
   final String resource;
@@ -27,6 +28,8 @@ class ErpDataFlow<T> {
   final void Function(ErpDataException) onError;
   final void Function(String) onStatus;
   bool _attemptedLogin = false;
+  bool _loginInProgress = false;
+  bool _loginNavigationStarted = false;
   bool _returnedToTimetable = false;
   bool _finished = false;
   int _visits = 0;
@@ -52,7 +55,12 @@ class ErpDataFlow<T> {
         uri.port == 443;
   }
 
-  Future<void> start() async => navigate(target);
+  Future<void> start() async => navigate(ErpAutoLogin.profileUri);
+
+  void pageStarted(String url) {
+    if (_finished) return;
+    if (_attemptedLogin) _loginNavigationStarted = true;
+  }
 
   Future<void> pageFinished(String url) async {
     if (_finished) return;
@@ -64,6 +72,11 @@ class ErpDataFlow<T> {
             'ERP redirected to an unexpected website.',
           ),
         );
+        return;
+      }
+      if (ErpAutoLogin.isLoginPage(url) &&
+          _attemptedLogin &&
+          (_loginInProgress || !_loginNavigationStarted)) {
         return;
       }
       if (++_visits > 6) {
@@ -83,6 +96,9 @@ class ErpDataFlow<T> {
         onLoaded(timetable);
       } else if (ErpAutoLogin.isLoginPage(url)) {
         if (_attemptedLogin) {
+          // WebViews can finish the same document more than once while the
+          // credential read or form submission is still in flight.
+          if (!_loginNavigationStarted) return;
           fail(
             const ErpDataException(
               ErpDataFailure.authentication,
@@ -92,6 +108,7 @@ class ErpDataFlow<T> {
           return;
         }
         _attemptedLogin = true;
+        _loginInProgress = true;
         final credentials = await readCredentials();
         if (_finished) return;
         if (credentials == null) {
@@ -104,7 +121,9 @@ class ErpDataFlow<T> {
           return;
         }
         onStatus('Signing into ERP…');
-        if (!await signIn(credentials)) {
+        final submitted = await signIn(credentials);
+        _loginInProgress = false;
+        if (!submitted) {
           fail(
             const ErpDataException(
               ErpDataFailure.authentication,
@@ -113,8 +132,8 @@ class ErpDataFlow<T> {
           );
         }
       } else if (uri.path.toLowerCase() ==
-              '/academic/student-cp/students_profile.aspx' &&
-          !_returnedToTimetable) {
+          ErpAutoLogin.profileUri.path.toLowerCase()) {
+        if (_returnedToTimetable) return;
         _returnedToTimetable = true;
         onStatus('Reading your $resource…');
         await navigate(target);

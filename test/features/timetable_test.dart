@@ -235,8 +235,9 @@ void main() {
         onStatus: (_) {},
       );
       await flow.start();
+      await flow.pageFinished(ErpAutoLogin.profileUri.toString());
       await flow.pageFinished(ErpTimetableFlow.timetableUri.toString());
-      expect(urls, [ErpTimetableFlow.timetableUri]);
+      expect(urls, [ErpAutoLogin.profileUri, ErpTimetableFlow.timetableUri]);
       expect(loaded, isNotNull);
       expect(reads, 0);
       expect(signIns, 0);
@@ -271,10 +272,7 @@ void main() {
       );
       await flow.pageFinished(ErpTimetableFlow.timetableUri.toString());
       expect(signIns, 1);
-      expect(urls, [
-        ErpTimetableFlow.timetableUri,
-        ErpTimetableFlow.timetableUri,
-      ]);
+      expect(urls, [ErpAutoLogin.profileUri, ErpTimetableFlow.timetableUri]);
       expect(loaded, isNotNull);
     },
   );
@@ -296,6 +294,7 @@ void main() {
       onStatus: (_) {},
     );
     await flow.pageFinished(ErpAutoLogin.loginUri.toString());
+    flow.pageStarted(ErpAutoLogin.loginUri.toString());
     await flow.pageFinished(ErpAutoLogin.loginUri.toString());
     await flow.pageFinished(ErpAutoLogin.loginUri.toString());
     expect(signIns, 1);

@@ -1,5 +1,6 @@
-import 'package:port/shared/widgets/editorial_list_row.dart';
-import 'package:port/shared/widgets/collection_intro.dart';
+import '../models/note_year.dart';
+import 'notes_shelf_picker.dart';
+import '../../profile/data/profile_repository.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:port/shared/widgets/app_bar_divider.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,8 @@ class NotesSelector extends StatefulWidget {
 class _NotesSelectorState extends State<NotesSelector> {
   final _notes = NotesRepository();
 
-  List<Map<String, String>> yearLinks = [];
+  List<NoteYear> yearLinks = [];
+  String? preferredBranch;
   String? selectedYearUrl;
   bool isLoading = true;
   bool isDataFetched = false;
@@ -27,10 +29,12 @@ class _NotesSelectorState extends State<NotesSelector> {
   void initState() {
     super.initState();
     _loadCachedData();
-    _loadSelectedYear();
   }
 
-  Future<void> _loadCachedData() => _fetchYearLinks();
+  Future<void> _loadCachedData() async {
+    await _loadSelectedYear();
+    if (mounted) await _fetchYearLinks();
+  }
 
   Future<void> _fetchYearLinks({bool forceRefresh = false}) async {
     if (isDataFetched && !forceRefresh) return;
@@ -38,7 +42,7 @@ class _NotesSelectorState extends State<NotesSelector> {
       final years = await _notes.getYears(forceRefresh: forceRefresh);
       if (!mounted) return;
       setState(() {
-        yearLinks = years.map((year) => year.toJson()).toList();
+        yearLinks = years;
         isDataFetched = true;
       });
     } catch (e) {
@@ -73,9 +77,13 @@ class _NotesSelectorState extends State<NotesSelector> {
 
   Future<void> _loadSelectedYear() async {
     final url = await _notes.getSelectedYear();
+    final branch = await ProfileRepository.getUserBranch();
     if (!mounted) return;
     if (mounted) {
-      setState(() => selectedYearUrl = url);
+      setState(() {
+        selectedYearUrl = url;
+        preferredBranch = branch;
+      });
     }
   }
 
@@ -116,48 +124,13 @@ class _NotesSelectorState extends State<NotesSelector> {
                 backgroundColor: AppStyle.background,
               ),
             )
-          : RefreshIndicator(
-              backgroundColor: AppStyle.background,
-              color: AppStyle.accent,
+          : NotesShelfPicker(
+              key: ValueKey(preferredBranch),
+              years: yearLinks,
+              preferredBranch: preferredBranch,
+              selectedUrl: selectedYearUrl,
               onRefresh: _refreshYearLinks,
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
-                itemCount: yearLinks.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return const CollectionIntro(
-                      title: 'Choose your year.',
-                      eyebrow: 'THE STUDY SHELF',
-                      detail: 'Find the resources for your current year.',
-                    );
-                  }
-
-                  final year = yearLinks[index - 1];
-                  final isSelected = selectedYearUrl == year['url'];
-
-                  return Semantics(
-                    selected: isSelected,
-                    child: EditorialListRow(
-                      number: index,
-                      title: year['name']!,
-                      category: isSelected ? 'Selected year' : 'Study year',
-                      accent: isSelected ? AppStyle.accent : AppStyle.muted,
-                      trailing: Padding(
-                        padding: const EdgeInsets.only(top: 18),
-                        child: Icon(
-                          isSelected
-                              ? Icons.radio_button_checked
-                              : Icons.radio_button_unchecked,
-                          color: isSelected ? AppStyle.accent : AppStyle.muted,
-                          size: 22,
-                        ),
-                      ),
-                      onTap: () => _saveSelectedYear(year['url']!),
-                    ),
-                  );
-                },
-              ),
+              onSelected: (year) => _saveSelectedYear(year.url),
             ),
     );
   }

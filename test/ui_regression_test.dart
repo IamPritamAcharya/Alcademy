@@ -31,7 +31,15 @@ void main() {
         'userBranch': 'Computer Science',
         'cachedYearLinks': jsonEncode([
           {'name': 'First Year', 'url': 'https://example.com/year1'},
-          {'name': 'Second Year', 'url': 'https://example.com/year2'},
+          if (screen.key == 'notes') ...[
+            for (final semester in [3, 4, 5, 6, 7])
+              {
+                'name': 'CSE Sem $semester',
+                'url': 'https://example.com/cse$semester',
+              },
+            {'name': 'MME Sem 3', 'url': 'https://example.com/mme3'},
+          ] else
+            {'name': 'Second Year', 'url': 'https://example.com/year2'},
         ]),
         'selectedYearUrl': 'https://example.com/year1',
         'expenses': '[]',

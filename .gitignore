@@ -63,3 +63,6 @@ app.*.map.json
 /ios/Flutter/ephemeral/
 **/xcuserdata/
 /ios/Runner/GeneratedPluginRegistrant.*
+
+# Temporary notes awaiting review and upload
+/temp notes/

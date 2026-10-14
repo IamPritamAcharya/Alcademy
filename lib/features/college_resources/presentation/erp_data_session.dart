@@ -57,10 +57,12 @@ class _ErpDataSessionState<T> extends State<ErpDataSession<T>> {
         readCredentials: const ErpCredentialsRepository().read,
         navigate: controller.loadRequest,
         signIn: (credentials) async {
-          final value = await controller.runJavaScriptReturningResult(
-            ErpAutoLogin.script(credentials),
+          final submitted = await ErpAutoLogin.submitWhenReady(
+            credentials: credentials,
+            evaluate: controller.runJavaScriptReturningResult,
+            isActive: () => mounted && _flow?.active == true,
           );
-          return value == 'submitted' || value == '"submitted"';
+          return submitted;
         },
         readMarkup: () async {
           final deadline = DateTime.now().add(widget.timeout);
@@ -94,6 +96,7 @@ class _ErpDataSessionState<T> extends State<ErpDataSession<T>> {
       );
       _flow = flow;
       await controller.setJavaScriptMode(JavaScriptMode.unrestricted);
+      await controller.setUserAgent(ErpAutoLogin.mobileUserAgent);
       await controller.setNavigationDelegate(
         NavigationDelegate(
           onNavigationRequest: (request) {
@@ -108,7 +111,13 @@ class _ErpDataSessionState<T> extends State<ErpDataSession<T>> {
             );
             return NavigationDecision.prevent;
           },
-          onPageFinished: flow.pageFinished,
+          onPageStarted: flow.pageStarted,
+          onPageFinished: (url) async {
+            // Ignore completion of an old document after a redirect has begun.
+            final current = await controller.currentUrl();
+            if (!mounted || !flow.active || current != url) return;
+            await flow.pageFinished(url);
+          },
           onWebResourceError: (error) {
             if (error.isForMainFrame == true) {
               flow.fail(
@@ -168,7 +177,9 @@ class _ErpDataSessionState<T> extends State<ErpDataSession<T>> {
       : ExcludeSemantics(
           child: IgnorePointer(
             child: Opacity(
-              opacity: 0,
+              // A zero-opacity platform view can be omitted from composition.
+              // Keep the 1px browser mounted while it executes the login flow.
+              opacity: 0.01,
               child: SizedBox(
                 width: 1,
                 height: 1,

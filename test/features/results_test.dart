@@ -218,6 +218,9 @@ void main() {
       );
       final active = flow();
       await active.start();
+      await active.pageFinished(
+        'https://igit.icrp.in/academic/Student-cp/Students_profile.aspx',
+      );
       await active.pageFinished(ResultsSource.uri.toString());
       expect(reads, 0);
       expect(logins, 0);

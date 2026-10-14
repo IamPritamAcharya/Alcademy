@@ -3,7 +3,31 @@ import 'dart:convert';
 import '../data/erp_credentials_repository.dart';
 
 abstract final class ErpAutoLogin {
+  static const mobileUserAgent =
+      'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 '
+      '(KHTML, like Gecko) Chrome/91.0.4472.124 Mobile Safari/537.36';
+  static final profileUri = Uri.parse(
+    'https://igit.icrp.in/academic/Student-cp/Students_profile.aspx',
+  );
   static final loginUri = Uri.parse('https://igit.icrp.in/academic/Index.aspx');
+
+  /// Native navigation can finish before the JavaScript document is ready.
+  /// The script checks the live origin and form on every attempt.
+  static Future<bool> submitWhenReady({
+    required ErpCredentials credentials,
+    required Future<Object> Function(String) evaluate,
+    required bool Function() isActive,
+    Future<void> Function(Duration)? wait,
+  }) async {
+    final pause = wait ?? Future<void>.delayed;
+    for (var attempt = 0; attempt < 48 && isActive(); attempt++) {
+      final value = await evaluate(script(credentials));
+      if (!isActive()) return false;
+      if (value == 'submitted' || value == '"submitted"') return true;
+      await pause(const Duration(milliseconds: 250));
+    }
+    return false;
+  }
 
   static bool isLoginPage(String url) {
     final uri = Uri.tryParse(url);

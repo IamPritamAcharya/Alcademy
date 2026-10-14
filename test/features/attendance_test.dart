@@ -200,8 +200,16 @@ void main() {
         onStatus: (_) {},
       );
       await flow.start();
+      await flow.pageFinished(
+        'https://igit.icrp.in/academic/Student-cp/Students_profile.aspx',
+      );
       await flow.pageFinished(AttendanceSource.uri.toString());
-      expect(visits, [AttendanceSource.uri]);
+      expect(visits, [
+        Uri.parse(
+          'https://igit.icrp.in/academic/Student-cp/Students_profile.aspx',
+        ),
+        AttendanceSource.uri,
+      ]);
       expect(result!.subjects.length, 2);
     },
   );

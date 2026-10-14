@@ -1,3 +1,5 @@
+import '../../notes/models/note_year.dart';
+import '../../notes/presentation/notes_shelf_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:port/shared/theme/app_style.dart';
 import 'package:port/features/onboarding/data/onboarding_repository.dart';
@@ -204,7 +206,7 @@ class _ProfileSetupFormState extends State<ProfileSetupForm> {
                         'Mechanical',
                         'Civil',
                         'Chemical',
-                        'Metallurgical',
+                        'Metallurgy & Materials Engineering',
                         'Production',
                       ],
                       onChanged: (value) =>
@@ -251,19 +253,50 @@ class _ProfileSetupFormState extends State<ProfileSetupForm> {
                         ],
                       )
                     else
-                      DropdownWidget(
-                        label: 'Choose your notes',
-                        value: _availableNotes
-                            .where((note) => note['url'] == _selectedNote)
-                            .firstOrNull?['name'],
-                        items: _availableNotes
-                            .map((note) => note['name']!)
-                            .toList(),
-                        onChanged: (value) => setState(
-                          () => _selectedNote = _availableNotes.firstWhere(
-                            (note) => note['name'] == value,
-                          )['url'],
+                      OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 18,
+                            vertical: 18,
+                          ),
+                          foregroundColor: AppStyle.text,
+                          side: const BorderSide(color: AppStyle.rule),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                         ),
+                        icon: const Icon(Icons.auto_stories_outlined, size: 21),
+                        label: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                _availableNotes
+                                        .where(
+                                          (note) =>
+                                              note['url'] == _selectedNote,
+                                        )
+                                        .firstOrNull?['name'] ??
+                                    'Choose your notes',
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            const Icon(Icons.expand_more_rounded, size: 21),
+                          ],
+                        ),
+                        onPressed: () async {
+                          FocusScope.of(context).unfocus();
+                          final year = await showNotesShelfPicker(
+                            context,
+                            years: _availableNotes
+                                .map((note) => NoteYear.fromJson(note))
+                                .toList(),
+                            preferredBranch: _selectedBranch,
+                            selectedUrl: _selectedNote,
+                          );
+                          if (!mounted || year == null) return;
+                          setState(() => _selectedNote = year.url);
+                        },
                       ),
                     const SizedBox(height: 30),
                   ],

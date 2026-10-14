@@ -25,7 +25,7 @@ void main() {
   );
 
   Future<void> tapVisible(WidgetTester tester, String label) async {
-    final target = label.startsWith('Choose your')
+    final target = label == 'Choose your branch'
         ? find.ancestor(
             of: find.text(label),
             matching: find.byType(DropdownWidget),

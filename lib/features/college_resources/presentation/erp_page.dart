@@ -33,7 +33,7 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
       ..setUserAgent(
         isDesktopView
             ? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-            : 'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Mobile Safari/537.36',
+            : ErpAutoLogin.mobileUserAgent,
       )
       ..setNavigationDelegate(
         NavigationDelegate(
@@ -120,11 +120,7 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
 
   Future<void> _loadInitialPage() async {
     try {
-      await _webViewController.loadRequest(
-        Uri.parse(
-          'https://igit.icrp.in/academic/Student-cp/Students_profile.aspx',
-        ),
-      );
+      await _webViewController.loadRequest(ErpAutoLogin.profileUri);
     } catch (e) {
       await _webViewController.loadRequest(
         Uri.parse('https://igit.icrp.in/academic/'),
@@ -149,7 +145,7 @@ class _AcademicWebViewPageState extends State<AcademicWebViewPage> {
     await _webViewController.setUserAgent(
       isDesktopView
           ? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-          : 'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Mobile Safari/537.36',
+          : ErpAutoLogin.mobileUserAgent,
     );
 
     // viewport changes
