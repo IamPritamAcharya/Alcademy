@@ -2,13 +2,13 @@
   "storyUrls": [
     {
       "type": "image",
-      "title": "Alcademy",
-      "url": "https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/assets/applogo.png"
+      "title": "Every day, something new",
+      "url": "https://raw.githubusercontent.com/IamPritamAcharya/Alcademy/main/assets/stories/beyond-campus-guide.png"
     },
     {
       "type": "text",
-      "title": "Thank you!",
-      "text": "Thanks for using Alcademy.\n\nWe’re glad to be a small part of your college journey."
+      "title": "A note from the developer",
+      "text": "Thank you for using Alcademy.\n\nIf this app has made your college life a little easier, even just once, I’m truly glad. That’s why I built it.\n\nWishing you good memories, great friendships, and a journey you’ll look back on fondly.\n\nPritam"
     }
   ],
   "contributors": [

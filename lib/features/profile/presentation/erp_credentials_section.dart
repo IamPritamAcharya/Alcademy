@@ -137,7 +137,7 @@ class _ErpCredentialsSectionState extends State<ErpCredentialsSection> {
           ),
           const SizedBox(height: 12),
           const Text(
-            'Used only for automatic login to the college ERP. Your username and password are stored securely in encrypted storage on this device. They are sent only to the ERP when signing in.',
+            'Used only for automatic login to the college ERP. Your username and password stay in encrypted storage on this device and are sent only to the college ERP when signing in. Alcademy does not collect your ERP credentials or personal ERP data, or store them in the cloud. Fetched ERP data is cached locally on your device.',
             style: TextStyle(color: AppStyle.muted, fontSize: 14, height: 1.6),
           ),
           const SizedBox(height: 24),
