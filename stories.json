@@ -1,132 +1,31 @@
 {
   "version": 2,
-  "generatedAt": "2026-10-28T08:22:30.475698+00:00",
-  "expiresAt": "2026-10-31T08:22:30.475698+00:00",
+  "generatedAt": "2026-10-29T08:23:55.077173+00:00",
+  "expiresAt": "2026-11-01T08:23:55.077173+00:00",
   "stories": [
     {
-      "id": "0e38287806c9edced85f",
-      "kind": "news",
-      "type": "news",
-      "title": "Thane man gets 20 years’ jail for sexually assaulting 5-year-old girl",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/thane-man-gets-20-years-jail-for-sexually-assaulting-5-year-old-girl-101793169814324.html",
-      "description": "The court ordered ₹6,000 in fines to be paid to the victim and directed the Thane District Legal Services Authority to award her additional compensation.",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/28/1600x900/logo/PTI01-16-2025-000023B-0_1737015306746_1793170168174_uZJT_6ed283b0-652a-4e42-80c2-a79c4998c345_XjiE.jpg"
-    },
-    {
-      "id": "ade1d5db38a82996d453",
-      "kind": "news",
-      "type": "news",
-      "title": "Sea waves surge onto roads, trees uprooted, heavy rains trigger waterlogging amid Cyclone Arnab landfall process | Visuals",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/sea-waves-surge-onto-roads-trees-uprooted-heavy-rains-trigger-waterlogging-amid-cyclone-arnab-landfall-process-videos-101793160780846.html",
-      "description": "In Konaseema district, several trees were uprooted, disrupting movement. In Chennai, giant sea waves surged onto roads and into residential areas in Ennore.",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/28/1600x900/logo/cyclone_arnab_visuals_GIF_1793168308613_gml8_1793168314512_tN7O_a1aed355-18a8-4b0e-af66-cef054cce999_CTA6.gif"
-    },
-    {
-      "id": "c36412b8c29714da800e",
-      "kind": "news",
-      "type": "news",
-      "title": "Rajnath Singh, US War Secretary Hegseth review progress of 10-year defence pact",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/rajnath-singh-us-war-secretary-hegseth-review-progress-of-10-year-defence-pact-101793170070945.html",
-      "description": "Rajnath Singh, US War Secretary Hegseth review progress of 10-year defence pact",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/08/06/1600x900/logo/Untitled_design_1754465014585_1754465103581.png"
-    },
-    {
-      "id": "hn-50255298",
+      "id": "hn-50281826",
       "kind": "news",
       "type": "news",
       "category": "tech",
-      "title": "The Mythical Man-Month in the Age of AI",
-      "source": "j11g.com",
-      "sourceUrl": "https://j11g.com/the-mythical-man-month-in-the-age-of-ai",
-      "description": "An update to Brooks's Law in the age of AI.",
-      "discussionUrl": "https://news.ycombinator.com/item?id=50255298",
-      "imageUrl": "https://j11g.com/content/images/cern-resized.jpg"
+      "title": "AI execs may be too out of touch to build for the general public",
+      "source": "techcrunch.com",
+      "sourceUrl": "https://techcrunch.com/2026/10/28/ai-execs-may-be-too-out-of-touch-to-build-for-the-general-public/",
+      "description": "Tech leaders are flaunting how out of touch they are when they brag about using AI to connect with their families.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50281826",
+      "imageUrl": "https://techcrunch.com/wp-content/uploads/2024/03/GettyImages-1172241499.jpg?resize=1200,728"
     },
     {
-      "id": "84da12fafc0ec84a06ce",
-      "kind": "news",
-      "type": "news",
-      "title": "Keralam govt not discontinuing all KIIFB work: CM Satheesan",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/keralam-govt-not-discontinuing-all-kiifb-work-cm-satheesan-101793173770517.html",
-      "description": "Keralam govt not discontinuing all KIIFB work: CM Satheesan",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/06/30/1600x900/logo/ht-generic_india1_1751287243850_1751287256749.jpg"
-    },
-    {
-      "id": "31d3f19f559cbd0df7d6",
-      "kind": "news",
-      "type": "news",
-      "title": "TDP-led alliance win majority of unanimously-elected seats in rural body polls in AP",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/tdpled-alliance-win-majority-of-unanimously-elected-seats-in-rural-body-polls-in-ap-101793165054047.html",
-      "description": "The opposition YSR Congress Party (YSRCP) managed to secure just one ZPTC seat without a contest in the Pyapili ZPTC constituency in the Dhone assembly constituency of Nandyal district",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/28/1600x900/logo/Tuesday-was-the-final-day-for-withdrawal-of-nomina_1793165046439_HvTw.jpg"
-    },
-    {
-      "id": "hn-50257326",
+      "id": "hn-50275626",
       "kind": "news",
       "type": "news",
       "category": "tech",
-      "title": "Wikipedia's Cleanup of AI-Generated Content",
-      "source": "spectrum.ieee.org",
-      "sourceUrl": "https://spectrum.ieee.org/wikipedia-wikiproject-ai-writing-cleanup",
-      "description": "AI-generated text is harder to spot, but that hasn’t deterred them",
-      "discussionUrl": "https://news.ycombinator.com/item?id=50257326",
-      "imageUrl": "https://spectrum.ieee.org/media-library/surreal-collage-of-a-womans-face-with-geometric-shapes-pencil-and-wikipedia-globe.png?id=68486571&width=1200&height=600&coordinates=0%2C167%2C0%2C168"
-    },
-    {
-      "id": "hn-50253529",
-      "kind": "news",
-      "type": "news",
-      "category": "tech",
-      "title": "16-bit Windows (Windows 1.x, 2.x, 3.0, 3.1, etc.) on 64-bit Windows",
-      "source": "github.com",
-      "sourceUrl": "https://github.com/otya128/winevdm",
-      "description": "16-bit Windows (Windows 1.x, 2.x, 3.0, 3.1, etc.) on 64-bit Windows - otya128/winevdm",
-      "discussionUrl": "https://news.ycombinator.com/item?id=50253529",
-      "imageUrl": "https://opengraph.githubassets.com/8936b12325aac6f78bf4c82acc29c7ab282545eb1af45aef9db254200f3f49b4/otya128/winevdm"
-    },
-    {
-      "id": "62826dac26983fc6c3cd",
-      "kind": "news",
-      "type": "news",
-      "title": "Naga group to stage rally against SoO in Manipur on October 31",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/naga-group-to-stage-rally-against-soo-in-manipur-on-october-31-101793128267222.html",
-      "description": "Amid escalating tension with Kukis, United Naga Council(UNC) joined hands with Meitei groups and agreed to hold a rally across all Naga districts on October 31 alongside a similar rally/sit-in the valley areas",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/06/30/1600x900/ht-generic_india3_1751287297962_1751287304722.jpg"
-    },
-    {
-      "id": "hn-50261589",
-      "kind": "news",
-      "type": "news",
-      "category": "tech",
-      "title": "Amazon Is Gutting Its AI Division After Sustained Failure",
-      "source": "futurism.com",
-      "sourceUrl": "https://futurism.com/artificial-intelligence/amazon-ai-division-failure-nova",
-      "description": "Amazon is gutting its AI labs and funneling its resources into a new project headed by a noted AI robotics guru.",
-      "discussionUrl": "https://news.ycombinator.com/item?id=50261589",
-      "imageUrl": "https://futurism.com/wp-content/uploads/2026/07/amazon-gutting-ai-division-failure.jpg?w=1200"
-    },
-    {
-      "id": "e99c3d590b85fb55919c",
-      "kind": "news",
-      "type": "news",
-      "title": "SC terms cyber crime as digital dacoity, refuses consolidation of cases",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/sc-terms-cyber-crime-as-digital-dacoity-refuses-consolidation-of-cases-101793170969859.html",
-      "description": "SC terms cyber crime as digital dacoity, refuses consolidation of cases",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/06/30/1600x900/logo/ht-generic_india1_1751287243850_1751287256749.jpg"
+      "title": "Dayjob: Tax – evaluating AI agents on 50 professional tax assignments",
+      "source": "surgehq.ai",
+      "sourceUrl": "https://surgehq.ai/blog/dayjob-tax",
+      "description": "DAYJOB: Tax evaluates AI agents across 50 realistic tax environments, testing their ability to navigate messy records, exercise professional judgment, and deliver reliable tax work.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50275626",
+      "imageUrl": "https://cdn.prod.website-files.com/68dcd2ceb173c46fa029931c/6ae0beffc0ef7d2c805991ec_6ae0bef7bc59db92222e060b_dayjob-tax-cover-v3.png"
     },
     {
       "id": "hn-50268380",
@@ -141,39 +40,50 @@
       "imageUrl": "https://lexifina.com/social-preview-v3.png?v=20261018"
     },
     {
-      "id": "1438dbb1e591482bb423",
+      "id": "c06b7a6dab5eb0519f14",
       "kind": "news",
       "type": "news",
-      "title": "Rajnath Singh to push for deeper defence ties at ASEAN defence ministers' meet in Philippines",
+      "title": "Cyclone Arnab: Andhra CM orders fast-track relief, power restoration, early compensation",
       "category": "india",
       "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/rajnath-singh-to-push-for-deeper-defence-ties-at-asean-defence-ministers-meet-in-philippines-101793154758101.html",
-      "description": "The visit will also focus on advancing a free, open and inclusive order in the vast Indo-Pacific region, the officials said.",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/28/1600x900/logo/ANI-20261027516-0_1793155039246_8Dfv_1793155046573_udFv_ea03da01-40b4-437a-8c26-a12dee11569b_iwpn.jpg"
+      "sourceUrl": "https://www.hindustantimes.com/india-news/cyclone-arnab-andhra-cm-orders-fast-track-relief-power-restoration-early-compensation-101793257366106.html",
+      "description": "Cyclone Arnab: Andhra CM orders fast-track relief, power restoration, early compensation",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/06/30/1600x900/logo/ht-generic_india3_1751287297962_1751287304722.jpg"
     },
     {
-      "id": "hn-50260814",
+      "id": "f908df941637870d5323",
+      "kind": "news",
+      "type": "news",
+      "title": "'Secretly happy about PDA's victory': Akhilesh Yadav's dig at UP deputy CM Keshav Maurya after MLC polls",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/akhilesh-yadav-dig-up-deputy-cm-up-mlc-election-results-keshav-prasad-maurya-secretly-happy-about-pda-victory-101793237096963.html",
+      "description": "The BJP won six seats in the elections to 11 UP Legislative Council graduate and teachers’ constituency seats, while the Samajwadi Party secured five seats.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/29/1600x900/logo/sp_bjp_1793239580523_io5c_1793239594330_ESDg_c4f1a251-3604-4a36-a394-df4140921714_Wpc2.jpg"
+    },
+    {
+      "id": "hn-50268478",
       "kind": "news",
       "type": "news",
       "category": "tech",
-      "title": "Anthropic trained Claude on illegally obtained Stanford professors' books",
-      "source": "stanforddaily.com",
-      "sourceUrl": "https://stanforddaily.com/2026/10/27/professors-books-pirated-to-train-claude/",
-      "description": "The AI company pirated at least 10 Stanford academics’ work in a $1.5 billion copyright settlement.",
-      "discussionUrl": "https://news.ycombinator.com/item?id=50260814",
-      "imageUrl": "https://stanforddaily.com/wp-content/uploads/2026/10/Green-Library.png"
+      "title": "Executable Archaeology: Reanimating the Heuristic Compiler (1961) and KBEmacs (1984)",
+      "source": "arxiv.org",
+      "sourceUrl": "https://arxiv.org/abs/2610.36341",
+      "description": "Abstract page for arXiv paper 2610.36341: Executable Archaeology of Programs That Model Programming: Reanimating the Heuristic Compiler (1961) and KBEmacs (1984)",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50268478",
+      "imageUrl": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
     },
     {
-      "id": "hn-50265393",
+      "id": "hn-50243060",
       "kind": "news",
       "type": "news",
       "category": "tech",
-      "title": "Code-execution flaw in UEFI firmware threatens most servers on planet Earth",
-      "source": "arstechnica.com",
-      "sourceUrl": "https://arstechnica.com/security/2026/10/code-execution-flaw-in-uefi-firmware-threatens-most-servers-on-planet-earth/",
-      "description": "Critical flaw in EDK2 allows attackers to execute code early in the boot process.",
-      "discussionUrl": "https://news.ycombinator.com/item?id=50265393",
-      "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2024/04/malware.jpg"
+      "title": "The Grid, a factory-scale robot in Massachusetts that builds PCBs on demand",
+      "source": "circuithub.com",
+      "sourceUrl": "https://www.circuithub.com/post/unveiling-the-grid",
+      "description": "A factory-scale robot in Massachusetts that builds circuit boards on demand, in half the time of a typical Shenzhen quick-turn shop.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50243060",
+      "imageUrl": "https://cdn.prod.website-files.com/5e4f3506e94717243b3bdc56/6adf37db9c9a7b067b1675e7_6adf37a9ebc649853e42585e_the-grid-launch-og.jpeg"
     },
     {
       "id": "hn-50264853",
@@ -186,6 +96,96 @@
       "description": "A free, open-source AI assistant and survival library that runs on your own computer and works with no internet.",
       "discussionUrl": "https://news.ycombinator.com/item?id=50264853",
       "imageUrl": "https://www.brangus.io/survival-llm/social-card.png"
+    },
+    {
+      "id": "9c53a59f314deab49c1e",
+      "kind": "news",
+      "type": "news",
+      "title": "North India getting hotter, drier, South wetter: A study of 70-year climate trends uncovers worrying climate shift",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/north-india-getting-hotter-drier-south-wetter-a-study-of-70-year-climate-trends-uncovers-worrying-climate-shift-101793248500727.html",
+      "description": "Maharashtra's Marathwada and west Vidarbha, already ravaged by drought and farmer suicides, have moved into a hotter, drier climate zone, the IMD study showed.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/29/1600x900/logo/ANI-20260908072-0_1793250902166_SlvS_1793250919249_ITre_843aba88-7d10-4958-a928-57d7740e3d4c_Pqev.jpg"
+    },
+    {
+      "id": "c43ea493181cdd927014",
+      "kind": "news",
+      "type": "news",
+      "title": "HT Morning Brief Oct 29: JD Vance reaches out to Iran, security beefed up in Delhi ahead of INDIA bloc rally",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/ht-morning-brief-oct-29-jd-vance-reaches-out-to-iran-security-beefed-up-in-delhi-ahead-of-india-bloc-rally-101793244430743.html",
+      "description": "Today’s big headlines in 5 minutes: Your quick brief on national and global events, entertainment and sports.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/29/1600x900/logo/Ramlila-Maidan-Congress-4_1793245171529_44uQ_1793245184679_aJCV_97d7169a-648d-41ce-b2d5-a26f597b20e2_hMzz.jpg"
+    },
+    {
+      "id": "hn-50275128",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Nvidia Nemotron 3.5 Transcribe: open ASR for 40 languages",
+      "source": "huggingface.co",
+      "sourceUrl": "https://huggingface.co/blog/nvidia/nemotron-transcribe-granary",
+      "description": "A Blog post by NVIDIA on Hugging Face",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50275128",
+      "imageUrl": "https://cdn-uploads.huggingface.co/production/uploads/68127936de624fb6f57d9989/3vFxCEUXz_xJVrTBr4hNr.jpeg"
+    },
+    {
+      "id": "440db584964469a885f8",
+      "kind": "news",
+      "type": "news",
+      "title": "Rahul asks people to join ‘Chalo Dilli Ramlila March’ without worrying about police, batons",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/rahul-asks-people-to-join-chalo-dilli-ramlila-march-without-worrying-about-police-batons-101793260536481.html",
+      "description": "Congress leader Rahul Gandhi’s comments came ahead of the rally against alleged irregularities in SIR",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/29/1600x900/logo/Congress-leader-Rahul-Gandhi---ANI-_1793260525059_S2CQ.jpg"
+    },
+    {
+      "id": "a97b78fea3dbeffd3900",
+      "kind": "news",
+      "type": "news",
+      "title": "Cyclone Arnab weakens to deep depression; triggers rains in south Odisha districts",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/cyclone-arnab-weakens-to-deep-depression-triggers-rains-in-south-odisha-districts-101793248891090.html",
+      "description": "The weather system was centred about 60 km south of Malkangiri district headquarters and was moving northwards at a speed of 15 kmph, IMD said",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/29/1600x900/logo/Puri--Coconut-trees-sway-amid-gusty-winds-and-heav_1793248882716_PdGn.jpg"
+    },
+    {
+      "id": "b06784ea58848048c9ff",
+      "kind": "news",
+      "type": "news",
+      "title": "IIT Bombay forms panel to strengthen SC-ST cell following student's death",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/iit-bombay-forms-panel-to-strengthen-sc-st-cell-following-students-death-stir-101793243217487.html",
+      "description": "Students had raised several demands before the institute’s director and administration and sought clear deadlines for their implementation.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/29/1600x900/logo/PTI09-22-2026-000070B-0_1790059671547_sprc_1790059_1793243664335_qA7D_1793243664476_7VDS_76e917f1-4ec6-474b-95e0-e7a633db31a5_OnRX.jpg"
+    },
+    {
+      "id": "e9f855a3a73842648467",
+      "kind": "news",
+      "type": "news",
+      "title": "ISRO to launch NVS-03 satellite on October 30 to boost navigation for trains, vehicles and ships",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/isro-to-launch-nvs-03-satellite-on-october-30-to-boost-navigation-for-trains-vehicles-and-ships-101793257644350.html",
+      "description": "The mission will be the 20th flight of India’s GSLV and is intended to maintain and expand navigation services.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/10/29/1600x900/logo/PTI09-07-2026-000279B-0_1793257783315_FW6g_1793257808309_1dNw_dc6a46f7-a59f-4e5e-91c7-8d850d3b69fa_Wqnb.jpg"
+    },
+    {
+      "id": "hn-50282838",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "Qwenputer: A functioning, deterministic RISC-V CPU inside Qwen3.5",
+      "source": "divagr.com",
+      "sourceUrl": "https://divagr.com/blog/qwenputer",
+      "description": "I compiled a RISC-V CPU into Qwen 3.5 4B's weights, using its Gated DeltaNet layers as RAM. It runs C and MicroPython inside the forward passes, and Qwen uses it for exact arithmetic.",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50282838",
+      "imageUrl": "https://divagr.com/qwenputer/og.png"
     }
   ]
 }
