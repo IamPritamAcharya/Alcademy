@@ -1,8 +1,31 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-26T10:47:04.196760+00:00",
-  "expiresAt": "2026-11-29T10:47:04.196760+00:00",
+  "generatedAt": "2026-11-27T10:47:04.639079+00:00",
+  "expiresAt": "2026-11-30T10:47:04.639079+00:00",
   "stories": [
+    {
+      "id": "42f3376e9128c7a7f494",
+      "kind": "news",
+      "type": "news",
+      "title": "SC grants bail to former AAP MLA Naresh Balyan in MCOCA case",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/sc-grants-bail-to-former-aap-mla-naresh-balyan-in-mcoca-case-101795759460241.html",
+      "description": "SC grants bail to former AAP MLA Naresh Balyan in MCOCA case",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/06/30/1600x900/logo/ht-generic_india3_1751287297962_1751287304722.jpg"
+    },
+    {
+      "id": "hn-50647673",
+      "kind": "news",
+      "type": "news",
+      "category": "tech",
+      "title": "The New York Times warns photographers not to update Photoshop over AI features",
+      "source": "theverge.com",
+      "sourceUrl": "https://www.theverge.com/ai-artificial-intelligence/1041227/the-new-york-times-warns-photographers-not-to-update-photoshop-over-ai-features",
+      "description": "The New York Times is warning freelance photographers against using the latest version of Adobe Photoshop, saying it uses AI “in ways that may not be apparent to users.”",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50647673",
+      "imageUrl": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/gettyimages-2289911637.jpg?quality=90&strip=all&crop=0%2C10.232235952618%2C100%2C79.535528094764&w=1200"
+    },
     {
       "id": "hn-50644817",
       "kind": "news",
@@ -16,61 +39,72 @@
       "imageUrl": "https://images.ctfassets.net/3091ajzcmzlr/3yu0DTU3edoU7HK8MxkW54/c5e7801fb8c0d7d52295da96af7e8013/business_2x.webp"
     },
     {
-      "id": "hn-50611593",
+      "id": "hn-50648050",
       "kind": "news",
       "type": "news",
       "category": "tech",
-      "title": "Show HN: An agent skill that optimizes code with falsifiable hypotheses",
-      "source": "chszlab.github.io",
-      "sourceUrl": "https://chszlab.github.io/AgenticAlgorithmEngineering/",
-      "description": "Agents that optimize code like an algorithm engineer: falsifiable hypotheses, benchmarks, verified patches, and a PDF report. A skill for Claude Code and Codex.",
-      "discussionUrl": "https://news.ycombinator.com/item?id=50611593",
-      "imageUrl": "https://chszlab.github.io/AgenticAlgorithmEngineering/assets/social-preview.png"
-    },
-    {
-      "id": "490bbf54d77ded273ab6",
-      "kind": "news",
-      "type": "news",
-      "title": "2008 murder case: CBI facilitates deportation of wanted accused from UAE",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/2008-murder-case-cbi-facilitates-deportation-of-wanted-accused-from-uae-101795682070241.html",
-      "description": "Based on the pending Red Corner Notice (RCN) against the accused, the UAE authorities recently placed him under arrest after geo-locating him there and alerted the Indian authorities",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/26/1600x900/logo/The-accused--Sujith-Kumar--was-wanted-by-the-Keral_1795682062421_WBhj.jpg"
-    },
-    {
-      "id": "9caea635d020dcf72db7",
-      "kind": "news",
-      "type": "news",
-      "title": "Students, faulty members of Mumbai's JJ School of Art to showcase their work at Indian Art Biennale",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/students-faulty-members-of-mumbais-jj-school-of-art-to-showcase-their-work-at-indian-art-biennale-101795673944919.html",
-      "description": "The presence of faculty members at Purana Qila and students at the Red Fort will bring two generations of artists from the Mumbai institute together.",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/26/1600x900/logo/jj_1795674701258_fZUc_1795674712296_RDPq_b0fed1e9-d440-491c-801c-9c559191242d_WDJk.png"
-    },
-    {
-      "id": "hn-50642086",
-      "kind": "news",
-      "type": "news",
-      "category": "tech",
-      "title": "Google releases Cogentic papers on integer factorization, discrete logs and more",
+      "title": "Much shorter version of GRH Lean verification from Anthropic",
       "source": "github.com",
-      "sourceUrl": "https://github.com/google-research/google-research/tree/master/cogentic_research_papers",
-      "description": "Google Research. Contribute to google-research/google-research development by creating an account on GitHub.",
-      "discussionUrl": "https://news.ycombinator.com/item?id=50642086",
-      "imageUrl": "https://opengraph.githubassets.com/f105a638d801c240d2813aa94fcfa092bf8c89e176e74c7e4ba36b24d4a45ab9/google-research/google-research"
+      "sourceUrl": "https://github.com/lsernau/grh-lean",
+      "description": "A short Lean 4 proof of the Generalized Riemann Hypothesis - lsernau/grh-lean",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50648050",
+      "imageUrl": "https://opengraph.githubassets.com/6dbdf97036a323336736a1201686e2b21fda67b3ef4a9dc3a37792808f032319/lsernau/grh-lean"
     },
     {
-      "id": "dc733a8cfc4a00513f55",
+      "id": "hn-50664885",
       "kind": "news",
       "type": "news",
-      "title": "Call for detailed report on L&O, woman collector harassment from CM, DMK urges Guv",
+      "category": "tech",
+      "title": "'Cyber incident' forces UK Gov to take some services offline",
+      "source": "bbc.co.uk",
+      "sourceUrl": "https://www.bbc.co.uk/news/live/c6rrg94lgjrjt",
+      "description": "The department says it's investigating the cause and trying to minimise disruption to users, describing the move as a \"precaution\".",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50664885",
+      "imageUrl": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/1839/live/abef60a0-ea49-11f1-99b6-a35a62fa4264.jpg"
+    },
+    {
+      "id": "4803465d9cebf57a592b",
+      "kind": "news",
+      "type": "news",
+      "title": "‘Can’t comment without reviewing it’: Supriya Sule on possible support for delimitation bill",
       "category": "india",
       "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/call-for-detailed-report-on-l-o-woman-collector-harassment-from-cm-dmk-urges-guv-101795681161593.html",
-      "description": "Call for detailed report on L&O, woman collector harassment from CM, DMK urges Guv",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/06/30/1600x900/logo/ht-generic_india3_1751287297962_1751287304722.jpg"
+      "sourceUrl": "https://www.hindustantimes.com/india-news/cant-comment-without-reviewing-it-supriya-sule-on-possible-support-for-delimitation-bill-101795765491757.html",
+      "description": "She said theirs is a disciplined party and they will issue a whip when they receive the Parliament’s special sitting agenda",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/27/1600x900/logo/NCP-SP-leader-Supriya-Sule-_1795765483518_iSks.png"
+    },
+    {
+      "id": "774265a6dd45ab3edd65",
+      "kind": "news",
+      "type": "news",
+      "title": "Supreme Court dismisses plea against Italian leader’s ‘vote chor’ slogan at Telangana event",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/supreme-court-dismisses-plea-against-italian-leader-s-vote-chor-slogan-at-telangana-event-101795768491988.html",
+      "description": "While dismissing the plea, the bench said, “Let the government regulate freedom of speech of citizens first and then regulate that of foreigners.\"",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/27/1600x900/logo/PTI08-13-2026-000567B-0_1787988776285_1795769149648_mMds_7ec1d64d-0ca8-402a-a93e-4882413a1add_dW9U.jpg"
+    },
+    {
+      "id": "eeb8b274b08ee5f66b8a",
+      "kind": "news",
+      "type": "news",
+      "title": "SpiceJet website glitch disrupts check-in, payments; passengers advised to reach airports early",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/spicejet-website-glitch-disrupts-check-in-payments-passengers-advised-to-reach-airports-early-101795762870234.html",
+      "description": "The airline said manual check-in and boarding processes were in place across airports and advised passengers to arrive early.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/27/1600x900/spicejet_1795762925273_musr_1795762925401_AZDO_389672b2-be8a-42e7-8458-a09aee7faeb5_SAhw.jpg"
+    },
+    {
+      "id": "31137823c9d084d1a1fc",
+      "kind": "news",
+      "type": "news",
+      "title": "Cabinet okays 50% rise in Lok Sabha seats for all states, freeze on current share till 2051 in delimitation move",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/delimitation-bill-proposes-rise-in-lok-sabha-seats-by-50-state-share-frozen-till-2051-101795770664586.html",
+      "description": "The Cabinet's approval comes ahead of Parliament's special sitting, scheduled to begin on November 30.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/27/1600x900/Parliament_1795771042549_Y0I1_1795771042681_pf42_1c08d702-dcb0-4602-8d75-b974ddeb431a_jxfv.jpg"
     },
     {
       "id": "hn-50651117",
@@ -85,84 +119,49 @@
       "imageUrl": "https://pbs.twimg.com/profile_images/2093807917833281537/2yBgpwVV_400x400.jpg"
     },
     {
-      "id": "hn-50641171",
+      "id": "b38afffcd8342c1cc077",
+      "kind": "news",
+      "type": "news",
+      "title": "Congress’s Karti Chidambaram asks DMK to explain ‘U-turn’ if it decides to support delimitation bill",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/congresss-karti-chidambaram-asks-dmk-to-explain-u-turn-if-it-decides-to-support-delimitation-bill-101795771492369.html",
+      "description": "The comments came a day after the government said a special sitting of Parliament will be held from November 30",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/27/1600x900/logo/Congress-leader-Karti-Chidambaram-_1795771484703_hc0Y.png"
+    },
+    {
+      "id": "3ac37f323b791326b85a",
+      "kind": "news",
+      "type": "news",
+      "title": "NCP (SP) to first examine delimitation bill before making its stand clear, says Supriya Sule",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/ncp-sp-to-first-examine-delimitation-bill-before-making-its-stand-clear-says-supriya-sule-101795770656758.html",
+      "description": "NCP (SP) to first examine delimitation bill before making its stand clear, says Supriya Sule",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/08/06/1600x900/logo/Untitled_design_1754465014585_1754465103581.png"
+    },
+    {
+      "id": "c9b02c151b7e14c85f7c",
+      "kind": "news",
+      "type": "news",
+      "title": "If Yogiji has said he’s the CM face, it’s commendable: Shiv Sena (UBT)’s Sanjay Raut",
+      "category": "india",
+      "source": "Hindustan Times",
+      "sourceUrl": "https://www.hindustantimes.com/india-news/if-yogi-adityanath-has-said-he-s-the-cm-face-it-s-commendable-shiv-sena-ubt-s-sanjay-raut-uttar-pradesh-2027-polls-101795761100352.html",
+      "description": "The BJP is seeking a third consecutive term in Uttar Pradesh, where it faces a challenge from the Samajwadi Party-led alliance.",
+      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/27/1600x900/logo/yogiraut_1795761609947_HVeK_1795761617206_4yJM_ab03bcb5-ae14-4e32-9adb-f01338846d12_QKRh.jpg"
+    },
+    {
+      "id": "hn-50664104",
       "kind": "news",
       "type": "news",
       "category": "tech",
-      "title": "Windows Loudness Equalization, reverse-engineered and ported to PipeWire",
-      "source": "github.com",
-      "sourceUrl": "https://github.com/xoxorwr/pw-loudness-eq",
-      "description": "Windows Loudness Equalization, reverse-engineered and ported to PipeWire - xoxorwr/pw-loudness-eq",
-      "discussionUrl": "https://news.ycombinator.com/item?id=50641171",
-      "imageUrl": "https://opengraph.githubassets.com/00b47d5b7d44efb79d62bc091423f95716e303ff03c13af43e9f7b55b7af19e6/xoxorwr/pw-loudness-eq"
-    },
-    {
-      "id": "363dd9e9a74995b39e8c",
-      "kind": "news",
-      "type": "news",
-      "title": "From Kasab's rooftop standoff to Tahawwur Rana's arrest: Sadanand Date's 26/11 full circle",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/from-kasabs-rooftop-standoff-to-tahawwur-ranas-arrest-sadanand-dates-26-11-full-circle-101795683487965.html",
-      "description": "Date was awarded the President’s Police Medal for gallantry for saving the lives of women and children at the hospital during the attacks.",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/26/1600x900/logo/date_ANI_1795686622886_Vx6S_1795686630180_8RtC_ecea234c-33de-474e-88dd-c87fdc40ad36_KPRP.jpg"
-    },
-    {
-      "id": "hn-50647161",
-      "kind": "news",
-      "type": "news",
-      "category": "tech",
-      "title": "Nfs2root: A 12-year-old pre-auth remote root in the Linux kernel's NFS server",
-      "source": "opensec.in",
-      "sourceUrl": "https://opensec.in/blog/nfs2root-cve-2026-99362",
-      "description": "A 12-year-old heap overflow in Linux's NFSv4.1 server lets an unauthenticated client on tcp/2049 corrupt kernel memory. Patch, exposure checks and detection.",
-      "discussionUrl": "https://news.ycombinator.com/item?id=50647161",
-      "imageUrl": "https://opensec.in/blog/media/ddf81bad-ef8d-43da-8d5b-bbb9d0a5f9a3.jpg"
-    },
-    {
-      "id": "13e4b292d848680f5c89",
-      "kind": "news",
-      "type": "news",
-      "title": "Attempts to devalue court or malign judges must be discouraged: Attorney General Venkataramani",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/attempts-to-devalue-court-or-malign-judges-must-be-discouraged-attorney-general-venkataramani-101795678604398.html",
-      "description": "Attempts to devalue court or malign judges must be discouraged: Attorney General Venkataramani",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2025/06/30/1600x900/logo/ht-generic_india3_1751287297962_1751287304722.jpg"
-    },
-    {
-      "id": "d71a32f9a68e9ec4c4b2",
-      "kind": "news",
-      "type": "news",
-      "title": "In a first, Tamil Nadu govt approves 15-day paternity leave for govt staff",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/vijay-govt-approves-15-day-paternity-leave-for-male-govt-employees-in-tamil-nadu-101795684045036.html",
-      "description": "The Tamil Nadu government had received requests from male government employees seeking the introduction of paternity leave.",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/26/1600x900/vijay_1795684149660_1ICx_1795684149779_VZXQ_56b9cd70-bd71-4bfc-9566-08ae4564f09b_U6W4.jpg"
-    },
-    {
-      "id": "hn-50648035",
-      "kind": "news",
-      "type": "news",
-      "category": "tech",
-      "title": "Defang Security Incident",
-      "source": "defang.io",
-      "sourceUrl": "https://defang.io/blog/post/security-incident-november-2026/",
-      "description": "An attacker copied Defang's production credentials and a copy of our main database on November 12, 2026. What was exposed, what we have done, and the steps Defang users should take now.",
-      "discussionUrl": "https://news.ycombinator.com/item?id=50648035",
-      "imageUrl": "https://defang.io/blog/imported/security-incident-november-2026/cover.png"
-    },
-    {
-      "id": "4bae5012ebb149ed86b7",
-      "kind": "news",
-      "type": "news",
-      "title": "Deepathoon row: BJP demands SC-monitored probe, action against officials",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/deepathoon-row-bjp-demands-sc-monitored-probe-action-against-officials-101795674689843.html",
-      "description": "The BJP said the state government cannot be trusted and the court must order full force of the law against the culprits.",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/26/1600x900/logo/The-BJP-said-the-Supreme-Court-must-take-suo-motu-_1795674680342_iVvn.png"
+      "title": "Indie web browser Ladybird enters alpha testing",
+      "source": "theregister.com",
+      "sourceUrl": "https://www.theregister.com/software/2026/11/26/indie-web-browser-ladybird-enters-alpha-testing/5311914",
+      "description": "Upstart engine gets downloadable macOS and Linux builds, but no security guarantees",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50664104",
+      "imageUrl": "https://image.theregister.com/243744.jpg?imageId=243744&x=0&y=35.95&cropw=100&croph=61.43&panox=0&panoy=35.95&panow=100&panoh=61.43&width=1200&height=683"
     },
     {
       "id": "hn-50653477",
@@ -177,15 +176,16 @@
       "imageUrl": "https://techstackups.com/img/articles/google-workspace-agent-api/cover.jpg"
     },
     {
-      "id": "4cd96341beed0b6c0ff9",
+      "id": "hn-50658632",
       "kind": "news",
       "type": "news",
-      "title": "Jharkhand CM moves resolution against amended mines law; claims ₹13,000cr annual revenue loss",
-      "category": "india",
-      "source": "Hindustan Times",
-      "sourceUrl": "https://www.hindustantimes.com/india-news/jharkhand-cm-moves-resolution-against-amended-mines-law-claims-rs-13-000cr-annual-revenue-loss-101795677536885.html",
-      "description": "Moving the resolution, Soren said the amendment would affect the state's financial position and hamper its ability to fund welfare and development programmes.",
-      "imageUrl": "https://www.hindustantimes.com/ht-img/img/2026/11/26/1600x900/logo/PTI11-26-2026-000080A-0_1795677786913_razx_1795677795257_fiiI_ecbe16a7-cd20-408a-9209-59fe130bee36_kngd.jpg"
+      "category": "tech",
+      "title": "Rvoip: VoIP stack in Rust",
+      "source": "github.com",
+      "sourceUrl": "https://github.com/eisenzopf/rvoip",
+      "description": "Open-source Rust SIP/VoIP stack: SIP, WebRTC, SRTP and AI voice agents behind one API. RFC 7502-benchmarked. - eisenzopf/rvoip",
+      "discussionUrl": "https://news.ycombinator.com/item?id=50658632",
+      "imageUrl": "https://opengraph.githubassets.com/8748acdf15e45631eefacb72f664fecc81769ba22f13a97f735afb6c8d0f84ef/eisenzopf/rvoip"
     }
   ]
 }
